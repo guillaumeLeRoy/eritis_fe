@@ -1,0 +1,53 @@
+<p>
+  coach-details works! View should be different if your are a coach or a coachee
+</p>
+
+<div class="row">
+  <div class="col-xs-12">
+    <img src="{{ ( coach | async)?.avatar_url}}" alt="" class="img-responsive">
+  </div>
+</div>
+
+
+<div class="row">
+  <div class="col-xs-12">
+    <h1>{{ (coach | async)?.display_name }}</h1>
+  </div>
+</div>
+
+<h1>Status : {{ (connectedUser | async)?.status }}</h1>
+
+
+<!-- coach view -->
+
+<div id="coach_container" *ngIf=" ( connectedUser | async)?.status == 1">
+  <h1>Coach view</h1>
+
+  //// update profile ////
+</div>
+
+<!-- coachee view -->
+
+<div id="coachee_container" *ngIf="(connectedUser | async)?.status == 2">
+
+  <h1>Coachee view</h1>
+
+  <hr>
+
+  <div class="row">
+    <div class="col-xs-12">
+      <h1>Prendre un rendez-vous</h1>
+    </div>
+  </div>
+
+  <ngb-datepicker #dp [(ngModel)]="model" (navigate)="date = $event.next"></ngb-datepicker>
+
+  <button (click)="bookADate()">Book the date</button>
+
+</div>
+
+
+
+
+
+

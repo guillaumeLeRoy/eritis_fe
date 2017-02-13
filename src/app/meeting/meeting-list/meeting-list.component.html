@@ -1,0 +1,13 @@
+<p>
+  List of ypur meetings
+</p>
+
+<div class="row">
+  <div class="col-xs-12">
+    <ul class="list-group">
+      <rb-meeting-item *ngFor="let meeting of meetings | async" [meeting]="meeting"></rb-meeting-item>
+    </ul>
+  </div>
+</div>
+
+

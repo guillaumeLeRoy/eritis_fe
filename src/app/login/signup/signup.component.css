@@ -1,0 +1,14 @@
+
+#main_container {
+  padding:32px;
+}
+
+#form_container {
+  padding: 32px;
+  max-width: 50%;
+}
+
+
+#signup_btn {
+  margin-top: 2em;
+}

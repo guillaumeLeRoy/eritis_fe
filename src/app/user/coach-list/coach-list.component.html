@@ -1,0 +1,13 @@
+<p>
+  List of our coachs
+</p>
+
+<div class="row">
+  <div class="col-xs-12">
+    <ul class="list-group">
+      <rb-coach-item *ngFor="let coach of coachs | async" [coach]="coach" [routerLink]="['/coachs', coach.id]"></rb-coach-item>
+    </ul>
+  </div>
+</div>
+
+

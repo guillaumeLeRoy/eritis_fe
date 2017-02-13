@@ -1,1 +1,38 @@
-/* You can add global styles to this file, and also import other style files */
+/*!* You can add global styles to this file, and also import other style files *!*/
+@import '~@angular/material/core/theming/prebuilt/deeppurple-amber.css';
+
+node_modules/angular-calendar/dist/css/angular-calendar.css
+
+html, body {
+  height: 100%;
+}
+/* make sure containers are below the navbar */
+body .container {
+  padding: 60px 0px 0;
+}
+
+:root {
+  --main-header-color: #002D50;
+  --main-bg-color: #C3D9E8;
+  --main-white-color: #ffffff;
+  --main-white-color--hover: #5e5e5e;
+}
+
+
+.recipes_grid {
+  height: 100%;
+  width: 100%;
+  background: #e7e7e7;
+}
+
+/*md-card {*/
+  /*margin: 1em;*/
+/*}*/
+
+.recipe_item_img {
+  height: 50px;
+  width: 50px;
+}
+
+
+

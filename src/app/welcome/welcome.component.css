@@ -1,0 +1,92 @@
+
+.bg_top_image {
+  position: fixed;
+  top: 0px;
+  left: 0px;
+  background-image: url("assets/eritis_montaign_bg.jpeg");
+  background-size: cover;
+  background-repeat: no-repeat;
+  height: 1000px;
+  width: 100%;
+  max-width: 100%;
+  z-index: -1;
+}
+
+.header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 6em;
+  margin-bottom: 4em;
+}
+
+#get_started_btn {
+  margin-top: 2em;
+}
+
+.desc_icon {
+  width: 64px;
+  height: 64px;
+}
+
+#main_container {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  padding: 0px;
+  margin: 0px;
+}
+
+.content {
+  flex-grow: 1;
+}
+
+footer {
+  background-color: var(--main-header-color);
+  padding: 16px;
+  color: var(--main-white-color);
+}
+
+.presentation {
+  background: var(--main-bg-color);
+  padding: 16px;
+}
+
+.presentation_title {
+  margin-bottom: 32px;
+}
+
+.presentation_item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.coach_section {
+  width: 100%;
+  background-color: #ffffff;
+  padding: 16px;
+  color: #39729B;
+}
+
+.coach_section_title {
+  margin-bottom: 16px;
+}
+
+.coach_section_subtitle {
+  margin-bottom: 32px;
+}
+
+.coach_description {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.coach_img {
+  height: 149px;
+  width: 149px;
+  background-size: cover;
+}
+
