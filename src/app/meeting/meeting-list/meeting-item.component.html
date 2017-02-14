@@ -1,8 +1,12 @@
 <div class="list-group-item clearfix">
 
   <div class="pull-left">
-    <h4 class="list-group-item-heading">{{meeting.id}}</h4>
-    <p class="list-group-item-text">{{meeting.date}}</p>
+    <h4 class="list-group-item-heading">You have a meeting</h4>
+    <p class="list-group-item-text">at : {{meeting.date}}</p>
+    <p class="list-group-item-text">with : {{ (coach | async)?.display_name }}</p>
+
+    <rb-pre-meeting></rb-pre-meeting>
+
   </div>
 
 </div>

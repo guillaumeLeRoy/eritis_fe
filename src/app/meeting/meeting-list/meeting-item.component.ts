@@ -7,7 +7,7 @@ import {Coach} from "../../user/Coach";
 @Component({
   selector: 'rb-meeting-item',
   templateUrl: './meeting-item.component.html',
-  styleUrls: ['./meeting-item.component.css']
+  styleUrls: ['./meeting-item.component.css'],
 })
 export class MeetingItemComponent implements OnInit {
 

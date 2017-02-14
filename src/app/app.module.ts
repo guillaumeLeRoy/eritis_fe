@@ -37,6 +37,7 @@ import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import {MeetingsService} from "./meeting/meetings.service";
 import {MeetingListComponent} from "./meeting/meeting-list/meeting-list.component";
 import {MeetingItemComponent} from "./meeting/meeting-list/meeting-item.component";
+import {PreMeetingComponent} from "./meeting/pre-meeting.component";
 
 
 @NgModule({
@@ -63,7 +64,8 @@ import {MeetingItemComponent} from "./meeting/meeting-list/meeting-item.componen
     CoachItemComponent,
     CoachDetailsComponent,
     MeetingListComponent,
-    MeetingItemComponent
+    MeetingItemComponent,
+    PreMeetingComponent
   ],
   imports: [
     BrowserModule,
