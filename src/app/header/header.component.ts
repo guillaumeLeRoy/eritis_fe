@@ -4,6 +4,7 @@ import {Router} from "@angular/router";
 import {AuthService} from "../service/auth.service";
 import {Subscription, Observable} from "rxjs";
 import {User} from "../user/user";
+import {ApiUser} from "../user/apiUser";
 
 @Component({
   selector: 'rb-header',
@@ -14,7 +15,7 @@ import {User} from "../user/user";
 export class HeaderComponent implements OnDestroy {
 
   private isAuthenticated: Observable<boolean>;
-  private connectedUser: Observable<User>;
+  private connectedUser: Observable<ApiUser>;
   private subscription: Subscription
 
   constructor(private recipeService: RecipeService, private router: Router, private authService: AuthService) {

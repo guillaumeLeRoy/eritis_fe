@@ -38,6 +38,7 @@ import {MeetingsService} from "./meeting/meetings.service";
 import {MeetingListComponent} from "./meeting/meeting-list/meeting-list.component";
 import {MeetingItemComponent} from "./meeting/meeting-list/meeting-item.component";
 import {PreMeetingComponent} from "./meeting/pre-meeting.component";
+import {ProfileComponent} from "./user/profile.component";
 
 
 @NgModule({
@@ -57,6 +58,7 @@ import {PreMeetingComponent} from "./meeting/pre-meeting.component";
     RecipeStartComponent,
     SignupComponent,
     SigninComponent,
+    ProfileComponent,
     WelcomeComponent,
     ChatComponent,
     ChatItemComponent,

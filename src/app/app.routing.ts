@@ -11,6 +11,7 @@ import {CoachListComponent} from "./user/coach-list/coach-list.component";
 import {USER_ROUTES} from "./user/user_routes";
 import {CoachDetailsComponent} from "./user/coach-details/coach-details.component";
 import {MeetingListComponent} from "./meeting/meeting-list/meeting-list.component";
+import {ProfileComponent} from "./user/profile.component";
 
 const APP_ROUTES: Routes = [
   {path: '', redirectTo: '/welcome', pathMatch: 'full'},
@@ -20,6 +21,7 @@ const APP_ROUTES: Routes = [
   {path: 'shopping-list', component: ShopingListComponent},
   {path: 'signin', component: SigninComponent},
   {path: 'signup', component: SignupComponent},
+  {path: 'profile', component: ProfileComponent},
   {path: 'coachs', component: CoachListComponent},
   {path: 'coachs/:id', component: CoachDetailsComponent},
   {path: 'coachees', component: CoachListComponent},

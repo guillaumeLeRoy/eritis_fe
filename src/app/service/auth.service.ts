@@ -4,6 +4,7 @@ import {Injectable} from "@angular/core";
 import {Observable, BehaviorSubject} from "rxjs";
 import {PromiseObservable} from "rxjs/observable/PromiseObservable";
 import {Headers, Http} from "@angular/http";
+import {ApiUser} from "../user/apiUser";
 
 
 declare var firebase: any;
@@ -15,7 +16,7 @@ export class AuthService {
 
   // private user: User
   private isUserAuth = new BehaviorSubject<boolean>(false);//auth by default
-  private user = new BehaviorSubject<User>(null);//auth by default
+  private user = new BehaviorSubject<ApiUser>(null);//auth by default
 
   /* flag to know if we are in the sign in or sign up process. Block updateAuthStatus(FBuser) is true */
   private isSignInOrUp = false;
@@ -29,11 +30,11 @@ export class AuthService {
     console.log("ctr done");
   }
 
-  getConnectedUser(): Observable<User> {
+  getConnectedUser(): Observable<ApiUser> {
     return this.user;
   }
 
-  signUp(user: User): Observable<User> {
+  signUp(user: User): Observable<ApiUser> {
     console.log("1. user signUp : ", user);
     this.isSignInOrUp = true;
     //create user with email and pwd
@@ -105,7 +106,7 @@ export class AuthService {
     );
   }
 
-  signIn(user: User): Observable<User> {
+  signIn(user: User): Observable<ApiUser> {
     console.log("1. user signIn : ", user);
     this.isSignInOrUp = true;
 
@@ -163,17 +164,17 @@ export class AuthService {
     console.log("updateAuthStatus user : ", fbUser);
 
     if (fbUser) {
-        console.log("updateAuthStatus, get user");
+      console.log("updateAuthStatus, get user");
 
-        //get from API
-        var promise = fbUser.getToken();
-        let firebaseObs = PromiseObservable.create(promise);
-        firebaseObs.flatMap(
-          (token: string) => {
-            let fbUser = firebase.auth().currentUser;
-            return this.getUserForFirebaseId(fbUser.uid, token);
-          }
-        ).subscribe();
+      //get from API
+      var promise = fbUser.getToken();
+      let firebaseObs = PromiseObservable.create(promise);
+      firebaseObs.flatMap(
+        (token: string) => {
+          let fbUser = firebase.auth().currentUser;
+          return this.getUserForFirebaseId(fbUser.uid, token);
+        }
+      ).subscribe();
     } else {
       this.user.next(null);
       this.isUserAuth.next(false);
@@ -182,7 +183,7 @@ export class AuthService {
 
 
   /* when we obtained a User from the API ( coach or coachee */
-  private onAPIuserObtained(user: User): User {
+  private onAPIuserObtained(user: ApiUser): ApiUser {
     console.log("onAPIuserObtained, user : ", user);
     if (user) {
       this.user.next(user);
@@ -194,7 +195,7 @@ export class AuthService {
     return user;
   }
 
-  private getUserForFirebaseId(firebaseId: string, firebaseToken: string): Observable<User> {
+  private getUserForFirebaseId(firebaseId: string, firebaseToken: string): Observable<ApiUser> {
     console.log("getUserForFirebaseId, firebaseToken : ", firebaseToken);
 
     //add authorization header
@@ -205,7 +206,7 @@ export class AuthService {
     return this.httpService.get(BACKEND_BASE_URL + BACKEND_LOGIN_URL + firebaseId, {headers: headers})
       .map(
         response => {
-          let json = response.json();
+          let json: ApiUser = response.json();
           console.log("getUserForFirebaseId, json : ", json);
           return this.onAPIuserObtained(json);
         }

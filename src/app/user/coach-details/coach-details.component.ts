@@ -4,9 +4,8 @@ import {ActivatedRoute} from "@angular/router";
 import {Coach} from "../Coach";
 import {CoachCoacheeService} from "../CoachCoacheeService";
 import {NgbDateStruct} from "@ng-bootstrap/ng-bootstrap";
-import {isSuccess} from "@angular/http/src/http_utils";
 import {AuthService} from "../../service/auth.service";
-import {User} from "../user";
+import {ApiUser} from "../apiUser";
 
 @Component({
   selector: 'rb-coach-details',
@@ -21,14 +20,14 @@ export class CoachDetailsComponent implements OnInit,AfterViewInit {
 
   private coach: Observable<Coach>;
 
-  private connectedUser: Observable<User>;
+  private connectedUser: Observable<ApiUser>;
 
   constructor(private route: ActivatedRoute, private coachService: CoachCoacheeService, private authService: AuthService) {
-    this.connectedUser = authService.getConnectedUser();
-    console.log("ctr, connectedUser : ", this.connectedUser);
   }
 
   ngOnInit() {
+    this.connectedUser = this.authService.getConnectedUser();
+    console.log("ngOnInit, connectedUser : ", this.connectedUser);
   }
 
   ngAfterViewInit(): void {
@@ -43,7 +42,7 @@ export class CoachDetailsComponent implements OnInit,AfterViewInit {
 
   bookADate() {
     this.connectedUser.take(1).subscribe(
-      (user: User) => {
+      (user: ApiUser) => {
 
         if (user == null) {
           console.log('no connected user')

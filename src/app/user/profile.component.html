@@ -1,0 +1,60 @@
+<p>
+  profile works! : this view should be different depending on user's type : coach, coachee or HR
+</p>
+
+<div id="main_container">
+
+  <h1>Status : {{ (connectedUser | async)?.status }}</h1>
+
+
+  <!-- coach view -->
+
+  <div id="coach_container" *ngIf=" ( connectedUser | async)?.status == 1">
+    <h1>Coach view</h1>
+
+    <div class="row">
+      <div class="col-xs-12">
+        <img src="{{ ( coach | async)?.avatar_url}}" alt="" class="img-responsive">
+      </div>
+    </div>
+
+
+    <div class="row">
+      <div class="col-xs-12">
+        <h1>{{ (coach | async)?.display_name }}</h1>
+      </div>
+    </div>
+
+
+    <!-- edit coach profile -->
+
+
+  </div>
+
+  <!-- coachee view -->
+
+  <div id="coachee_container" *ngIf="(connectedUser | async)?.status == 2">
+
+    <h1>Coachee view</h1>
+
+    <hr>
+
+    <div class="row">
+      <div class="col-xs-12">
+        <img src="{{ ( coachee | async)?.avatar_url}}" alt="" class="img-responsive">
+      </div>
+    </div>
+
+
+    <div class="row">
+      <div class="col-xs-12">
+        <h1>{{ (coachee | async)?.display_name }}</h1>
+      </div>
+    </div>
+
+    <!-- edit coachee profile -->
+
+  </div>
+
+
+</div>

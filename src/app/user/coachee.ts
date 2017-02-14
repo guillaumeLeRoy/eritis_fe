@@ -1,10 +1,7 @@
-/**
- * Created by guillaume on 01/02/2017.
- */
-export class Coach {
+export class Coachee {
   id : string;
 
-  // firebase_id: string;
+  firebase_id: string;
 
   avatar_url: string;
 

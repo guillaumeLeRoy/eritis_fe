@@ -3,4 +3,26 @@
   <h4>Ajouter des explications : </h4>
 
 
+  <form [formGroup]="form" (ngSubmit)="submitMeetingContextForm()">
+
+    <!--<div class="row">-->
+    <!--<div class="col-xs-12">-->
+    <div class="form-group">
+      <label for="context">Donnez nous un peu de context pour ce meeting : </label>
+      <input
+        type="text"
+        id="context"
+        class="form-control"
+        formControlName="context">
+    </div>
+
+    <div class="form-group">
+      <label for="mood">Quel est votre état d'esprit ?</label>
+      <ngb-rating id="mood" class="form-control" formControlName="mood" [(rate)]="rate"></ngb-rating>
+    </div>
+
+    <button type="submit" class="btn btn-success" [disabled]="!form.valid">Envoyer</button>
+
+  </form>
+
 </div>
