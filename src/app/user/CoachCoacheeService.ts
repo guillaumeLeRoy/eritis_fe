@@ -4,6 +4,7 @@ import {PromiseObservable} from "rxjs/observable/PromiseObservable";
 import {Subject, Observable} from "rxjs";
 import {Coach} from "./Coach";
 import {AuthService} from "../service/auth.service";
+import {Coachee} from "./coachee";
 
 declare let firebase: any
 
@@ -98,6 +99,40 @@ export class CoachCoacheeService {
           .map(response => {
             let json = response.json();
             console.log("bookAMeeting, response json : ", json);
+            return json;
+          });
+      }
+    );
+  }
+
+  updateCoacheeForId(id: string, displayName: string, avatarUrl: string): Observable<Coachee> {
+    console.log("updateCoacheeForId, id", id);
+
+    //TODO check if token not null
+    let currentUser = firebase.auth().currentUser;
+
+    console.log("updateCoacheeForId, currentUser : ", currentUser);
+
+    let promise = currentUser.getToken();
+
+    let obs = PromiseObservable.create(promise); // Observable.fromPromise(promise)
+
+    return obs.flatMap(
+      (token) => {
+        console.log("updateCoacheeForId, token : ", token);
+
+        let headers = new Headers();
+        headers.append('Authorization', 'Bearer ' + token);
+
+        let body = {
+          display_name: displayName,
+          avatar_url: avatarUrl,
+        };
+
+        return this.httpService.put('http://localhost:8080/api/coachees/' + id, body, {headers: headers})
+          .map(response => {
+            let json = response.json();
+            console.log("updateCoacheeForId, response json : ", json);
             return json;
           });
       }

@@ -1,29 +1,23 @@
 <p>
   profile works! : this view should be different depending on user's type : coach, coachee or HR
 </p>
+<h4>Status : {{ (connectedUser | async)?.status }}</h4>
+
+<hr>
 
 <div id="main_container">
 
-  <h1>Status : {{ (connectedUser | async)?.status }}</h1>
 
+  <h1>Your profile</h1>
 
   <!-- coach view -->
 
   <div id="coach_container" *ngIf=" ( connectedUser | async)?.status == 1">
-    <h1>Coach view</h1>
-
-    <div class="row">
-      <div class="col-xs-12">
-        <img src="{{ ( coach | async)?.avatar_url}}" alt="" class="img-responsive">
-      </div>
-    </div>
 
 
-    <div class="row">
-      <div class="col-xs-12">
-        <h1>{{ (coach | async)?.display_name }}</h1>
-      </div>
-    </div>
+    <img src="{{ ( coach | async)?.avatar_url}}" alt="" class="img-responsive">
+
+    <h1>{{ (coach | async)?.display_name }}</h1>
 
 
     <!-- edit coach profile -->
@@ -35,26 +29,46 @@
 
   <div id="coachee_container" *ngIf="(connectedUser | async)?.status == 2">
 
-    <h1>Coachee view</h1>
-
-    <hr>
-
-    <div class="row">
-      <div class="col-xs-12">
-        <img src="{{ ( coachee | async)?.avatar_url}}" alt="" class="img-responsive">
-      </div>
-    </div>
-
-
-    <div class="row">
-      <div class="col-xs-12">
-        <h1>{{ (coachee | async)?.display_name }}</h1>
-      </div>
-    </div>
-
-    <!-- edit coachee profile -->
+    <h4>Votre id</h4>
+    <p>{{ (coachee | async)?.id }}</p>
+    <h4>Votre photo de profile</h4>
+    <img src="{{ ( coachee | async)?.avatar_url}}" alt="" class="img-responsive">
+    <h4>Votre email</h4>
+    <p>{{ (coachee | async)?.display_name }}</p>
+    <h4>Date d'enregistrement</h4>
+    <p>{{ (coachee | async)?.start_date }}</p>
 
   </div>
+
+  <hr>
+
+  <!-- edit coachee profile -->
+
+  <h4>Update your profile</h4>
+
+  <form [formGroup]="form" (ngSubmit)="submitProfileUpdate()">
+
+    <div class="form-group">
+      <label for="pseudo">Votre pseudo</label>
+      <input
+        type="text"
+        id="pseudo"
+        class="form-control"
+        formControlName="pseudo">
+    </div>
+
+    <div class="form-group">
+      <label for="avatar">Votre avatar Url</label>
+      <input
+        type="text"
+        id="avatar"
+        class="form-control"
+        formControlName="avatar">
+    </div>
+
+    <button type="submit" class="btn btn-success" [disabled]="!form.valid">Mettre à jour</button>
+
+  </form>
 
 
 </div>

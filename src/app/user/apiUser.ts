@@ -1,7 +1,8 @@
 export interface ApiUser {
-  id: string,
-  display_name: string,
+  id: string;
+  display_name: string;
   avatar_url: string;
-  score: number
-  status: number  //1 for coach, 2 for coachee
+  score: number;
+  status: number;  //1 for coach, 2 for coachee
+  start_date : string;
 }
