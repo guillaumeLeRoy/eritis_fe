@@ -1,6 +1,8 @@
 export class Coachee {
   id : string;
 
+  email : string
+
   firebase_id: string;
 
   avatar_url: string;

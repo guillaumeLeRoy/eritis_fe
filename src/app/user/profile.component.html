@@ -31,10 +31,17 @@
 
     <h4>Votre id</h4>
     <p>{{ (coachee | async)?.id }}</p>
+    <h4>Votre email</h4>
+    <p>{{ (coachee | async)?.email }}</p>
+
+    <hr>
+
+    <h4>Votre pseudo</h4>
+    <p>{{ (coachee | async)?.display_name }}</p>
+
     <h4>Votre photo de profile</h4>
     <img src="{{ ( coachee | async)?.avatar_url}}" alt="" class="img-responsive">
-    <h4>Votre email</h4>
-    <p>{{ (coachee | async)?.display_name }}</p>
+
     <h4>Date d'enregistrement</h4>
     <p>{{ (coachee | async)?.start_date }}</p>
 

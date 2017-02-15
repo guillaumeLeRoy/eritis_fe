@@ -1,10 +1,10 @@
-import {Component, OnInit, AfterViewInit, AfterContentInit} from '@angular/core';
-import {Observable, Subject} from "rxjs";
+import {Component, OnInit, AfterViewInit} from '@angular/core';
+import {Observable} from "rxjs";
 import {Coach} from "./Coach";
 import {Coachee} from "./coachee";
 import {AuthService} from "../service/auth.service";
 import {ApiUser} from "./apiUser";
-import {FormGroup, FormBuilder, Validators} from "@angular/forms";
+import {FormGroup, FormBuilder} from "@angular/forms";
 import {CoachCoacheeService} from "./CoachCoacheeService";
 
 @Component({
@@ -46,8 +46,11 @@ export class ProfileComponent implements OnInit, AfterViewInit {
             console.log("getConnectedUser, create a coach");
 
             let coach: Coach = new Coach();
+            coach.id = user.id;
+            coach.email = user.email;
             coach.display_name = user.display_name;
             coach.avatar_url = user.avatar_url;
+            coach.start_date = user.start_date;
 
             this.coach = Observable.of(coach);
 
@@ -56,6 +59,7 @@ export class ProfileComponent implements OnInit, AfterViewInit {
 
             let coachee: Coachee = new Coachee();
             coachee.id = user.id;
+            coachee.email = user.email;
             coachee.display_name = user.display_name;
             coachee.avatar_url = user.avatar_url;
             coachee.start_date = user.start_date;
@@ -65,14 +69,12 @@ export class ProfileComponent implements OnInit, AfterViewInit {
             console.log("getConnectedUser, call next");
 
             this.coachee = Observable.of(coachee);
-
           }
         }
 
       }
     );
   }
-
 
   submitProfileUpdate() {
     console.log("submitProfileUpdate");
@@ -81,11 +83,11 @@ export class ProfileComponent implements OnInit, AfterViewInit {
       (coachee: Coachee) => {
         console.log("submitProfileUpdate, coache obtained");
 
-        return this.coachService.updateCoacheeForId(coachee.id, this.form.value.pseudo, this.form.value.avatar);
+        return this.authService.updateUserForId(coachee.id, this.form.value.pseudo, this.form.value.avatar);
       }
     ).subscribe(
-      (coachee: Coachee) => {
-        console.log("coachee updated : ", coachee);
+      (user: ApiUser) => {
+        console.log("coachee updated : ", user);
       });
   }
 

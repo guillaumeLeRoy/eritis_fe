@@ -2,7 +2,9 @@
  * Created by guillaume on 01/02/2017.
  */
 export class Coach {
-  id : string;
+  id: string;
+
+  email: string
 
   // firebase_id: string;
 
