@@ -3,6 +3,7 @@ import {Http, Headers} from "@angular/http";
 import {PromiseObservable} from "rxjs/observable/PromiseObservable";
 import {Observable} from "rxjs";
 import {Coach} from "./Coach";
+import {MeetingReview} from "../model/MeetingReview";
 
 declare let firebase: any
 
@@ -103,7 +104,37 @@ export class CoachCoacheeService {
     );
   }
 
-  addAMeetingReview(meetingId: string, comment: string, rate: string) {
+
+  getMeetingReviews(meetingId: string): Observable<MeetingReview[]> {
+    console.log("getMeetingReviews");
+
+    //TODO check if token not null
+    let currentUser = firebase.auth().currentUser;
+    let promise = currentUser.getToken();
+
+    let obs = PromiseObservable.create(promise); // Observable.fromPromise(promise)
+
+    return obs.flatMap(
+      (token) => {
+        console.log("getMeetingReviews, token : ", token);
+
+        let headers = new Headers();
+        headers.append('Authorization', 'Bearer ' + token);
+
+        return this.httpService.get('http://localhost:8080/api/meeting/' + meetingId + '/reviews', {headers: headers})
+          .map(response => {
+            let json: MeetingReview[] = response.json();
+            console.log("getMeetingReviews, response json : ", json);
+            return json;
+          });
+      }
+    );
+
+
+  }
+
+
+  addAMeetingReview(meetingId: string, comment: string, rate: string): Observable<MeetingReview> {
     console.log("addAMeetingReview, meetingId %s, comment %s, rate %s", meetingId, comment, rate);
 
     //TODO check if token not null
@@ -125,7 +156,7 @@ export class CoachCoacheeService {
         };
         return this.httpService.post('http://localhost:8080/api/meeting/' + meetingId + '/review', body, {headers: headers})
           .map(response => {
-            let json = response.json();
+            let json: MeetingReview = response.json();
             console.log("addAMeetingReview, response json : ", json);
             return json;
           });

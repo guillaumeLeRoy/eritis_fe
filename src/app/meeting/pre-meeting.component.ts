@@ -1,6 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {FormGroup, Validators, FormBuilder} from "@angular/forms";
 import {CoachCoacheeService} from "../user/CoachCoacheeService";
+import {MeetingReview} from "../model/MeetingReview";
 
 @Component({
   selector: 'rb-pre-meeting',
@@ -26,10 +27,13 @@ export class PreMeetingComponent implements OnInit {
   submitMeetingContextForm() {
     console.log("submitMeetingContextForm form : ", this.form.value)
 
-    this.coachService.addAMeetingReview("", this.form.value.context, this.form.value.mood).subscribe()
-    {
-      
-    }
+    this.coachService.addAMeetingReview("", this.form.value.context, this.form.value.mood).subscribe(
+      (review: MeetingReview) => {
+        console.log("submitMeetingContextForm, get review : ", review);
+
+      }
+    );
+
   }
 
 }
