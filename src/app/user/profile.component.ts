@@ -14,22 +14,27 @@ import {CoachCoacheeService} from "./CoachCoacheeService";
 })
 export class ProfileComponent implements OnInit, AfterViewInit {
 
-
   private coach: Observable<Coach>;
   private coachee: Observable<Coachee>;
 
   private connectedUser: Observable<ApiUser>;
 
-  private form: FormGroup;
+  private formCoach: FormGroup;
+  private formCoachee: FormGroup;
 
   constructor(private authService: AuthService, private formBuilder: FormBuilder, private coachService: CoachCoacheeService) {
   }
 
   ngOnInit() {
-    this.form = this.formBuilder.group({
+    this.formCoach = this.formBuilder.group({
       pseudo: [''],
       avatar: ['']
-    })
+    });
+
+    this.formCoachee = this.formBuilder.group({
+      pseudo: [''],
+      avatar: ['']
+    });
   }
 
   ngAfterViewInit(): void {
@@ -66,8 +71,6 @@ export class ProfileComponent implements OnInit, AfterViewInit {
 
             console.log("getConnectedUser, create a coachee : ", coachee);
 
-            console.log("getConnectedUser, call next");
-
             this.coachee = Observable.of(coachee);
           }
         }
@@ -76,14 +79,14 @@ export class ProfileComponent implements OnInit, AfterViewInit {
     );
   }
 
-  submitProfileUpdate() {
+  submitCoacheeProfileUpdate() {
     console.log("submitProfileUpdate");
 
     this.coachee.last().flatMap(
       (coachee: Coachee) => {
         console.log("submitProfileUpdate, coache obtained");
 
-        return this.authService.updateUserForId(coachee.id, this.form.value.pseudo, this.form.value.avatar);
+        return this.authService.updateCoacheeForId(coachee.id, this.formCoachee.value.pseudo, this.formCoachee.value.avatar);
       }
     ).subscribe(
       (user: ApiUser) => {
@@ -91,5 +94,19 @@ export class ProfileComponent implements OnInit, AfterViewInit {
       });
   }
 
+  submitCoachProfileUpdate() {
+    console.log("submitProfileUpdate");
+
+    this.coach.last().flatMap(
+      (coach: Coach) => {
+        console.log("submitProfileUpdate, coache obtained");
+
+        return this.authService.updateCoachForId(coach.id, this.formCoach.value.pseudo, this.formCoach.value.avatar);
+      }
+    ).subscribe(
+      (user: ApiUser) => {
+        console.log("coach updated : ", user);
+      });
+  }
 
 }

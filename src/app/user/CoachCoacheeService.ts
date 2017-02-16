@@ -1,10 +1,8 @@
 import {Injectable} from "@angular/core";
 import {Http, Headers} from "@angular/http";
 import {PromiseObservable} from "rxjs/observable/PromiseObservable";
-import {Subject, Observable} from "rxjs";
+import {Observable} from "rxjs";
 import {Coach} from "./Coach";
-import {AuthService} from "../service/auth.service";
-import {Coachee} from "./coachee";
 
 declare let firebase: any
 
@@ -99,6 +97,36 @@ export class CoachCoacheeService {
           .map(response => {
             let json = response.json();
             console.log("bookAMeeting, response json : ", json);
+            return json;
+          });
+      }
+    );
+  }
+
+  addAMeetingReview(meetingId: string, comment: string, rate: string) {
+    console.log("addAMeetingReview, meetingId %s, comment %s, rate %s", meetingId, comment, rate);
+
+    //TODO check if token not null
+    let currentUser = firebase.auth().currentUser;
+    let promise = currentUser.getToken();
+
+    let obs = PromiseObservable.create(promise); // Observable.fromPromise(promise)
+
+    return obs.flatMap(
+      (token) => {
+        console.log("addAMeetingReview, token : ", token);
+
+        let headers = new Headers();
+        headers.append('Authorization', 'Bearer ' + token);
+
+        let body = {
+          comment: comment,
+          score: rate,
+        };
+        return this.httpService.post('http://localhost:8080/api/meeting/' + meetingId + '/review', body, {headers: headers})
+          .map(response => {
+            let json = response.json();
+            console.log("addAMeetingReview, response json : ", json);
             return json;
           });
       }

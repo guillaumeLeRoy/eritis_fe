@@ -5,8 +5,6 @@ import {Observable, BehaviorSubject} from "rxjs";
 import {PromiseObservable} from "rxjs/observable/PromiseObservable";
 import {Headers, Http, Response} from "@angular/http";
 import {ApiUser} from "../user/apiUser";
-import {Coachee} from "../user/coachee";
-
 
 declare var firebase: any;
 const BACKEND_BASE_URL = "http://localhost:8080/api";
@@ -155,8 +153,8 @@ export class AuthService {
     return this.isUserAuth;
   }
 
-  updateUserForId(id: string, displayName: string, avatarUrl: string): Observable<ApiUser> {
-    console.log("updateUserForId, id", id);
+  updateCoacheeForId(id: string, displayName: string, avatarUrl: string): Observable<ApiUser> {
+    console.log("updateCoacheeForId, id", id);
 
     //TODO check if token not null
     let currentUser = firebase.auth().currentUser;
@@ -197,40 +195,47 @@ export class AuthService {
     );
   }
 
+  updateCoachForId(id: string, displayName: string, avatarUrl: string): Observable<ApiUser> {
+    console.log("updateCoachForId, id", id);
 
-  // updateCoacheeForId(id: string, displayName: string, avatarUrl: string): Observable<Coachee> {
-  //   console.log("updateCoacheeForId, id", id);
-  //
-  //   //TODO check if token not null
-  //   let currentUser = firebase.auth().currentUser;
-  //
-  //   console.log("updateCoacheeForId, currentUser : ", currentUser);
-  //
-  //   let promise = currentUser.getToken();
-  //
-  //   let obs = PromiseObservable.create(promise); // Observable.fromPromise(promise)
-  //
-  //   return obs.flatMap(
-  //     (token) => {
-  //       console.log("updateCoacheeForId, token : ", token);
-  //
-  //       let headers = new Headers();
-  //       headers.append('Authorization', 'Bearer ' + token);
-  //
-  //       let body = {
-  //         display_name: displayName,
-  //         avatar_url: avatarUrl,
-  //       };
-  //
-  //       return this.httpService.put('http://localhost:8080/api/coachees/' + id, body, {headers: headers})
-  //         .map(response => {
-  //           let json = response.json();
-  //           console.log("updateCoacheeForId, response json : ", json);
-  //           return json;
-  //         });
-  //     }
-  //   );
-  // }
+    //TODO check if token not null
+    let currentUser = firebase.auth().currentUser;
+
+    console.log("updateCoachForId, currentUser : ", currentUser);
+
+    let promise = currentUser.getToken();
+
+    let obs = PromiseObservable.create(promise);
+
+    return obs.flatMap(
+      (token) => {
+        console.log("updateCoachForId, token : ", token);
+
+        let headers = new Headers();
+        headers.append('Authorization', 'Bearer ' + token);
+
+        let body = {
+          display_name: displayName,
+          avatar_url: avatarUrl,
+        };
+
+        return this.httpService.put('http://localhost:8080/api/coachs/' + id, body, {headers: headers})
+          .map(
+            (response: Response) => {
+              let json = response.json();
+
+              let APIuser = json as ApiUser;
+
+              console.log("updateCoachForId, response json : ", json);
+
+              //dispatch
+              this.onAPIuserObtained(APIuser);
+
+              return APIuser;
+            });
+      }
+    );
+  }
 
   private updateAuthStatus(fbUser) {
     console.log("updateAuthStatus isSignInOrUp : ", this.isSignInOrUp);
