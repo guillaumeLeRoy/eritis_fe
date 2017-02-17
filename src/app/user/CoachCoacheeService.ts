@@ -135,7 +135,7 @@ export class CoachCoacheeService {
 
 
   addAMeetingReview(meetingId: string, comment: string, rate: string): Observable<MeetingReview> {
-    console.log("addAMeetingReview, meetingId %s, comment %s, rate %s", meetingId, comment, rate);
+    console.log("addAMeetingReview, meetingId %s, comment : %s, rate : %s", meetingId, comment, rate);
 
     //TODO check if token not null
     let currentUser = firebase.auth().currentUser;

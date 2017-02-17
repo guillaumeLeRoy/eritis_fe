@@ -34,11 +34,11 @@
 
     <hr>
 
-    <!-- edit coachee profile -->
+    <!-- edit coach profile -->
 
     <h4>Update your profile</h4>
 
-    <form [formGroup]="form" (ngSubmit)="submitCoachProfileUpdate()">
+    <form [formGroup]="formCoach" (ngSubmit)="submitCoachProfileUpdate()">
 
       <div class="form-group">
         <label for="pseudoCoach">Votre pseudo</label>
@@ -58,12 +58,11 @@
           formControlName="avatar">
       </div>
 
-      <button type="submit" class="btn btn-success" [disabled]="!form.valid">Mettre à jour</button>
+      <button type="submit" class="btn btn-success" [disabled]="!formCoach.valid">Mettre à jour</button>
 
     </form>
 
 
-    <!-- edit coach profile -->
 
 
   </div>
@@ -95,7 +94,7 @@
 
     <h4>Update your profile</h4>
 
-    <form [formGroup]="form" (ngSubmit)="submitCoacheeProfileUpdate()">
+    <form [formGroup]="formCoachee" (ngSubmit)="submitCoacheeProfileUpdate()">
 
       <div class="form-group">
         <label for="pseudo">Votre pseudo</label>
@@ -115,7 +114,7 @@
           formControlName="avatar">
       </div>
 
-      <button type="submit" class="btn btn-success" [disabled]="!form.valid">Mettre à jour</button>
+      <button type="submit" class="btn btn-success" [disabled]="!formCoachee.valid">Mettre à jour</button>
 
     </form>
 

@@ -1,15 +1,36 @@
-<div class="list-group-item clearfix">
+<div class="list-group">
 
-  <div class="pull-left">
+  <div class="list-group-item column">
     <h4 class="list-group-item-heading">You have a meeting</h4>
     <p class="list-group-item-text">at : {{meeting.date}}</p>
     <p class="list-group-item-text">with : {{ (coach | async)?.display_name }}</p>
 
+  </div>
+
+
+  <div class="list-group-item column" *ngIf="(hasSomeReviews | async)">
     <!-- list of reviews -->
 
-    <!-- add a review -->
-    <rb-pre-meeting></rb-pre-meeting>
+    <div *ngFor="let review of reviews | async">
+      <div class="list-group-item column">
+        <div class="list-group-item-heading">You wrote a review</div>
+        <div class="list-group-item-text">at : {{review.date}}</div>
+        <div class="list-group-item-text">comment : {{review.comment}}</div>
+        <div class="list-group-item-text">score : {{review.score}}</div>
+      </div>
+    </div>
+    s
 
   </div>
 
+  <hr>
+
+  <!-- add a review -->
+  <rb-pre-meeting *ngIf="!(hasSomeReviews | async)" [meeting]="meeting"></rb-pre-meeting>
+
+
+  <div>write a post meeting review</div>
+
+
 </div>
+

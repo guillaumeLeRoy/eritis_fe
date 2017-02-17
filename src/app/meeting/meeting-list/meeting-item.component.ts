@@ -19,12 +19,20 @@ export class MeetingItemComponent implements OnInit {
 
   private reviews: Observable<MeetingReview[]>;
 
+  private hasSomeReviews: Observable<boolean>;
+
   constructor(private coachCoacheeService: CoachCoacheeService) {
   }
 
   ngOnInit() {
     this.coach = this.coachCoacheeService.getCoachForId(this.meeting.coach_id);
-    this.reviews = this.coachCoacheeService.getMeetingReviews(this.meeting.id);
+    this.coachCoacheeService.getMeetingReviews(this.meeting.id).subscribe(
+      (reviews: MeetingReview[]) => {
+
+        this.hasSomeReviews = Observable.of(reviews != null)
+        this.reviews = Observable.of(reviews);
+      }
+    );
   }
 
 
