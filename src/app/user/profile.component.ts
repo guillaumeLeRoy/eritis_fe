@@ -1,11 +1,10 @@
-import {Component, OnInit, AfterViewInit} from '@angular/core';
+import {Component, OnInit, AfterViewInit, ChangeDetectorRef} from '@angular/core';
 import {Observable} from "rxjs";
 import {Coach} from "../model/Coach";
 import {Coachee} from "../model/coachee";
 import {AuthService} from "../service/auth.service";
 import {ApiUser} from "../model/apiUser";
 import {FormGroup, FormBuilder} from "@angular/forms";
-import {CoachCoacheeService} from "../service/CoachCoacheeService";
 
 @Component({
   selector: 'rb-profile',
@@ -22,7 +21,7 @@ export class ProfileComponent implements OnInit, AfterViewInit {
   private formCoach: FormGroup;
   private formCoachee: FormGroup;
 
-  constructor(private authService: AuthService, private formBuilder: FormBuilder, private coachService: CoachCoacheeService) {
+  constructor(private authService: AuthService, private formBuilder: FormBuilder, private cd: ChangeDetectorRef) {
   }
 
   ngOnInit() {
@@ -37,46 +36,17 @@ export class ProfileComponent implements OnInit, AfterViewInit {
     });
   }
 
+
   ngAfterViewInit(): void {
-   var user = this.authService.getConnectedUser();
+    var user = this.authService.getConnectedUser();
     console.log("ngAfterViewInit, user : ", user);
 
-    this.connectedUser = Observable.of(user);
-    
+    this.onUserObtained(user);
+
     this.authService.getConnectedUserObservable().subscribe(
       (user: ApiUser) => {
-        console.log("getConnectedUser, user : ", user);
-
-        if (user) {
-          if (user.status == 1) {
-            //coach
-            console.log("getConnectedUser, create a coach");
-
-            let coach: Coach = new Coach();
-            coach.id = user.id;
-            coach.email = user.email;
-            coach.display_name = user.display_name;
-            coach.avatar_url = user.avatar_url;
-            coach.start_date = user.start_date;
-
-            this.coach = Observable.of(coach);
-
-          } else if (user.status == 2) {
-            //coachee
-
-            let coachee: Coachee = new Coachee();
-            coachee.id = user.id;
-            coachee.email = user.email;
-            coachee.display_name = user.display_name;
-            coachee.avatar_url = user.avatar_url;
-            coachee.start_date = user.start_date;
-
-            console.log("getConnectedUser, create a coachee : ", coachee);
-
-            this.coachee = Observable.of(coachee);
-          }
-        }
-
+        console.log("getConnectedUser");
+        this.onUserObtained(user);
       }
     );
   }
@@ -109,5 +79,45 @@ export class ProfileComponent implements OnInit, AfterViewInit {
       (user: ApiUser) => {
         console.log("coach updated : ", user);
       });
+  }
+
+
+  private onUserObtained(user: ApiUser) {
+    console.log("onUserObtained, user : ", user);
+
+    this.connectedUser = Observable.of(user);
+
+    if (user) {
+
+      if (user.status == 1) {
+        //coach
+        console.log("getConnectedUser, create a coach");
+
+        let coach: Coach = new Coach();
+        coach.id = user.id;
+        coach.email = user.email;
+        coach.display_name = user.display_name;
+        coach.avatar_url = user.avatar_url;
+        coach.start_date = user.start_date;
+
+        this.coach = Observable.of(coach);
+
+      } else if (user.status == 2) {
+        //coachee
+
+        let coachee: Coachee = new Coachee();
+        coachee.id = user.id;
+        coachee.email = user.email;
+        coachee.display_name = user.display_name;
+        coachee.avatar_url = user.avatar_url;
+        coachee.start_date = user.start_date;
+
+        console.log("getConnectedUser, create a coachee : ", coachee);
+
+        this.coachee = Observable.of(coachee);
+      }
+    }
+
+    this.cd.detectChanges();
   }
 }

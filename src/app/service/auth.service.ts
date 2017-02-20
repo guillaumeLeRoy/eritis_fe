@@ -297,7 +297,7 @@ export class AuthService {
         console.log("2. authService, user sign up, success : ", fbUser);
         //user successfully sign up in Firebase
         console.log("3. fb user, start getToken");
-        return fbUser.getToken()
+        return fbUser.getToken();
       });
     let firebaseObs = PromiseObservable.create(firebasePromise);
 
@@ -317,8 +317,11 @@ export class AuthService {
         };
         let params = [fbUser.uid];
 
+        let headers = new Headers();
+        headers.append('Authorization', 'Bearer ' + token);
+
         // start sign up request
-        return this.post(AuthService.LOGIN, params, body)
+        return this.httpService.post(this.generatePath(AuthService.LOGIN, params), body, {headers: headers})
           .map(
             (response) => {
 
@@ -344,7 +347,7 @@ export class AuthService {
         console.log("2. authService, user sign up, success : ", fbUser);
         //user successfully sign up in Firebase
         console.log("3. fb user, start getToken");
-        return fbUser.getToken()
+        return fbUser.getToken();
       });
     let firebaseObs = PromiseObservable.create(firebasePromise);
     return firebaseObs.flatMap(
