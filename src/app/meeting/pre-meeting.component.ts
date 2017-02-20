@@ -1,6 +1,6 @@
 import {Component, OnInit, Input} from '@angular/core';
 import {FormGroup, Validators, FormBuilder} from "@angular/forms";
-import {CoachCoacheeService} from "../user/CoachCoacheeService";
+import {CoachCoacheeService} from "../service/CoachCoacheeService";
 import {MeetingReview} from "../model/MeetingReview";
 import {Meeting} from "./meeting";
 

@@ -6,4 +6,7 @@ export interface ApiUser {
   score: number;
   status: number;  //1 for coach, 2 for coachee
   start_date : string;
+
+
+  firebaseToken : string;
 }

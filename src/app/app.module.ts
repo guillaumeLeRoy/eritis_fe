@@ -29,16 +29,17 @@ import {ChatComponent} from './chat/chat.component';
 import {ChatItemComponent} from './chat/chat-item.component';
 import {CoachListComponent} from './user/coach-list/coach-list.component';
 import {CoachItemComponent} from './user/coach-list/coach-item.component';
-import {CoachCoacheeService} from "./user/CoachCoacheeService";
+import {CoachCoacheeService} from "./service/CoachCoacheeService";
 import {CoachDetailsComponent} from './user/coach-details/coach-details.component';
 import {MaterialModule} from "@angular/material";//lib
 import {CalendarModule} from 'angular-calendar';//lib
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
-import {MeetingsService} from "./meeting/meetings.service";
+import {MeetingsService} from "./service/meetings.service";
 import {MeetingListComponent} from "./meeting/meeting-list/meeting-list.component";
 import {MeetingItemComponent} from "./meeting/meeting-list/meeting-item.component";
 import {PreMeetingComponent} from "./meeting/pre-meeting.component";
 import {ProfileComponent} from "./user/profile.component";
+import {ApiService} from "./service/api.service";
 
 
 @NgModule({
@@ -79,7 +80,7 @@ import {ProfileComponent} from "./user/profile.component";
     CalendarModule.forRoot(),
     NgbModule.forRoot()
   ],
-  providers: [DataService, LogService, ShoppingListService, AuthService, AuthGuard, CoachCoacheeService, MeetingsService],
+  providers: [DataService, LogService, ShoppingListService, AuthService, AuthGuard, CoachCoacheeService, MeetingsService, ApiService],
   bootstrap: [AppComponent]
 })
 export class AppModule {

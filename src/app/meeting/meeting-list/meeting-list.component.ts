@@ -1,5 +1,5 @@
 import {Component, OnInit, AfterViewInit} from '@angular/core';
-import {MeetingsService} from "../meetings.service";
+import {MeetingsService} from "../../service/meetings.service";
 import {ActivatedRoute} from "@angular/router";
 import {Meeting} from "../meeting";
 import {Observable} from "rxjs";

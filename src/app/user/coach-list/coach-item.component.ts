@@ -1,5 +1,5 @@
 import {Component, OnInit, Input, AfterViewInit} from '@angular/core';
-import {Coach} from "../Coach";
+import {Coach} from "../../model/Coach";
 
 @Component({
   selector: 'rb-coach-item',

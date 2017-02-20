@@ -1,11 +1,11 @@
 import {Component, OnInit, AfterViewInit} from '@angular/core';
 import {Observable} from "rxjs";
-import {Coach} from "./Coach";
-import {Coachee} from "./coachee";
+import {Coach} from "../model/Coach";
+import {Coachee} from "../model/coachee";
 import {AuthService} from "../service/auth.service";
-import {ApiUser} from "./apiUser";
+import {ApiUser} from "../model/apiUser";
 import {FormGroup, FormBuilder} from "@angular/forms";
-import {CoachCoacheeService} from "./CoachCoacheeService";
+import {CoachCoacheeService} from "../service/CoachCoacheeService";
 
 @Component({
   selector: 'rb-profile',
@@ -38,10 +38,12 @@ export class ProfileComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit(): void {
-    this.connectedUser = this.authService.getConnectedUser();
-    console.log("ngAfterViewInit, connectedUser : ", this.connectedUser);
+   var user = this.authService.getConnectedUser();
+    console.log("ngAfterViewInit, user : ", user);
 
-    this.authService.getConnectedUser().subscribe(
+    this.connectedUser = Observable.of(user);
+    
+    this.authService.getConnectedUserObservable().subscribe(
       (user: ApiUser) => {
         console.log("getConnectedUser, user : ", user);
 
@@ -108,5 +110,4 @@ export class ProfileComponent implements OnInit, AfterViewInit {
         console.log("coach updated : ", user);
       });
   }
-
 }

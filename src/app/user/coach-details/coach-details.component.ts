@@ -1,11 +1,11 @@
 import {Component, OnInit, AfterViewInit} from '@angular/core';
 import {Observable} from "rxjs";
 import {ActivatedRoute} from "@angular/router";
-import {Coach} from "../Coach";
-import {CoachCoacheeService} from "../CoachCoacheeService";
+import {Coach} from "../../model/Coach";
+import {CoachCoacheeService} from "../../service/CoachCoacheeService";
 import {NgbDateStruct} from "@ng-bootstrap/ng-bootstrap";
 import {AuthService} from "../../service/auth.service";
-import {ApiUser} from "../apiUser";
+import {ApiUser} from "../../model/apiUser";
 
 @Component({
   selector: 'rb-coach-details',
@@ -26,7 +26,7 @@ export class CoachDetailsComponent implements OnInit,AfterViewInit {
   }
 
   ngOnInit() {
-    this.connectedUser = this.authService.getConnectedUser();
+    this.connectedUser = this.authService.getConnectedUserObservable();
     console.log("ngOnInit, connectedUser : ", this.connectedUser);
   }
 

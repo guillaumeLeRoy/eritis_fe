@@ -1,6 +1,6 @@
 import {Component, OnInit, OnDestroy, AfterContentInit, AfterViewInit} from '@angular/core';
-import {Coach} from "../Coach";
-import {CoachCoacheeService} from "../CoachCoacheeService";
+import {Coach} from "../../model/Coach";
+import {CoachCoacheeService} from "../../service/CoachCoacheeService";
 import {Observable} from "rxjs";
 
 @Component({
