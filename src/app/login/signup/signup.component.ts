@@ -42,11 +42,6 @@ export class SignupComponent implements OnInit {
     });
   }
 
-  test() {
-    console.log("test, checked : " + this.checked)
-  }
-
-
   onSignUp() {
     console.log("onSignUp")
 
@@ -57,7 +52,7 @@ export class SignupComponent implements OnInit {
     this.authService.signUp(this.signUpForm.value).subscribe(
       data => {
         console.log("onSignUp, data obtained", data)
-        this.router.navigate(['/recipes'])
+        this.router.navigate(['/coachs'])
       },
       error => {
         console.log("onSignUp, error obtained", error)

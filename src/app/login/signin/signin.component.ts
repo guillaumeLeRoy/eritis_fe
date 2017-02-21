@@ -35,7 +35,7 @@ export class SigninComponent implements OnInit {
     this.authService.signIn(this.signInForm.value).subscribe(
       data => {
         console.log("onSignIn, data obtained", data)
-        this.router.navigate(['/recipes'])
+        this.router.navigate(['/coachs'])
 
         this.authService.isAuthenticated().first().subscribe((isAuth) => console.log("onSignIn, isAuth", isAuth));
 
@@ -46,6 +46,11 @@ export class SigninComponent implements OnInit {
         this.errorMessage = error
       }
     )
+  }
+
+
+  goToSignUp(){
+    this.router.navigate(['/signup']);
   }
 
 }

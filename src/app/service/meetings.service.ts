@@ -18,7 +18,7 @@ export class MeetingsService {
     let param = [coacheeId];
 
     return this.apiService.get(AuthService.GET_MEETINGS_FOR_COACH_ID, param) .map(response => {
-      let json = response.json();
+      let json: Meeting[] = response.json();
       console.log("getAllMeetingsForCoacheeId, response json : ", json);
       return json;
     });

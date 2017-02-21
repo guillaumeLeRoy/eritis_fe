@@ -5,10 +5,9 @@ import {Observable, BehaviorSubject, Subject} from "rxjs";
 import {PromiseObservable} from "rxjs/observable/PromiseObservable";
 import {Response, Http, Headers} from "@angular/http";
 import {ApiUser} from "../model/apiUser";
+import {environment} from "../../environments/environment";
 
 declare var firebase: any;
-
-const BACKEND_BASE_URL = "http://localhost:8080/api";
 
 @Injectable()
 export class AuthService {
@@ -65,7 +64,7 @@ export class AuthService {
         );
       }
     );
-    return this.handleApiAuth(path, method);
+    return method;
   }
 
   put(path: string, params: string[], body: any): Observable<Response> {
@@ -78,7 +77,7 @@ export class AuthService {
         );
       }
     );
-    return this.handleApiAuth(path, method);
+    return method;
   }
 
   get(path: string, params: string[]): Observable<Response> {
@@ -94,14 +93,9 @@ export class AuthService {
         );
       }
     );
-    return this.handleApiAuth(path, method);
-  }
-
-
-  private handleApiAuth(path: string, method: Observable<Response>): Observable<Response> {
-    // console.log("handleApiAuth, path : ", path);
     return method;
   }
+
 
   private getConnectedApiUser(): Observable<ApiUser> {
     console.log("2. getConnectedApiUser");
@@ -133,39 +127,6 @@ export class AuthService {
       }
     }
   }
-
-  // private getFirebaseUser(): Observable<any> {
-  //   console.log("getFirebaseUser");
-  //
-  //   let currentUser = firebase.auth().currentUser;
-  //   if (currentUser) {
-  //     console.log("getFirebaseUser, user OK");
-  //
-  //     return Observable.of(currentUser);
-  //   } else {
-  //     console.log("getFirebaseUser, user NOT OK");
-  //
-  //     //check if onAuthStateChanged was called
-  //     if (this.onAuthStateChangedCalled) {
-  //       console.log("getFirebaseUser, user state changed already call");
-  //
-  //       //now we know we really don't have a user
-  //       return Observable.throw('No current user');
-  //     } else {
-  //       return this.isUserAuth.map(
-  //         (isAuth: boolean) => {
-  //           console.log("getFirebaseUser, got event, isAuth : " + isAuth);
-  //
-  //           if (isAuth) {
-  //             return firebase.auth().currentUser;
-  //           } else {
-  //             return Observable.throw('No user after state changed');
-  //           }
-  //         }
-  //       );
-  //     }
-  //   }
-  // }
 
   private getHeader(user: ApiUser): Observable<Headers> {
     console.log("3. getHeader");
@@ -215,11 +176,10 @@ export class AuthService {
     completedPath += "/";
 
     console.log("generatePath, completedPath : ", completedPath);
-    console.log("generatePath, BACKEND_BASE_URL : ", BACKEND_BASE_URL);
+    console.log("generatePath, BACKEND_BASE_URL : ", environment.BACKEND_BASE_URL);
 
-    return BACKEND_BASE_URL + completedPath;
+    return environment.BACKEND_BASE_URL + completedPath;
   }
-
 
   private updateAuthStatus(fbUser: any) {
     console.log("updateAuthStatus isSignInOrUp : ", this.isSignInOrUp);
@@ -254,12 +214,15 @@ export class AuthService {
     }
   }
 
-
   /* when we obtained a User from the API ( coach or coachee */
-  public onAPIuserObtained(user: ApiUser): ApiUser {
+  public onAPIuserObtained(user: ApiUser, firebaseToken: string): ApiUser {
     console.log("onAPIuserObtained, user : ", user);
     if (user) {
+      //keep current user
       this.ApiUser = user;
+      //save token
+      this.ApiUser.firebaseToken = firebaseToken;
+      //dispatch
       this.ApiUserSubject.next(user);
       this.isUserAuth.next(true)
     } else {
@@ -280,9 +243,8 @@ export class AuthService {
       response => {
         let apiUser: ApiUser = response.json();
         console.log("getUserForFirebaseId, apiUser : ", apiUser);
-        //retain FirebaseToken
-        apiUser.firebaseToken = token;
-        return this.onAPIuserObtained(apiUser);
+        console.log("getUserForFirebaseId, token : ", token);
+        return this.onAPIuserObtained(apiUser, token);
       }
     );
   }
@@ -325,12 +287,11 @@ export class AuthService {
           .map(
             (response) => {
 
-              let APIuser = response.json();
+              let APIuser: ApiUser = response.json();
               console.log("signUp, APIuser : ", APIuser);
               // return json;
               this.isSignInOrUp = false;
-              APIuser.token = token;
-              return this.onAPIuserObtained(APIuser);
+              return this.onAPIuserObtained(APIuser, token);
             }
           );
       }
@@ -385,7 +346,7 @@ export class AuthService {
         console.log("updateCoacheeForId, response json : ", json);
 
         //dispatch
-        this.onAPIuserObtained(APIuser);
+        this.onAPIuserObtained(APIuser, this.ApiUser.firebaseToken);
 
         return APIuser;
       });
@@ -408,7 +369,7 @@ export class AuthService {
         console.log("updateCoachForId, response json : ", json);
 
         //dispatch
-        this.onAPIuserObtained(APIuser);
+        this.onAPIuserObtained(APIuser, this.ApiUser.firebaseToken);
 
         return APIuser;
       });

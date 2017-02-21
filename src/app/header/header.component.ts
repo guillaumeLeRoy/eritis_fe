@@ -44,7 +44,7 @@ export class HeaderComponent implements OnInit,OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.subscription.unsubscribe()
+    this.subscription.unsubscribe();
   }
 
   onStore() {
@@ -60,11 +60,30 @@ export class HeaderComponent implements OnInit,OnDestroy {
   }
 
   onLogout() {
-    this.authService.loginOut()
+    this.authService.loginOut();
   }
 
   onLogIn() {
-    this.router.navigate(['/signin'])
+    this.router.navigate(['/signin']);
+  }
+
+  onSignUp() {
+    this.router.navigate(['/signup']);
+  }
+
+  goToMeetings() {
+    let user = this.authService.getConnectedUser();
+    if (user != null) {
+      this.router.navigate(['/meetings', user.id]);
+    }
+  }
+
+  goToProfile() {
+    this.router.navigate(['/profile']);
+  }
+
+  goToCoachs() {
+    this.router.navigate(['/coachs']);
   }
 
   // isAuth() {

@@ -1,21 +1,22 @@
-import {Component, OnInit, AfterViewInit} from '@angular/core';
+import {Component, OnInit, AfterViewInit, ChangeDetectorRef, OnDestroy} from '@angular/core';
 import {MeetingsService} from "../../service/meetings.service";
 import {ActivatedRoute} from "@angular/router";
 import {Meeting} from "../meeting";
-import {Observable} from "rxjs";
+import {Observable, Subscription} from "rxjs";
 
 @Component({
   selector: 'rb-meeting-list',
   templateUrl: './meeting-list.component.html',
   styleUrls: ['./meeting-list.component.css']
 })
-export class MeetingListComponent implements OnInit, AfterViewInit {
+export class MeetingListComponent implements OnInit, AfterViewInit, OnDestroy {
 
   private coacheeId: string;
 
   private meetings: Observable<Meeting[]>;
+  private subscription: Subscription;
 
-  constructor(private route: ActivatedRoute, private meetingsService: MeetingsService) {
+  constructor(private route: ActivatedRoute, private meetingsService: MeetingsService, private cd: ChangeDetectorRef) {
   }
 
   ngOnInit() {
@@ -26,9 +27,20 @@ export class MeetingListComponent implements OnInit, AfterViewInit {
     this.route.params.subscribe(
       (params: any) => {
         this.coacheeId = params['id']
-        this.meetings = this.meetingsService.getAllMeetingsForCoacheeId(this.coacheeId);
+        this.subscription = this.meetingsService.getAllMeetingsForCoacheeId(this.coacheeId).subscribe(
+          (meetings: Meeting[]) => {
+            this.meetings = Observable.of(meetings);
+            this.cd.detectChanges();
+          }
+        );
       }
     )
+  }
+
+  ngOnDestroy(): void {
+    if (this.subscription) {
+      this.subscription.unsubscribe();
+    }
   }
 
 }
