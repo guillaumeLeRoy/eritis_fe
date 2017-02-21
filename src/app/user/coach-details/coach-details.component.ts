@@ -1,5 +1,5 @@
-import {Component, OnInit, AfterViewInit} from '@angular/core';
-import {Observable} from "rxjs";
+import {Component, OnInit, AfterViewInit, ChangeDetectorRef, OnDestroy} from '@angular/core';
+import {Observable, Subscription} from "rxjs";
 import {ActivatedRoute} from "@angular/router";
 import {Coach} from "../../model/Coach";
 import {CoachCoacheeService} from "../../service/CoachCoacheeService";
@@ -12,35 +12,70 @@ import {ApiUser} from "../../model/apiUser";
   templateUrl: './coach-details.component.html',
   styleUrls: ['./coach-details.component.css']
 })
-export class CoachDetailsComponent implements OnInit,AfterViewInit {
+export class CoachDetailsComponent implements OnInit,AfterViewInit,OnDestroy {
 
   model: NgbDateStruct;
 
   private coachId: string;
 
   private coach: Observable<Coach>;
+  private subscriptionGetCoach: Subscription;
 
   private connectedUser: Observable<ApiUser>;
+  private subscriptionConnectUser: Subscription;
 
-  constructor(private route: ActivatedRoute, private coachService: CoachCoacheeService, private authService: AuthService) {
+  constructor(private route: ActivatedRoute, private coachService: CoachCoacheeService, private authService: AuthService, private cd: ChangeDetectorRef) {
   }
 
   ngOnInit() {
-    this.connectedUser = this.authService.getConnectedUserObservable();
-    console.log("ngOnInit, connectedUser : ", this.connectedUser);
+    let user = this.authService.getConnectedUser();
+    if (user) {
+      this.onConnectedUserReceived(user);
+    } else {
+      this.subscriptionConnectUser = this.authService.getConnectedUserObservable().subscribe(
+        (user: ApiUser) => {
+          console.log("ngOnInit, sub received user", user);
+          this.onConnectedUserReceived(user);
+        }
+      );
+    }
+  }
+
+
+  private onConnectedUserReceived(user: ApiUser) {
+    this.connectedUser = Observable.of(user);
+    this.cd.detectChanges();
   }
 
   ngAfterViewInit(): void {
     this.route.params.subscribe(
       (params: any) => {
         this.coachId = params['id']
-        this.coach = this.coachService.getCoachForId(this.coachId);
-        console.log("ngAfterViewInit, post sub coach", this.coach)
+        this.subscriptionGetCoach = this.coachService.getCoachForId(this.coachId).subscribe(
+          (coach: Coach) => {
+            console.log("ngAfterViewInit, post sub coach", coach);
+
+            this.coach = Observable.of(coach);
+            this.cd.detectChanges();
+          }
+        );
       }
     )
   }
 
+  ngOnDestroy(): void {
+    if (this.subscriptionGetCoach) {
+      this.subscriptionGetCoach.unsubscribe();
+    }
+
+    if (this.subscriptionConnectUser) {
+      this.subscriptionConnectUser.unsubscribe();
+    }
+  }
+
   bookADate() {
+    console.log('bookADate')
+
     this.connectedUser.take(1).subscribe(
       (user: ApiUser) => {
 

@@ -1,5 +1,5 @@
-import {Component, OnInit, AfterViewInit, ChangeDetectorRef} from '@angular/core';
-import {Observable} from "rxjs";
+import {Component, OnInit, AfterViewInit, ChangeDetectorRef, OnDestroy} from '@angular/core';
+import {Observable, Subscription} from "rxjs";
 import {Coach} from "../model/Coach";
 import {Coachee} from "../model/coachee";
 import {AuthService} from "../service/auth.service";
@@ -11,12 +11,14 @@ import {FormGroup, FormBuilder} from "@angular/forms";
   templateUrl: './profile.component.html',
   styleUrls: ['./profile.component.css']
 })
-export class ProfileComponent implements OnInit, AfterViewInit {
+export class ProfileComponent implements OnInit, AfterViewInit,OnDestroy {
+
 
   private coach: Observable<Coach>;
   private coachee: Observable<Coachee>;
 
   private connectedUser: Observable<ApiUser>;
+  private connectedUserSubscription: Subscription
 
   private formCoach: FormGroup;
   private formCoachee: FormGroup;
@@ -36,19 +38,23 @@ export class ProfileComponent implements OnInit, AfterViewInit {
     });
   }
 
-
   ngAfterViewInit(): void {
     var user = this.authService.getConnectedUser();
     console.log("ngAfterViewInit, user : ", user);
-
     this.onUserObtained(user);
 
-    this.authService.getConnectedUserObservable().subscribe(
+    this.connectedUserSubscription = this.authService.getConnectedUserObservable().subscribe(
       (user: ApiUser) => {
         console.log("getConnectedUser");
         this.onUserObtained(user);
       }
     );
+  }
+
+  ngOnDestroy(): void {
+    if (this.connectedUserSubscription) {
+      this.connectedUserSubscription.unsubscribe();
+    }
   }
 
   submitCoacheeProfileUpdate() {

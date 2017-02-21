@@ -12,9 +12,9 @@
       <li class="nav-item" *ngIf="(isAuthenticated | async)"><a routerLinkActive="active" [routerLink]="['/coachs']">Coach
         List</a></li>
 
-      <!--<li class="nav-item" *ngIf="(isAuthenticated | async)"><a routerLinkActive="active"-->
-                                                                <!--[routerLink]="['/meetings',(connectedUser | async)?.id]">Your-->
-        <!--meetings</a></li>-->
+      <li class="nav-item" *ngIf="(isAuthenticated | async)"><a routerLinkActive="active"
+                                                                [routerLink]="['/meetings',(connectedUser | async)?.id]">Your
+        meetings</a></li>
 
       <li class="nav-item" *ngIf="(isAuthenticated | async)"><a routerLinkActive="active" [routerLink]="['/profile']">Your Profile</a></li>
 

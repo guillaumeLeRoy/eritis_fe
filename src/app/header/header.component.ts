@@ -1,4 +1,4 @@
-import {Component, OnDestroy} from '@angular/core';
+import {Component, OnDestroy, ChangeDetectorRef, OnInit} from '@angular/core';
 import {RecipeService} from "../recipes/recipe.service";
 import {Router} from "@angular/router";
 import {AuthService} from "../service/auth.service";
@@ -12,32 +12,35 @@ import {ApiUser} from "../model/apiUser";
   styleUrls: ['header.component.css']
 
 })
-export class HeaderComponent implements OnDestroy {
+export class HeaderComponent implements OnInit,OnDestroy {
+
 
   private isAuthenticated: Observable<boolean>;
   private connectedUser: Observable<ApiUser>;
   private subscription: Subscription;
 
-  constructor(private recipeService: RecipeService, private router: Router, private authService: AuthService) {
+  constructor(private recipeService: RecipeService, private router: Router, private authService: AuthService, private cd: ChangeDetectorRef) {
+  }
+
+  ngOnInit(): void {
     this.isAuthenticated = this.authService.isAuthenticated();
-    this.connectedUser = this.authService.getConnectedUserObservable();
-
-    this.authService.getConnectedUserObservable().subscribe(
-      (user: ApiUser) => {
-        console.log("getConnectedUser : " + user);
-
-        // this.isAuthenticated = Observable.of(isAuth);
+    this.authService.isAuthenticated().subscribe(
+      (isAuth: boolean) => {
+        console.log("isAuthenticated : " + isAuth);
+        this.isAuthenticated = Observable.of(isAuth);
+        this.cd.detectChanges();
       }
     );
 
-    // this.authService.isAuthenticated().subscribe(
-    //   (isAuth: boolean) => {
-    //     console.log("isAuthenticated : " + isAuth);
-    //
-    //     // this.isAuthenticated = Observable.of(isAuth);
-    //   }
-    // );
+    this.connectedUser = this.authService.getConnectedUserObservable();
+    this.subscription = this.authService.getConnectedUserObservable().subscribe(
+      (user: ApiUser) => {
+        console.log("getConnectedUser : " + user);
+        this.connectedUser = Observable.of(user);
 
+        this.cd.detectChanges();
+      }
+    );
   }
 
   ngOnDestroy(): void {
