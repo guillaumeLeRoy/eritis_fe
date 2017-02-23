@@ -20,7 +20,8 @@ export class AuthService {
   public static POST_MEETING = "/meeting";
   public static GET_MEETING_REVIEWS = "/meeting/:meetingId/reviews";
   public static POST_MEETING_REVIEW = "/meeting/:meetingId/review";
-  public static GET_MEETINGS_FOR_COACH_ID = "/meetings/coachee/:coacheeId";
+  public static GET_MEETINGS_FOR_COACHEE_ID = "/meetings/coachee/:coacheeId";
+  public static GET_MEETINGS_FOR_COACH_ID = "/meetings/coach/:coachId";
 
   private onAuthStateChangedCalled = false;
   // private user: User
