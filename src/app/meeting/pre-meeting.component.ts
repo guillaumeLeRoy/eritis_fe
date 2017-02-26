@@ -25,7 +25,7 @@ export class PreMeetingComponent implements OnInit {
     this.form = this.formBuilder.group({
       context: ['', [Validators.required]],
       mood: ['', [Validators.required]]
-    })
+    });
   }
 
   submitMeetingContextForm() {

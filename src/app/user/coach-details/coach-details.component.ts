@@ -3,7 +3,7 @@ import {Observable, Subscription} from "rxjs";
 import {ActivatedRoute} from "@angular/router";
 import {Coach} from "../../model/Coach";
 import {CoachCoacheeService} from "../../service/CoachCoacheeService";
-import {NgbDateStruct} from "@ng-bootstrap/ng-bootstrap";
+import {NgbDateStruct, NgbTimeStruct} from "@ng-bootstrap/ng-bootstrap";
 import {AuthService} from "../../service/auth.service";
 import {ApiUser} from "../../model/apiUser";
 
@@ -14,7 +14,8 @@ import {ApiUser} from "../../model/apiUser";
 })
 export class CoachDetailsComponent implements OnInit,AfterViewInit,OnDestroy {
 
-  model: NgbDateStruct;
+  dateModel: NgbDateStruct;
+  timeModel: NgbTimeStruct;
 
   private coachId: string;
 
@@ -74,24 +75,25 @@ export class CoachDetailsComponent implements OnInit,AfterViewInit,OnDestroy {
   }
 
   bookADate() {
-    console.log('bookADate')
+    console.log('bookADate, dateModel : ', this.dateModel)
+    console.log('bookADate, timeModel : ', this.timeModel)
 
     this.connectedUser.take(1).subscribe(
       (user: ApiUser) => {
 
         if (user == null) {
           console.log('no connected user')
-          return
+          return;
         }
 
-        var date = new Date(this.model.year, this.model.month, this.model.day)
+        var date = new Date(this.dateModel.year, this.dateModel.month, this.dateModel.day, this.timeModel.hour, this.timeModel.minute)
         var timestampSc: number = +date.getTime().toFixed(0) / 1000;
         this.coachService.bookAMeetingWithCoach(timestampSc, this.coachId, user.id).subscribe(
           (success) => {
-            console.log('bookAMeetingWithCoach success', success)
+            console.log('bookAMeetingWithCoach success', success);
           },
           (error) => {
-            console.log('bookAMeetingWithCoach error', error)
+            console.log('bookAMeetingWithCoach error', error);
           }
         );
       }

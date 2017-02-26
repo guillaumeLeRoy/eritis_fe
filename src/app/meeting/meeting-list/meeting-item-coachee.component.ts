@@ -4,13 +4,15 @@ import {CoachCoacheeService} from "../../service/CoachCoacheeService";
 import {Observable} from "rxjs";
 import {Coach} from "../../model/Coach";
 import {MeetingReview} from "../../model/MeetingReview";
+import {FormGroup, FormBuilder, Validators} from "@angular/forms";
+import {Coachee} from "../../model/coachee";
 
 @Component({
-  selector: 'rb-meeting-item',
-  templateUrl: './meeting-item.component.html',
-  styleUrls: ['./meeting-item.component.css'],
+  selector: 'rb-meeting-item-coachee',
+  templateUrl: 'meeting-item-coachee.component.html',
+  styleUrls: ['meeting-item-coachee.component.css'],
 })
-export class MeetingItemComponent implements OnInit {
+export class MeetingItemCoacheeComponent implements OnInit {
 
   @Input()
   private meeting: Meeting;
@@ -21,10 +23,17 @@ export class MeetingItemComponent implements OnInit {
 
   private hasSomeReviews: Observable<boolean>;
 
-  constructor(private coachCoacheeService: CoachCoacheeService) {
+  private closeMeetingForm: FormGroup;
+
+  constructor(private formBuilder: FormBuilder, private coachCoacheeService: CoachCoacheeService) {
   }
 
   ngOnInit() {
+
+    this.closeMeetingForm = this.formBuilder.group({
+      recap: ['', [Validators.required]],
+    });
+
     this.coach = this.coachCoacheeService.getCoachForId(this.meeting.coach_id);
     this.coachCoacheeService.getMeetingReviews(this.meeting.id).subscribe(
       (reviews: MeetingReview[]) => {

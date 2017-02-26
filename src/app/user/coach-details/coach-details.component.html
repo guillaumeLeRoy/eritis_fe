@@ -40,7 +40,8 @@
     </div>
   </div>
 
-  <ngb-datepicker #dp [(ngModel)]="model" (navigate)="date = $event.next"></ngb-datepicker>
+  <ngb-datepicker #dp [(ngModel)]="dateModel" (navigate)="date = $event.next"></ngb-datepicker>
+  <ngb-timepicker #tp [(ngModel)]="timeModel" [minuteStep]="15"></ngb-timepicker>
 
   <button (click)="bookADate()">Book the date</button>
 

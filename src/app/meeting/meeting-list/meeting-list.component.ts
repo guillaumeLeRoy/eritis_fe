@@ -19,6 +19,9 @@ export class MeetingListComponent implements OnInit, AfterViewInit, OnDestroy {
   private subscription: Subscription;
   private connectedUserSubscription: Subscription;
 
+
+  private user: Observable<ApiUser>;
+
   constructor(private route: ActivatedRoute, private meetingsService: MeetingsService, private authService: AuthService, private cd: ChangeDetectorRef) {
   }
 
@@ -72,6 +75,10 @@ export class MeetingListComponent implements OnInit, AfterViewInit, OnDestroy {
           }
         );
       }
+
+      this.user = Observable.of(user);
+      this.cd.detectChanges();
+
     }
   }
 

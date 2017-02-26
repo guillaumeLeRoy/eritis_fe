@@ -36,10 +36,11 @@ import {CalendarModule} from 'angular-calendar';//lib
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import {MeetingsService} from "./service/meetings.service";
 import {MeetingListComponent} from "./meeting/meeting-list/meeting-list.component";
-import {MeetingItemComponent} from "./meeting/meeting-list/meeting-item.component";
+import {MeetingItemCoacheeComponent} from "./meeting/meeting-list/meeting-item-coachee.component";
 import {PreMeetingComponent} from "./meeting/pre-meeting.component";
 import {ProfileComponent} from "./user/profile.component";
 import {ApiService} from "./service/api.service";
+import {MeetingItemCoachComponent} from "./meeting/meeting-list/meeting-item-coach.component";
 
 
 @NgModule({
@@ -67,7 +68,8 @@ import {ApiService} from "./service/api.service";
     CoachItemComponent,
     CoachDetailsComponent,
     MeetingListComponent,
-    MeetingItemComponent,
+    MeetingItemCoacheeComponent,
+    MeetingItemCoachComponent,
     PreMeetingComponent
   ],
   imports: [

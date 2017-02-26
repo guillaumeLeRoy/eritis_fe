@@ -20,10 +20,12 @@ export class SigninComponent implements OnInit {
   }
 
   ngOnInit() {
+    console.log("ngOnInit");
+
     this.signInForm = this.formBuilder.group({
       email: ['', [Validators.required, Validators.pattern("[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?")]],
       password: ['', Validators.required],
-    })
+    });
   }
 
   onSignIn() {

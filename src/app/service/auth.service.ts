@@ -17,9 +17,11 @@ export class AuthService {
   public static LOGIN = "/login/:firebaseId";
   public static GET_COACHS = "/coachs";
   public static GET_COACH_FOR_ID = "/coachs/:id";
+  public static GET_COACHEE_FOR_ID = "/coachees/:id";
   public static POST_MEETING = "/meeting";
   public static GET_MEETING_REVIEWS = "/meeting/:meetingId/reviews";
   public static POST_MEETING_REVIEW = "/meeting/:meetingId/review";
+  public static CLOSE_MEETING = "/meeting/:meetingId/close";
   public static GET_MEETINGS_FOR_COACHEE_ID = "/meetings/coachee/:coacheeId";
   public static GET_MEETINGS_FOR_COACH_ID = "/meetings/coach/:coachId";
 

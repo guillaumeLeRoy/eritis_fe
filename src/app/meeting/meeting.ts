@@ -3,4 +3,5 @@ export interface Meeting {
   date: string
   coach_id: string
   coachee_id: string
+  open: boolean
 }

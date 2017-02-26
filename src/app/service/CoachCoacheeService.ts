@@ -5,6 +5,7 @@ import {MeetingReview} from "../model/MeetingReview";
 import {ApiService} from "./api.service";
 import {Response} from "@angular/http";
 import {AuthService} from "./auth.service";
+import {Coachee} from "../model/coachee";
 
 declare let firebase: any
 
@@ -33,6 +34,17 @@ export class CoachCoacheeService {
     return this.apiService.get(AuthService.GET_COACH_FOR_ID, param) .map((response: Response) => {
       let json = response.json();
       console.log("getCoachForId, response json : ", json);
+      return json;
+    });
+  }
+
+  getCoacheeForId(id: string): Observable<Coachee> {
+    console.log("getCoacheeForId, id", id);
+
+    let param = [id];
+    return this.apiService.get(AuthService.GET_COACHEE_FOR_ID, param) .map((response: Response) => {
+      let json: Coachee = response.json();
+      console.log("getCoacheeForId, response json : ", json);
       return json;
     });
   }
@@ -77,6 +89,19 @@ export class CoachCoacheeService {
     return this.apiService.post(AuthService.POST_MEETING_REVIEW, param, body) .map((response: Response) => {
       let json: MeetingReview = response.json();
       console.log("addAMeetingReview, response json : ", json);
+      return json;
+    });
+  }
+
+  closeMeeting(meetingId: string, comment: string): Observable<MeetingReview> {
+    console.log("closeMeeting, meetingId %s, comment : %s", meetingId, comment);
+    let body = {
+      comment: comment,
+    };
+    let param = [meetingId];
+    return this.apiService.put(AuthService.CLOSE_MEETING, param, body) .map((response: Response) => {
+      let json: MeetingReview = response.json();
+      console.log("closeMeeting, response json : ", json);
       return json;
     });
   }

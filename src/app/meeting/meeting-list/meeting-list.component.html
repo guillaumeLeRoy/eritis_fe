@@ -5,7 +5,16 @@
 <div class="row">
   <div class="col-xs-12">
     <ul class="list-group">
-      <rb-meeting-item *ngFor="let meeting of meetings | async" [meeting]="meeting"></rb-meeting-item>
+
+      <!-- views for coach -->
+      <div *ngIf="(user | async)?.status == 1">
+        <rb-meeting-item-coach *ngFor="let meeting of meetings | async" [meeting]="meeting"></rb-meeting-item-coach>
+      </div>
+
+      <!-- views for coachee -->
+      <div *ngIf="(user | async)?.status == 2">
+        <rb-meeting-item-coachee *ngFor="let meeting of meetings | async" [meeting]="meeting"></rb-meeting-item-coachee>
+      </div>
     </ul>
   </div>
 </div>
