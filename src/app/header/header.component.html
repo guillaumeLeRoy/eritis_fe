@@ -19,7 +19,8 @@
         Profile</a></li>
 
       <li class="dropdown">
-        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">User</a>
+        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
+           aria-expanded="false">User</a>
         <ul class="dropdown-menu">
           <li *ngIf="!(isAuthenticated | async)"><a (click)="onLogIn()">Sign In</a></li>
           <li *ngIf="!(isAuthenticated | async)"><a (click)="onSignUp()">Sign Up</a></li>
@@ -30,4 +31,5 @@
 
   </div>
 </nav>
+
 

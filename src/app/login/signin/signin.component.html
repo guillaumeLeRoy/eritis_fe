@@ -1,74 +1,69 @@
 <div id="main_container">
 
-  <h3>Please sign in to use all the features</h3>
+  <div class="row">
+    <div class="col s6">
+      <form [formGroup]="signInForm" (ngSubmit)="onSignIn()">
 
-  <!--<div id="form_container">-->
+        <div class="row">
+          <div class="col s12">
+            <div class="form-group">
+              <label for="email">Email</label>
+              <input
+                type="text"
+                id="email"
+                class="form-control"
+                formControlName="email">
+            </div>
+          </div>
+        </div>
 
-    <div class="row">
-      <div class="col-xs-6">
-        <form [formGroup]="signInForm" (ngSubmit)="onSignIn()">
+        <div class="row">
+          <div class="col s12">
+            <div class="form-group">
+              <label for="password">Password</label>
+              <input
+                type="password"
+                id="password"
+                class="form-control"
+                formControlName="password">
+            </div>
+          </div>
+        </div>
+
+
+        <div class="row">
+          <div class="col s12">
+            <button type="submit" class="btn btn-success" [disabled]="!signInForm.valid">Sign In</button>
+          </div>
+        </div>
+
+
+        <!-- sign up error div-->
+
+        <div *ngIf="error && errorMessage != ''">
+
+          <!-- add extra separator-->
+          <hr>
 
           <div class="row">
-            <div class="col-xs-12">
-              <div class="form-group">
-                <label for="email">Email</label>
-                <input
-                  type="text"
-                  id="email"
-                  class="form-control"
-                  formControlName="email">
-              </div>
+            <div class="col s12">
+              <small class="text-danger">
+                {{errorMessage}}
+              </small>
             </div>
           </div>
 
-          <div class="row">
-            <div class="col-xs-12">
-              <div class="form-group">
-                <label for="password">Password</label>
-                <input
-                  type="password"
-                  id="password"
-                  class="form-control"
-                  formControlName="password">
-              </div>
-            </div>
-          </div>
+        </div>
 
 
-          <div class="row">
-            <div class="col-xs-12">
-              <button type="submit" class="btn btn-success" [disabled]="!signInForm.valid">Sign In</button>
-            </div>
-          </div>
-
-
-          <!-- sign up error div-->
-
-          <div *ngIf="error && errorMessage != ''">
-
-            <!-- add extra separator-->
-            <hr>
-
-            <div class="row">
-              <div class="col-xs-12">
-                <small class="text-danger">
-                  {{errorMessage}}
-                </small>
-              </div>
-            </div>
-
-          </div>
-
-
-        </form>
-      </div>
-
-      <div class="col-xs-6">
-        <button class="btn btn-success" (click)="goToSignUp()">First time ?</button>
-      </div>
-
+      </form>
     </div>
-  <!--</div>-->
+
+    <div class="col s6">
+      <button class="btn btn-success" (click)="goToSignUp()">First time ?</button>
+    </div>
+
+  </div>
 
 
 </div>

@@ -31,7 +31,7 @@ import {CoachListComponent} from './user/coach-list/coach-list.component';
 import {CoachItemComponent} from './user/coach-list/coach-item.component';
 import {CoachCoacheeService} from "./service/CoachCoacheeService";
 import {CoachDetailsComponent} from './user/coach-details/coach-details.component';
-import {MaterialModule} from "@angular/material";//lib
+import {MaterialModule, MaterialRootModule} from "@angular/material";//lib
 import {CalendarModule} from 'angular-calendar';//lib
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import {MeetingsService} from "./service/meetings.service";
@@ -80,7 +80,7 @@ import {MeetingItemCoachComponent} from "./meeting/meeting-list/meeting-item-coa
     ReactiveFormsModule,
     MaterialModule.forRoot(),
     CalendarModule.forRoot(),
-    NgbModule.forRoot()
+    NgbModule.forRoot(),
   ],
   providers: [DataService, LogService, ShoppingListService, AuthService, AuthGuard, CoachCoacheeService, MeetingsService, ApiService],
   bootstrap: [AppComponent]
