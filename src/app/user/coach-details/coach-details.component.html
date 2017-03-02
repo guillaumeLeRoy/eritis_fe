@@ -1,30 +1,114 @@
-<p>
-  coach-details works! View should be different if your are a coach or a coachee
-</p>
+<!-- START CONTENT -->
+<section id="content">
 
-<div class="row">
-  <div class="col-xs-12">
-    <img src="{{ ( coach | async)?.avatar_url}}" alt="" class="img-responsive">
+  <!--start container-->
+  <div class="container">
+
+    <div id="profile-page" class="section">
+      <!-- profile-page-header -->
+      <div id="profile-page-header" class="card">
+        <div class="card-image waves-effect waves-block waves-light">
+          <img class="activator" src="images/user-profile-bg.jpg" alt="user background">
+        </div>
+        <figure class="card-profile-image">
+          <img src="{{ ( coach | async)?.avatar_url}}" alt="profile image"
+               class="circle z-depth-2 responsive-img activator">
+        </figure>
+        <div class="card-content">
+          <div class="row">
+            <div class="col s3 offset-s2">
+              <h4 class="card-title grey-text text-darken-4">{{ (coach | async)?.display_name }}</h4>
+              <p class="medium-small grey-text">Coach</p>
+            </div>
+            <div class="col s2 center-align">
+              <h4 class="card-title grey-text text-darken-4">10+</h4>
+              <p class="medium-small grey-text">Work Experience</p>
+            </div>
+            <div class="col s2 center-align">
+              <h4 class="card-title grey-text text-darken-4">6</h4>
+              <p class="medium-small grey-text">Completed Sessions</p>
+            </div>
+            <div class="col s2 center-align">
+              <h4 class="card-title grey-text text-darken-4">$ 1,253,000</h4>
+              <p class="medium-small grey-text">Business Profit</p>
+            </div>
+            <div class="col s1 right-align">
+              <a class="btn-floating activator waves-effect waves-light darken-2 right">
+                <i class="mdi-action-perm-identity"></i>
+              </a>
+            </div>
+          </div>
+        </div>
+        <div class="card-reveal">
+          <p>
+            <span class="card-title grey-text text-darken-4">{{ (coach | async)?.display_name }} <i
+              class="mdi-navigation-close right"></i></span>
+            <span><i class="mdi-action-perm-identity cyan-text text-darken-2"></i>Coach</span>
+          </p>
+
+          <p>Coach description</p>
+
+          <p><i class="mdi-action-perm-phone-msg cyan-text text-darken-2"></i> +1 (612) 222 8989</p>
+          <p><i class="mdi-communication-email cyan-text text-darken-2"></i> {{ (coach | async)?.email }}</p>
+          <p><i class="mdi-social-cake cyan-text text-darken-2"></i> Start Date : {{ (coach | async)?.start_date }}</p>
+          <p><i class="mdi-device-airplanemode-on cyan-text text-darken-2"></i> BAR - AUS</p>
+          <p><i class="mdi-social-cake cyan-text text-darken-2"></i> eritis id : {{ (coach | async)?.id }}</p>
+
+        </div>
+      </div>
+      <!--/ profile-page-header -->
+
+      <!-- profile-page-content -->
+      <div id="profile-page-content" class="row">
+        <!-- profile-page-sidebar-->
+        <div id="profile-page-sidebar" class="col s12 m4">
+          <!-- Profile About  -->
+          <div class="card light-blue">
+            <div class="card-content white-text">
+              <span class="card-title">About Me!</span>
+              <p>Coach description</p>
+
+            </div>
+          </div>
+          <!-- Profile About  -->
+
+          <!-- Profile About Details  -->
+          <ul id="profile-page-about-details" class="collection z-depth-1">
+            <li class="collection-item">
+              <div class="row">
+                <div class="col s5 grey-text darken-1"><i class="mdi-action-wallet-travel"></i> Project</div>
+                <div class="col s7 grey-text text-darken-4 right-align">ABC Name</div>
+              </div>
+            </li>
+            <li class="collection-item">
+              <div class="row">
+                <div class="col s5 grey-text darken-1"><i class="mdi-social-poll"></i> Skills</div>
+                <div class="col s7 grey-text text-darken-4 right-align">HTML, CSS</div>
+              </div>
+            </li>
+            <li class="collection-item">
+              <div class="row">
+                <div class="col s5 grey-text darken-1"><i class="mdi-social-domain"></i> Lives in</div>
+                <div class="col s7 grey-text text-darken-4 right-align">NY, USA</div>
+              </div>
+            </li>
+            <li class="collection-item">
+              <div class="row">
+                <div class="col s5 grey-text darken-1"><i class="mdi-social-cake"></i> Birth date</div>
+                <div class="col s7 grey-text text-darken-4 right-align">18th June, 1991</div>
+              </div>
+            </li>
+          </ul>
+          <!--/ Profile About Details  -->
+
+          <!-- Profile About  -->
+
+        </div>
+      </div>
+    </div>
   </div>
-</div>
 
-
-<div class="row">
-  <div class="col-xs-12">
-    <h1>{{ (coach | async)?.display_name }}</h1>
-  </div>
-</div>
-
-<h1>Status : {{ (connectedUser | async)?.status }}</h1>
-
-
-<!-- coach view -->
-
-<div id="coach_container" *ngIf=" ( connectedUser | async)?.status == 1">
-  <h1>Coach view</h1>
-
-  //// update profile ////
-</div>
+</section>
 
 <!-- coachee view -->
 
@@ -43,9 +127,30 @@
   <ngb-datepicker #dp [(ngModel)]="dateModel" (navigate)="date = $event.next"></ngb-datepicker>
   <ngb-timepicker #tp [(ngModel)]="timeModel" [minuteStep]="15"></ngb-timepicker>
 
-  <button (click)="bookADate()">Book the date</button>
 
+  <div class="divider"></div>
+  <!--Input Date Picker-->
+  <div id="input-date-picker" class="section">
+    <h4 class="header">Date Picker</h4>
+    <div class="row">
+      <div class="col s12 m4 l3">
+        <p>We use a modified version of pickadate.js to create a materialized date picker. Test it out below!</p>
+        <p>You can use <a href="http://amsul.ca/pickadate.js/" target="_blank">pickadate.js</a> API to customize.</p>
+
+      </div>
+      <div class="col s12 m8 l9">
+        <input type="date" class="datepicker">
+      </div>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <button (click)="bookADate()" class="btn btn-success">Book the date</button>
+  
 </div>
+
+
 
 
 

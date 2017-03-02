@@ -107,22 +107,39 @@
 
           <!-- Profile Edit  -->
           <div class="card">
-            <div class="card-content white-text">
+            <div class="card-content">
               <span class="card-title">Modifier votre profile</span>
 
-              <div class="row">
-                <div class="input-field col s10">
-                  <input id="edit_username" class="materialize-textarea">
-                  <label for="edit_username" class="">Username</label>
-                </div>
-              </div>
+              <form [formGroup]="formCoach" (ngSubmit)="submitCoachProfileUpdate()">
 
-              <div class="row">
-                <div class="input-field col s10">
-                  <textarea id="edit_description" row="2" class="materialize-textarea"></textarea>
-                  <label for="edit_description" class="">Description</label>
+                <div class="row">
+                  <div class="input-field col s10">
+                    <input id="edit_username" type="text" formControlName="pseudo" class="validate"
+                           placeholder="{{ (coach | async)?.display_name }}">
+                    <label for="edit_username">Username</label>
+                  </div>
                 </div>
-              </div>
+
+
+                <div class="row">
+                  <div class="input-field col s10">
+                    <textarea id="edit_description" row="2" class="materialize-textarea"
+                              placeholder="Décrivez-vous"></textarea>
+                    <label for="edit_description">Description</label>
+                  </div>
+                </div>
+
+                <div class="row">
+                  <div class="input-field col s10">
+                    <input id="edit_avatar_url" type="text" formControlName="avatar"
+                           placeholder="{{ (coach | async)?.avatar_url }}">
+                    <label for="edit_avatar_url">Avatar url</label>
+                  </div>
+                </div>
+
+                <button type="submit" class="btn btn-success" [disabled]="!formCoach.valid">Mettre à jour</button>
+
+              </form>
 
             </div>
           </div>

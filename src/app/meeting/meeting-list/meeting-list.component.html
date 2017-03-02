@@ -1,11 +1,9 @@
-<p>
-  List of your meetings
-</p>
+
+<h4> Liste de vos meetings</h4>
 
 <div class="row">
-  <div class="col-xs-12">
-    <ul class="list-group">
-
+  <div class="col s12">
+    <ul class="collection">
       <!-- views for coach -->
       <div *ngIf="(user | async)?.status == 1">
         <rb-meeting-item-coach *ngFor="let meeting of meetings | async" [meeting]="meeting"></rb-meeting-item-coach>
