@@ -1,3 +1,4 @@
+
 <!--start container-->
 <div class="container">
 
@@ -8,14 +9,14 @@
         <img class="activator" src="images/user-profile-bg.jpg" alt="user background">
       </div>
       <figure class="card-profile-image">
-        <img src="{{ ( coach | async)?.avatar_url}}" alt="profile image"
+        <img src="{{ ( coachee | async)?.avatar_url}}" alt="profile image"
              class="circle z-depth-2 responsive-img activator">
       </figure>
       <div class="card-content">
         <div class="row">
           <div class="col s3 offset-s2">
-            <h4 class="card-title grey-text text-darken-4">{{ (coach | async)?.display_name }}</h4>
-            <p class="medium-small grey-text">Coach</p>
+            <h4 class="card-title grey-text text-darken-4">{{ (coachee | async)?.display_name }}</h4>
+            <p class="medium-small grey-text">Coachee</p>
           </div>
           <div class="col s2 center-align">
             <h4 class="card-title grey-text text-darken-4">10+</h4>
@@ -38,18 +39,19 @@
       </div>
       <div class="card-reveal">
         <p>
-            <span class="card-title grey-text text-darken-4">{{ (coach | async)?.display_name }} <i
+            <span class="card-title grey-text text-darken-4">{{ (coachee | async)?.display_name }} <i
               class="mdi-navigation-close right"></i></span>
           <span><i class="mdi-action-perm-identity cyan-text text-darken-2"></i>Coach</span>
         </p>
 
-        <p>Coach description</p>
+        <p>Coachee description</p>
 
         <p><i class="mdi-action-perm-phone-msg cyan-text text-darken-2"></i> +1 (612) 222 8989</p>
-        <p><i class="mdi-communication-email cyan-text text-darken-2"></i> {{ (coach | async)?.email }}</p>
-        <p><i class="mdi-social-cake cyan-text text-darken-2"></i> Start Date : {{ (coach | async)?.start_date }}</p>
+        <p><i class="mdi-communication-email cyan-text text-darken-2"></i> {{ (coachee | async)?.email }}</p>
+        <p><i class="mdi-social-cake cyan-text text-darken-2"></i> Start Date : {{ (coachee | async)?.start_date }}
+        </p>
         <p><i class="mdi-device-airplanemode-on cyan-text text-darken-2"></i> BAR - AUS</p>
-        <p><i class="mdi-social-cake cyan-text text-darken-2"></i> eritis id : {{ (coach | async)?.id }}</p>
+        <p><i class="mdi-social-cake cyan-text text-darken-2"></i> eritis id : {{ (coachee | async)?.id }}</p>
 
       </div>
     </div>
@@ -63,7 +65,7 @@
         <div class="card light-blue">
           <div class="card-content white-text">
             <span class="card-title">About Me!</span>
-            <p>Coach description</p>
+            <p>Coachee description</p>
 
           </div>
         </div>
@@ -100,55 +102,48 @@
 
         <!-- Profile About  -->
 
+        <!-- Profile Edit  -->
+        <div class="card">
+          <div class="card-content">
+            <span class="card-title">Modifier votre profile</span>
+
+            <form [formGroup]="formCoachee" (ngSubmit)="submitCoacheeProfileUpdate()">
+
+              <div class="row">
+                <div class="input-field col s10">
+                  <input id="edit_username" type="text" formControlName="pseudo" class="validate"
+                         placeholder="{{ (coachee | async)?.display_name }}">
+                  <label for="edit_username">Username</label>
+                </div>
+              </div>
+
+
+              <div class="row">
+                <div class="input-field col s10">
+                    <textarea id="edit_description" row="2" class="materialize-textarea"
+                              placeholder="Décrivez-vous"></textarea>
+                  <label for="edit_description">Description</label>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="input-field col s10">
+                  <input id="edit_avatar_url" type="text" formControlName="avatar"
+                         placeholder="{{ (coachee | async)?.avatar_url }}">
+                  <label for="edit_avatar_url">Avatar url</label>
+                </div>
+              </div>
+
+              <button type="submit" class="btn btn-success" [disabled]="!formCoachee.valid">Mettre à jour</button>
+
+            </form>
+
+          </div>
+        </div>
+        <!-- / Profile Edit  -->
       </div>
     </div>
   </div>
-
-
-  <div class="card">
-
-    <div class="card-content">
-
-      <span class="card-title grey-text text-darken-4">Prendre un rendez-vous</span>
-
-      <!--<div class="section" *ngIf="(connectedUser | async)?.status == 2">-->
-
-      <!--Input Date Picker-->
-      <div id="input-date-picker">
-        <div class="row">
-          <div class="col s12">
-            <p>Selectionnez une date</p>
-          </div>
-          <div class="col s12">
-            <!--<input type="date" class="datepicker" placeholder="Cliquez ici">-->
-            <ngb-datepicker #dp [(ngModel)]="dateModel" (navigate)="date = $event.next"></ngb-datepicker>
-          </div>
-        </div>
-
-        <div class="row">
-          <div class="col s12">
-            <p>Selectionnez une heure</p>
-          </div>
-          <div class="col s12">
-            <ngb-timepicker #tp [(ngModel)]="timeModel" [minuteStep]="15"></ngb-timepicker>
-          </div>
-        </div>
-      </div>
-
-      <button (click)="bookADate()" class="btn btn-success" *ngIf="(connectedUser | async)?.status == 2">Réserver cette
-        date
-      </button>
-    </div>
-  </div>
-
-
-  <div id="card-alert_seance_book" class="card red" *ngIf="displayErrorBookingDate">
-    <div class="card-content white-text">
-      <p>Impossible de réserver votre séance</p>
-    </div>
-  </div>
-
 </div>
-
 
 

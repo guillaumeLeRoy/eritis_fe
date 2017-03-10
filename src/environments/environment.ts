@@ -5,5 +5,8 @@
 
 export const environment = {
   production: false,
-  BACKEND_BASE_URL : "http://localhost:8080/api"
+  BACKEND_BASE_URL: "http://localhost:8080/api",
+  firebase_apiKey: "AIzaSyDGJt42caQMGiRJDg8z_0C_sWhy1NFlHJ0",
+  firebase_authDomain: "eritis-be-dev.firebaseapp.com",
+  firebase_databaseURL: "https://eritis-be-dev.firebaseio.com",
 };

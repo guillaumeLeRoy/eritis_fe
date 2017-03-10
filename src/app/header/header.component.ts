@@ -1,9 +1,7 @@
 import {Component, OnDestroy, ChangeDetectorRef, OnInit} from '@angular/core';
-import {RecipeService} from "../recipes/recipe.service";
 import {Router} from "@angular/router";
 import {AuthService} from "../service/auth.service";
 import {Subscription, Observable} from "rxjs";
-import {User} from "../user/user";
 import {ApiUser} from "../model/apiUser";
 
 @Component({
@@ -14,12 +12,13 @@ import {ApiUser} from "../model/apiUser";
 })
 export class HeaderComponent implements OnInit,OnDestroy {
 
-
   private isAuthenticated: Observable<boolean>;
   private connectedUser: Observable<ApiUser>;
   private subscription: Subscription;
 
-  constructor(private recipeService: RecipeService, private router: Router, private authService: AuthService, private cd: ChangeDetectorRef) {
+  private userStatus: number;
+
+  constructor(private router: Router, private authService: AuthService, private cd: ChangeDetectorRef) {
   }
 
   ngOnInit(): void {
@@ -37,7 +36,9 @@ export class HeaderComponent implements OnInit,OnDestroy {
       (user: ApiUser) => {
         console.log("getConnectedUser : " + user);
         this.connectedUser = Observable.of(user);
-
+        if (user != null) {
+          this.userStatus = user.status; //1 for coach, 2 for coachee
+        }
         this.cd.detectChanges();
       }
     );
@@ -45,18 +46,6 @@ export class HeaderComponent implements OnInit,OnDestroy {
 
   ngOnDestroy(): void {
     this.subscription.unsubscribe();
-  }
-
-  onStore() {
-    this.recipeService.storeData()
-    // this.recipeService.storeData().subscribe(
-    //   data => console.log(data),
-    //   error => console.log(error)
-    // )
-  }
-
-  onFetch() {
-    this.recipeService.fetchData()
   }
 
   onLogout() {
@@ -79,7 +68,11 @@ export class HeaderComponent implements OnInit,OnDestroy {
   }
 
   goToProfile() {
-    this.router.navigate(['/profile']);
+    if (this.userStatus == 1) {
+      this.router.navigate(['/profile_coach']);
+    } else if (this.userStatus == 2) {
+      this.router.navigate(['/profile_coachee']);
+    }
   }
 
   goToCoachs() {
@@ -88,5 +81,17 @@ export class HeaderComponent implements OnInit,OnDestroy {
 
   // isAuth() {
   //   return this.isAuthenticated
+  // }
+
+  // onStore() {
+  //   this.recipeService.storeData()
+  //   // this.recipeService.storeData().subscribe(
+  //   //   data => console.log(data),
+  //   //   error => console.log(error)
+  //   // )
+  // }
+  //
+  // onFetch() {
+  //   this.recipeService.fetchData()
   // }
 }

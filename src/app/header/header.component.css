@@ -1,18 +1,5 @@
-.navbar {
-  margin-bottom: 0px;
+
+.navbar-color {
   background-color: var(--main-header-color);
-}
 
-.navbar-default .navbar-nav > li > a {
-  color: var(--main-white-color);
-  background-color: transparent;
-}
-
-.navbar-default .navbar-nav > li > a:hover {
-  color: var(--main-white-color--hover);
-  background-color: transparent;
-}
-
-.navbar-default .navbar-brand {
-  color: var(--main-white-color);
 }

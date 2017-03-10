@@ -1,9 +1,6 @@
 import {Injectable} from '@angular/core';
-import {Http, Headers} from "@angular/http";
 import {Observable} from "rxjs";
-import {Meeting} from "../meeting/meeting";
-import {PromiseObservable} from "rxjs/observable/PromiseObservable";
-import {ApiService} from "./api.service";
+import {Meeting} from "../model/meeting";
 import {AuthService} from "./auth.service";
 
 declare let firebase: any
@@ -23,7 +20,6 @@ export class MeetingsService {
       return json;
     });
   }
-
 
   getAllMeetingsForCoachId(coachId: string): Observable<Meeting[]> {
     let param = [coachId];

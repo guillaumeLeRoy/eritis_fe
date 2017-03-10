@@ -1,0 +1,51 @@
+<div class="card">
+  <div class="card-content">
+    <span class="card-title">Séance avec {{ coach.display_name }}</span>
+
+    <!-- Meeting is closed-->
+    <div *ngIf="!meeting.isOpen">
+      <h4>Meeting is closed</h4>
+    </div>
+
+    <!-- Meeting is open -->
+    <div *ngIf="meeting.isOpen">
+      <h4>You have a meeting</h4>
+    </div>
+
+    <div class="col s12">
+      <p>Le : {{meeting.date}}</p>
+    </div>
+
+    <!-- check if you have some reviews-->
+    <div class="container" *ngIf="(hasSomeReviews | async)">
+      <!-- list of reviews -->
+      <div *ngFor="let review of reviews | async">
+
+        <div class="card">
+          <div class="card-content">
+            <span class="card-title">Meeting Review</span>
+            <div class="list-group-item-text">at : {{review.date}}</div>
+            <div class="list-group-item-text">comment : {{review.comment}}</div>
+            <div class="list-group-item-text">score : {{review.score}}</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+    <!-- end check-->
+
+  </div>
+
+  <!-- add a pre meeting review -->
+  <div *ngIf="meeting.isOpen">
+    <div class="container">
+      <rb-pre-meeting *ngIf="!(hasSomeReviews | async)" [meeting]="meeting"
+                      (reviewPosted)="onPreMeetingReviewPosted($event)"
+      ></rb-pre-meeting>
+    </div>
+  </div>
+
+
+</div>
+
+

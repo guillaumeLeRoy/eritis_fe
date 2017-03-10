@@ -1,38 +1,28 @@
 import {Component, OnInit, AfterViewInit, ChangeDetectorRef, OnDestroy} from '@angular/core';
 import {Observable, Subscription} from "rxjs";
-import {Coach} from "../model/Coach";
-import {Coachee} from "../model/coachee";
-import {AuthService} from "../service/auth.service";
-import {ApiUser} from "../model/apiUser";
+import {Coach} from "../../../model/Coach";
+import {AuthService} from "../../../service/auth.service";
+import {ApiUser} from "../../../model/apiUser";
 import {FormGroup, FormBuilder} from "@angular/forms";
 
 @Component({
-  selector: 'rb-profile',
-  templateUrl: './profile.component.html',
-  styleUrls: ['./profile.component.css']
+  selector: 'rb-profile-coach',
+  templateUrl: 'profile-coach.component.html',
+  styleUrls: ['profile-coach.component.css']
 })
-export class ProfileComponent implements OnInit, AfterViewInit,OnDestroy {
-
+export class ProfileCoachComponent implements OnInit, AfterViewInit,OnDestroy {
 
   private coach: Observable<Coach>;
-  private coachee: Observable<Coachee>;
-
   private connectedUser: Observable<ApiUser>;
   private connectedUserSubscription: Subscription
 
   private formCoach: FormGroup;
-  private formCoachee: FormGroup;
 
   constructor(private authService: AuthService, private formBuilder: FormBuilder, private cd: ChangeDetectorRef) {
   }
 
   ngOnInit() {
     this.formCoach = this.formBuilder.group({
-      pseudo: [''],
-      avatar: ['']
-    });
-
-    this.formCoachee = this.formBuilder.group({
       pseudo: [''],
       avatar: ['']
     });
@@ -57,34 +47,25 @@ export class ProfileComponent implements OnInit, AfterViewInit,OnDestroy {
     }
   }
 
-  submitCoacheeProfileUpdate() {
-    console.log("submitProfileUpdate");
-
-    this.coachee.last().flatMap(
-      (coachee: Coachee) => {
-        console.log("submitProfileUpdate, coache obtained");
-
-        return this.authService.updateCoacheeForId(coachee.id, this.formCoachee.value.pseudo, this.formCoachee.value.avatar);
-      }
-    ).subscribe(
-      (user: ApiUser) => {
-        console.log("coachee updated : ", user);
-      });
-  }
-
   submitCoachProfileUpdate() {
     console.log("submitProfileUpdate");
 
-    this.coach.last().flatMap(
-      (coach: Coach) => {
-        console.log("submitProfileUpdate, coache obtained");
-
-        return this.authService.updateCoachForId(coach.id, this.formCoach.value.pseudo, this.formCoach.value.avatar);
-      }
-    ).subscribe(
-      (user: ApiUser) => {
-        console.log("coach updated : ", user);
-      });
+    // this.coach.last().flatMap(
+    //   (coach: Coach) => {
+    //     console.log("submitProfileUpdate, coache obtained");
+    //
+    //     // return this.authService.updateCoachForId(coach.id, this.formCoach.value.pseudo, this.formCoach.value.avatar);
+    //   }
+    // ).subscribe(
+    //   (user: ApiUser) => {
+    //     console.log("coach updated : ", user);
+    //     //refresh page
+    //     this.onUserObtained(user);
+    //   },
+    //   (error) => {
+    //     console.log('coach update, error', error);
+    //     //TODO display error
+    //   });
   }
 
 
@@ -108,19 +89,6 @@ export class ProfileComponent implements OnInit, AfterViewInit,OnDestroy {
 
         this.coach = Observable.of(coach);
 
-      } else if (user.status == 2) {
-        //coachee
-
-        let coachee: Coachee = new Coachee();
-        coachee.id = user.id;
-        coachee.email = user.email;
-        coachee.display_name = user.display_name;
-        coachee.avatar_url = user.avatar_url;
-        coachee.start_date = user.start_date;
-
-        console.log("getConnectedUser, create a coachee : ", coachee);
-
-        this.coachee = Observable.of(coachee);
       }
     }
 

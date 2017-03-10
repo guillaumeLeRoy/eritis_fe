@@ -1,20 +1,19 @@
+<div class="container">
+  <h4> Liste de vos meetings</h4>
 
-<h4> Liste de vos meetings</h4>
-
-<div class="row">
-  <div class="col s12">
-    <ul class="collection">
+  <div class="row">
+    <div class="col s12">
       <!-- views for coach -->
       <div *ngIf="(user | async)?.status == 1">
-        <rb-meeting-item-coach *ngFor="let meeting of meetings | async" [meeting]="meeting"></rb-meeting-item-coach>
+        <rb-meeting-item-coach *ngFor="let meeting of meetings | async" [meeting]="meeting" (meetingUpdated)="onRefreshRequested($event)"></rb-meeting-item-coach>
       </div>
 
       <!-- views for coachee -->
       <div *ngIf="(user | async)?.status == 2">
-        <rb-meeting-item-coachee *ngFor="let meeting of meetings | async" [meeting]="meeting"></rb-meeting-item-coachee>
+        <rb-meeting-item-coachee *ngFor="let meeting of meetings | async"
+                                 [meeting]="meeting"></rb-meeting-item-coachee>
       </div>
-    </ul>
+    </div>
   </div>
 </div>
-
 

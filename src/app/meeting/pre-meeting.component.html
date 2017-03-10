@@ -1,36 +1,42 @@
-<div>
-
-  <h4>Ajouter des explications : </h4>
 
 
-  <!--<form [formGroup]="form" (ngSubmit)="submitMeetingContextForm()">-->
+<div id="card-alert_seance_book" class="card red" *ngIf="displayErrorPostingReview">
+  <div class="card-content white-text">
+    <p>Impossible d'enregistrer votre commentaire</p>
+  </div>
+</div>
 
-  <!--<div class="form-group">-->
-  <!--<label for="context">Donnez nous un peu de context pour ce meeting : </label>-->
-  <!--<input-->
-  <!--type="text"-->
-  <!--id="context"-->
-  <!--class="form-control"-->
-  <!--formControlName="context">-->
-  <!--</div>-->
+<div class="card">
 
-  <!--<div class="form-group">-->
-  <!--<label for="mood">Quel est votre état d'esprit ?</label>-->
-  <!--<ngb-rating id="mood" class="form-control" formControlName="mood" [(rate)]="rate"></ngb-rating>-->
-  <!--</div>-->
+  <div class="card-content">
 
-  <!--<button type="submit" class="btn btn-success" [disabled]="!form.valid">Envoyer</button>-->
+    <span class="card-title">Ajouter des explications</span>
 
-  <!--</form>-->
+    <form class="col s12" [formGroup]="form" (ngSubmit)="submitMeetingContextForm()">
+      <div class="row">
+        <div class="input-field col s12">
+          <input id="context" type="text" formControlName="context">
+          <label for="context">Donnez nous un peu de context pour ce meeting</label>
 
-
-  <form class="col s12" [formGroup]="form" (ngSubmit)="submitMeetingContextForm()">
-    <div class="row">
-      <div class="input-field col s12">
-        <input id="context" type="text" formControlName="context">
-        <label for="context">Donnez nous un peu de context pour ce meeting</label>
-
+        </div>
       </div>
-    </div>
-  </form>
+
+      <!-- submit btn -->
+      <div class="row">
+        <div class="input-field col s12">
+          <!--<button class="btn cyan waves-effect waves-light right" type="submit" name="action" [disabled]="!form.valid">-->
+          <!--Envoyer-->
+          <!--<i class="mdi-content-send right"></i>-->
+          <!--</button>-->
+
+          <button class="btn cyan waves-effect waves-light right" type="submit" name="action">
+            Envoyer
+            <i class="mdi-content-send right"></i>
+          </button>
+        </div>
+      </div>
+
+    </form>
+
+  </div>
 </div>

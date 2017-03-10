@@ -1,13 +1,11 @@
 import {Injectable, EventEmitter} from '@angular/core';
 import {Recipe} from './recipe';
 import {Ingredient} from '../ingredient';
-import {Headers, Http, Response} from "@angular/http";
+import {Headers, Http} from "@angular/http";
 import {Observable, Subject} from "rxjs";
 import 'rxjs/Rx';
 import {PromiseObservable} from "rxjs/observable/PromiseObservable";
-
-const baseUrl = "https://eritis-150320.firebaseio.com"
-declare var firebase: any
+import {FirebaseService} from "../service/firebase.service";
 
 @Injectable()
 export class RecipeService {
@@ -24,7 +22,7 @@ export class RecipeService {
     new Recipe('dummy test bis', 'dummy tt bis boom', 'https://www.royalcanin.com/~/media/Royal-Canin/Product-Categories/cat-adult-landing-hero.ashx', [])
   ]
 
-  constructor(private httpService: Http) {
+  constructor(private httpService: Http, private firebase: FirebaseService) {
   }
 
   getRecipes() {
@@ -62,7 +60,7 @@ export class RecipeService {
     // })
     // return this.http.put(baseUrl + "/recipes.json", body, {headers: headers})
 
-    var recipesRef = firebase.database().ref('recipes/');
+    var recipesRef = this.firebase.getInstance().database().ref('recipes/');
     recipesRef.set(this.recipes).then(function (result) {
       console.log("storeData, recipes stored with success,", result)
     }).catch(function (error) {
@@ -78,7 +76,7 @@ export class RecipeService {
   fetchData() {
     console.log("fetchData, start request,   this.recipes :", this.recipes)
 
-    var recipesRef = firebase.database().ref('recipes/');
+    var recipesRef = this.firebase.getInstance().database().ref('recipes/');
     recipesRef.once('value', function (snapshot) {
 
       console.log("fetchData, received snapshot", snapshot.val())
@@ -112,7 +110,7 @@ export class RecipeService {
     const subject = new Subject<any>()
 
     //TODO check if token not null
-    var currentUser = firebase.auth().currentUser
+    var currentUser = this.firebase.auth().currentUser
 
     console.log("getTopQuestions, currentUser : ", currentUser)
 

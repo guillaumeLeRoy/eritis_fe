@@ -1,7 +1,7 @@
 import {Component, OnInit, AfterViewInit, ChangeDetectorRef, OnDestroy} from '@angular/core';
 import {MeetingsService} from "../../service/meetings.service";
 import {ActivatedRoute} from "@angular/router";
-import {Meeting} from "../meeting";
+import {Meeting} from "../../model/meeting";
 import {Observable, Subscription} from "rxjs";
 import {AuthService} from "../../service/auth.service";
 import {ApiUser} from "../../model/apiUser";
@@ -19,34 +19,57 @@ export class MeetingListComponent implements OnInit, AfterViewInit, OnDestroy {
   private subscription: Subscription;
   private connectedUserSubscription: Subscription;
 
-
   private user: Observable<ApiUser>;
 
-  constructor(private route: ActivatedRoute, private meetingsService: MeetingsService, private authService: AuthService, private cd: ChangeDetectorRef) {
+  constructor(private meetingsService: MeetingsService, private authService: AuthService, private cd: ChangeDetectorRef) {
   }
 
   ngOnInit() {
   }
 
   ngAfterViewInit(): void {
+    this.onRefreshRequested();
+  }
+
+  onRefreshRequested() {
+    console.log("onRefreshRequested");
 
     var user = this.authService.getConnectedUser();
     console.log("ngAfterViewInit, user : ", user);
     this.onUserObtained(user);
 
-    this.connectedUserSubscription = this.authService.getConnectedUserObservable().subscribe(
-      (user: ApiUser) => {
-        console.log("getConnectedUser");
-        this.onUserObtained(user);
+    if (user == null) {
+      this.connectedUserSubscription = this.authService.getConnectedUserObservable().subscribe(
+        (user: ApiUser) => {
+          console.log("getConnectedUser");
+          this.onUserObtained(user);
+        }
+      );
+    }
+  }
+
+  private getAllMeetingsForCoach(coachId: string) {
+    this.subscription = this.meetingsService.getAllMeetingsForCoachId(coachId).subscribe(
+      (meetings: Meeting[]) => {
+
+        console.log("got meetings for coach", meetings);
+
+        this.meetings = Observable.of(meetings);
+        this.cd.detectChanges();
       }
     );
+  }
 
-    // this.route.params.subscribe(
-    //   (params: any) => {
-    //     // this.userId = params['id']
-    //
-    //   }
-    // )
+  private getAllMeetingsForCoachee(coacheeId: string) {
+    this.subscription = this.meetingsService.getAllMeetingsForCoacheeId(coacheeId).subscribe(
+      (meetings: Meeting[]) => {
+
+        console.log("got meetings for coachee", meetings);
+
+        this.meetings = Observable.of(meetings);
+        this.cd.detectChanges();
+      }
+    );
   }
 
   private onUserObtained(user: ApiUser) {
@@ -56,24 +79,12 @@ export class MeetingListComponent implements OnInit, AfterViewInit, OnDestroy {
       if (user.status == 1) {
         //coach
         console.log("get a coach");
-
-        this.subscription = this.meetingsService.getAllMeetingsForCoachId(user.id).subscribe(
-          (meetings: Meeting[]) => {
-            this.meetings = Observable.of(meetings);
-            this.cd.detectChanges();
-          }
-        );
+        this.getAllMeetingsForCoach(user.id);
 
       } else if (user.status == 2) {
         //coachee
         console.log("get a coachee");
-
-        this.subscription = this.meetingsService.getAllMeetingsForCoacheeId(user.id).subscribe(
-          (meetings: Meeting[]) => {
-            this.meetings = Observable.of(meetings);
-            this.cd.detectChanges();
-          }
-        );
+        this.getAllMeetingsForCoachee(user.id);
       }
 
       this.user = Observable.of(user);

@@ -1,13 +1,13 @@
+<div class="container">
+  <h4>Nos coachs</h4>
 
-<h4>Nos coachs</h4>
-
-<div class="row">
-  <div class="col s12">
-    <ul class="collection">
-      <rb-coach-item *ngFor="let coach of coachs | async" [coach]="coach"
-                     [routerLink]="['/coachs', coach.id]"></rb-coach-item>
-    </ul>
+  <div class="row">
+    <div class="col s12">
+      <ul class="collection">
+        <rb-coach-item *ngFor="let coach of coachs | async" [coach]="coach"
+                       [routerLink]="['/coachs', coach.id]"></rb-coach-item>
+      </ul>
+    </div>
   </div>
 </div>
-
 

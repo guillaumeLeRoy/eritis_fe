@@ -3,8 +3,8 @@ import {AuthService} from "../service/auth.service";
 import {Subscription} from "rxjs";
 import {Message} from "./message";
 import {RecipeService} from "../recipes/recipe.service";
+import {FirebaseService} from "../service/firebase.service";
 
-declare var firebase: any
 
 @Component({
   selector: 'rb-chat',
@@ -23,7 +23,7 @@ export class ChatComponent implements OnInit,AfterViewInit, OnDestroy {
 
   private messageInput: Element
 
-  constructor(private authService: AuthService, private cd: ChangeDetectorRef, private myElement: ElementRef, private recipeService: RecipeService) {
+  constructor(private firebase: FirebaseService, private authService: AuthService, private cd: ChangeDetectorRef, private myElement: ElementRef, private recipeService: RecipeService) {
     this.userAuth = true
     this.messages = new Array<Message>();
   }
@@ -34,7 +34,7 @@ export class ChatComponent implements OnInit,AfterViewInit, OnDestroy {
 
   ngAfterViewInit(): void {
 
-    this.messagesRef = firebase.database().ref('messages');
+    this.messagesRef = this.firebase.getInstance().database().ref('messages');
 
     var hElement: HTMLElement = this.myElement.nativeElement;
     this.userName = hElement.querySelector("#user-name")

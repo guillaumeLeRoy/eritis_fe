@@ -1,77 +1,37 @@
-<!-- Fixed navbar -->
-<!--<nav class="navbar navbar-toggleable-md navbar-inverse fixed-top">-->
-<!--<button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarCollapse"-->
-<!--aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">-->
-<!--<span class="navbar-toggler-icon"></span>-->
-<!--</button>-->
-<!--<a class="navbar-brand" [routerLink]="['/']">Eritis</a>-->
+<header id="header" class="page-topbar">
+  <div class="navbar-fixed">
+    <nav class="deep-orange">
+      <div class="navbar-color">
 
+        <div class="col s12">
+          <a [routerLink]="['/']" class="logo-text">Eritis</a>
+          <a [routerLink]="['/']" data-activates="mobile-demo" class="button-collapse"><i
+            class="mdi-navigation-menu"></i></a>
+          <ul class="right hide-on-med-and-down">
+            <li *ngIf="(isAuthenticated | async)"><a (click)="goToCoachs()">Coach List</a></li>
 
-<!--<div class="collapse navbar-collapse" id="navbar">-->
-<!--<ul class="nav navbar-nav">-->
-<!--<li *ngIf="(isAuthenticated | async)"><a (click)="goToCoachs()">Coach-->
-<!--List</a></li>-->
+            <li *ngIf="(isAuthenticated | async)"><a (click)="goToMeetings()">Your meetings</a></li>
 
-<!--<li *ngIf="(isAuthenticated | async)"><a (click)="goToMeetings()">Your-->
-<!--meetings</a></li>-->
+            <li *ngIf="(isAuthenticated | async)"><a (click)="goToProfile()">Your Profile</a></li>
 
-<!--<li *ngIf="(isAuthenticated | async)"><a (click)="goToProfile()">Your-->
-<!--Profile</a></li>-->
+            <li *ngIf="(isAuthenticated | async)"><a (click)="onLogout()">Logout</a></li>
+            <li *ngIf="!(isAuthenticated | async)"><a (click)="onLogIn()">Sign In</a></li>
 
-<!--<li class="dropdown">-->
-<!--<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"-->
-<!--aria-expanded="false">User</a>-->
-<!--<ul class="dropdown-menu">-->
-<!--<li *ngIf="!(isAuthenticated | async)"><a (click)="onLogIn()">Sign In</a></li>-->
-<!--<li *ngIf="!(isAuthenticated | async)"><a (click)="onSignUp()">Sign Up</a></li>-->
-<!--<li *ngIf="(isAuthenticated | async)"><a (click)="onLogout()">Logout</a></li>-->
-<!--</ul>-->
-<!--</li>-->
-<!--</ul>-->
+          </ul>
+          <ul class="side-nav" id="mobile-demo">
+            <li *ngIf="(isAuthenticated | async)"><a (click)="goToCoachs()">Coach List</a></li>
 
-<!--</div>-->
-<!--</nav>-->
+            <li *ngIf="(isAuthenticated | async)"><a (click)="goToMeetings()">Your meetings</a></li>
 
-<div class="col s12 m8 l9">
-  <nav class="deep-orange">
-    <div class="nav-wrapper">
-      <div class="col s12">
-        <a [routerLink]="['/']" class="brand-logo">Eritis</a>
-        <a [routerLink]="['/']" data-activates="mobile-demo" class="button-collapse"><i class="mdi-navigation-menu"></i></a>
-        <ul class="right hide-on-med-and-down">
-          <li *ngIf="(isAuthenticated | async)"><a (click)="goToCoachs()">Coach
-            List</a></li>
+            <li *ngIf="(isAuthenticated | async)"><a (click)="goToProfile()">Your Profile</a></li>
 
-          <li *ngIf="(isAuthenticated | async)"><a (click)="goToMeetings()">Your
-            meetings</a></li>
+            <li *ngIf="(isAuthenticated | async)"><a (click)="onLogout()">Logout</a></li>
+            <li *ngIf="!(isAuthenticated | async)"><a (click)="onLogIn()">Sign In</a></li>
 
-          <li *ngIf="(isAuthenticated | async)"><a (click)="goToProfile()">Your
-            Profile</a></li>
-
-          <li *ngIf="(isAuthenticated | async)"><a (click)="goToProfile()">Your
-            Profile</a></li>
-
-          <li *ngIf="(isAuthenticated | async)"><a (click)="onLogout()">Logout</a></li>
-          <li *ngIf="!(isAuthenticated | async)"><a (click)="onLogIn()">Sign In</a></li>
-
-        </ul>
-        <ul class="side-nav" id="mobile-demo">
-          <li *ngIf="(isAuthenticated | async)"><a (click)="goToCoachs()">Coach
-            List</a></li>
-
-          <li *ngIf="(isAuthenticated | async)"><a (click)="goToMeetings()">Your
-            meetings</a></li>
-
-          <li *ngIf="(isAuthenticated | async)"><a (click)="goToProfile()">Your
-            Profile</a></li>
-
-          <li *ngIf="(isAuthenticated | async)"><a (click)="onLogout()">Logout</a></li>
-          <li *ngIf="!(isAuthenticated | async)"><a (click)="onLogIn()">Sign In</a></li>
-
-        </ul>
+          </ul>
+        </div>
       </div>
-    </div>
-  </nav>
-</div>
-
+    </nav>
+  </div>
+</header>
 

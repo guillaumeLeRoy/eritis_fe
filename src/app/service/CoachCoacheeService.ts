@@ -2,12 +2,9 @@ import {Injectable} from "@angular/core";
 import {Observable} from "rxjs";
 import {Coach} from "../model/Coach";
 import {MeetingReview} from "../model/MeetingReview";
-import {ApiService} from "./api.service";
 import {Response} from "@angular/http";
 import {AuthService} from "./auth.service";
 import {Coachee} from "../model/coachee";
-
-declare let firebase: any
 
 @Injectable()
 export class CoachCoacheeService {
@@ -80,10 +77,14 @@ export class CoachCoacheeService {
 
 
   addAMeetingReview(meetingId: string, comment: string, rate: string): Observable<MeetingReview> {
-    console.log("addAMeetingReview, meetingId %s, comment : %s, rate : %s", meetingId, comment, rate);
+
+    //convert rating into Integer
+    let rating = +rate;
+
+    console.log("addAMeetingReview, meetingId %s, comment : %s, rating : %s", meetingId, comment, rating);
     let body = {
       comment: comment,
-      score: rate,
+      score: rating,
     };
     let param = [meetingId];
     return this.apiService.post(AuthService.POST_MEETING_REVIEW, param, body) .map((response: Response) => {
@@ -93,10 +94,14 @@ export class CoachCoacheeService {
     });
   }
 
-  closeMeeting(meetingId: string, comment: string): Observable<MeetingReview> {
+  closeMeeting(meetingId: string, comment: string, rate: string): Observable<MeetingReview> {
+    //convert rating into Integer
+    let rating = +rate;
+
     console.log("closeMeeting, meetingId %s, comment : %s", meetingId, comment);
     let body = {
       comment: comment,
+      score: rating
     };
     let param = [meetingId];
     return this.apiService.put(AuthService.CLOSE_MEETING, param, body) .map((response: Response) => {

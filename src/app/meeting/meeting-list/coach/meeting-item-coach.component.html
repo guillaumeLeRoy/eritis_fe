@@ -1,0 +1,66 @@
+<div class="card">
+  <div class="card-content">
+    <span class="card-title">Séance avec {{ coachee.display_name }}</span>
+
+    <!-- Meeting is closed-->
+    <div *ngIf="!meeting.isOpen">
+      <h4>Meeting is closed</h4>
+      <p>at : {{meeting.date}}</p>
+    </div>
+
+    <!-- Meeting is open -->
+    <div *ngIf="meeting.isOpen">
+      <h4>You have a meeting</h4>
+      <p>at : {{meeting.date}}</p>
+    </div>
+
+
+    <!-- check if you have some reviews-->
+    <div class="container" *ngIf="(hasSomeReviews | async)">
+      <!-- list of reviews -->
+      <div *ngFor="let review of reviews | async">
+
+        <div class="card">
+          <div class="card-content">
+            <span class="card-title">Meeting Review</span>
+            <div class="list-group-item-text">at : {{review.date}}</div>
+            <div class="list-group-item-text">comment : {{review.comment}}</div>
+            <div class="list-group-item-text">score : {{review.score}}</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+    <!-- end check-->
+
+    <!-- Display Close Form is the Meeting is still open -->
+    <div *ngIf="meeting.isOpen" class="section">
+
+      <h4>Close this meeting</h4>
+
+      <form [formGroup]="closeMeetingForm" (ngSubmit)="submitCloseMeetingForm()">
+
+        <div class="form-group">
+          <label for="recap">Resume du meeting</label>
+          <input
+            type="text"
+            id="recap"
+            class="form-control"
+            formControlName="recap">
+        </div>
+
+        <!--<button type="submit" class="btn btn-success">Envoyer</button>-->
+        <!--<button type="submit" class="btn btn-success" [disabled]="!closeMeetingForm.valid">Envoyer</button>-->
+        <button class="btn cyan waves-effect waves-light right" type="submit" name="action">
+          Envoyer
+          <i class="mdi-content-send right"></i>
+        </button>
+      </form>
+
+    </div>
+
+
+  </div>
+
+
+</div>

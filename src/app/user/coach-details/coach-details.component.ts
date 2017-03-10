@@ -1,6 +1,6 @@
 import {Component, OnInit, AfterViewInit, ChangeDetectorRef, OnDestroy} from '@angular/core';
 import {Observable, Subscription} from "rxjs";
-import {ActivatedRoute} from "@angular/router";
+import {ActivatedRoute, Router} from "@angular/router";
 import {Coach} from "../../model/Coach";
 import {CoachCoacheeService} from "../../service/CoachCoacheeService";
 import {NgbDateStruct, NgbTimeStruct} from "@ng-bootstrap/ng-bootstrap";
@@ -25,7 +25,9 @@ export class CoachDetailsComponent implements OnInit,AfterViewInit,OnDestroy {
   private connectedUser: Observable<ApiUser>;
   private subscriptionConnectUser: Subscription;
 
-  constructor(private route: ActivatedRoute, private coachService: CoachCoacheeService, private authService: AuthService, private cd: ChangeDetectorRef) {
+  private displayErrorBookingDate = false;
+
+  constructor(private route: ActivatedRoute, private router: Router, private coachService: CoachCoacheeService, private authService: AuthService, private cd: ChangeDetectorRef) {
   }
 
   ngOnInit() {
@@ -75,8 +77,8 @@ export class CoachDetailsComponent implements OnInit,AfterViewInit,OnDestroy {
   }
 
   bookADate() {
-    console.log('bookADate, dateModel : ', this.dateModel)
-    console.log('bookADate, timeModel : ', this.timeModel)
+    console.log('bookADate, dateModel : ', this.dateModel);
+    console.log('bookADate, timeModel : ', this.timeModel);
 
     this.connectedUser.take(1).subscribe(
       (user: ApiUser) => {
@@ -91,9 +93,12 @@ export class CoachDetailsComponent implements OnInit,AfterViewInit,OnDestroy {
         this.coachService.bookAMeetingWithCoach(timestampSc, this.coachId, user.id).subscribe(
           (success) => {
             console.log('bookAMeetingWithCoach success', success);
+            //redirect to meetings page
+            this.router.navigate(['/meetings', user.id]);
           },
           (error) => {
             console.log('bookAMeetingWithCoach error', error);
+            this.displayErrorBookingDate = true;
           }
         );
       }

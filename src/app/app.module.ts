@@ -31,16 +31,17 @@ import {CoachListComponent} from './user/coach-list/coach-list.component';
 import {CoachItemComponent} from './user/coach-list/coach-item.component';
 import {CoachCoacheeService} from "./service/CoachCoacheeService";
 import {CoachDetailsComponent} from './user/coach-details/coach-details.component';
-import {MaterialModule, MaterialRootModule} from "@angular/material";//lib
+import {MaterialModule} from "@angular/material";//lib
 import {CalendarModule} from 'angular-calendar';//lib
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import {MeetingsService} from "./service/meetings.service";
 import {MeetingListComponent} from "./meeting/meeting-list/meeting-list.component";
-import {MeetingItemCoacheeComponent} from "./meeting/meeting-list/meeting-item-coachee.component";
+import {MeetingItemCoacheeComponent} from "./meeting/meeting-list/coachee/meeting-item-coachee.component";
 import {PreMeetingComponent} from "./meeting/pre-meeting.component";
-import {ProfileComponent} from "./user/profile.component";
-import {ApiService} from "./service/api.service";
-import {MeetingItemCoachComponent} from "./meeting/meeting-list/meeting-item-coach.component";
+import {ProfileCoachComponent} from "./user/profile/coach/profile-coach.component";
+import {ProfileCoacheeComponent} from "./user/profile/coachee/profile-coachee.component";
+import {MeetingItemCoachComponent} from "./meeting/meeting-list/coach/meeting-item-coach.component";
+import {FirebaseService} from "./service/firebase.service";
 
 
 @NgModule({
@@ -60,7 +61,8 @@ import {MeetingItemCoachComponent} from "./meeting/meeting-list/meeting-item-coa
     RecipeStartComponent,
     SignupComponent,
     SigninComponent,
-    ProfileComponent,
+    ProfileCoachComponent,
+    ProfileCoacheeComponent,
     WelcomeComponent,
     ChatComponent,
     ChatItemComponent,
@@ -82,7 +84,7 @@ import {MeetingItemCoachComponent} from "./meeting/meeting-list/meeting-item-coa
     CalendarModule.forRoot(),
     NgbModule.forRoot(),
   ],
-  providers: [DataService, LogService, ShoppingListService, AuthService, AuthGuard, CoachCoacheeService, MeetingsService, ApiService],
+  providers: [DataService, LogService, ShoppingListService, AuthService, AuthGuard, CoachCoacheeService, MeetingsService, FirebaseService],
   bootstrap: [AppComponent]
 })
 export class AppModule {
