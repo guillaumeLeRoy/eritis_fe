@@ -3,6 +3,8 @@ import {Router} from "@angular/router";
 import {AuthService} from "../service/auth.service";
 import {Subscription, Observable} from "rxjs";
 import {ApiUser} from "../model/apiUser";
+import {Coach} from "../model/Coach";
+import {Coachee} from "../model/coachee";
 
 @Component({
   selector: 'rb-header',
@@ -16,7 +18,9 @@ export class HeaderComponent implements OnInit,OnDestroy {
   private connectedUser: Observable<ApiUser>;
   private subscription: Subscription;
 
-  private userStatus: number;
+  // private userStatus: number;
+
+  private mUser: ApiUser;
 
   constructor(private router: Router, private authService: AuthService, private cd: ChangeDetectorRef) {
   }
@@ -36,9 +40,7 @@ export class HeaderComponent implements OnInit,OnDestroy {
       (user: ApiUser) => {
         console.log("getConnectedUser : " + user);
         this.connectedUser = Observable.of(user);
-        if (user != null) {
-          this.userStatus = user.status; //1 for coach, 2 for coachee
-        }
+        this.mUser = user;
         this.cd.detectChanges();
       }
     );
@@ -68,9 +70,9 @@ export class HeaderComponent implements OnInit,OnDestroy {
   }
 
   goToProfile() {
-    if (this.userStatus == 1) {
+    if (this.mUser instanceof Coach) {
       this.router.navigate(['/profile_coach']);
-    } else if (this.userStatus == 2) {
+    } else if (this.mUser instanceof Coachee) {
       this.router.navigate(['/profile_coachee']);
     }
   }

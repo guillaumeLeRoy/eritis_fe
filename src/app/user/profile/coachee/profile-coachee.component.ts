@@ -30,7 +30,7 @@ export class ProfileCoacheeComponent implements OnInit, AfterViewInit,OnDestroy 
   }
 
   ngAfterViewInit(): void {
-    var user = this.authService.getConnectedUser();
+    var user: ApiUser = this.authService.getConnectedUser();
     console.log("ngAfterViewInit, user : ", user);
     this.onUserObtained(user);
 
@@ -73,23 +73,8 @@ export class ProfileCoacheeComponent implements OnInit, AfterViewInit,OnDestroy 
     console.log("onUserObtained, user : ", user);
 
     this.connectedUser = Observable.of(user);
-
-    if (user) {
-
-      if (user.status == 2) {
-        //coachee
-
-        let coachee: Coachee = new Coachee();
-        coachee.id = user.id;
-        coachee.email = user.email;
-        coachee.display_name = user.display_name;
-        coachee.avatar_url = user.avatar_url;
-        coachee.start_date = user.start_date;
-
-        console.log("getConnectedUser, create a coachee : ", coachee);
-
-        this.coachee = Observable.of(coachee);
-      }
+    if (user instanceof Coachee) {
+      this.coachee = Observable.of(user);
     }
 
     this.cd.detectChanges();

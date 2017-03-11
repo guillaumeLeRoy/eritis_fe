@@ -7,13 +7,13 @@ import {Response, Http, Headers} from "@angular/http";
 import {ApiUser} from "../model/apiUser";
 import {environment} from "../../environments/environment";
 import {FirebaseService} from "./firebase.service";
+import {Coach} from "../model/Coach";
+import {Coachee} from "../model/coachee";
 
 @Injectable()
 export class AuthService {
 
-  public static UPDATE_COACH_DISPLAY_NAME = "/coachs/:id/display_name";
-  public static UPDATE_COACH_DESCRIPTION = "/coachs/:id/description";
-  public static UPDATE_COACH_AVATAR_URL = "/coachs/:id/avatar_url";
+  public static UPDATE_COACH = "/coachs/:id";
   public static UPDATE_COACHEE = "/coachees/:id";
   public static LOGIN = "/login/:firebaseId";
   public static GET_COACHS = "/coachs";
@@ -30,7 +30,7 @@ export class AuthService {
   // private user: User
   private isUserAuth = new BehaviorSubject<boolean>(false);//NOT auth by default
   // private ApiUserSubject = new BehaviorSubject<ApiUser>(null);//NOT auth by default
-  private ApiUserSubject = new Subject<ApiUser>();//NOT auth by default
+  private ApiUserSubject = new Subject< ApiUser>();//NOT auth by default
   /* flag to know if we are in the sign in or sign up process. Block updateAuthStatus(FBuser) is true */
   private isSignInOrUp = false;
 
@@ -218,8 +218,8 @@ export class AuthService {
     }
   }
 
-  /* when we obtained a User from the API ( coach or coachee */
-  public onAPIuserObtained(user: ApiUser, firebaseToken: string): ApiUser {
+  /* when we obtained a User from the API ( coach or coachee ) */
+  private onAPIuserObtained(user: Coach | Coachee, firebaseToken: string): Coach | Coachee {
     console.log("onAPIuserObtained, user : ", user);
     if (user) {
       //keep current user
@@ -236,6 +236,7 @@ export class AuthService {
     return user;
   }
 
+
   private getUserForFirebaseId(firebaseId: string, token: string): Observable<ApiUser> {
     console.log("getUserForFirebaseId : ", firebaseId);
     let params = [firebaseId];
@@ -245,10 +246,11 @@ export class AuthService {
 
     return this.httpService.get(this.generatePath(AuthService.LOGIN, params), {headers: headers}).map(
       response => {
-        let apiUser: ApiUser = response.json();
+        let apiUser: any = response.json();
+        let res = this.parseAPIuser(apiUser);
         console.log("getUserForFirebaseId, apiUser : ", apiUser);
         console.log("getUserForFirebaseId, token : ", token);
-        return this.onAPIuserObtained(apiUser, token);
+        return this.onAPIuserObtained(res, token);
       }
     );
   }
@@ -290,8 +292,7 @@ export class AuthService {
         return this.httpService.post(this.generatePath(AuthService.LOGIN, params), body, {headers: headers})
           .map(
             (response) => {
-
-              let APIuser: ApiUser = response.json();
+              let APIuser = response.json();
               console.log("signUp, APIuser : ", APIuser);
               // return json;
               this.isSignInOrUp = false;
@@ -300,6 +301,29 @@ export class AuthService {
           );
       }
     );
+  }
+
+  private parseAPIuser(user: any): Coach | Coachee {
+    console.log("parseAPIuser, user :", user);
+
+    if (user.status == 1) {
+      //coach
+      let coach: Coach = new Coach(user.id);
+      coach.email = user.email;
+      coach.display_name = user.display_name;
+      coach.avatar_url = user.avatar_url;
+      coach.start_date = user.start_date;
+      coach.description = user.description;
+      return coach;
+    } else if (user.status == 2) {
+      let coachee: Coachee = new Coachee(user.id);
+      coachee.id = user.id;
+      coachee.email = user.email;
+      coachee.display_name = user.display_name;
+      coachee.avatar_url = user.avatar_url;
+      coachee.start_date = user.start_date;
+    }
+    return null;
   }
 
   signIn(user: User): Observable<ApiUser> {
@@ -345,83 +369,36 @@ export class AuthService {
     let params = [id];
     return this.put(AuthService.UPDATE_COACHEE, params, body).map(
       (response: Response) => {
-        let json = response.json();
-        let APIuser = json as ApiUser;
-        console.log("updateCoacheeForId, response json : ", json);
-
-        //dispatch
-        this.onAPIuserObtained(APIuser, this.ApiUser.firebaseToken);
-
-        return APIuser;
+        return this.onUserResponse(response);
       });
   }
 
-  updateCoachDisplayNameForId(id: string, displayName: string): Observable<ApiUser> {
+  updateCoachForId(id: string, displayName: string, description: string, avatarUrl: string): Observable<ApiUser> {
     console.log("updateCoachDisplayNameForId, id", id);
 
     let body = {
       display_name: displayName,
-    };
-
-    let params = [id];
-    return this.put(AuthService.UPDATE_COACH_DISPLAY_NAME, params, body).map(
-      (response: Response) => {
-        let json = response.json();
-        let APIuser = json as ApiUser;
-
-        console.log("updateCoachDisplayNameForId, response json : ", json);
-
-        //dispatch
-        this.onAPIuserObtained(APIuser, this.ApiUser.firebaseToken);
-
-        return APIuser;
-      });
-  }
-
-  updateCoachDescriptionForId(id: string, description: string): Observable<ApiUser> {
-    console.log("updateCoachDescriptionForId, id", id);
-
-    let body = {
-      display_name: description,
-    };
-
-    let params = [id];
-    return this.put(AuthService.UPDATE_COACH_DESCRIPTION, params, body).map(
-      (response: Response) => {
-        let json = response.json();
-        let APIuser = json as ApiUser;
-
-        console.log("updateCoachDescriptionForId, response json : ", json);
-
-        //dispatch
-        this.onAPIuserObtained(APIuser, this.ApiUser.firebaseToken);
-
-        return APIuser;
-      });
-  }
-
-
-  updateCoachAvatarUrlForId(id: string, avatarUrl: string): Observable<ApiUser> {
-    console.log("updateCoachAvatarUrlForId, id", id);
-
-    let body = {
+      description: description,
       avatar_url: avatarUrl,
     };
 
     let params = [id];
-    return this.put(AuthService.UPDATE_COACH_AVATAR_URL, params, body).map(
+    return this.put(AuthService.UPDATE_COACH, params, body).map(
       (response: Response) => {
-        let json = response.json();
-        let APIuser = json as ApiUser;
-
-        console.log("updateCoachAvatarUrlForId, response json : ", json);
-
-        //dispatch
-        this.onAPIuserObtained(APIuser, this.ApiUser.firebaseToken);
-
-        return APIuser;
+        return this.onUserResponse(response);
       });
   }
 
 
+  private onUserResponse(response: Response): Coach | Coachee {
+    let json = response.json();
+    let res = this.parseAPIuser(json);
+    console.log("updateCoachAvatarUrlForId, response json : ", json);
+    //dispatch
+    return this.onAPIuserObtained(res, this.ApiUser.firebaseToken);
+  }
+
 }
+
+
+

@@ -3,7 +3,7 @@ import {Observable, Subscription} from "rxjs";
 import {Coach} from "../../../model/Coach";
 import {AuthService} from "../../../service/auth.service";
 import {ApiUser} from "../../../model/apiUser";
-import {FormGroup, FormBuilder} from "@angular/forms";
+import {FormGroup, FormBuilder, Validators} from "@angular/forms";
 
 @Component({
   selector: 'rb-profile-coach',
@@ -23,8 +23,9 @@ export class ProfileCoachComponent implements OnInit, AfterViewInit,OnDestroy {
 
   ngOnInit() {
     this.formCoach = this.formBuilder.group({
-      pseudo: [''],
-      avatar: ['']
+      displayName: ['', Validators.required],
+      avatar: ['', Validators.required],
+      description: ['', Validators.required],
     });
   }
 
@@ -47,49 +48,44 @@ export class ProfileCoachComponent implements OnInit, AfterViewInit,OnDestroy {
     }
   }
 
-  submitCoachProfileUpdate() {
-    console.log("submitProfileUpdate");
 
-    // this.coach.last().flatMap(
-    //   (coach: Coach) => {
-    //     console.log("submitProfileUpdate, coache obtained");
-    //
-    //     // return this.authService.updateCoachForId(coach.id, this.formCoach.value.pseudo, this.formCoach.value.avatar);
-    //   }
-    // ).subscribe(
-    //   (user: ApiUser) => {
-    //     console.log("coach updated : ", user);
-    //     //refresh page
-    //     this.onUserObtained(user);
-    //   },
-    //   (error) => {
-    //     console.log('coach update, error', error);
-    //     //TODO display error
-    //   });
+  submitCoachProfilUpdate() {
+    console.log("submitCoachProfilUpdate");
+    this.coach.last().flatMap(
+      (coach: Coach) => {
+        console.log("submitCoachProfilUpdate, coach obtained");
+        return this.authService.updateCoachForId(coach.id, this.formCoach.value.displayName,
+          this.formCoach.value.description,
+          this.formCoach.value.avatar);
+      }
+    ).subscribe(
+      (user: ApiUser) => {
+        console.log("coach updated : ", user);
+        //refresh page
+        this.onUserObtained(user);
+      },
+      (error) => {
+        console.log('coach update, error', error);
+        //TODO display error
+      });
   }
-
 
   private onUserObtained(user: ApiUser) {
     console.log("onUserObtained, user : ", user);
 
     this.connectedUser = Observable.of(user);
 
-    if (user) {
+    if (user instanceof Coach) {
+      //update form
+      this.formCoach.setValue({
+        displayName: user.display_name,
+        description: user.description,
+        avatar: user.avatar_url,
+      });
+      console.log("onUserObtained, update form : ", this.formCoach.value);
 
-      if (user.status == 1) {
-        //coach
-        console.log("getConnectedUser, create a coach");
+      this.coach = Observable.of(user);
 
-        let coach: Coach = new Coach();
-        coach.id = user.id;
-        coach.email = user.email;
-        coach.display_name = user.display_name;
-        coach.avatar_url = user.avatar_url;
-        coach.start_date = user.start_date;
-
-        this.coach = Observable.of(coach);
-
-      }
     }
 
     this.cd.detectChanges();

@@ -62,9 +62,8 @@
         <!-- Profile About  -->
         <div class="card light-blue">
           <div class="card-content white-text">
-            <span class="card-title">About Me!</span>
-            <p>Coach description</p>
-
+            <span class="card-title">A propos</span>
+            <p> {{ (coach | async)?.description }}</p>
           </div>
         </div>
         <!-- Profile About  -->
@@ -105,29 +104,26 @@
           <div class="card-content">
             <span class="card-title">Modifier votre profile</span>
 
-            <form [formGroup]="formCoach" (ngSubmit)="submitCoachProfileUpdate()">
-
+            <!-- update display name -->
+            <form [formGroup]="formCoach" (ngSubmit)="submitCoachProfilUpdate()">
               <div class="row">
                 <div class="input-field col s10">
-                  <input id="edit_username" type="text" formControlName="pseudo" class="validate"
-                         placeholder="{{ (coach | async)?.display_name }}">
+                  <input id="edit_username" type="text" formControlName="displayName" class="validate">
                   <label for="edit_username">Username</label>
                 </div>
               </div>
 
-
               <div class="row">
                 <div class="input-field col s10">
-                    <textarea id="edit_description" row="2" class="materialize-textarea"
-                              placeholder="Décrivez-vous"></textarea>
+                  <textarea id="edit_description" class="materialize-textarea validate"
+                            formControlName="description"></textarea>
                   <label for="edit_description">Description</label>
                 </div>
               </div>
 
               <div class="row">
                 <div class="input-field col s10">
-                  <input id="edit_avatar_url" type="text" formControlName="avatar"
-                         placeholder="{{ (coach | async)?.avatar_url }}">
+                  <input id="edit_avatar_url" type="text" formControlName="avatar" class="validate">
                   <label for="edit_avatar_url">Avatar url</label>
                 </div>
               </div>

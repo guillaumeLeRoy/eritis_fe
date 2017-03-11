@@ -1,10 +1,11 @@
 import {Component, OnInit, AfterViewInit, ChangeDetectorRef, OnDestroy} from '@angular/core';
 import {MeetingsService} from "../../service/meetings.service";
-import {ActivatedRoute} from "@angular/router";
 import {Meeting} from "../../model/meeting";
 import {Observable, Subscription} from "rxjs";
 import {AuthService} from "../../service/auth.service";
 import {ApiUser} from "../../model/apiUser";
+import {Coach} from "../../model/Coach";
+import {Coachee} from "../../model/coachee";
 
 @Component({
   selector: 'rb-meeting-list',
@@ -76,12 +77,11 @@ export class MeetingListComponent implements OnInit, AfterViewInit, OnDestroy {
     console.log("onUserObtained, user : ", user);
     if (user) {
 
-      if (user.status == 1) {
+      if (user instanceof Coach) {
         //coach
         console.log("get a coach");
         this.getAllMeetingsForCoach(user.id);
-
-      } else if (user.status == 2) {
+      } else if (user instanceof Coachee) {
         //coachee
         console.log("get a coachee");
         this.getAllMeetingsForCoachee(user.id);
