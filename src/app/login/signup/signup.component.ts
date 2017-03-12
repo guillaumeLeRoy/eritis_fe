@@ -10,13 +10,9 @@ import {Router} from "@angular/router";
 })
 export class SignupComponent implements OnInit {
 
-  // @ViewChild('email') email: Input
-
   private signUpForm: FormGroup
   private error = false
   private errorMessage: ''
-
-  private checked = false;
 
   constructor(private formBuilder: FormBuilder, private authService: AuthService, private router: Router) {
     console.log("constructor")
@@ -47,18 +43,36 @@ export class SignupComponent implements OnInit {
 
     //reset errors
     this.error = false;
-    this.errorMessage = ''
+    this.errorMessage = '';
 
-    this.authService.signUp(this.signUpForm.value).subscribe(
-      data => {
-        console.log("onSignUp, data obtained", data)
-        this.router.navigate(['/coachs'])
-      },
-      error => {
-        console.log("onSignUp, error obtained", error)
-        this.error = true;
-        this.errorMessage = error
-      })
+
+    if (this.signUpForm.value.status) {
+      console.log("onSignUp, coach");
+
+      this.authService.signUpCoach(this.signUpForm.value).subscribe(
+        data => {
+          console.log("onSignUp, data obtained", data)
+          this.router.navigate(['/coachs'])
+        },
+        error => {
+          console.log("onSignUp, error obtained", error)
+          this.error = true;
+          this.errorMessage = error
+        })
+    } else {
+      console.log("onSignUp, coachee");
+      this.authService.signUpCoachee(this.signUpForm.value).subscribe(
+        data => {
+          console.log("onSignUp, data obtained", data)
+          this.router.navigate(['/coachs'])
+        },
+        error => {
+          console.log("onSignUp, error obtained", error)
+          this.error = true;
+          this.errorMessage = error
+        })
+    }
+
 
   }
 

@@ -15,6 +15,8 @@ export class AuthService {
 
   public static UPDATE_COACH = "/coachs/:id";
   public static UPDATE_COACHEE = "/coachees/:id";
+  public static POST_SIGN_UP_COACH = "/login/:firebaseId/coach";
+  public static POST_SIGN_UP_COACHEE = "/login/:firebaseId/coachee";
   public static LOGIN = "/login/:firebaseId";
   public static GET_COACHS = "/coachs";
   public static GET_COACH_FOR_ID = "/coachs/:id";
@@ -255,8 +257,16 @@ export class AuthService {
     );
   }
 
+  signUpCoachee(user: User): Observable<ApiUser> {
+    return this.signup(user, AuthService.POST_SIGN_UP_COACHEE);
+  }
 
-  signUp(user: User): Observable<ApiUser> {
+
+  signUpCoach(user: User): Observable<ApiUser> {
+    return this.signup(user, AuthService.POST_SIGN_UP_COACH);
+  }
+
+  private signup(user: User, path: string): Observable<ApiUser> {
     console.log("1. user signUp : ", user);
     this.isSignInOrUp = true;
     //create user with email and pwd
@@ -275,13 +285,9 @@ export class AuthService {
         //user should be ok just after a sign up
         let fbUser = this.firebase.auth().currentUser;
 
-        //now sign up in AppEngine
-        let status = user.status == true ? 1 : 2;//coach 1, coachee 2
-
         let body = {
           email: fbUser.email,
           uid: fbUser.uid,
-          status: status
         };
         let params = [fbUser.uid];
 
@@ -289,14 +295,14 @@ export class AuthService {
         headers.append('Authorization', 'Bearer ' + token);
 
         // start sign up request
-        return this.httpService.post(this.generatePath(AuthService.LOGIN, params), body, {headers: headers})
+        return this.httpService.post(this.generatePath(path, params), body, {headers: headers})
           .map(
             (response) => {
               let APIuser = response.json();
               console.log("signUp, APIuser : ", APIuser);
               // return json;
               this.isSignInOrUp = false;
-              return this.onAPIuserObtained(APIuser, token);
+              return this.onAPIuserObtained(this.parseAPIuser(APIuser), token);
             }
           );
       }
@@ -306,7 +312,8 @@ export class AuthService {
   private parseAPIuser(user: any): Coach | Coachee {
     console.log("parseAPIuser, user :", user);
 
-    if (user.status == 1) {
+    if (user.coach) {
+      user = user.coach;
       //coach
       let coach: Coach = new Coach(user.id);
       coach.email = user.email;
@@ -315,13 +322,15 @@ export class AuthService {
       coach.start_date = user.start_date;
       coach.description = user.description;
       return coach;
-    } else if (user.status == 2) {
+    } else if (user.coachee) {
+      user = user.coachee;
       let coachee: Coachee = new Coachee(user.id);
       coachee.id = user.id;
       coachee.email = user.email;
       coachee.display_name = user.display_name;
       coachee.avatar_url = user.avatar_url;
       coachee.start_date = user.start_date;
+      return coachee;
     }
     return null;
   }
