@@ -1,6 +1,6 @@
 import { RecipeBookPage } from './app.po';
 
-describe('recipe-book App', function() {
+describe('eritis_fe App', function() {
   let page: RecipeBookPage;
 
   beforeEach(() => {
