@@ -1,7 +1,4 @@
 import {Routes, RouterModule} from "@angular/router";
-import {RecipesComponent} from "./recipes/recipes.component";
-import {ShopingListComponent} from "./shoping-list/shoping-list.component";
-import {RECIPE_ROUTES} from "./recipes/recipes.routes";
 import {SigninComponent} from "./login/signin/signin.component";
 import {SignupComponent} from "./login/signup/signup.component";
 import {AuthGuard} from "./login/auth.guard";
@@ -18,8 +15,6 @@ const APP_ROUTES: Routes = [
   {path: '', redirectTo: '/welcome', pathMatch: 'full'},
   {path: 'welcome', component: WelcomeComponent},
   {path: 'chat', component: ChatComponent},
-  {path: 'recipes', component: RecipesComponent, children: RECIPE_ROUTES},
-  {path: 'shopping-list', component: ShopingListComponent},
   {path: 'signin', component: SigninComponent},
   {path: 'signup', component: SignupComponent},
   {path: 'profile_coach', component: ProfileCoachComponent},

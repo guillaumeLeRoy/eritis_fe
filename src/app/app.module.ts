@@ -5,21 +5,9 @@ import {HttpModule} from '@angular/http';
 
 import {AppComponent} from './app.component';
 import {HeaderComponent} from './header/header.component';
-import {RecipesComponent} from './recipes/recipes.component';
-import {RecipesListComponent} from './recipes/recipes-list/recipes-list.component';
-import {RecipeItemComponent} from './recipes/recipes-list/recipe-item.component';
-import {RecipeDetailsComponent} from './recipes/recipe-details/recipe-details.component';
-import {ShopingListComponent} from './shoping-list/shoping-list.component';
-import {ShopingListAddComponent} from './shoping-list/shoping-list-add/shoping-list-add.component';
-import {MyDirectiveDirective} from './shoping-list/my-directive.directive';
-import {UnlessDirective} from './shoping-list/unless.directive';
-import {DropdownDirective} from './dropdown.directive';
 import {DataService} from './service/data.service';
 import {LogService} from './service/log.service';
-import {ShoppingListService} from './shoping-list/shopping-list.service';
 import {routing} from "./app.routing";
-import {RecipeEditComponent} from './recipes/recipe-edit/recipe-edit.component';
-import {RecipeStartComponent} from './recipes/recipe-start.component';
 import {SignupComponent} from './login/signup/signup.component';
 import {SigninComponent} from './login/signin/signin.component';
 import {AuthService} from "./service/auth.service";
@@ -52,17 +40,6 @@ import {InputTextModule} from "primeng/components/inputtext/inputtext";
   declarations: [
     AppComponent,
     HeaderComponent,
-    RecipesComponent,
-    RecipesListComponent,
-    RecipeItemComponent,
-    RecipeDetailsComponent,
-    ShopingListComponent,
-    ShopingListAddComponent,
-    MyDirectiveDirective,
-    UnlessDirective,
-    DropdownDirective,
-    RecipeEditComponent,
-    RecipeStartComponent,
     SignupComponent,
     SigninComponent,
     ProfileCoachComponent,
@@ -92,7 +69,7 @@ import {InputTextModule} from "primeng/components/inputtext/inputtext";
     InputTextModule,
     SliderModule,
   ],
-  providers: [DataService, LogService, ShoppingListService, AuthService, AuthGuard, CoachCoacheeService, MeetingsService, FirebaseService],
+  providers: [DataService, LogService, AuthService, AuthGuard, CoachCoacheeService, MeetingsService, FirebaseService],
   bootstrap: [AppComponent]
 })
 export class AppModule {

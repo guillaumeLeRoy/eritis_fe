@@ -2,7 +2,6 @@ import {Component, OnInit, OnDestroy, ChangeDetectorRef, ElementRef, AfterViewIn
 import {AuthService} from "../service/auth.service";
 import {Subscription} from "rxjs";
 import {Message} from "./message";
-import {RecipeService} from "../recipes/recipe.service";
 import {FirebaseService} from "../service/firebase.service";
 
 
@@ -23,7 +22,7 @@ export class ChatComponent implements OnInit,AfterViewInit, OnDestroy {
 
   private messageInput: Element
 
-  constructor(private firebase: FirebaseService, private authService: AuthService, private cd: ChangeDetectorRef, private myElement: ElementRef, private recipeService: RecipeService) {
+  constructor(private firebase: FirebaseService, private authService: AuthService, private cd: ChangeDetectorRef, private myElement: ElementRef) {
     this.userAuth = true
     this.messages = new Array<Message>();
   }
@@ -58,11 +57,11 @@ export class ChatComponent implements OnInit,AfterViewInit, OnDestroy {
           this.loadMessages();
 
           //load top questions
-          this.recipeService.getTopQuestions().subscribe(
-            response => {
-              console.log("top questions response : ", response)
-            }
-          )
+          // this.recipeService.getTopQuestions().subscribe(
+          //   response => {
+          //     console.log("top questions response : ", response)
+          //   }
+          // )
 
         } else {
           console.log("user is NOT authent")
