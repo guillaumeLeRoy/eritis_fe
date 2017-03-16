@@ -58,7 +58,6 @@ export class MeetingListComponent implements OnInit, AfterViewInit, OnDestroy {
   private getAllMeetingsForCoach(coachId: string) {
     this.subscription = this.meetingsService.getAllMeetingsForCoachId(coachId).subscribe(
       (meetings: Meeting[]) => {
-
         console.log("got meetings for coach", meetings);
 
         this.meetings = Observable.of(meetings);

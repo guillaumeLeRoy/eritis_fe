@@ -415,6 +415,12 @@ export class AuthService {
       });
   }
 
+  /**
+   *
+   * @param coacheeId
+   * @param coachId
+   * @returns {Observable<R>}
+   */
   updateCoacheeSelectedCoach(coacheeId: string, coachId: string): Observable<Coachee> {
     console.log("updateCoacheeSelectedCoach, coacheeId", coacheeId);
     console.log("updateCoacheeSelectedCoach, coachId", coachId);

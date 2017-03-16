@@ -4,6 +4,7 @@ import {CoachCoacheeService} from "../../service/CoachCoacheeService";
 import {Observable, Subscription} from "rxjs";
 import {AuthService} from "../../service/auth.service";
 import {Coachee} from "../../model/coachee";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'rb-coach-list',
@@ -19,7 +20,7 @@ export class CoachListComponent implements OnInit,AfterViewInit, OnDestroy {
 
   private potSelectedCoach: Coach;
 
-  constructor(private service: CoachCoacheeService, private authService: AuthService, private cd: ChangeDetectorRef) {
+  constructor(private  router: Router, private service: CoachCoacheeService, private authService: AuthService, private cd: ChangeDetectorRef) {
   }
 
   ngOnInit() {
@@ -31,12 +32,14 @@ export class CoachListComponent implements OnInit,AfterViewInit, OnDestroy {
 
     let user = this.authService.getConnectedUser();
     if (user) {
+      //only a Coachee should see this component
       if (user instanceof Coachee) {
         this.onUserObtained(user);
       }
     } else {
       this.authService.getConnectedUserObservable().subscribe(
         (user: Coach | Coachee) => {
+          //only a Coachee should see this component
           if (user instanceof Coachee) {
             this.onUserObtained(user);
           }
@@ -52,23 +55,28 @@ export class CoachListComponent implements OnInit,AfterViewInit, OnDestroy {
 
   onFinalCoachSelected(selectedCoach: Coach) {
     console.log("onFinalCoachSelected");
+    //reset pot coach
+    this.potSelectedCoach = null;
 
+    //save in backend
     this.coachee.last().flatMap(
       (coachee: Coachee) => {
         console.log("onFinalCoachSelected, get coachee", coachee);
-
         return this.authService.updateCoacheeSelectedCoach(coachee.id, selectedCoach.id);
       }
     ).subscribe(
-      (coachee: Coach |Coachee) => {
-        console.log("coach selected saved");
-        //redirect to a different page
+      (coachee: Coachee) => {
+        console.log("coach selected saved, redirect to meetings");
+        //redirect to a meeting page
+        // this.router.navigate(['/meetings']);
+        this.onUserObtained(coachee);
       }
     );
 
   }
 
   private onUserObtained(coachee: Coachee) {
+    console.log("onUserObtained, coachee", coachee);
 
     this.coachee = Observable.of(coachee);
 

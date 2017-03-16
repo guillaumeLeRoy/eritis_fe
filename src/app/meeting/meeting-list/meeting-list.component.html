@@ -3,6 +3,11 @@
 
   <div class="row">
     <div class="col s12">
+
+      <div *ngIf="(meetings | async)?.length == 0">
+        <h5>Vous n'avez aucun meeting</h5>
+      </div>
+
       <!-- views for coach -->
       <div *ngIf="isUserACoach((user | async))">
         <rb-meeting-item-coach *ngFor="let meeting of meetings | async" [meeting]="meeting"
