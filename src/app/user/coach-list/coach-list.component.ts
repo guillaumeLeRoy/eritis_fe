@@ -2,6 +2,8 @@ import {Component, OnInit, OnDestroy, AfterContentInit, AfterViewInit, ChangeDet
 import {Coach} from "../../model/Coach";
 import {CoachCoacheeService} from "../../service/CoachCoacheeService";
 import {Observable, Subscription} from "rxjs";
+import {AuthService} from "../../service/auth.service";
+import {Coachee} from "../../model/coachee";
 
 @Component({
   selector: 'rb-coach-list',
@@ -13,7 +15,11 @@ export class CoachListComponent implements OnInit,AfterViewInit, OnDestroy {
   private coachs: Observable<Coach[]>;
   private subscription: Subscription;
 
-  constructor(private service: CoachCoacheeService, private cd: ChangeDetectorRef) {
+  private coachee: Observable<Coachee>;
+
+  private potSelectedCoach: Coach;
+
+  constructor(private service: CoachCoacheeService, private authService: AuthService, private cd: ChangeDetectorRef) {
   }
 
   ngOnInit() {
@@ -22,14 +28,64 @@ export class CoachListComponent implements OnInit,AfterViewInit, OnDestroy {
 
   ngAfterViewInit(): void {
     console.log("ngAfterViewInit");
-    this.subscription = this.service.getAllCoachs().subscribe(
-      (coachs: Coach[]) => {
-        console.log("getAllCoachs subscribe, coachs : ", coachs);
 
-        this.coachs = Observable.of(coachs);
-        this.cd.detectChanges();
+    let user = this.authService.getConnectedUser();
+    if (user) {
+      if (user instanceof Coachee) {
+        this.onUserObtained(user);
+      }
+    } else {
+      this.authService.getConnectedUserObservable().subscribe(
+        (user: Coach | Coachee) => {
+          if (user instanceof Coachee) {
+            this.onUserObtained(user);
+          }
+        }
+      );
+    }
+  }
+
+  onPotentialCoachSelected(coach: Coach) {
+    console.log("potentialCoachSelected");
+    this.potSelectedCoach = coach;
+  }
+
+  onFinalCoachSelected(selectedCoach: Coach) {
+    console.log("onFinalCoachSelected");
+
+    this.coachee.last().flatMap(
+      (coachee: Coachee) => {
+        console.log("onFinalCoachSelected, get coachee", coachee);
+
+        return this.authService.updateCoacheeSelectedCoach(coachee.id, selectedCoach.id);
+      }
+    ).subscribe(
+      (coachee: Coach |Coachee) => {
+        console.log("coach selected saved");
+        //redirect to a different page
       }
     );
+
+  }
+
+  private onUserObtained(coachee: Coachee) {
+
+    this.coachee = Observable.of(coachee);
+
+    if (coachee.selectedCoach) {
+      console.log("onUserObtained, we have a selected coach");
+      // this.selectedCoach = coachee.selectedCoach;
+    } else {
+      //if not coach selected, display possible coachs
+      this.subscription = this.service.getAllCoachs().subscribe(
+        (coachs: Coach[]) => {
+          console.log("getAllCoachs subscribe, coachs : ", coachs);
+
+          this.coachs = Observable.of(coachs);
+          this.cd.detectChanges();
+        }
+      );
+    }
   }
 
   ngOnDestroy(): void {

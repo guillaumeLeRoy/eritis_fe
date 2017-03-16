@@ -15,18 +15,24 @@ export class AuthService {
 
   public static UPDATE_COACH = "/coachs/:id";
   public static UPDATE_COACHEE = "/coachees/:id";
+  public static UPDATE_COACHEE_SELECTED_COACH = "/coachees/:coacheeId/coach/:coachId";
   public static POST_SIGN_UP_COACH = "/login/:firebaseId/coach";
   public static POST_SIGN_UP_COACHEE = "/login/:firebaseId/coachee";
   public static LOGIN = "/login/:firebaseId";
   public static GET_COACHS = "/coachs";
   public static GET_COACH_FOR_ID = "/coachs/:id";
   public static GET_COACHEE_FOR_ID = "/coachees/:id";
+
+  /*Meeting*/
   public static POST_MEETING = "/meeting";
   public static GET_MEETING_REVIEWS = "/meeting/:meetingId/reviews";
   public static POST_MEETING_REVIEW = "/meeting/:meetingId/review";
   public static CLOSE_MEETING = "/meeting/:meetingId/close";
   public static GET_MEETINGS_FOR_COACHEE_ID = "/meetings/coachee/:coacheeId";
   public static GET_MEETINGS_FOR_COACH_ID = "/meetings/coach/:coachId";
+  public static POST_MEETING_POTENTIAL_DATE = "/meeting/:meetingId/potential";
+  public static GET_MEETING_POTENTIAL_DATES = "/meeting/:meetingId/potentials";
+  public static PUT_POTENTIAL_DATE_TO_MEETING = "/meeting/:meetingId/potential/:potentialId";//set the potential date as the meeting selected date
 
   private onAuthStateChangedCalled = false;
   // private user: User
@@ -36,7 +42,7 @@ export class AuthService {
   /* flag to know if we are in the sign in or sign up process. Block updateAuthStatus(FBuser) is true */
   private isSignInOrUp = false;
 
-  private ApiUser: ApiUser = null;
+  private ApiUser?: Coach | Coachee = null;
 
   constructor(private firebase: FirebaseService, private router: Router, private httpService: Http) {
     firebase.auth().onAuthStateChanged(function (user) {
@@ -48,11 +54,11 @@ export class AuthService {
     console.log("ctr done");
   }
 
-  getConnectedUser(): ApiUser {
+  getConnectedUser(): Coach | Coachee {
     return this.ApiUser;
   }
 
-  getConnectedUserObservable(): Observable<ApiUser> {
+  getConnectedUserObservable(): Observable<Coach | Coachee> {
     return this.ApiUserSubject.asObservable();
   }
 
@@ -251,7 +257,7 @@ export class AuthService {
         let apiUser: any = response.json();
         let res = this.parseAPIuser(apiUser);
         console.log("getUserForFirebaseId, apiUser : ", apiUser);
-        console.log("getUserForFirebaseId, token : ", token);
+        // console.log("getUserForFirebaseId, token : ", token);
         return this.onAPIuserObtained(res, token);
       }
     );
@@ -315,27 +321,37 @@ export class AuthService {
     if (user.coach) {
       user = user.coach;
       //coach
-      let coach: Coach = new Coach(user.id);
-      coach.email = user.email;
-      coach.display_name = user.display_name;
-      coach.avatar_url = user.avatar_url;
-      coach.start_date = user.start_date;
-      coach.description = user.description;
-      return coach;
+      return this.parseCoach(user);
     } else if (user.coachee) {
       user = user.coachee;
-      let coachee: Coachee = new Coachee(user.id);
-      coachee.id = user.id;
-      coachee.email = user.email;
-      coachee.display_name = user.display_name;
-      coachee.avatar_url = user.avatar_url;
-      coachee.start_date = user.start_date;
-      return coachee;
+      //coachee
+      return this.parseCoachee(user);
     }
     return null;
   }
 
-  signIn(user: User): Observable<ApiUser> {
+  private parseCoach(json: any): Coach {
+    let coach: Coach = new Coach(json.id);
+    coach.email = json.email;
+    coach.display_name = json.display_name;
+    coach.avatar_url = json.avatar_url;
+    coach.start_date = json.start_date;
+    coach.description = json.description;
+    return coach;
+  }
+
+  private parseCoachee(json: any): Coachee {
+    let coachee: Coachee = new Coachee(json.id);
+    coachee.id = json.id;
+    coachee.email = json.email;
+    coachee.display_name = json.display_name;
+    coachee.avatar_url = json.avatar_url;
+    coachee.start_date = json.start_date;
+    coachee.selectedCoach = json.selectedCoach;
+    return coachee;
+  }
+
+  signIn(user: User): Observable<Coach | Coachee> {
     console.log("1. user signIn : ", user);
     this.isSignInOrUp = true;
 
@@ -394,15 +410,29 @@ export class AuthService {
     let params = [id];
     return this.put(AuthService.UPDATE_COACH, params, body).map(
       (response: Response) => {
+        //convert to coach
         return this.onUserResponse(response);
+      });
+  }
+
+  updateCoacheeSelectedCoach(coacheeId: string, coachId: string): Observable<Coachee> {
+    console.log("updateCoacheeSelectedCoach, coacheeId", coacheeId);
+    console.log("updateCoacheeSelectedCoach, coachId", coachId);
+
+    let params = [coacheeId, coachId];
+    return this.put(AuthService.UPDATE_COACHEE_SELECTED_COACH, params, null).map(
+      (response: Response) => {
+        //convert to coachee
+        return this.parseCoachee(response.json());
       });
   }
 
 
   private onUserResponse(response: Response): Coach | Coachee {
     let json = response.json();
+    console.log("onUserResponse, response json : ", json);
     let res = this.parseAPIuser(json);
-    console.log("updateCoachAvatarUrlForId, response json : ", json);
+    console.log("onUserResponse, parsed user : ", res);
     //dispatch
     return this.onAPIuserObtained(res, this.ApiUser.firebaseToken);
   }

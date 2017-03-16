@@ -1,6 +1,6 @@
 <div class="card">
   <div class="card-content">
-    <span class="card-title">Séance avec {{ coach.display_name }}</span>
+    <span class="card-title">Vous avez choisi {{ coach.display_name }} pour être votre coach.</span>
 
     <!-- Meeting is closed-->
     <div *ngIf="!meeting.isOpen">
@@ -9,42 +9,51 @@
 
     <!-- Meeting is open -->
     <div *ngIf="meeting.isOpen">
-      <h4>You have a meeting</h4>
-    </div>
+      <div class="col s12" *ngIf="meeting.agreed_date == null">
+        <h4>Choisissez les plages horaires qui vous conviennent</h4>
+        <!-- add a date for this meeting -->
+        <rb-meeting-date [meeting]="meeting"></rb-meeting-date>
 
-    <div class="col s12">
-      <p>Le : {{meeting.date}}</p>
-    </div>
-
-    <!-- check if you have some reviews-->
-    <div class="container" *ngIf="(hasSomeReviews | async)">
-      <!-- list of reviews -->
-      <div *ngFor="let review of reviews | async">
-
-        <div class="card">
-          <div class="card-content">
-            <span class="card-title">Meeting Review</span>
-            <div class="list-group-item-text">at : {{review.date}}</div>
-            <div class="list-group-item-text">comment : {{review.comment}}</div>
-            <div class="list-group-item-text">score : {{review.score}}</div>
-          </div>
-        </div>
       </div>
 
+      <div class="col s12" *ngIf="meeting.agreed_date ">
+        <h4>Votre meeting est le : {{meeting.agreed_date.start_date}}</h4>
+      </div>
+
+      <!-- check if you have some reviews-->
+      <div class="container" *ngIf="(hasSomeReviews | async)">
+        <!-- list of reviews -->
+        <div *ngFor="let review of reviews | async">
+
+          <div class="card">
+            <div class="card-content">
+              <span class="card-title">Meeting Review</span>
+              <div class="list-group-item-text">at : {{review.date}}</div>
+              <div class="list-group-item-text">comment : {{review.comment}}</div>
+              <div class="list-group-item-text">score : {{review.score}}</div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+      <!-- end check-->
+
     </div>
-    <!-- end check-->
+
+    <!--&lt;!&ndash; add a pre meeting review &ndash;&gt;-->
+    <!--<div class="container">-->
+      <!--<rb-pre-meeting *ngIf="!(hasSomeReviews | async)" [meeting]="meeting"-->
+                      <!--(reviewPosted)="onPreMeetingReviewPosted($event)"-->
+      <!--&gt;</rb-pre-meeting>-->
+    <!--</div>-->
+
+
+    <p-slider [(ngModel)]="val" [min]="0" [max]="100"></p-slider>
+
+    <p-slider [(ngModel)]="val"></p-slider>
+
 
   </div>
-
-  <!-- add a pre meeting review -->
-  <div *ngIf="meeting.isOpen">
-    <div class="container">
-      <rb-pre-meeting *ngIf="!(hasSomeReviews | async)" [meeting]="meeting"
-                      (reviewPosted)="onPreMeetingReviewPosted($event)"
-      ></rb-pre-meeting>
-    </div>
-  </div>
-
 
 </div>
 

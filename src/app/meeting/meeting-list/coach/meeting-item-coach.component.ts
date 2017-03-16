@@ -5,6 +5,7 @@ import {MeetingReview} from "../../../model/MeetingReview";
 import {FormGroup, FormBuilder, Validators} from "@angular/forms";
 import {CoachCoacheeService} from "../../../service/CoachCoacheeService";
 import {Coachee} from "../../../model/coachee";
+import {MeetingDate} from "../../../model/MeetingDate";
 
 @Component({
   selector: 'rb-meeting-item-coach',
@@ -22,8 +23,10 @@ export class MeetingItemCoachComponent implements OnInit,AfterViewInit {
   private coachee: Coachee;
 
   private reviews: Observable<MeetingReview[]>;
-
   private hasSomeReviews: Observable<boolean>;
+
+  /* Meeting potential dates */
+  private potentialDates: Observable<MeetingDate[]>;
 
   private closeMeetingForm: FormGroup;
 
@@ -44,6 +47,7 @@ export class MeetingItemCoachComponent implements OnInit,AfterViewInit {
   ngAfterViewInit(): void {
     console.log("ngAfterViewInit");
     this.loadReviews();
+    this.loadMeetingPotentialTimes();
   }
 
   loadReviews() {
@@ -61,15 +65,40 @@ export class MeetingItemCoachComponent implements OnInit,AfterViewInit {
     );
   }
 
+  loadMeetingPotentialTimes() {
+    this.coachCoacheeService.getMeetingPotentialTimes(this.meeting.id).subscribe(
+      (dates: MeetingDate[]) => {
+        console.log("potential dates obtained, ", dates);
+        this.potentialDates = Observable.of(dates);
+        this.cd.detectChanges();
+      }, (error) => {
+        console.log('get potentials dates error', error);
+      }
+    );
+  }
+
+  confirmPotentialDate(date: MeetingDate) {
+    this.coachCoacheeService.setPotentialDateToMeeting(this.meeting.id, date.id).subscribe(
+      (meeting: Meeting) => {
+        console.log("confirmPotentialDate, response", meeting);
+        this.meeting = meeting;
+        this.cd.detectChanges();
+      }, (error) => {
+        console.log('get potentials dates error', error);
+      }
+    );
+  }
+
   submitCloseMeetingForm() {
     console.log("submitCloseMeetingForm form : ", this.closeMeetingForm.value)
 
     //TODO use score value
     this.coachCoacheeService.closeMeeting(this.meeting.id, this.closeMeetingForm.value.recap, "5").subscribe(
-      (review: MeetingReview) => {
-        console.log("submitCloseMeetingForm, get review : ", review);
+      (meeting: Meeting) => {
+        console.log("submitCloseMeetingForm, got meeting : ", meeting);
         //refresh list of meetings
-        this.meetingUpdated.emit(null);
+        this.meeting = meeting;
+        this.cd.detectChanges();
       }, (error) => {
         console.log('closeMeeting error', error);
         //TODO display error

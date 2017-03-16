@@ -14,13 +14,14 @@ import {Coachee} from "../../model/coachee";
 })
 export class MeetingListComponent implements OnInit, AfterViewInit, OnDestroy {
 
-  // private userId: string;
-
   private meetings: Observable<Meeting[]>;
   private subscription: Subscription;
   private connectedUserSubscription: Subscription;
 
-  private user: Observable<ApiUser>;
+  private user: Observable<Coach | Coachee>;
+
+  name: string;
+  val: number;
 
   constructor(private meetingsService: MeetingsService, private authService: AuthService, private cd: ChangeDetectorRef) {
   }
@@ -41,12 +42,20 @@ export class MeetingListComponent implements OnInit, AfterViewInit, OnDestroy {
 
     if (user == null) {
       this.connectedUserSubscription = this.authService.getConnectedUserObservable().subscribe(
-        (user: ApiUser) => {
+        (user: Coach | Coachee) => {
           console.log("getConnectedUser");
           this.onUserObtained(user);
         }
       );
     }
+  }
+
+  isUserACoach(user: Coach | Coachee) {
+    return user instanceof Coach;
+  }
+
+  isUserACoachee(user: Coach | Coachee) {
+    return user instanceof Coachee;
   }
 
   private getAllMeetingsForCoach(coachId: string) {

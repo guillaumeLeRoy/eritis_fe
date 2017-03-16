@@ -2,6 +2,8 @@ import {Component, OnInit} from '@angular/core';
 import {FormGroup, FormBuilder, Validators} from "@angular/forms";
 import {AuthService} from "../../service/auth.service";
 import {Router} from "@angular/router";
+import {Coachee} from "../../model/coachee";
+import {Coach} from "../../model/Coach";
 
 @Component({
   selector: 'rb-signin',
@@ -35,12 +37,14 @@ export class SigninComponent implements OnInit {
     this.errorMessage = ''
 
     this.authService.signIn(this.signInForm.value).subscribe(
-      data => {
-        console.log("onSignIn, data obtained", data)
-        this.router.navigate(['/coachs'])
+      (user: Coach | Coachee) => {
+        console.log("onSignIn, user obtained", user)
 
-        this.authService.isAuthenticated().first().subscribe((isAuth) => console.log("onSignIn, isAuth", isAuth));
-
+        if (user instanceof Coach) {
+          this.router.navigate(['/meetings']);
+        } else {
+          this.router.navigate(['/coachs'])
+        }
       },
       error => {
         console.log("onSignIn, error obtained", error)
@@ -51,7 +55,7 @@ export class SigninComponent implements OnInit {
   }
 
 
-  goToSignUp(){
+  goToSignUp() {
     this.router.navigate(['/signup']);
   }
 

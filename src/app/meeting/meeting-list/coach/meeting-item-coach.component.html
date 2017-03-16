@@ -1,22 +1,55 @@
 <div class="card">
   <div class="card-content">
-    <span class="card-title">Séance avec {{ coachee.display_name }}</span>
+    <span class="card-title">Vous avez été choisi par {{ coachee.display_name }} pour une séance.</span>
+
 
     <!-- Meeting is closed-->
     <div *ngIf="!meeting.isOpen">
-      <h4>Meeting is closed</h4>
-      <p>at : {{meeting.date}}</p>
+      <h4>Meeting is now closed</h4>
     </div>
 
     <!-- Meeting is open -->
     <div *ngIf="meeting.isOpen">
-      <h4>You have a meeting</h4>
-      <p>at : {{meeting.date}}</p>
+      <div class="col s12" *ngIf="meeting.agreed_date == null">
+
+        <!-- no potential dates selected-->
+        <div class="section" *ngIf="(potentialDates | async)== null">
+          <h5>Votre coachee doit d'abord indiquer ses préférences horaires</h5>
+        </div>
+
+        <!-- some potential dates selected-->
+        <div class="section" *ngIf="(potentialDates | async)!= null">
+          <h5>Votre coachee a indiqué ses préférences horaires</h5>
+
+          <!-- list of potential dates -->
+          <div *ngFor="let date of potentialDates | async">
+            <h6>Possible date</h6>
+            <p>De : {{date.start_date}}</p>
+            <p>A : {{date.end_date}}</p>
+
+            <button class="btn cyan waves-effect waves-light right" (click)="confirmPotentialDate(date)">
+              Confirmer cette date
+              <i class="mdi-content-send right"></i>
+            </button>
+
+          </div>
+        </div>
+
+
+      </div>
+
+      <div class="col s12" *ngIf="meeting.agreed_date ">
+        <h4>Votre meeting est le : {{meeting.agreed_date.start_date}}</h4>
+      </div>
+
     </div>
 
 
     <!-- check if you have some reviews-->
     <div class="container" *ngIf="(hasSomeReviews | async)">
+
+      <h4>Comments</h4>
+
       <!-- list of reviews -->
       <div *ngFor="let review of reviews | async">
 
@@ -31,32 +64,34 @@
       </div>
 
     </div>
-    <!-- end check-->
+    <!-- /reviews-->
 
     <!-- Display Close Form is the Meeting is still open -->
-    <div *ngIf="meeting.isOpen" class="section">
+    <div *ngIf="meeting.isOpen" class="card">
 
-      <h4>Close this meeting</h4>
+      <div class="card-content">
 
-      <form [formGroup]="closeMeetingForm" (ngSubmit)="submitCloseMeetingForm()">
+        <h5>Close this meeting</h5>
 
-        <div class="form-group">
-          <label for="recap">Resume du meeting</label>
-          <input
-            type="text"
-            id="recap"
-            class="form-control"
-            formControlName="recap">
-        </div>
+        <form [formGroup]="closeMeetingForm" (ngSubmit)="submitCloseMeetingForm()">
 
-        <!--<button type="submit" class="btn btn-success">Envoyer</button>-->
-        <!--<button type="submit" class="btn btn-success" [disabled]="!closeMeetingForm.valid">Envoyer</button>-->
-        <button class="btn cyan waves-effect waves-light right" type="submit" name="action">
-          Envoyer
-          <i class="mdi-content-send right"></i>
-        </button>
-      </form>
+          <div class="form-group">
+            <label for="recap">Résumé du meeting</label>
+            <input
+              type="text"
+              id="recap"
+              class="form-control"
+              formControlName="recap">
+          </div>
 
+          <!--<button type="submit" class="btn btn-success">Envoyer</button>-->
+          <!--<button type="submit" class="btn btn-success" [disabled]="!closeMeetingForm.valid">Envoyer</button>-->
+          <button class="btn cyan waves-effect waves-light right" type="submit" name="action">
+            Fermer le meeting
+            <i class="mdi-content-send right"></i>
+          </button>
+        </form>
+      </div>
     </div>
 
 

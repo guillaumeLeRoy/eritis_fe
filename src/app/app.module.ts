@@ -40,8 +40,12 @@ import {MeetingItemCoacheeComponent} from "./meeting/meeting-list/coachee/meetin
 import {PreMeetingComponent} from "./meeting/pre-meeting.component";
 import {ProfileCoachComponent} from "./user/profile/coach/profile-coach.component";
 import {ProfileCoacheeComponent} from "./user/profile/coachee/profile-coachee.component";
+import {ProfileCoachSummaryComponent} from "./user/profile/coach/profile-coach-summary.component";
 import {MeetingItemCoachComponent} from "./meeting/meeting-list/coach/meeting-item-coach.component";
 import {FirebaseService} from "./service/firebase.service";
+import {MeetingDateComponent} from "./meeting/meeting-date/meeting-date.component";
+import {SliderModule} from "primeng/components/slider/slider";
+import {InputTextModule} from "primeng/components/inputtext/inputtext";
 
 
 @NgModule({
@@ -63,6 +67,7 @@ import {FirebaseService} from "./service/firebase.service";
     SigninComponent,
     ProfileCoachComponent,
     ProfileCoacheeComponent,
+    ProfileCoachSummaryComponent,
     WelcomeComponent,
     ChatComponent,
     ChatItemComponent,
@@ -72,6 +77,7 @@ import {FirebaseService} from "./service/firebase.service";
     MeetingListComponent,
     MeetingItemCoacheeComponent,
     MeetingItemCoachComponent,
+    MeetingDateComponent,
     PreMeetingComponent
   ],
   imports: [
@@ -83,6 +89,8 @@ import {FirebaseService} from "./service/firebase.service";
     MaterialModule.forRoot(),
     CalendarModule.forRoot(),
     NgbModule.forRoot(),
+    InputTextModule,
+    SliderModule,
   ],
   providers: [DataService, LogService, ShoppingListService, AuthService, AuthGuard, CoachCoacheeService, MeetingsService, FirebaseService],
   bootstrap: [AppComponent]

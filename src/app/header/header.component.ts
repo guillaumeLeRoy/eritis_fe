@@ -15,35 +15,47 @@ import {Coachee} from "../model/coachee";
 export class HeaderComponent implements OnInit,OnDestroy {
 
   private isAuthenticated: Observable<boolean>;
-  private connectedUser: Observable<ApiUser>;
   private subscription: Subscription;
 
-  // private userStatus: number;
-
-  private mUser: ApiUser;
+  private mUser: Coach | Coachee;
 
   constructor(private router: Router, private authService: AuthService, private cd: ChangeDetectorRef) {
   }
 
   ngOnInit(): void {
-    this.isAuthenticated = this.authService.isAuthenticated();
-    this.authService.isAuthenticated().subscribe(
-      (isAuth: boolean) => {
-        console.log("isAuthenticated : " + isAuth);
-        this.isAuthenticated = Observable.of(isAuth);
-        this.cd.detectChanges();
-      }
-    );
 
-    this.connectedUser = this.authService.getConnectedUserObservable();
+    this.mUser = this.authService.getConnectedUser();
+    this.onUserObtained(this.mUser);
+    // this.isAuthenticated = this.authService.isAuthenticated();
+    // this.authService.isAuthenticated().subscribe(
+    //   (isAuth: boolean) => {
+    //     console.log("isAuthenticated : " + isAuth);
+    //     this.isAuthenticated = Observable.of(isAuth);
+    //     this.cd.detectChanges();
+    //   }
+    // );
+
+    // this.connectedUser = this.authService.getConnectedUserObservable();
     this.subscription = this.authService.getConnectedUserObservable().subscribe(
-      (user: ApiUser) => {
+      (user: Coach | Coachee) => {
         console.log("getConnectedUser : " + user);
-        this.connectedUser = Observable.of(user);
-        this.mUser = user;
-        this.cd.detectChanges();
+        this.onUserObtained(user);
       }
     );
+  }
+
+  private onUserObtained(user: Coach | Coachee) {
+    console.log("onUserObtained : " + user);
+
+    if (user == null) {
+      this.mUser = user;
+      this.isAuthenticated = Observable.of(false);
+    } else {
+      this.mUser = user;
+      this.isAuthenticated = Observable.of(true);
+    }
+    this.cd.detectChanges();
+
   }
 
   ngOnDestroy(): void {
@@ -65,7 +77,7 @@ export class HeaderComponent implements OnInit,OnDestroy {
   goToMeetings() {
     let user = this.authService.getConnectedUser();
     if (user != null) {
-      this.router.navigate(['/meetings', user.id]);
+      this.router.navigate(['/meetings']);
     }
   }
 
@@ -81,19 +93,16 @@ export class HeaderComponent implements OnInit,OnDestroy {
     this.router.navigate(['/coachs']);
   }
 
-  // isAuth() {
-  //   return this.isAuthenticated
-  // }
+  canDisplayListOfCoach(): boolean {
+    if (this.mUser == null) {
+      return false;
+    }
 
-  // onStore() {
-  //   this.recipeService.storeData()
-  //   // this.recipeService.storeData().subscribe(
-  //   //   data => console.log(data),
-  //   //   error => console.log(error)
-  //   // )
-  // }
-  //
-  // onFetch() {
-  //   this.recipeService.fetchData()
-  // }
+    if (this.mUser instanceof Coach) {
+      return false;
+    } else {
+      return true;
+    }
+
+  }
 }

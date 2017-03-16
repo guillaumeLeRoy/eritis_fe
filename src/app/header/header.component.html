@@ -8,7 +8,7 @@
           <a [routerLink]="['/']" data-activates="mobile-demo" class="button-collapse"><i
             class="mdi-navigation-menu"></i></a>
           <ul class="right hide-on-med-and-down">
-            <li *ngIf="(isAuthenticated | async)"><a (click)="goToCoachs()">Coach List</a></li>
+            <li *ngIf="canDisplayListOfCoach()"><a (click)="goToCoachs()">Coach List</a></li>
 
             <li *ngIf="(isAuthenticated | async)"><a (click)="goToMeetings()">Your meetings</a></li>
 
@@ -19,7 +19,7 @@
 
           </ul>
           <ul class="side-nav" id="mobile-demo">
-            <li *ngIf="(isAuthenticated | async)"><a (click)="goToCoachs()">Coach List</a></li>
+            <li *ngIf="canDisplayListOfCoach()"><a (click)="goToCoachs()">Coach List</a></li>
 
             <li *ngIf="(isAuthenticated | async)"><a (click)="goToMeetings()">Your meetings</a></li>
 

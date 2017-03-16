@@ -1,13 +1,40 @@
 <div class="container">
-  <h4>Nos coachs</h4>
 
-  <div class="row">
-    <div class="col s12">
-      <ul class="collection">
-        <rb-coach-item *ngFor="let coach of coachs | async" [coach]="coach"
-                       [routerLink]="['/coachs', coach.id]"></rb-coach-item>
-      </ul>
+  <div *ngIf="(coachee | async)?.selectedCoach">
+    <!-- Coachee has selected a coach -->
+
+    <h4>Vous avez sélectionné un coach </h4>
+
+    <!--<p>{{(coachee | async)?.selectedCoach.display_name}}</p>-->
+
+    <rb-coach-details class="col s4" [coach]="(coachee | async)?.selectedCoach"></rb-coach-details>
+
+  </div>
+
+  <div *ngIf="(coachee | async)?.selectedCoach == null">
+
+    <h4>Nous avons sélectionné des coachs pour vous</h4>
+
+    <div class="row">
+      <rb-coach-item class="col s4" *ngFor="let coach of coachs | async" [coach]="coach"
+                     (click)="onPotentialCoachSelected(coach)"></rb-coach-item>
     </div>
   </div>
+
+  <div *ngIf="potSelectedCoach">
+
+    <button class="btn cyan waves-effect waves-light right" (click)="onFinalCoachSelected(potSelectedCoach)">
+      Sélectionner ce coach<i
+      class="mdi-content-send right"></i></button>
+
+    <rb-profile-coach-summary class="col s4"
+                              [coach]="potSelectedCoach"></rb-profile-coach-summary>
+
+    <button class="btn cyan waves-effect waves-light right" (click)="onFinalCoachSelected(potSelectedCoach)">
+      Sélectionner ce coach<i
+      class="mdi-content-send right"></i></button>
+  </div>
+
+
 </div>
 
