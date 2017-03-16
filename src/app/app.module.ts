@@ -33,7 +33,6 @@ import {MeetingItemCoachComponent} from "./meeting/meeting-list/coach/meeting-it
 import {FirebaseService} from "./service/firebase.service";
 import {MeetingDateComponent} from "./meeting/meeting-date/meeting-date.component";
 import {SliderModule} from "primeng/components/slider/slider";
-import {InputTextModule} from "primeng/components/inputtext/inputtext";
 
 
 @NgModule({
@@ -66,8 +65,7 @@ import {InputTextModule} from "primeng/components/inputtext/inputtext";
     MaterialModule.forRoot(),
     CalendarModule.forRoot(),
     NgbModule.forRoot(),
-    InputTextModule,
-    SliderModule,
+    SliderModule
   ],
   providers: [DataService, LogService, AuthService, AuthGuard, CoachCoacheeService, MeetingsService, FirebaseService],
   bootstrap: [AppComponent]

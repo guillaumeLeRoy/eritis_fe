@@ -1,13 +1,6 @@
 <div class="container">
   <h4> Liste de vos meetings</h4>
 
-  <input type="text" [(ngModel)]="name" pInputText>
-  <button type="button" pButton label="Click"></button>
-
-  <p-slider [(ngModel)]="val" [min]="0" [max]="100"></p-slider>
-
-  <p-slider [(ngModel)]="val"></p-slider>
-
   <div class="row">
     <div class="col s12">
       <!-- views for coach -->
@@ -19,7 +12,7 @@
       <!-- views for coachee -->
       <div *ngIf="isUserACoachee((user | async))">
         <rb-meeting-item-coachee *ngFor="let meeting of meetings | async"
-                                 [meeting]="meeting"></rb-meeting-item-coachee>
+                                 [meeting]="meeting" (potentialDatePosted)="onRefreshRequested($event)"></rb-meeting-item-coachee>
       </div>
     </div>
   </div>

@@ -1,4 +1,4 @@
-import {Component, OnInit, Input, ChangeDetectorRef, OnDestroy} from '@angular/core';
+import {Component, OnInit, Input, ChangeDetectorRef, OnDestroy, Output, EventEmitter} from '@angular/core';
 import {NgbDateStruct, NgbTimeStruct} from "@ng-bootstrap/ng-bootstrap";
 import {ApiUser} from "../../model/apiUser";
 import {CoachCoacheeService} from "../../service/CoachCoacheeService";
@@ -6,6 +6,7 @@ import {Router} from "@angular/router";
 import {AuthService} from "../../service/auth.service";
 import {Observable, Subscription} from "rxjs";
 import {Meeting} from "../../model/meeting";
+import {MeetingDate} from "../../model/MeetingDate";
 
 @Component({
   selector: 'rb-meeting-date',
@@ -14,18 +15,23 @@ import {Meeting} from "../../model/meeting";
 })
 export class MeetingDateComponent implements OnInit, OnDestroy {
 
+  @Output()
+  potentialDatePosted = new EventEmitter<MeetingDate>();
+
   @Input()
   meeting: Meeting;
 
   dateModel: NgbDateStruct;
-  timeModel: NgbTimeStruct;
+  // timeModel: NgbTimeStruct;
+
+  timeRange: number[] = [0, 24];
 
   private displayErrorBookingDate = false;
 
   private connectedUser: Observable<ApiUser>;
   private subscriptionConnectUser: Subscription;
 
-  constructor(private router: Router, private coachService: CoachCoacheeService, private authService: AuthService, private cd: ChangeDetectorRef) {
+  constructor(private coachService: CoachCoacheeService, private authService: AuthService, private cd: ChangeDetectorRef) {
   }
 
   ngOnInit() {
@@ -49,7 +55,7 @@ export class MeetingDateComponent implements OnInit, OnDestroy {
 
   bookADate() {
     console.log('bookADate, dateModel : ', this.dateModel);
-    console.log('bookADate, timeModel : ', this.timeModel);
+    // console.log('bookADate, timeModel : ', this.timeModel);
 
     this.connectedUser.take(1).subscribe(
       (user: ApiUser) => {
@@ -59,13 +65,17 @@ export class MeetingDateComponent implements OnInit, OnDestroy {
           return;
         }
 
-        var date = new Date(this.dateModel.year, this.dateModel.month, this.dateModel.day, this.timeModel.hour, this.timeModel.minute)
-        var timestampSc: number = +date.getTime().toFixed(0) / 1000;//TODO add start and end dates
-        this.coachService.addPotentialDateToMeeting(this.meeting.id, timestampSc, timestampSc).subscribe(
-          (success) => {
-            console.log('addPotentialDateToMeeting success', success);
+        var minDate = new Date(this.dateModel.year, this.dateModel.month, this.dateModel.day, this.timeRange[0], 0);
+        var maxDate = new Date(this.dateModel.year, this.dateModel.month, this.dateModel.day, this.timeRange[1], 0);
+        var timestampMin: number = +minDate.getTime().toFixed(0) / 1000;
+        var timestampMax: number = +maxDate.getTime().toFixed(0) / 1000;
+
+        this.coachService.addPotentialDateToMeeting(this.meeting.id, timestampMin, timestampMax).subscribe(
+          (meetingDate: MeetingDate) => {
+            console.log('addPotentialDateToMeeting, meetingDate : ', meetingDate);
             //redirect to meetings page
-            this.router.navigate(['/meetings', user.id]);
+            // this.router.navigate(['/meetings']);
+            this.potentialDatePosted.emit(meetingDate);
           },
           (error) => {
             console.log('addPotentialDateToMeeting error', error);

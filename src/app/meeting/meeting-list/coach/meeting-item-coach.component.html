@@ -24,8 +24,9 @@
           <!-- list of potential dates -->
           <div *ngFor="let date of potentialDates | async">
             <h6>Possible date</h6>
-            <p>De : {{date.start_date}}</p>
-            <p>A : {{date.end_date}}</p>
+            <p>Le : {{date.start_date | date}}</p>
+            <p>De : {{date.start_date | date:'shortTime'}}</p>
+            <p>A : {{date.end_date | date:'shortTime'}}</p>
 
             <button class="btn cyan waves-effect waves-light right" (click)="confirmPotentialDate(date)">
               Confirmer cette date
@@ -35,11 +36,10 @@
           </div>
         </div>
 
-
       </div>
 
       <div class="col s12" *ngIf="meeting.agreed_date ">
-        <h4>Votre meeting est le : {{meeting.agreed_date.start_date}}</h4>
+        <h5>Votre meeting est le : {{meeting.agreed_date.start_date | date}} à {{meeting.agreed_date.start_date | date:'shortTime'}} </h5>
       </div>
 
     </div>

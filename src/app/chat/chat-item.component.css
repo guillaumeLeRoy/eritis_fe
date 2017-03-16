@@ -13,7 +13,7 @@
   opacity: 1;
 }
 .message-container .pic {
-  background-image: url('assets/profile_placeholder.png');
+  /*background-image: url('assets/profile_placeholder.png');*/
   background-repeat: no-repeat;
   width: 30px;
   height: 30px;

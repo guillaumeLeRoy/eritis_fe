@@ -10,14 +10,34 @@
     <!-- Meeting is open -->
     <div *ngIf="meeting.isOpen">
       <div class="col s12" *ngIf="meeting.agreed_date == null">
-        <h4>Choisissez les plages horaires qui vous conviennent</h4>
+
+        <!-- some potential dates selected-->
+        <div class="section" *ngIf="(potentialDates | async)!= null">
+          <h5>Vous avez indiqué des préférences horaires</h5>
+
+          <!-- list of potential dates -->
+          <div *ngFor="let date of potentialDates | async">
+            <h6>Possible date</h6>
+            <p>Le : {{date.start_date | date}}</p>
+            <p>De : {{date.start_date | date:'shortTime'}}</p>
+            <p>A : {{date.end_date | date:'shortTime'}}</p>
+
+          </div>
+        </div>
+
+        <!-- add a new date -->
+        <h4>Ajouter un horaire qui vous convient</h4>
         <!-- add a date for this meeting -->
-        <rb-meeting-date [meeting]="meeting"></rb-meeting-date>
+        <rb-meeting-date [meeting]="meeting" (potentialDatePosted)="onPotentialDatePosted()"></rb-meeting-date>
 
       </div>
 
       <div class="col s12" *ngIf="meeting.agreed_date ">
-        <h4>Votre meeting est le : {{meeting.agreed_date.start_date}}</h4>
+        <h5>Votre meeting est le : {{meeting.agreed_date.start_date | date}} à {{meeting.agreed_date.start_date | date:'shortTime'}} </h5>
+
+        <button class="btn cyan waves-effect waves-light right" (click)="bookADate()">
+          Lancer la séance<i class="mdi-content-send right"></i></button>
+
       </div>
 
       <!-- check if you have some reviews-->
@@ -42,16 +62,10 @@
 
     <!--&lt;!&ndash; add a pre meeting review &ndash;&gt;-->
     <!--<div class="container">-->
-      <!--<rb-pre-meeting *ngIf="!(hasSomeReviews | async)" [meeting]="meeting"-->
-                      <!--(reviewPosted)="onPreMeetingReviewPosted($event)"-->
-      <!--&gt;</rb-pre-meeting>-->
+    <!--<rb-pre-meeting *ngIf="!(hasSomeReviews | async)" [meeting]="meeting"-->
+    <!--(reviewPosted)="onPreMeetingReviewPosted($event)"-->
+    <!--&gt;</rb-pre-meeting>-->
     <!--</div>-->
-
-
-    <p-slider [(ngModel)]="val" [min]="0" [max]="100"></p-slider>
-
-    <p-slider [(ngModel)]="val"></p-slider>
-
 
   </div>
 

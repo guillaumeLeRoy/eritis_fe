@@ -1,28 +1,30 @@
-import {Component, OnInit, Input, ChangeDetectorRef, ElementRef, ViewChild, AfterViewInit} from '@angular/core';
+import {Component, OnInit, Input, ChangeDetectorRef, Output, EventEmitter} from '@angular/core';
 import {Meeting} from "../../../model/meeting";
 import {CoachCoacheeService} from "../../../service/CoachCoacheeService";
 import {Observable} from "rxjs";
 import {Coach} from "../../../model/Coach";
 import {MeetingReview} from "../../../model/MeetingReview";
-import {$} from "protractor";
+import {MeetingDate} from "../../../model/MeetingDate";
 
 @Component({
   selector: 'rb-meeting-item-coachee',
   templateUrl: 'meeting-item-coachee.component.html',
   styleUrls: ['meeting-item-coachee.component.css'],
 })
-export class MeetingItemCoacheeComponent implements OnInit,AfterViewInit {
-  ngAfterViewInit(): void {
-  }
-
-  val: number;
+export class MeetingItemCoacheeComponent implements OnInit {
 
   @Input()
-  private meeting: Meeting;
+  meeting: Meeting;
+
+  @Output()
+  potentialDatePosted = new EventEmitter<MeetingDate>();
 
   private coach: Coach;
 
   private reviews: Observable<MeetingReview[]>;
+
+  /* Meeting potential dates */
+  private potentialDates: Observable<MeetingDate[]>;
 
   private hasSomeReviews: Observable<boolean>;
 
@@ -35,6 +37,7 @@ export class MeetingItemCoacheeComponent implements OnInit,AfterViewInit {
     console.log("ngOnInit, coach : ", this.coach);
 
     this.loadReview();
+    this.loadMeetingPotentialTimes();
   }
 
   onPreMeetingReviewPosted(meeting: Meeting) {
@@ -42,6 +45,10 @@ export class MeetingItemCoacheeComponent implements OnInit,AfterViewInit {
     this.loadReview();
   }
 
+  onPotentialDatePosted(date: MeetingDate) {
+    console.log("onPotentialDatePosted");
+    this.potentialDatePosted.emit(date);
+  }
 
   private loadReview() {
     console.log("loadReview");
@@ -57,6 +64,18 @@ export class MeetingItemCoacheeComponent implements OnInit,AfterViewInit {
         this.cd.detectChanges();
       }, (error) => {
         console.log('loadReview error', error);
+      }
+    );
+  }
+
+  private loadMeetingPotentialTimes() {
+    this.coachCoacheeService.getMeetingPotentialTimes(this.meeting.id).subscribe(
+      (dates: MeetingDate[]) => {
+        console.log("potential dates obtained, ", dates);
+        this.potentialDates = Observable.of(dates);
+        this.cd.detectChanges();
+      }, (error) => {
+        console.log('get potentials dates error', error);
       }
     );
   }

@@ -20,9 +20,6 @@ export class MeetingListComponent implements OnInit, AfterViewInit, OnDestroy {
 
   private user: Observable<Coach | Coachee>;
 
-  name: string;
-  val: number;
-
   constructor(private meetingsService: MeetingsService, private authService: AuthService, private cd: ChangeDetectorRef) {
   }
 
