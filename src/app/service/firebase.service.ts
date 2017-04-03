@@ -20,6 +20,8 @@ export class FirebaseService {
       databaseURL: environment.firebase_databaseURL,
     };
 
+    console.log("AppComponent init config", config);
+
     firebase.initializeApp(config);
   }
 

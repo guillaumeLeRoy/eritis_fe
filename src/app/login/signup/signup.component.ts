@@ -52,7 +52,7 @@ export class SignupComponent implements OnInit {
       this.authService.signUpCoach(this.signUpForm.value).subscribe(
         data => {
           console.log("onSignUp, data obtained", data)
-          this.router.navigate(['/coachs'])
+          this.router.navigate(['/profile_coach'])
         },
         error => {
           console.log("onSignUp, error obtained", error)
