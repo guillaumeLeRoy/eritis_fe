@@ -38,7 +38,7 @@ export class AuthService {
   // private user: User
   private isUserAuth = new BehaviorSubject<boolean>(false);//NOT auth by default
   // private ApiUserSubject = new BehaviorSubject<ApiUser>(null);//NOT auth by default
-  private ApiUserSubject = new Subject< ApiUser>();//NOT auth by default
+  private ApiUserSubject = new Subject<ApiUser>();//NOT auth by default
   /* flag to know if we are in the sign in or sign up process. Block updateAuthStatus(FBuser) is true */
   private isSignInOrUp = false;
 
@@ -77,6 +77,10 @@ export class AuthService {
       }
     );
     return method;
+  }
+
+  postNotAuth(path: string, params: string[], body: any): Observable<Response> {
+    return this.httpService.post(this.generatePath(path, params), body)
   }
 
   put(path: string, params: string[], body: any): Observable<Response> {
