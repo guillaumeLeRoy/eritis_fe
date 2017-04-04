@@ -1,9 +1,39 @@
-
-#main_container {
+/*#main_container {
   padding:32px;
 }
 
 #form_container {
   padding: 32px;
   max-width: 50%;
+}*/
+
+label{
+  color: var(--main-white-color);
+  font-size: 20px;
+  font-weight: 300;
+  opacity: .6;
+}
+
+input[type="password"],
+input[type="password"]:focus:not([readonly]),
+input[type="email"],
+input[type="email"]:focus:not([readonly]),
+textarea,
+textarea:focus:not([readonly]){
+  border: none !important;
+  box-shadow: none !important;
+  box-sizing: border-box;
+  background-color: rgba(255, 255, 255, .6);
+  border-radius: 8px;
+  padding: 16px !important;
+}
+
+button[type="submit"]{
+  background-color: #46b0ff;
+  border: none;
+  border-radius: 100%;
+  width: 66px;
+  height: 66px;
+  font-size: 24px;
+  font-weight: 300;
 }

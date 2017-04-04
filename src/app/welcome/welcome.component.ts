@@ -6,6 +6,7 @@ import {Component, OnInit, ViewChild, AfterViewInit, AfterContentInit} from '@an
   styleUrls: ['./welcome.component.css']
 })
 export class WelcomeComponent implements OnInit {
+  private loginActivated = false;
 
   constructor() {
   }
@@ -13,5 +14,7 @@ export class WelcomeComponent implements OnInit {
   ngOnInit() {
   }
 
-
+  activateLogin(){
+    this.loginActivated = true;
+  }
 }

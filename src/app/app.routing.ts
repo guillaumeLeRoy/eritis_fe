@@ -24,8 +24,6 @@ const APP_ROUTES: Routes = [
   {path: 'coachees', component: CoachListComponent},
   {path: 'meetings', component: MeetingListComponent},
   // {path: 'coachees', component: CoachListComponent, canActivate: [AuthGuard]},
-
 ]
-
 
 export const routing = RouterModule.forRoot(APP_ROUTES)
