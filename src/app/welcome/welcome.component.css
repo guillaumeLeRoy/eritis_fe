@@ -4,6 +4,16 @@ nav{
   padding: 16px;
 }
 
+nav li{
+  background-color: transparent !important;
+}
+
+nav li:hover a,
+nav li:focus a{
+  color: var(--main-dark-grey) !important;
+  transition: .3s;
+}
+
 .logo-text img{
   height: 50px;
 }
@@ -120,10 +130,13 @@ rb-signin{
   display: flex;
   flex-direction: column;
   align-items: center;
+  padding: 0 2%;
+  margin-top: 64px;
 }
 
 .presentation_item_title{
   font-size: 32px;
+  height: 64px;
   color: #1D1D1D;
 }
 
@@ -153,11 +166,13 @@ rb-signin{
   flex-direction: column;
   align-items: center;
   text-align: center;
+  padding: 0 2%;
+  margin-top: 64px;
 }
 
 .coach_description h4{
   font-size: 36px;
-  margin-bottom: 32px;
+  height: 72px;
 }
 
 .coach_description p{
@@ -170,17 +185,22 @@ rb-signin{
   background-size: cover;
 }
 
+.small-line-container{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 64px;
+}
+
 .small-line{
-  display: inline-block;
   height: 1px;
   width: 180px;
   border: solid 1px rgba(255, 255, 255, 0.67);
-  margin: 64px 0;
 }
 
 footer {
   background-color: var(--main-white-color);
-  padding: 128px;
+  padding: 128px 0;
 }
 
 label{

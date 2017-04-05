@@ -7,7 +7,6 @@
     <div class="navbar">
       <nav>
         <div class="navbar-color">
-
           <div class="col s12">
             <a [routerLink]="['/']" class="logo-text"><img src="assets/img/logo-eritis-new.png" alt="Eritis"></a>
             <a [routerLink]="['/']" data-activates="mobile-demo" class="button-collapse"><i
@@ -26,7 +25,7 @@
               <li><a pageScroll href="#contact">Contact</a></li>
             </ul>
           </div>
-        </div>
+        </div><!--end navbar-color-->
       </nav>
     </div><!--end navbar-->
 
@@ -56,7 +55,7 @@
       <div class="container">
         <h2 class="text-center section_title presentation_title">Construisez le coaching qui correspond à vos besoins</h2>
         <div class="row">
-          <div class="col-xs-12 col-sm-4">
+          <div class="col-sm-12 col-lg-4">
             <div class="presentation_item text-center">
               <img src="assets/img/todos.svg" class="desc_icon"/>
               <h3 class="presentation_item_title">Definissez votre besoin​</h3>
@@ -64,9 +63,7 @@
             </div>
           </div>
 
-          <div class="col-sm-1"></div>
-
-          <div class="col-xs-12 col-sm-3">
+          <div class="col-sm-12 col-lg-4">
             <div class="presentation_item text-center">
               <img src="assets/img/confirm-user.svg" class="desc_icon"/>
               <h3 class="presentation_item_title">Trouvez votre coach</h3>
@@ -74,9 +71,7 @@
             </div>
           </div>
 
-          <div class="col-sm-1"></div>
-
-          <div class="col-xs-12 col-sm-3">
+          <div class="col-sm-12 col-lg-4">
             <div class="presentation_item text-center">
               <img src="assets/img/presentation.svg" class="desc_icon"/>
               <h3 class="presentation_item_title">Suivez votre progression</h3>
@@ -87,6 +82,10 @@
       </div> <!--end container-->
     </section> <!--end section-->
 
+
+
+
+
     <section id="coach_section" class="section">
       <div class="container">
         <h2 class="text-center section_title coach_section_title">Conçu par une équipe de coachs certifiés</h2>
@@ -95,10 +94,12 @@
           sans équivalent sur le marché du coaching professionnel.
         </p>
 
-        <div class="small-line"></div>
+        <div class="small-line-container">
+          <div class="small-line"></div>
+        </div>
 
         <div class="row">
-          <div class="col-xs-12 col-sm-3 coach_description">
+          <div class="col-sm-12 col-lg-4 coach_description">
             <img class="coach_img"
                  src="https://static.wixstatic.com/media/04261a_d639816d3928429d8a34a774be2c77c2~mv2.png/v1/fill/w_298,h_298,al_c,usm_0.66_1.00_0.01/04261a_d639816d3928429d8a34a774be2c77c2~mv2.png">
             <h4>Etienne Roy</h4>
@@ -108,9 +109,7 @@
             </p>
           </div>
 
-          <div class="col-sm-1"></div>
-
-          <div class="col-xs-12 col-sm-3 coach_description">
+          <div class="col-sm-12 col-lg-4 coach_description">
             <img class="coach_img"
                  src="https://static.wixstatic.com/media/04261a_992204f8b935467e90154abc73a30105~mv2.png/v1/fill/w_298,h_298,al_c,lg_1/04261a_992204f8b935467e90154abc73a30105~mv2.png">
             <h4>Elaine Lecoeur</h4>
@@ -121,9 +120,7 @@
             </p>
           </div>
 
-          <div class="col-sm-1"></div>
-
-          <div class="col-xs-12 col-sm-3 coach_description">
+          <div class="col-xs-12 col-lg-4 coach_description">
             <img class="coach_img"
                  src="https://static.wixstatic.com/media/04261a_c405cc6001b041b997493ad886d4781b~mv2.png/v1/fill/w_298,h_298,al_c,lg_1/04261a_c405cc6001b041b997493ad886d4781b~mv2.png">
             <h4>Annette Leclerc Vanel</h4>
@@ -145,7 +142,7 @@
   <footer class="footer" id="contact">
     <div class="container">
       <div class="row">
-        <div class="col-xs-12 col-sm-5">
+        <div class="col-sm-12 col-lg-5">
           <img src="assets/img/logo-eritis-new.png"
             srcset="assets/img/logo-eritis-new@2x.png 2x,
                     assets/img/logo-eritis-new@3x.png 3x"
@@ -166,8 +163,8 @@
               </p>
             </div>
         </div>
-        <div class="col-xs-12 col-sm-7">
-          <form>
+        <div class="col-sm-12 col-lg-7">
+          <form (ngSubmit)="onContactSubmit()">
             <div class="input_field">
               <label for="name">Nom</label>
               <input type="email" name="name">

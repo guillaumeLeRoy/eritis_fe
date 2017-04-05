@@ -1,4 +1,5 @@
 import {Component, OnInit, ViewChild, AfterViewInit, AfterContentInit} from '@angular/core';
+import {FormGroup, FormBuilder, Validators} from "@angular/forms";
 
 @Component({
   selector: 'rb-welcome',
@@ -6,7 +7,11 @@ import {Component, OnInit, ViewChild, AfterViewInit, AfterContentInit} from '@an
   styleUrls: ['./welcome.component.css']
 })
 export class WelcomeComponent implements OnInit {
-  private loginActivated = false;
+  private loginActivated = false
+
+  private contactForm: FormGroup
+  private error = false
+  private errorMessage: ''
 
   constructor() {
   }
@@ -16,5 +21,9 @@ export class WelcomeComponent implements OnInit {
 
   activateLogin(){
     this.loginActivated = true;
+  }
+
+  onContactSubmit(){
+
   }
 }
