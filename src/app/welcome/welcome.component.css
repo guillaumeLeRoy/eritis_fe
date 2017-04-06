@@ -228,19 +228,9 @@ textarea{
   min-height: 192px;
 }
 
-.address{
-  margin-top: 128px;
-}
-
 .address p{
   font-size: 22px;
   font-weight: 400;
-}
-
-.contacts{
-  color: var(--main-light-grey);
-  font-size: 22px;
-  margin-top: 64px;
 }
 
 .btn-submit{
@@ -249,6 +239,6 @@ textarea{
 }
 
 .btn-submit:disabled{
-  border-color: #44AFFE;
+  border: none;
   background-color: #E8E8E8;
 }

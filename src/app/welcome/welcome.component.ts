@@ -3,6 +3,8 @@ import {AuthService} from "../service/auth.service";
 import {Response} from "@angular/http";
 import {FormGroup, FormBuilder, Validators} from "@angular/forms";
 
+declare var Materialize: any;
+
 @Component({
   selector: 'rb-welcome',
   templateUrl: './welcome.component.html',
@@ -42,13 +44,24 @@ export class WelcomeComponent implements OnInit {
     console.log("onContactSubmit, values : ", this.contactForm);
     console.log("onContactSubmit, values : ", this.contactForm.value);
 
-    this.authService.postNotAuth("v1/contact", null, body).map((response: Response) => {
-      console.log("contact, response json : ", response);
-      return response;
-    }).subscribe(
+    this.authService.postNotAuth("v1/contact", null, body).subscribe(
       (res: Response) => {
         console.log("contact, response json : ", res);
+
+        Materialize.toast('Votre demande de contact a bien été envoyée', 4000)
+
+        this.contactForm.value.name = "";
+        this.contactForm.value.mail = "";
+        this.contactForm.value.message = "";
+      },
+
+      (error: Error) => {
+        Materialize.toast('Une erreur est survenue', 4000)
+
       });
+
+
   }
+
 
 }
