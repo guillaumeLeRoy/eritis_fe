@@ -38,7 +38,9 @@
           <a pageScroll href="#coach_section" class="btn-basic">En savoir plus</a>
         </div>
         <div class="col-xs-6 header-btn-right">
-          <button class="btn-basic btn-plain btn-connexion" (click)="activateLogin()"><i class="material-icons">perm_identity</i> Connexion</button>
+          <button class="btn-basic btn-plain btn-connexion" (click)="activateLogin()"><i class="material-icons">perm_identity</i>
+            Connexion
+          </button>
         </div>
       </div>
 
@@ -53,13 +55,15 @@
 
     <section id="presentation" class="section">
       <div class="container">
-        <h2 class="text-center section_title presentation_title">Construisez le coaching qui correspond à vos besoins</h2>
+        <h2 class="text-center section_title presentation_title">Construisez le coaching qui correspond à vos
+          besoins</h2>
         <div class="row">
           <div class="col-sm-12 col-lg-4">
             <div class="presentation_item text-center">
               <img src="assets/img/todos.svg" class="desc_icon"/>
               <h3 class="presentation_item_title">Definissez votre besoin​</h3>
-              <p class="presentation_item_text">Utilisez l'outil de reservation et organisez votre séance de coaching.</p>
+              <p class="presentation_item_text">Utilisez l'outil de reservation et organisez votre séance de
+                coaching.</p>
             </div>
           </div>
 
@@ -81,9 +85,6 @@
         </div> <!--end row-->
       </div> <!--end container-->
     </section> <!--end section-->
-
-
-
 
 
     <section id="coach_section" class="section">
@@ -144,40 +145,40 @@
       <div class="row">
         <div class="col-sm-12 col-lg-5">
           <img src="assets/img/logo-eritis-new.png"
-            srcset="assets/img/logo-eritis-new@2x.png 2x,
+               srcset="assets/img/logo-eritis-new@2x.png 2x,
                     assets/img/logo-eritis-new@3x.png 3x"
-            alt="Logo Eritis">
+               alt="Logo Eritis">
 
-            <div class="address">
-              <h4>Eritis</h4>
-              <p>
-                78 av de Saint Mandé
-                <br>75012 Paris, France
-              </p>
-            </div>
+          <div class="address">
+            <h4>Eritis</h4>
+            <p>
+              78 av de Saint Mandé
+              <br>75012 Paris, France
+            </p>
+          </div>
 
-            <div class="contacts">
-              <p>
-                contact@eritis.is
-                <br>Tel: 06 80 94 56 83
-              </p>
-            </div>
+          <div class="contacts">
+            <p>
+              contact@eritis.is
+              <br>Tel: 06 80 94 56 83
+            </p>
+          </div>
         </div>
         <div class="col-sm-12 col-lg-7">
           <form (ngSubmit)="onContactSubmit()">
             <div class="input_field">
               <label for="name">Nom</label>
-              <input type="email" name="name">
+              <input type="email" name="name" id="name">
             </div>
             <br>
             <div class="input_field">
               <label for="mail">Adresse Mail</label>
-              <input type="text" name="mail">
+              <input type="text" name="mail" id="mail">
             </div>
             <br>
             <div class="input_field">
               <label for="message">Message</label>
-              <textarea name="message" class="materialize-textarea"></textarea>
+              <textarea name="message" class="materialize-textarea" id="message"></textarea>
             </div>
             <div class="input_field text-right">
               <button type="submit" name="submit" class="btn-basic btn-submit">Envoyer</button>
