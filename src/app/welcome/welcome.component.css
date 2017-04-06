@@ -247,3 +247,8 @@ textarea{
   border-color: #44AFFE;
   background-color: #44AFFE;
 }
+
+.btn-submit:disabled{
+  border-color: #44AFFE;
+  background-color: #E8E8E8;
+}
