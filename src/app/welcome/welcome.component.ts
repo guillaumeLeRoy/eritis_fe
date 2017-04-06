@@ -1,6 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {AuthService} from "../service/auth.service";
-import {Http, Response} from "@angular/http";
+import {Response} from "@angular/http";
+import {FormGroup, FormBuilder, Validators} from "@angular/forms";
 
 @Component({
   selector: 'rb-welcome',
@@ -8,12 +9,21 @@ import {Http, Response} from "@angular/http";
   styleUrls: ['./welcome.component.css']
 })
 export class WelcomeComponent implements OnInit {
-  private loginActivated = false;
+  private loginActivated = false
 
-  constructor(private authService: AuthService) {
+  private contactForm: FormGroup
+  private error = false
+  private errorMessage: ''
+
+  constructor(private authService: AuthService, private formBuilder: FormBuilder) {
   }
 
   ngOnInit() {
+    this.contactForm = this.formBuilder.group({
+      name: ['', Validators.compose([Validators.required])],
+      mail: ['', Validators.compose([Validators.required])],
+      message: ['', [Validators.required]],
+    });
   }
 
   activateLogin() {
@@ -23,14 +33,14 @@ export class WelcomeComponent implements OnInit {
   /**
    * Start API request to contact Eritis
    */
-  contactEritis() {
+  onContactSubmit() {
     let body = {
-      name: "my name",
-      email: "toto@gmail.com",
-      message: "what I want to say is"
+      name: this.contactForm.value.name,
+      email: this.contactForm.value.mail,
+      message: this.contactForm.value.message
     };
-
-    //return this.httpService.postN(this.generatePath(path, params), body, {headers: headers})
+    console.log("onContactSubmit, values : ", this.contactForm);
+    console.log("onContactSubmit, values : ", this.contactForm.value);
 
     this.authService.postNotAuth("v1/contact", null, body).map((response: Response) => {
       console.log("contact, response json : ", response);

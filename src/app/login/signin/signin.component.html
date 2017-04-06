@@ -3,7 +3,7 @@
     <form [formGroup]="signInForm" (ngSubmit)="onSignIn()">
       <div class="text-left">
         <label for="email">Email</label>
-        <input name="email" type="email" />
+        <input type="email" id="email" name="email" formControlName="email"/>
         <small
           *ngIf="!signInForm.controls['email'].pristine &&!signInForm.controls['email'].valid"
           class="text-danger">
@@ -13,7 +13,7 @@
 
       <div class="text-left">
         <label for="password">Mot de passe</label>
-        <input name="password" type="password" formControlName="password">
+        <input type="password" id="password" name="password" formControlName="password">
         <small class="text-danger"
                *ngIf="!signInForm.controls['password'].pristine && !signInForm.controls['password'].valid">
           Password must be at least 6 characters.
