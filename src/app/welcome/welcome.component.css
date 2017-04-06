@@ -1,92 +1,249 @@
+nav{
+  background-color: transparent;
+  box-shadow: none;
+  padding: 16px;
+}
 
-.bg_top_image {
+nav li{
+  background-color: transparent !important;
+}
+
+nav li:hover a,
+nav li:focus a{
+  color: var(--main-dark-grey) !important;
+  transition: .3s;
+}
+
+.logo-text img{
+  height: 50px;
+}
+
+.bg-top-image {
   position: fixed;
   top: 0px;
   left: 0px;
-  background-image: url("../../images/office.jpg");
+  background-image: url("../../assets/img/eritis-mountain-bg-2.jpg");
   background-size: cover;
   background-repeat: no-repeat;
+  background-position: center;
+  height: 1000px;
+  width: 100%;
+  max-width: 100%;
+  z-index: -10;
+}
+
+.bg-top-filter{
+  position: fixed;
+  top: 0px;
+  left: 0px;
+  background-color: rgba(0, 72, 129, 0.6);
   height: 1000px;
   width: 100%;
   max-width: 100%;
   z-index: -1;
 }
 
-.header {
+.section{
+  padding: 128px 0;
+}
+
+header.section{
+  padding: 0;
+}
+
+header.section .container{
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin-top: 6em;
-  margin-bottom: 4em;
+  text-align: center;
+  color: var(--main-white-color);
+  padding: 160px 0;
 }
 
-#get_started_btn {
-  margin-top: 2em;
+.header-title{
+  font-size: 66px;
+  font-weight: 500;
+  letter-spacing: 1.1px;
+  margin: 0;
+}
+
+.header-subtitle{
+  font-size: 36px;
+  font-weight: 300;
+  letter-spacing: 2.3px;
+  margin: 64px 0;
+  opacity: 0.6;
+}
+
+.header-btn-left{
+  padding-right: 16px;
+}
+
+.header-btn-right{
+  padding-left: 16px;
+}
+
+.btn-connexion .material-icons{
+  vertical-align: text-bottom;
+}
+
+.header-arrow-bottom{
+  font-size: 66px;
+  color: var(--main-white-color);
+  opacity: 0.6;
+}
+.header-arrow-bottom:hover{
+  opacity: 1;
+}
+
+rb-signin{
+  width: 30%;
+}
+
+@media(max-width: 960px){
+  rb-signin{
+    width: 80%;
+  }
 }
 
 .desc_icon {
-  width: 64px;
-  height: 64px;
-}
-
-#main_container {
-  height: 100%;
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  padding: 0px;
-  margin: 0px;
+  width: 96px;
+  height: 96px;
 }
 
 .content {
   flex-grow: 1;
 }
 
-footer {
-  background-color: var(--main-header-color);
-  padding: 16px;
-  color: var(--main-white-color);
+.section_title{
+  font-size: 42px;
+  font-weight: 600;
+  margin-bottom: 128px;
+  margin-top: 0;
 }
 
-.presentation {
-  background: var(--main-bg-color);
-  padding: 16px;
-}
-
-.presentation_title {
-  margin-bottom: 32px;
+#presentation {
+  background: var(--main-white-color);
 }
 
 .presentation_item {
   display: flex;
   flex-direction: column;
   align-items: center;
+  padding: 0 2%;
+  margin-top: 64px;
 }
 
-.coach_section {
-  width: 100%;
-  background-color: #ffffff;
-  padding: 16px;
-  color: #39729B;
+.presentation_item_title{
+  font-size: 32px;
+  height: 64px;
+  color: #1D1D1D;
+}
+
+.presentation_item_text{
+  font-size: 22px;
+  color: var(--main-light-grey);
+}
+
+#coach_section {
+  display: inline-block;
+  background-image: linear-gradient(to top, #46b0ff, #0073cf);
+  box-shadow: 0 8px 12px 0 rgba(0, 0, 0, 0.5);
+  text-align: center;
+  color: var(--main-white-color);
 }
 
 .coach_section_title {
-  margin-bottom: 16px;
+  margin-bottom: 32px;
 }
 
 .coach_section_subtitle {
-  margin-bottom: 32px;
+  margin: 0;
 }
 
 .coach_description {
   display: flex;
   flex-direction: column;
   align-items: center;
+  text-align: center;
+  padding: 0 2%;
+  margin-top: 64px;
+}
+
+.coach_description h4{
+  font-size: 36px;
+  height: 72px;
+}
+
+.coach_description p{
+  opacity: 0.8;
 }
 
 .coach_img {
-  height: 149px;
-  width: 149px;
+  height: 173px;
+  width: 173px;
   background-size: cover;
 }
 
+.small-line-container{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 64px;
+}
+
+.small-line{
+  height: 1px;
+  width: 180px;
+  border: solid 1px rgba(255, 255, 255, 0.67);
+}
+
+footer {
+  background-color: var(--main-white-color);
+  padding: 128px 0;
+}
+
+label{
+  color: var(--main-dark-grey);
+  font-size: 24px;
+  font-weight: 500;
+}
+
+input[type="text"],
+input[type="text"]:focus:not([readonly]),
+input[type="email"],
+input[type="email"]:focus:not([readonly]),
+textarea,
+textarea:focus:not([readonly]){
+  border: none !important;
+  box-shadow: none !important;
+  box-sizing: border-box;
+  background-color: #E8E8E8;
+  border-radius: 8px;
+  padding: 16px !important;
+}
+
+textarea{
+  width: 100%;
+  min-height: 192px;
+}
+
+.address{
+  margin-top: 128px;
+}
+
+.address p{
+  font-size: 22px;
+  font-weight: 400;
+}
+
+.contacts{
+  color: var(--main-light-grey);
+  font-size: 22px;
+  margin-top: 64px;
+}
+
+.btn-submit{
+  border-color: #44AFFE;
+  background-color: #44AFFE;
+}

@@ -33,7 +33,7 @@ import {MeetingItemCoachComponent} from "./meeting/meeting-list/coach/meeting-it
 import {FirebaseService} from "./service/firebase.service";
 import {MeetingDateComponent} from "./meeting/meeting-date/meeting-date.component";
 import {SliderModule} from "primeng/components/slider/slider";
-
+import {Ng2PageScrollModule} from "ng2-page-scroll"
 
 @NgModule({
   declarations: [
@@ -65,7 +65,8 @@ import {SliderModule} from "primeng/components/slider/slider";
     MaterialModule.forRoot(),
     CalendarModule.forRoot(),
     NgbModule.forRoot(),
-    SliderModule
+    SliderModule,
+    Ng2PageScrollModule.forRoot()
   ],
   providers: [DataService, LogService, AuthService, AuthGuard, CoachCoacheeService, MeetingsService, FirebaseService],
   bootstrap: [AppComponent]
