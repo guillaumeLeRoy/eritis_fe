@@ -75,13 +75,13 @@ header.section .container{
   opacity: 0.6;
 }
 
-.header-btn-left{
-  padding-right: 16px;
-}
+/*.header-btn-left{*/
+  /*padding-right: 16px;*/
+/*}*/
 
-.header-btn-right{
-  padding-left: 16px;
-}
+/*.header-btn-right{*/
+  /*padding-left: 16px;*/
+/*}*/
 
 .btn-connexion .material-icons{
   vertical-align: text-bottom;
