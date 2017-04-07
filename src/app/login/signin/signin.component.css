@@ -37,3 +37,7 @@ button[type="submit"]{
   font-size: 24px;
   font-weight: 300;
 }
+
+button[type="submit"]:disabled{
+  opacity: .5;
+}
