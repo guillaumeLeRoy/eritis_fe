@@ -61,26 +61,24 @@ header.section .container{
 }
 
 .header-title{
-  font-size: 66px;
+  /*font-size: 66px*/
+  font-size: 8vmin; /*Test taille adaptative relative à la taille minimale de l'écran*/
   font-weight: 500;
   letter-spacing: 1.1px;
   margin: 0;
 }
 
 .header-subtitle{
-  font-size: 36px;
+  /*font-size: 36px;*/
+  font-size: 4vmin;
   font-weight: 300;
   letter-spacing: 2.3px;
   margin: 64px 0;
   opacity: 0.6;
 }
 
-.header-btn-left{
-  padding-right: 16px;
-}
-
-.header-btn-right{
-  padding-left: 16px;
+.header-btn .btn-basic{
+  min-width: 200px;
 }
 
 .btn-connexion .material-icons{
@@ -116,7 +114,8 @@ rb-signin{
 }
 
 .section_title{
-  font-size: 42px;
+  /*font-size: 42px;*/
+  font-size: 5vmin;
   font-weight: 600;
   margin-bottom: 128px;
   margin-top: 0;
@@ -135,13 +134,15 @@ rb-signin{
 }
 
 .presentation_item_title{
-  font-size: 32px;
+  /*font-size: 32px;*/
+  font-size: 4vmin;
   height: 64px;
   color: #1D1D1D;
 }
 
 .presentation_item_text{
-  font-size: 22px;
+  /*font-size: 22px;*/
+  font-size: 3vmin;
   color: var(--main-light-grey);
 }
 
@@ -171,11 +172,13 @@ rb-signin{
 }
 
 .coach_description h4{
-  font-size: 36px;
+  /*font-size: 36px;*/
+  font-size: 4vmin;
   height: 72px;
 }
 
 .coach_description p{
+  font-size: 2.5vmin;
   opacity: 0.8;
 }
 
@@ -228,19 +231,9 @@ textarea{
   min-height: 192px;
 }
 
-.address{
-  margin-top: 128px;
-}
-
 .address p{
   font-size: 22px;
   font-weight: 400;
-}
-
-.contacts{
-  color: var(--main-light-grey);
-  font-size: 22px;
-  margin-top: 64px;
 }
 
 .btn-submit{
@@ -249,6 +242,10 @@ textarea{
 }
 
 .btn-submit:disabled{
-  border-color: #44AFFE;
+  border-color: #E8E8E8;
   background-color: #E8E8E8;
+}
+
+.side-nav{
+  background-color: rgba(255, 255, 255, .9)
 }
