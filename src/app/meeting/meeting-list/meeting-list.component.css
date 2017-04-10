@@ -1,0 +1,9 @@
+.nb-seances{
+  color: var(--main-electric-blue);
+}
+
+.add-meeting-btn{
+  background-color: var(--main-electric-blue);
+  margin-left: 16px;
+}
+

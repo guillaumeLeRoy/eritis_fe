@@ -1,25 +1,32 @@
 /*!* You can add global styles to this file, and also import other style files *!*/
 @import '~@angular/material/core/theming/prebuilt/deeppurple-amber.css';
 
-node_modules/angular-calendar/dist/css/angular-calendar.css
+/* A revoir car provoque une erreur (empeche la première règle d'être prise en compte) */
+/*node_modules/angular-calendar/dist/css/angular-calendar.css*/
 
-html, body {
+html, body{
   height: 100%;
-  color: var(--main-dark-grey);
-  font-family: Roboto;
+  /*background-color: var(--main-white-color);*/
+  color: var(--main-font-grey);
+  font-family: Roboto, sans-serif;
 }
+
 /* make sure containers are below the navbar */
 body .container {
-  /*padding: 60px 0px 0;*/
+  padding: 96px 0 0;
 }
 
 :root {
-  --main-header-color: #002D50;
+  /*--main-header-color: #002D50;*/
+  --main-header-color: rgba(0, 72, 129, 0.6);
   --main-bg-color: #C3D9E8;
   --main-white-color: #ffffff;
   --main-white-color--hover: #5e5e5e;
   --main-dark-grey: #3E3E3E;
+  --main-font-grey: #7D7D7D;
   --main-light-grey: #C7C7C7;
+  --main-electric-blue: #46b0ff;
+  --main-blue-filter: rgba(35, 88, 128, 0.6);
 }
 
 .recipes_grid {
@@ -64,4 +71,10 @@ a{
 .btn-plain{
   background-color: var(--main-white-color);
   color: var(--main-dark-grey) !important;
+}
+
+/* Permet d'aligner les icon material avec le texte */
+.material-icons{
+  display: inline-block !important;
+  vertical-align: middle;
 }

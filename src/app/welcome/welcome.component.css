@@ -20,23 +20,21 @@ nav li:focus a{
 
 .bg-top-image {
   position: fixed;
-  top: 0px;
-  left: 0px;
-  background-image: url("../../assets/img/eritis-mountain-bg-2.jpg");
+  top: 0;
+  left: 0;
   background-size: cover;
-  background-repeat: no-repeat;
-  background-position: center;
-  height: 1000px;
-  width: 100%;
+  background: url("../../assets/img/eritis-mountain-bg-2.jpg") no-repeat center;
+  height: 2448px;
+  width: 3696px;
   max-width: 100%;
   z-index: -10;
 }
 
 .bg-top-filter{
   position: fixed;
-  top: 0px;
-  left: 0px;
-  background-color: rgba(0, 72, 129, 0.6);
+  top: 0;
+  left: 0;
+  background-color: var(--main-blue-filter);
   height: 1000px;
   width: 100%;
   max-width: 100%;
@@ -81,15 +79,12 @@ header.section .container{
   min-width: 200px;
 }
 
-.btn-connexion .material-icons{
-  vertical-align: text-bottom;
-}
-
 .header-arrow-bottom{
   font-size: 66px;
   color: var(--main-white-color);
   opacity: 0.6;
 }
+
 .header-arrow-bottom:hover{
   opacity: 1;
 }
@@ -115,6 +110,7 @@ rb-signin{
 
 .section_title{
   /*font-size: 42px;*/
+  color: #000;
   font-size: 5vmin;
   font-weight: 600;
   margin-bottom: 128px;
@@ -155,6 +151,7 @@ rb-signin{
 }
 
 .coach_section_title {
+  color: var(--main-white-color);
   margin-bottom: 32px;
 }
 
@@ -229,6 +226,10 @@ textarea:focus:not([readonly]){
 textarea{
   width: 100%;
   min-height: 192px;
+}
+
+.address{
+  color: #000;
 }
 
 .address p{

@@ -1,10 +1,10 @@
 import {Component, OnDestroy, ChangeDetectorRef, OnInit} from '@angular/core';
-import {Router} from "@angular/router";
-import {AuthService} from "../service/auth.service";
-import {Subscription, Observable} from "rxjs";
-import {ApiUser} from "../model/apiUser";
-import {Coach} from "../model/Coach";
-import {Coachee} from "../model/coachee";
+import {Router} from '@angular/router';
+import {AuthService} from '../service/auth.service';
+import {Subscription, Observable} from 'rxjs';
+import {ApiUser} from '../model/apiUser';
+import {Coach} from '../model/Coach';
+import {Coachee} from '../model/coachee';
 
 @Component({
   selector: 'rb-header',
@@ -12,12 +12,13 @@ import {Coachee} from "../model/coachee";
   styleUrls: ['header.component.css']
 
 })
-export class HeaderComponent implements OnInit,OnDestroy {
+export class HeaderComponent implements OnInit, OnDestroy {
 
   private isAuthenticated: Observable<boolean>;
   private subscription: Subscription;
 
   private mUser: Coach | Coachee;
+  private user: Observable<Coach | Coachee>;
 
   constructor(private router: Router, private authService: AuthService, private cd: ChangeDetectorRef) {
   }
@@ -38,14 +39,14 @@ export class HeaderComponent implements OnInit,OnDestroy {
     // this.connectedUser = this.authService.getConnectedUserObservable();
     this.subscription = this.authService.getConnectedUserObservable().subscribe(
       (user: Coach | Coachee) => {
-        console.log("getConnectedUser : " + user);
+        console.log('getConnectedUser : ' + user);
         this.onUserObtained(user);
       }
     );
   }
 
   private onUserObtained(user: Coach | Coachee) {
-    console.log("onUserObtained : " + user);
+    console.log('onUserObtained : ' + user);
 
     if (user == null) {
       this.mUser = user;
@@ -54,8 +55,8 @@ export class HeaderComponent implements OnInit,OnDestroy {
       this.mUser = user;
       this.isAuthenticated = Observable.of(true);
     }
+    this.user = Observable.of(user);
     this.cd.detectChanges();
-
   }
 
   ngOnDestroy(): void {

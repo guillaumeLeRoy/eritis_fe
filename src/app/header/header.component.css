@@ -1,8 +1,67 @@
+nav{
+  background-color: transparent;
+  background-image: url("../../assets/img/eritis-mountain-bg-2.jpg");
+  background-attachment: scroll;
+  background-position: top;
+  background-size: cover;
+  height: 96px;
+  box-shadow: none;
+}
+
+nav li{
+  background-color: transparent;
+}
+
+nav li a{
+  cursor: pointer;
+}
+
+nav li a:hover,
+nav li a:focus {
+  color: var(--main-dark-grey);
+}
+
+.navbar-fixed{
+  height: 96px;
+}
+
 .navbar-color {
-  background-color: var(--main-header-color);
+  background-color: var(--main-blue-filter);
   padding: 16px;
 }
 
 .logo-text img{
   height: 50px;
+}
+
+header{
+  background-image: url("../../assets/img/eritis-mountain-bg-2.jpg");
+  background-attachment: scroll;
+  background-position: center;
+  background-size: cover;
+}
+
+.header-user{
+  background-color: var(--main-blue-filter);
+  color: var(--main-white-color);
+  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.5);
+}
+
+.header-user-filter{
+
+}
+
+.header-user .container{
+  display: flex;
+  align-items: center;
+  align-content: center;
+  padding: 64px 0;
+}
+
+.header-user-info{
+  margin-left: 16px;
+}
+
+.header-user-img{
+  height: 100px;
 }
