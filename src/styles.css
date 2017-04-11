@@ -6,14 +6,17 @@
 
 html, body{
   height: 100%;
-  /*background-color: var(--main-white-color);*/
   color: var(--main-font-grey);
   font-family: Roboto, sans-serif;
 }
 
+body{
+  background-color: var(--main-white-color);
+}
+
 /* make sure containers are below the navbar */
 body .container {
-  padding: 96px 0 0;
+  padding: 96px 0;
 }
 
 :root {
@@ -26,6 +29,7 @@ body .container {
   --main-font-grey: #7D7D7D;
   --main-light-grey: #C7C7C7;
   --main-electric-blue: #46b0ff;
+  --main-dark-blue: #235880;
   --main-blue-filter: rgba(35, 88, 128, 0.6);
 }
 
@@ -55,6 +59,7 @@ a{
 .btn-basic{
   display: inline-block;
   border-radius: 64px;
+  background-color: transparent;
   border: solid 2px var(--main-white-color);
   color: var(--main-white-color);
   font-size: 25px;
@@ -64,17 +69,114 @@ a{
   text-align: center;
   vertical-align: baseline;
   transition: .3s;
+  min-width: 200px;
+}
+
+.btn-basic:disabled{
+  background-color: var(--main-light-grey) !important;
+  border-color:  var(--main-light-grey) !important;
+  color: #FFF !important;
 }
 
 .btn-basic:hover,
 .btn-basic:focus,
 .btn-plain{
   background-color: var(--main-white-color);
-  color: var(--main-dark-grey) !important;
+  color: var(--main-dark-grey);
+}
+
+.btn-basic.btn-blue{
+  background-color: transparent;
+  border-color: var(--main-electric-blue);
+  color: var(--main-electric-blue);
+}
+
+.btn-plain.btn-blue,
+.btn-blue:hover,
+.btn-blue:focus{
+  background-color: var(--main-electric-blue);
+  border-color: var(--main-electric-blue);
+  color: #fff;
 }
 
 /* Permet d'aligner les icon material avec le texte */
 .material-icons{
   display: inline-block !important;
   vertical-align: middle;
+}
+
+p-slider .ui-slider{
+  width: 100% !important;
+  margin: 64px 0;
+  background-color: var(--main-light-grey);
+  box-shadow: none !important;
+}
+
+p-slider .ui-slider-range{
+  background-color: var(--main-electric-blue);
+}
+
+p-slider .ui-slider span{
+  box-shadow: none !important;
+}
+
+p-slider .ui-slider .ui-slider-handle,
+p-slider .ui-slider-horizontal .ui-slider-handle{
+  width: 21px !important;
+  height: 21px !important;
+  top: -7px !important;
+  background: var(--main-electric-blue) !important;
+  border-radius: 100%;
+}
+
+p-slider .ui-slider-handle:hover{
+  cursor: pointer;
+}
+
+
+
+/* Datepicker */
+ngb-datepicker{
+  border: none !important;
+}
+
+ngb-datepicker-month-view{
+  padding: 16px;
+}
+
+ngb-datepicker .ngb-dp-header{
+  height: 60px;
+  border: none !important;
+}
+
+ngb-datepicker .ngb-dp-month-name{
+  color: #FFF;
+  font-weight: 700;
+  margin: 12px 0;
+}
+
+ngb-datepicker .ngb-dp-weekday{
+  color: #000 !important;
+  font-style: normal !important;
+  font-weight: 600;
+  margin: 8px;
+}
+
+ngb-datepicker .ngb-dp-day{
+  margin: 8px;
+  text-align: center;
+}
+
+ngb-datepicker .bg-faded{
+  background-color: var(--main-dark-blue);
+}
+
+ngb-datepicker .btn-link,
+ngb-datepicker .btn-link:focus{
+  color: #FFF;
+  margin: 12px 16px;
+}
+
+ngb-datepicker .btn-link:hover{
+  color: var(--main-light-grey);
 }

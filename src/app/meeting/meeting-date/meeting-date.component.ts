@@ -1,12 +1,11 @@
 import {Component, OnInit, Input, ChangeDetectorRef, OnDestroy, Output, EventEmitter} from '@angular/core';
-import {NgbDateStruct, NgbTimeStruct} from "@ng-bootstrap/ng-bootstrap";
-import {ApiUser} from "../../model/apiUser";
-import {CoachCoacheeService} from "../../service/CoachCoacheeService";
-import {Router} from "@angular/router";
-import {AuthService} from "../../service/auth.service";
-import {Observable, Subscription} from "rxjs";
-import {Meeting} from "../../model/meeting";
-import {MeetingDate} from "../../model/MeetingDate";
+import {NgbDateStruct} from '@ng-bootstrap/ng-bootstrap';
+import {ApiUser} from '../../model/apiUser';
+import {CoachCoacheeService} from '../../service/CoachCoacheeService';
+import {AuthService} from '../../service/auth.service';
+import {Observable, Subscription} from 'rxjs';
+import {Meeting} from '../../model/meeting';
+import {MeetingDate} from '../../model/MeetingDate';
 
 @Component({
   selector: 'rb-meeting-date',
@@ -21,13 +20,19 @@ export class MeetingDateComponent implements OnInit, OnDestroy {
   @Input()
   meeting: Meeting;
 
-  dateModel: NgbDateStruct;
-  // timeModel: NgbTimeStruct;
+  months = ['Janvier', 'Février', 'Mars', 'Avril', 'Mai', 'Juin', 'Juillet', 'Août', 'Septembre', 'Octobre', 'Novembre', 'Décembre'];
+  days = ['Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi', 'Dimanche'];
 
-  timeRange: number[] = [0, 24];
+  now = new Date();
+  dateModel: NgbDateStruct = {year: this.now.getFullYear(), month: this.now.getMonth() + 1, day: this.now.getDate()};
+  // timeModel: NgbTimeStruct;
+  timeRange: number[] = [7, 21];
+
+  /* Meeting potential dates */
+  private potentialDatesArray: MeetingDate[];
+  private potentialDates: Observable<MeetingDate[]>;
 
   private displayErrorBookingDate = false;
-
   private connectedUser: Observable<ApiUser>;
   private subscriptionConnectUser: Subscription;
 
@@ -41,11 +46,13 @@ export class MeetingDateComponent implements OnInit, OnDestroy {
     } else {
       this.subscriptionConnectUser = this.authService.getConnectedUserObservable().subscribe(
         (user: ApiUser) => {
-          console.log("ngOnInit, sub received user", user);
+          console.log('ngOnInit, sub received user', user);
           this.onConnectedUserReceived(user);
         }
       );
     }
+
+    this.loadMeetingPotentialTimes();
   }
 
   private onConnectedUserReceived(user: ApiUser) {
@@ -61,19 +68,19 @@ export class MeetingDateComponent implements OnInit, OnDestroy {
       (user: ApiUser) => {
 
         if (user == null) {
-          console.log('no connected user')
+          console.log('no connected user');
           return;
         }
 
-        var minDate = new Date(this.dateModel.year, this.dateModel.month, this.dateModel.day, this.timeRange[0], 0);
-        var maxDate = new Date(this.dateModel.year, this.dateModel.month, this.dateModel.day, this.timeRange[1], 0);
-        var timestampMin: number = +minDate.getTime().toFixed(0) / 1000;
-        var timestampMax: number = +maxDate.getTime().toFixed(0) / 1000;
+        let minDate = new Date(this.dateModel.year, this.dateModel.month - 1, this.dateModel.day, this.timeRange[0], 0);
+        let maxDate = new Date(this.dateModel.year, this.dateModel.month - 1, this.dateModel.day, this.timeRange[1], 0);
+        let timestampMin: number = +minDate.getTime().toFixed(0) / 1000;
+        let timestampMax: number = +maxDate.getTime().toFixed(0) / 1000;
 
         this.coachService.addPotentialDateToMeeting(this.meeting.id, timestampMin, timestampMax).subscribe(
           (meetingDate: MeetingDate) => {
             console.log('addPotentialDateToMeeting, meetingDate : ', meetingDate);
-            //redirect to meetings page
+            // redirect to meetings page
             // this.router.navigate(['/meetings']);
             this.potentialDatePosted.emit(meetingDate);
           },
@@ -82,6 +89,51 @@ export class MeetingDateComponent implements OnInit, OnDestroy {
             this.displayErrorBookingDate = true;
           }
         );
+      }
+    );
+  }
+
+  dateToString(date: NgbDateStruct) {
+    let newDate = new Date(this.dateModel.year, this.dateModel.month - 1, this.dateModel.day);
+    return this.days[newDate.getDay() - 1] + ' ' + date.day + ' ' + this.months[newDate.getMonth()];
+  }
+
+  stringToDate(date: string) {
+    let d = new Date(date);
+    return {day: d.getDate(), month: d.getMonth() + 1, year: d.getFullYear() };
+  }
+
+  compareDates(date1: NgbDateStruct, date2: NgbDateStruct) {
+    return (date1.year == date2.year) && (date1.month == date2.month) && (date1.day == date2.day);
+  }
+
+  hasPotentialDate(date: NgbDateStruct) {
+    for (let i in this.potentialDatesArray) {
+      if (this.compareDates(this.stringToDate(this.potentialDatesArray[i].start_date), date)) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  isDisabled(date: NgbDateStruct, current: {month: number}) {
+    return date.month !== current.month;
+  }
+
+  onPotentialDatePosted(date: MeetingDate) {
+    console.log('onPotentialDatePosted');
+    this.potentialDatePosted.emit(date);
+  }
+
+  private loadMeetingPotentialTimes() {
+    this.coachService.getMeetingPotentialTimes(this.meeting.id).subscribe(
+      (dates: MeetingDate[]) => {
+        console.log('potential dates obtained, ', dates);
+        this.potentialDatesArray = dates;
+        this.potentialDates = Observable.of(dates);
+        this.cd.detectChanges();
+      }, (error) => {
+        console.log('get potentials dates error', error);
       }
     );
   }

@@ -1,0 +1,83 @@
+.header-date-picker{
+  line-height: 1.5;
+  margin-bottom: 64px;
+}
+
+.custom-day{
+  display: inline-block;
+  border-radius: 100%;
+  color: var(--main-dark-grey);
+  font-size: 16px;
+  line-height: 40px;
+  height: 40px;
+  width: 40px;
+}
+
+.custom-day:hover{
+  background-color: var(--main-light-grey);
+}
+
+.custom-day.text-muted{
+  color: #e7e7e7 !important;
+}
+
+.bg-primary{
+  background-color: var(--main-electric-blue) !important;
+  color: #FFF !important;
+}
+
+.has-potential-date{
+  color: var(--main-electric-blue);
+  font-weight: 600;
+}
+
+.plage-horaire{
+  font-weight: 800;
+}
+
+#datepicker-container{
+  display: inline-block;
+  width: 361.5px;
+  border-radius: 0.25rem;
+  margin-bottom: 32px;
+}
+
+#potential-dates{
+  padding: 0 32px 16px;
+}
+
+.potential-date{
+  margin-bottom: 16px;
+}
+
+.potential-date-content{
+  display: flex;
+  align-items: center;
+  align-content: center;
+}
+
+.blue-point{
+  background-color: var(--main-electric-blue);
+  width: 20px;
+  height: 20px;
+  border-radius: 100%;
+  margin-right: 8px;
+}
+
+.potential-date-timeslot{
+  font-size: 20px;
+  font-weight: 600;
+  margin: 0;
+}
+
+.modify-timeslot,
+.delete-timeslot{
+  color: var(--main-light-grey) !important;
+  margin-left: 8px;
+}
+
+.modify-timeslot:hover,
+.delete-timeslot:hover{
+  color: var(--main-electric-blue) !important;
+  cursor: pointer;
+}

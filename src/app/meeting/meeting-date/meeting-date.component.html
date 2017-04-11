@@ -1,52 +1,76 @@
-<!--<div class="container">-->
+<div>
+  <h4 class="header-date-picker">Indiquez vos disponiblités grâce au calendrier ci dessous.
+  <br>Cliquez sur terminé lorsque vous avez validé toutes vos plages disponibles.</h4>
 
-<div class="card">
+  <!--<div class="section" *ngIf="(connectedUser | async)?.status == 2">-->
 
-  <div class="card-content">
+  <!--Input Date Picker-->
+  <div id="input-date-picker">
+    <div class="row text-center">
+      <div class="col-xs-12 col-lg-5">
+        <!--<input type="date" class="datepicker" placeholder="Cliquez ici">-->
+        <div id="datepicker-container" class="z-depth-2">
+          <ngb-datepicker #dp [(ngModel)]="dateModel"
+                          (navigate)="date = $event.next"
+                          navigation="arrows"
+                          minDate="{{ dateModel }}"
+                          [dayTemplate]="customDay"
+                          [markDisabled]="isDisabled">
+          </ngb-datepicker>
 
-    <span class="card-title grey-text text-darken-4">Prendre un rendez-vous</span>
+          <template #customDay let-date="date" let-currentMonth="currentMonth" let-selected="selected" let-disabled="disabled">
+            <span class="custom-day"
+                  [class.has-potential-date]="hasPotentialDate(date)"
+                  [class.bg-primary]="selected"
+                  [class.hidden]="date.month !== currentMonth"
+                  [class.text-muted]="disabled">
+              {{ date.day }}
+            </span>
+          </template>
 
-    <!--<div class="section" *ngIf="(connectedUser | async)?.status == 2">-->
+          <div id="potential-dates" class="text-left" *ngIf="dateModel && hasPotentialDate(dateModel)">
+            <p>Disponibilités ajoutées</p>
+            <!-- list of potential dates -->
+            <div class="potential-date" *ngFor="let date of potentialDates | async">
+              <div class="potential-date-content" *ngIf="compareDates(stringToDate(date.start_date), dateModel)">
+                <div class="blue-point"></div>
+                <p class="potential-date-timeslot">{{date.start_date | date:'shortTime'}} - {{date.end_date | date:'shortTime'}}</p>
+                <a class="modify-timeslot" (click)="return"><i class="material-icons">create</i></a>
+                <a class="delete-timeslot" (click)="return"><i class="material-icons">delete_sweep</i></a>
+              </div><!--end ngIf-->
+            </div><!--end potential-date-->
+          </div><!--end potential-dates-->
+        </div><!--end datepicker-container-->
 
-    <!--Input Date Picker-->
-    <div id="input-date-picker">
-      <div class="row">
-        <div class="col s12">
-          <p>Selectionnez une date</p>
-        </div>
-        <div class="col s12">
-          <!--<input type="date" class="datepicker" placeholder="Cliquez ici">-->
-          <ngb-datepicker #dp [(ngModel)]="dateModel" (navigate)="date = $event.next"></ngb-datepicker>
-        </div>
+        <p>Vous pouvez modifier les plages validées ci-dessus</p>
       </div>
 
-      <div class="row">
-        <div class="col s12">
-          <p>Selectionnez une heure</p>
+      <div class="col-xs-12 col-lg-7">
+        <!--<ngb-timepicker #tp [(ngModel)]="timeModel" [minuteStep]="15"></ngb-timepicker>-->
+        <div>
+          <h5 *ngIf="dateModel">{{ dateToString(dateModel) }}</h5>
+          <h2 class="plage-horaire">{{timeRange[0]}}:00 - {{timeRange[1]}}:00</h2>
         </div>
-        <div class="col s12">
-          <!--<ngb-timepicker #tp [(ngModel)]="timeModel" [minuteStep]="15"></ngb-timepicker>-->
-          <p-slider [(ngModel)]="timeRange" [style]="{'width':'200px'}" [range]="true" [max]="24" [min]="0"></p-slider>
 
-          <div style="padding-top:20px">
-            <p>Entre {{timeRange[0]}}h et {{timeRange[1]}}h</p>
+        <p-slider [(ngModel)]="timeRange" [style]="{'width':'200px'}" [range]="true" [max]="21" [min]="7"></p-slider>
+
+        <p>Faites glisser pour sélectionner votre plage disponible, puis validez</p>
+
+        <div class="row">
+          <div class="col-lg-12">
+            <button class="btn-basic btn-plain btn-blue" (click)="bookADate()" [disabled]="dateModel==null">Valider</button>
           </div>
-
+          <div class="col-lg-12">
+            <button class="btn-basic btn-blue" (click)="bookADate()" [disabled]="dateModel==null">Terminé</button>
+          </div>
         </div>
       </div>
-    </div>
-
-    <button class="btn cyan waves-effect waves-light right" (click)="bookADate()" [disabled]="dateModel==null">
-      Proposer ce jour et ce créneau horaire<i
-      class="mdi-content-send right"></i></button>
-  </div>
-
-  <div id="card-alert_seance_book" class="card red" *ngIf="displayErrorBookingDate">
-    <div class="card-content white-text">
-      <p>Impossible de réserver votre séance</p>
-    </div>
-  </div>
-
+    </div><!--end row-->
+  </div><!--end row-->
 </div>
 
-<!--</div>-->
+<div id="card-alert_seance_book" class="card red" *ngIf="displayErrorBookingDate">
+  <div class="card-content white-text">
+    <p>Impossible de réserver votre séance</p>
+  </div>
+</div>

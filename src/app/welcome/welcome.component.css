@@ -24,8 +24,8 @@ nav li:focus a{
   left: 0;
   background-size: cover;
   background: url("../../assets/img/eritis-mountain-bg-2.jpg") no-repeat center;
-  height: 2448px;
-  width: 3696px;
+  height: 1000px;
+  width: 100%;
   max-width: 100%;
   z-index: -10;
 }

@@ -1,36 +1,36 @@
 <header id="header" class="page-topbar">
   <div class="navbar-fixed">
     <nav>
-      <div class="navbar-color">
+      <div class="navbar-color z-depth-2">
         <div class="col s12">
           <a [routerLink]="['/']" class="logo-text"><img src="assets/img/logo-eritis-new.png" alt="Eritis"></a>
-          <a [routerLink]="['/']" data-activates="mobile-demo" class="button-collapse"><i
+          <a [routerLink]="['/']" data-activates="side-nav" class="button-collapse right"><i
             class="mdi-navigation-menu"></i></a>
 
           <ul class="right hide-on-med-and-down">
-            <li *ngIf="canDisplayListOfCoach()"><a (click)="goToCoachs()">Coach List</a></li>
+            <li *ngIf="canDisplayListOfCoach()"><a (click)="goToCoachs()">Liste Des Coachs</a></li>
 
-            <li *ngIf="(isAuthenticated | async)"><a (click)="goToMeetings()">Your meetings</a></li>
+            <li *ngIf="(isAuthenticated | async)"><a (click)="goToMeetings()">Vos meetings</a></li>
 
-            <li *ngIf="(isAuthenticated | async)"><a (click)="goToProfile()">Your Profile</a></li>
+            <li *ngIf="(isAuthenticated | async)"><a (click)="goToProfile()">Profil</a></li>
 
             <li><a><i class="material-icons">notifications</i></a></li>
 
-            <li *ngIf="(isAuthenticated | async)"><a (click)="onLogout()">Logout</a></li>
+            <li *ngIf="(isAuthenticated | async)"><a (click)="onLogout()">Déconnexion</a></li>
 
             <li *ngIf="!(isAuthenticated | async)"><a (click)="onLogIn()">Sign In</a></li>
           </ul>
 
-          <ul class="side-nav" id="mobile-demo">
-            <li *ngIf="canDisplayListOfCoach()"><a (click)="goToCoachs()">Coach List</a></li>
+          <ul class="side-nav" id="side-nav">
+            <li *ngIf="canDisplayListOfCoach()"><a (click)="goToCoachs()">Liste Des Coachs</a></li>
 
-            <li *ngIf="(isAuthenticated | async)"><a (click)="goToMeetings()">Your meetings</a></li>
+            <li *ngIf="(isAuthenticated | async)"><a (click)="goToMeetings()">Vos meetings</a></li>
 
-            <li *ngIf="(isAuthenticated | async)"><a (click)="goToProfile()">Your Profile</a></li>
+            <li *ngIf="(isAuthenticated | async)"><a (click)="goToProfile()">Profil</a></li>
 
             <li><a><i class="material-icons">notifications</i></a></li>
 
-            <li *ngIf="(isAuthenticated | async)"><a (click)="onLogout()">Logout</a></li>
+            <li *ngIf="(isAuthenticated | async)"><a (click)="onLogout()">Déconnexion</a></li>
 
             <li *ngIf="!(isAuthenticated | async)"><a (click)="onLogIn()">Sign In</a></li>
           </ul>

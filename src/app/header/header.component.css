@@ -27,6 +27,8 @@ nav li a:focus {
 
 .navbar-color {
   background-color: var(--main-blue-filter);
+  /*background-color: var(--main-dark-blue);*/
+  height: 100%;
   padding: 16px;
 }
 
