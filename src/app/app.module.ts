@@ -19,7 +19,7 @@ import {CoachListComponent} from './user/coach-list/coach-list.component';
 import {CoachItemComponent} from './user/coach-list/coach-item.component';
 import {CoachCoacheeService} from "./service/CoachCoacheeService";
 import {CoachDetailsComponent} from './user/coach-details/coach-details.component';
-import {MaterialModule} from "@angular/material";//lib
+// import {MaterialModule} from "@angular/material";//lib
 import {CalendarModule} from 'angular-calendar';//lib
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import {MeetingsService} from "./service/meetings.service";
@@ -62,7 +62,6 @@ import {Ng2PageScrollModule} from "ng2-page-scroll"
     HttpModule,
     routing,
     ReactiveFormsModule,
-    MaterialModule.forRoot(),
     CalendarModule.forRoot(),
     NgbModule.forRoot(),
     SliderModule,

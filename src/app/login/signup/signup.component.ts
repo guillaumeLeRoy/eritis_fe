@@ -2,6 +2,9 @@ import {Component, OnInit} from '@angular/core';
 import {FormGroup, FormBuilder, Validators, FormControl} from "@angular/forms";
 import {AuthService} from "../../service/auth.service";
 import {Router} from "@angular/router";
+import {Observable} from "rxjs";
+import {ContractPlan} from "../../model/ContractPlan";
+import {Response} from "@angular/http";
 
 @Component({
   selector: 'rb-signup',
@@ -10,9 +13,25 @@ import {Router} from "@angular/router";
 })
 export class SignupComponent implements OnInit {
 
-  private signUpForm: FormGroup
-  private error = false
-  private errorMessage: ''
+  private signUpForm: FormGroup;
+  private error = false;
+  private errorMessage = "";
+
+  /* ----- Contract Plan ----*/
+
+  /**
+   * All available Plans
+   */
+  private plans: Observable<ContractPlan[]>;
+
+  /**
+   * Selected Plan.
+   * Mandatory for a Coachee
+   */
+  private mSelectedPlan: ContractPlan;
+
+  /* ----- END Contract Plan ----*/
+
 
   constructor(private formBuilder: FormBuilder, private authService: AuthService, private router: Router) {
     console.log("constructor")
@@ -36,9 +55,18 @@ export class SignupComponent implements OnInit {
 
       status: ['']
     });
+
+    this.getListOfContractPlans();
   }
 
-  onSignUp() {
+
+  onSelectPlan(plan: ContractPlan) {
+    console.log("onSelectPlan, plan ", plan)
+
+    this.mSelectedPlan = plan;
+  }
+
+  onSignUpSubmitted() {
     console.log("onSignUp")
 
     //reset errors
@@ -61,7 +89,15 @@ export class SignupComponent implements OnInit {
         })
     } else {
       console.log("onSignUp, coachee");
-      this.authService.signUpCoachee(this.signUpForm.value).subscribe(
+
+      //contract Plan is mandatory
+      if (this.mSelectedPlan == null) {
+        this.error = true;
+        this.errorMessage = "Selectionnez un contract";
+        return;
+      }
+
+      this.authService.signUpCoachee(this.signUpForm.value, this.mSelectedPlan).subscribe(
         data => {
           console.log("onSignUp, data obtained", data)
           this.router.navigate(['/coachs'])
@@ -72,8 +108,18 @@ export class SignupComponent implements OnInit {
           this.errorMessage = error
         })
     }
+  }
 
 
+  getListOfContractPlans() {
+    this.authService.getNotAuth(AuthService.GET_CONTRACT_PLANS, null).subscribe(
+      (response: Response) => {
+        let json: ContractPlan[] = response.json();
+        console.log("getListOfContractPlans, response json : ", json);
+        this.plans = Observable.of(json);
+        // this.cd.detectChanges();
+      }
+    );
   }
 
   isEmail(control: FormControl): {[s: string]: boolean;} {
