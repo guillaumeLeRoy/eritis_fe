@@ -2,6 +2,9 @@ import {Component, OnInit} from '@angular/core';
 import {FormGroup, FormBuilder, Validators, FormControl} from "@angular/forms";
 import {AuthService} from "../../service/auth.service";
 import {Router} from "@angular/router";
+import {Observable} from "rxjs";
+import {ContractPlan} from "../../model/ContractPlan";
+import {Response} from "@angular/http";
 
 @Component({
   selector: 'rb-signup',
@@ -36,9 +39,11 @@ export class SignupComponent implements OnInit {
 
       status: ['']
     });
+
+    this.getListOfContractPlans();
   }
 
-  onSignUp() {
+  onSignUpSubmitted() {
     console.log("onSignUp")
 
     //reset errors
@@ -61,7 +66,7 @@ export class SignupComponent implements OnInit {
         })
     } else {
       console.log("onSignUp, coachee");
-      this.authService.signUpCoachee(this.signUpForm.value).subscribe(
+      this.authService.signUpCoachee(this.signUpForm.value, 1).subscribe(
         data => {
           console.log("onSignUp, data obtained", data)
           this.router.navigate(['/coachs'])
@@ -72,11 +77,22 @@ export class SignupComponent implements OnInit {
           this.errorMessage = error
         })
     }
-
-
   }
 
-  isEmail(control: FormControl): {[s: string]: boolean;} {
+  private plans: Observable<ContractPlan[]>
+
+  getListOfContractPlans() {
+    this.authService.getNotAuth(AuthService.GET_CONTRACT_PLANS, null).subscribe(
+      (response: Response) => {
+        let json: ContractPlan[] = response.json();
+        console.log("getListOfContractPlans, response json : ", json);
+        this.plans = Observable.of(json);
+        // this.cd.detectChanges();
+      }
+    );
+  }
+
+  isEmail(control: FormControl): { [s: string]: boolean; } {
     if (!control.value.match("[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?")) {
       console.log("email NOT ok")
       // this.test = false
@@ -86,7 +102,7 @@ export class SignupComponent implements OnInit {
     console.log("email ok")
   }
 
-  isEqualPassword(control: FormControl): {[s: string]: boolean;} {
+  isEqualPassword(control: FormControl): { [s: string]: boolean; } {
     if (!this.signUpForm) {
       return {passwordNoMatch: true}
     }

@@ -6,7 +6,7 @@
         <div class="card-panel">
           <h4 class="header2">S'inscrire</h4>
           <div class="row">
-            <form class="col s12" [formGroup]="signUpForm" (ngSubmit)="onSignUp()">
+            <form class="col s12" [formGroup]="signUpForm" (ngSubmit)="onSignUpSubmitted()">
               <div class="row">
                 <div class="input-field col s12">
                   <input id="email" type="email" formControlName="email">
@@ -73,5 +73,11 @@
       </div>
     </div>
   </div>
+
+  <div *ngFor="let plan of plans | async">
+    Plan id : {{plan.plan_id}}
+    Plan Name : {{plan.plan_name}}
+  </div>
+
 
 </div>

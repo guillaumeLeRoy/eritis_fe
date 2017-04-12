@@ -13,6 +13,9 @@ import {Coachee} from "../model/coachee";
 @Injectable()
 export class AuthService {
 
+  /* contract plan*/
+  public static GET_CONTRACT_PLANS = "v1/plans/";
+
   public static UPDATE_COACH = "/coachs/:id";
   public static UPDATE_COACHEE = "/coachees/:id";
   public static UPDATE_COACHEE_SELECTED_COACH = "/coachees/:coacheeId/coach/:coachId";
@@ -112,6 +115,9 @@ export class AuthService {
     return method;
   }
 
+  getNotAuth(path: string, params: string[]): Observable<Response> {
+    return this.httpService.get(this.generatePath(path, params))
+  }
 
   private getConnectedApiUser(): Observable<ApiUser> {
     console.log("2. getConnectedApiUser");
@@ -267,7 +273,7 @@ export class AuthService {
     );
   }
 
-  signUpCoachee(user: User): Observable<ApiUser> {
+  signUpCoachee(user: User, planId: number): Observable<ApiUser> {
     return this.signup(user, AuthService.POST_SIGN_UP_COACHEE);
   }
 
