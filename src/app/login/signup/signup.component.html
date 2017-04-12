@@ -74,9 +74,10 @@
     </div>
   </div>
 
-  <div *ngFor="let plan of plans | async">
+  <div *ngFor="let plan of plans | async" (click)="onSelectPlan(plan)"  [class.contract_selected]="plan == mSelectedPlan">
     Plan id : {{plan.plan_id}}
     Plan Name : {{plan.plan_name}}
+    Plan Sessions count : {{plan.sessions_count}}
   </div>
 
 

@@ -9,6 +9,7 @@ import {environment} from "../../environments/environment";
 import {FirebaseService} from "./firebase.service";
 import {Coach} from "../model/Coach";
 import {Coachee} from "../model/coachee";
+import {ContractPlan} from "../model/ContractPlan";
 
 @Injectable()
 export class AuthService {
@@ -273,7 +274,9 @@ export class AuthService {
     );
   }
 
-  signUpCoachee(user: User, planId: number): Observable<ApiUser> {
+  signUpCoachee(user: User, plan: ContractPlan): Observable<ApiUser> {
+    //add plan
+    user.contractPlanId = plan.plan_id;
     return this.signup(user, AuthService.POST_SIGN_UP_COACHEE);
   }
 
@@ -304,6 +307,7 @@ export class AuthService {
         let body = {
           email: fbUser.email,
           uid: fbUser.uid,
+          plan_id: user.contractPlanId
         };
         let params = [fbUser.uid];
 
@@ -358,6 +362,7 @@ export class AuthService {
     coachee.avatar_url = json.avatar_url;
     coachee.start_date = json.start_date;
     coachee.selectedCoach = json.selectedCoach;
+    coachee.contractPlan = json.plan;
     return coachee;
   }
 

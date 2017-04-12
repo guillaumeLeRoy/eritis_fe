@@ -1,5 +1,6 @@
 import {ApiUser} from "./apiUser";
 import {Coach} from "./Coach";
+import {ContractPlan} from "./ContractPlan";
 export class Coachee implements ApiUser {
 
   id: string;
@@ -14,6 +15,8 @@ export class Coachee implements ApiUser {
   start_date: string;
 
   selectedCoach: Coach;
+
+  contractPlan : ContractPlan;
 
   constructor(id: string) {
     this.id = id;
