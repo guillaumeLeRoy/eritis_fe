@@ -64,7 +64,8 @@ export class SignupComponent implements OnInit {
       this.authService.signUpCoachee(this.signUpForm.value).subscribe(
         data => {
           console.log("onSignUp, data obtained", data)
-          this.router.navigate(['/coachs'])
+          /*L'utilisateur est TOUJOURS redirigé vers ses meetings*/
+          this.router.navigate(['/meetings']);
         },
         error => {
           console.log("onSignUp, error obtained", error)

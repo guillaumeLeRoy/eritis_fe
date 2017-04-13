@@ -100,10 +100,26 @@ export class MeetingListComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   goToDate() {
-    let user = this.authService.getConnectedUser();
-    if (user != null) {
-      this.router.navigate(['/date']);
-    }
+    console.log('goToDate')
+
+    this.user.take(1).subscribe(
+      (user: ApiUser) => {
+
+        if (user == null) {
+          console.log('no connected user')
+          return;
+        }
+
+        //1) create a new meeting
+        //2) redirect to our MeetingDateComponent
+        this.meetingsService.createMeeting(user.id).subscribe(
+          (meeting: Meeting) => {
+            //TODO display a loader
+            console.log('meeting created, go to setup dates')
+            this.router.navigate(['/date', meeting.id]);
+          }
+        )
+      });
   }
 
   ngOnDestroy(): void {

@@ -6,7 +6,7 @@ import {AuthService} from '../../service/auth.service';
 import {Observable, Subscription} from 'rxjs';
 import {Meeting} from '../../model/meeting';
 import {MeetingDate} from '../../model/MeetingDate';
-import {Router} from "@angular/router";
+import {ActivatedRoute, Router} from "@angular/router";
 
 @Component({
   selector: 'rb-meeting-date',
@@ -18,9 +18,10 @@ export class MeetingDateComponent implements OnInit, OnDestroy {
   @Output()
   potentialDatePosted = new EventEmitter<MeetingDate>();
 
-  // @Input()
-  // meeting: Meeting;
-  meeting = new Meeting('vide');
+  /**
+   * Meeting Id for which we want to setup potential dates
+   */
+  private meetingId: string
 
   months = ['Janvier', 'Février', 'Mars', 'Avril', 'Mai', 'Juin', 'Juillet', 'Août', 'Septembre', 'Octobre', 'Novembre', 'Décembre'];
   days = ['Dimanche', 'Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi'];
@@ -38,10 +39,19 @@ export class MeetingDateComponent implements OnInit, OnDestroy {
   private connectedUser: Observable<ApiUser>;
   private subscriptionConnectUser: Subscription;
 
-  constructor(private router: Router, private coachService: CoachCoacheeService, private authService: AuthService, private cd: ChangeDetectorRef) {
+  constructor(private router: Router, private route: ActivatedRoute, private coachService: CoachCoacheeService, private authService: AuthService, private cd: ChangeDetectorRef) {
   }
 
   ngOnInit() {
+
+    //meetingId should be in the router
+    this.route.params.subscribe(
+      (params: any) => {
+        this.meetingId = params['meetingId'];
+        this.loadMeetingPotentialTimes(this.meetingId);
+      }
+    );
+
     let user = this.authService.getConnectedUser();
     if (user) {
       this.onConnectedUserReceived(user);
@@ -54,7 +64,6 @@ export class MeetingDateComponent implements OnInit, OnDestroy {
       );
     }
 
-    this.loadMeetingPotentialTimes();
   }
 
   private onConnectedUserReceived(user: ApiUser) {
@@ -79,7 +88,7 @@ export class MeetingDateComponent implements OnInit, OnDestroy {
         let timestampMin: number = +minDate.getTime().toFixed(0) / 1000;
         let timestampMax: number = +maxDate.getTime().toFixed(0) / 1000;
 
-        this.coachService.addPotentialDateToMeeting(this.meeting.id, timestampMin, timestampMax).subscribe(
+        this.coachService.addPotentialDateToMeeting(this.meetingId, timestampMin, timestampMax).subscribe(
           (meetingDate: MeetingDate) => {
             console.log('addPotentialDateToMeeting, meetingDate : ', meetingDate);
             // redirect to meetings page
@@ -110,7 +119,7 @@ export class MeetingDateComponent implements OnInit, OnDestroy {
 
   stringToDate(date: string) {
     let d = new Date(date);
-    return {day: d.getDate(), month: d.getMonth() + 1, year: d.getFullYear() };
+    return {day: d.getDate(), month: d.getMonth() + 1, year: d.getFullYear()};
   }
 
   compareDates(date1: NgbDateStruct, date2: NgbDateStruct) {
@@ -126,7 +135,7 @@ export class MeetingDateComponent implements OnInit, OnDestroy {
     return false;
   }
 
-  isDisabled(date: NgbDateStruct, current: {month: number}) {
+  isDisabled(date: NgbDateStruct, current: { month: number }) {
     return date.month !== current.month;
   }
 
@@ -135,8 +144,8 @@ export class MeetingDateComponent implements OnInit, OnDestroy {
     this.potentialDatePosted.emit(date);
   }
 
-  private loadMeetingPotentialTimes() {
-    this.coachService.getMeetingPotentialTimes(this.meeting.id).subscribe(
+  private loadMeetingPotentialTimes(meetingId: string) {
+    this.coachService.getMeetingPotentialTimes(meetingId).subscribe(
       (dates: MeetingDate[]) => {
         console.log('potential dates obtained, ', dates);
         this.potentialDatesArray = dates;

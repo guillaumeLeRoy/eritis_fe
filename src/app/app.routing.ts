@@ -24,7 +24,7 @@ const APP_ROUTES: Routes = [
   {path: 'coachs/:id', component: CoachDetailsComponent},
   {path: 'coachees', component: CoachListComponent},
   {path: 'meetings', component: MeetingListComponent},
-  {path: 'date', component: MeetingDateComponent},
+  {path: 'date/:meetingId', component: MeetingDateComponent},
   // {path: 'coachees', component: CoachListComponent, canActivate: [AuthGuard]},
 ];
 
