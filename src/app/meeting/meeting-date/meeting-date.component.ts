@@ -6,6 +6,7 @@ import {AuthService} from '../../service/auth.service';
 import {Observable, Subscription} from 'rxjs';
 import {Meeting} from '../../model/meeting';
 import {MeetingDate} from '../../model/MeetingDate';
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'rb-meeting-date',
@@ -17,11 +18,12 @@ export class MeetingDateComponent implements OnInit, OnDestroy {
   @Output()
   potentialDatePosted = new EventEmitter<MeetingDate>();
 
-  @Input()
-  meeting: Meeting;
+  // @Input()
+  // meeting: Meeting;
+  meeting = new Meeting('vide');
 
   months = ['Janvier', 'Février', 'Mars', 'Avril', 'Mai', 'Juin', 'Juillet', 'Août', 'Septembre', 'Octobre', 'Novembre', 'Décembre'];
-  days = ['Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi', 'Dimanche'];
+  days = ['Dimanche', 'Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi'];
 
   now = new Date();
   dateModel: NgbDateStruct = {year: this.now.getFullYear(), month: this.now.getMonth() + 1, day: this.now.getDate()};
@@ -36,7 +38,7 @@ export class MeetingDateComponent implements OnInit, OnDestroy {
   private connectedUser: Observable<ApiUser>;
   private subscriptionConnectUser: Subscription;
 
-  constructor(private coachService: CoachCoacheeService, private authService: AuthService, private cd: ChangeDetectorRef) {
+  constructor(private router: Router, private coachService: CoachCoacheeService, private authService: AuthService, private cd: ChangeDetectorRef) {
   }
 
   ngOnInit() {
@@ -93,9 +95,17 @@ export class MeetingDateComponent implements OnInit, OnDestroy {
     );
   }
 
+  unbookAdate() {
+    // A faire
+  }
+
+  modifyADate() {
+    // A faire
+  }
+
   dateToString(date: NgbDateStruct) {
     let newDate = new Date(this.dateModel.year, this.dateModel.month - 1, this.dateModel.day);
-    return this.days[newDate.getDay() - 1] + ' ' + date.day + ' ' + this.months[newDate.getMonth()];
+    return this.days[newDate.getDay()] + ' ' + date.day + ' ' + this.months[newDate.getMonth()];
   }
 
   stringToDate(date: string) {
@@ -136,6 +146,13 @@ export class MeetingDateComponent implements OnInit, OnDestroy {
         console.log('get potentials dates error', error);
       }
     );
+  }
+
+  goToMeetings() {
+    let user = this.authService.getConnectedUser();
+    if (user != null) {
+      this.router.navigate(['/meetings']);
+    }
   }
 
   ngOnDestroy(): void {

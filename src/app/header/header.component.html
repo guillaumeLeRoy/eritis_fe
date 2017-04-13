@@ -3,14 +3,14 @@
     <nav>
       <div class="navbar-color z-depth-2">
         <div class="col s12">
-          <a [routerLink]="['/']" class="logo-text"><img src="assets/img/logo-eritis-new.png" alt="Eritis"></a>
-          <a [routerLink]="['/']" data-activates="side-nav" class="button-collapse right"><i
+          <a (click)="goToMeetings()" class="logo-text"><img src="assets/img/logo-eritis-new.png" alt="Eritis"></a>
+          <a data-activates="side-nav" class="button-collapse right"><i
             class="mdi-navigation-menu"></i></a>
 
           <ul class="right hide-on-med-and-down">
-            <li *ngIf="canDisplayListOfCoach()"><a (click)="goToCoachs()">Liste Des Coachs</a></li>
+            <!--<li *ngIf="canDisplayListOfCoach()"><a (click)="goToCoachs()">Liste Des Coachs</a></li>-->
 
-            <li *ngIf="(isAuthenticated | async)"><a (click)="goToMeetings()">Vos meetings</a></li>
+            <!--<li *ngIf="(isAuthenticated | async)"><a (click)="goToMeetings()">Vos meetings</a></li>-->
 
             <li *ngIf="(isAuthenticated | async)"><a (click)="goToProfile()">Profil</a></li>
 
@@ -22,9 +22,9 @@
           </ul>
 
           <ul class="side-nav" id="side-nav">
-            <li *ngIf="canDisplayListOfCoach()"><a (click)="goToCoachs()">Liste Des Coachs</a></li>
+            <!--<li *ngIf="canDisplayListOfCoach()"><a (click)="goToCoachs()">Liste Des Coachs</a></li>-->
 
-            <li *ngIf="(isAuthenticated | async)"><a (click)="goToMeetings()">Vos meetings</a></li>
+            <!--<li *ngIf="(isAuthenticated | async)"><a (click)="goToMeetings()">Vos meetings</a></li>-->
 
             <li *ngIf="(isAuthenticated | async)"><a (click)="goToProfile()">Profil</a></li>
 

@@ -6,6 +6,7 @@ import {AuthService} from "../../service/auth.service";
 import {ApiUser} from "../../model/apiUser";
 import {Coach} from "../../model/Coach";
 import {Coachee} from "../../model/coachee";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'rb-meeting-list',
@@ -20,7 +21,7 @@ export class MeetingListComponent implements OnInit, AfterViewInit, OnDestroy {
 
   private user: Observable<Coach | Coachee>;
 
-  constructor(private meetingsService: MeetingsService, private authService: AuthService, private cd: ChangeDetectorRef) {
+  constructor(private router: Router, private meetingsService: MeetingsService, private authService: AuthService, private cd: ChangeDetectorRef) {
   }
 
   ngOnInit() {
@@ -33,7 +34,7 @@ export class MeetingListComponent implements OnInit, AfterViewInit, OnDestroy {
   onRefreshRequested() {
     console.log("onRefreshRequested");
 
-    var user = this.authService.getConnectedUser();
+    let user = this.authService.getConnectedUser();
     console.log("ngAfterViewInit, user : ", user);
     this.onUserObtained(user);
 
@@ -83,11 +84,11 @@ export class MeetingListComponent implements OnInit, AfterViewInit, OnDestroy {
     if (user) {
 
       if (user instanceof Coach) {
-        //coach
+        // coach
         console.log("get a coach");
         this.getAllMeetingsForCoach(user.id);
       } else if (user instanceof Coachee) {
-        //coachee
+        // coachee
         console.log("get a coachee");
         this.getAllMeetingsForCoachee(user.id);
       }
@@ -95,6 +96,13 @@ export class MeetingListComponent implements OnInit, AfterViewInit, OnDestroy {
       this.user = Observable.of(user);
       this.cd.detectChanges();
 
+    }
+  }
+
+  goToDate() {
+    let user = this.authService.getConnectedUser();
+    if (user != null) {
+      this.router.navigate(['/date']);
     }
   }
 

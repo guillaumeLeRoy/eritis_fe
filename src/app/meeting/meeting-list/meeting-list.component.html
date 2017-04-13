@@ -1,19 +1,17 @@
 <rb-header></rb-header>
 <div class="container">
-  <h4 class="text-right">Bonjour {{(user | async)?.display_name}}, il vous reste <span class="nb-seances">{{(meetings | async)?.length}}</span> séances</h4>
-  <p class="text-right">
-    Cliquez ici pour planifier une nouvelle séance
-    <a class="btn-floating btn-large waves-effect waves-light add-meeting-btn" (click)="goToCoachs()">
-      <i class="material-icons">add</i>
-    </a>
-  </p>
-
   <div class="row">
     <div class="col s12">
 
-      <!--<div *ngIf="(meetings | async)?.length == 0">
-        <h5>Vous n'avez aucun meeting</h5>
-      </div>-->
+      <div>
+        <h4 class="text-right">Bonjour {{(user | async)?.display_name}}, il vous reste <span class="nb-seances">{{(meetings | async)?.length}}</span> séances</h4>
+        <p class="text-right" *ngIf="isUserACoachee((user | async))">
+          Cliquez ici pour planifier une nouvelle séance
+          <a class="btn-floating btn-large waves-effect waves-light add-meeting-btn" (click)="goToDate()">
+            <i class="material-icons">add</i>
+          </a>
+        </p>
+      </div>
 
       <!-- views for coach -->
       <div *ngIf="isUserACoach((user | async))">

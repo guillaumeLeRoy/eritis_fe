@@ -20,7 +20,7 @@ export class CoachListComponent implements OnInit, AfterViewInit, OnDestroy {
 
   private potSelectedCoach: Coach;
 
-  constructor(private  router: Router, private service: CoachCoacheeService, private authService: AuthService, private cd: ChangeDetectorRef) {
+  constructor(private service: CoachCoacheeService, private authService: AuthService, private cd: ChangeDetectorRef) {
   }
 
   ngOnInit() {
