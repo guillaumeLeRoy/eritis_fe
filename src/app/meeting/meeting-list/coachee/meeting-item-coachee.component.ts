@@ -5,6 +5,7 @@ import {Observable} from "rxjs";
 import {Coach} from "../../../model/Coach";
 import {MeetingReview} from "../../../model/MeetingReview";
 import {MeetingDate} from "../../../model/MeetingDate";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'rb-meeting-item-coachee',
@@ -28,7 +29,7 @@ export class MeetingItemCoacheeComponent implements OnInit {
 
   private hasSomeReviews: Observable<boolean>;
 
-  constructor(private coachCoacheeService: CoachCoacheeService, private cd: ChangeDetectorRef) {
+  constructor(private router: Router, private coachCoacheeService: CoachCoacheeService, private cd: ChangeDetectorRef) {
   }
 
   ngOnInit() {
@@ -80,5 +81,7 @@ export class MeetingItemCoacheeComponent implements OnInit {
     );
   }
 
-
+  goToModifyDate(meetingId: number){
+    this.router.navigate(['/date', meetingId]);
+  }
 }

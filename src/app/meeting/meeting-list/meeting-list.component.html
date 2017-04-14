@@ -6,7 +6,7 @@
       <div>
         <h4 class="text-right">Bonjour {{(user | async)?.display_name}}, il vous reste <span class="nb-seances">{{(meetings | async)?.length}}</span> séances</h4>
         <p class="text-right" *ngIf="isUserACoachee((user | async))">
-          Cliquez ici pour planifier une nouvelle séance
+          Planifier une nouvelle séance
           <a class="btn-floating btn-large waves-effect waves-light add-meeting-btn" (click)="goToDate()">
             <i class="material-icons">add</i>
           </a>
@@ -21,8 +21,13 @@
 
       <!-- views for coachee -->
       <div *ngIf="isUserACoachee((user | async))">
-        <rb-meeting-item-coachee *ngFor="let meeting of meetings | async"
-                                 [meeting]="meeting" (potentialDatePosted)="onRefreshRequested($event)"></rb-meeting-item-coachee>
+        <div class="row">
+          <rb-meeting-item-coachee class="col-lg-3"
+                                   *ngFor="let meeting of meetings | async"
+                                   [meeting]="meeting"
+                                   (potentialDatePosted)="onRefreshRequested($event)">
+          </rb-meeting-item-coachee>
+        </div>
       </div>
     </div>
   </div>

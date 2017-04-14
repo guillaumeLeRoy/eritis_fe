@@ -1,7 +1,80 @@
+.btn-small{
+  padding: 4px 8px;
+  font-size: 12px;
+  min-width: auto;
+}
 
+button{
+  margin: 0;
+}
 
-.column {
+a:hover,
+a:focus{
+  color: var(--main-electric-blue) !important;
+}
+
+.meeting-item{
+  padding: 0;
+}
+
+.meeting-item-header,
+.meeting-item-footer{
+  padding: 16px;
+}
+
+.meeting-item-seance-number{
+  margin: 0;
+  color: #000;
+  font-weight: 600;
+}
+
+.meeting-item-coach{
+  margin-top: 2px;
+  margin-bottom: 0;
+}
+
+.meeting-item-coach-avatar{
+  height: 56px;
+}
+
+.meeting-item-body{
+  display: flex;
+  background-color: var(--main-electric-blue);
+  color: #FFF;
+  text-align: center;
+  height: 192px;
+  padding: 0 16px;
+  align-content: center;
   flex-direction: column;
-  align-items: stretch;
+  flex-grow: 1;
+  justify-content: center;
+  align-items: center;
+}
 
+.closed .meeting-item-body{
+  background-color: var(--main-dark-blue);
+}
+
+.meeting-item-date{
+  margin-top: 0;
+  margin-bottom: 16px;
+}
+
+.meeting-item-hour{
+  margin: 0;
+}
+
+.meeting-item-objectif{
+  color: #000;
+  min-height: 64px;
+}
+
+.meeting-item-footer-buttons,
+.meeting-item-header{
+  display: flex;
+  flex-direction: row;
+  flex-grow: 1;
+  align-items: center;
+  justify-content: space-between;
+  align-content: stretch;
 }

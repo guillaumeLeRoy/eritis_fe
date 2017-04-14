@@ -4,6 +4,21 @@
 /* A revoir car provoque une erreur (empeche la première règle d'être prise en compte) */
 /*node_modules/angular-calendar/dist/css/angular-calendar.css*/
 
+:root {
+  /*--main-header-color: #002D50;*/
+  --main-header-color: rgba(0, 72, 129, 0.6);
+  --main-bg-color: #C3D9E8;
+  --main-white-color: #ffffff;
+  --main-white-color--hover: #5e5e5e;
+  --main-dark-grey: #3E3E3E;
+  --main-font-grey: #7D7D7D;
+  --main-light-grey: #C7C7C7;
+  --main-electric-blue: #46b0ff;
+  --main-dark-blue: #235880;
+  --main-blue-filter: rgba(35, 88, 128, 0.6);
+  --main-red-color: #ff4545;
+}
+
 html, body{
   height: 100%;
   color: var(--main-font-grey);
@@ -17,20 +32,6 @@ body{
 /* make sure containers are below the navbar */
 body .container {
   padding: 96px 0;
-}
-
-:root {
-  /*--main-header-color: #002D50;*/
-  --main-header-color: rgba(0, 72, 129, 0.6);
-  --main-bg-color: #C3D9E8;
-  --main-white-color: #ffffff;
-  --main-white-color--hover: #5e5e5e;
-  --main-dark-grey: #3E3E3E;
-  --main-font-grey: #7D7D7D;
-  --main-light-grey: #C7C7C7;
-  --main-electric-blue: #46b0ff;
-  --main-dark-blue: #235880;
-  --main-blue-filter: rgba(35, 88, 128, 0.6);
 }
 
 .recipes_grid {
@@ -49,7 +50,7 @@ body .container {
 }
 
 a{
-  text-decoration: none !important;
+  text-decoration: none;
   cursor: pointer;
 }
 
@@ -90,6 +91,20 @@ a{
   background-color: transparent;
   border-color: var(--main-electric-blue);
   color: var(--main-electric-blue);
+}
+
+.btn-basic.btn-red{
+  background-color: transparent;
+  border-color: var(--main-red-color);
+  color: var(--main-red-color);
+}
+
+.btn-plain.btn-red,
+.btn-red:hover,
+.btn-red:focus{
+  background-color: var(--main-red-color);
+  border-color: var(--main-red-color);
+  color: #FFF;
 }
 
 .btn-plain.btn-blue,

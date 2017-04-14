@@ -8,7 +8,7 @@
   <!--Input Date Picker-->
   <div id="input-date-picker">
     <div class="row text-center">
-      <div class="col-xs-12 col-lg-5">
+      <div class="col-sm-12 col-lg-5">
         <!--<input type="date" class="datepicker" placeholder="Cliquez ici">-->
         <div id="datepicker-container" class="z-depth-2">
           <ngb-datepicker #dp [(ngModel)]="dateModel"
@@ -46,7 +46,7 @@
         <p>Vous pouvez modifier les plages validées ci-dessus</p>
       </div>
 
-      <div class="col-xs-12 col-lg-7">
+      <div class="col-sm-12 col-lg-7">
         <!--<ngb-timepicker #tp [(ngModel)]="timeModel" [minuteStep]="15"></ngb-timepicker>-->
         <div>
           <h5 *ngIf="dateModel">{{ dateToString(dateModel) }}</h5>
