@@ -81,7 +81,7 @@ export class MeetingItemCoacheeComponent implements OnInit {
     );
   }
 
-  goToModifyDate(meetingId: number){
+  goToModifyDate(meetingId: number) {
     this.router.navigate(['/date', meetingId]);
   }
 }

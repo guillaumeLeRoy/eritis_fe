@@ -2,15 +2,16 @@
   <!--<span class="card-title">Vous avez choisi {{ coach.display_name }} pour être votre coach.</span>-->
 
   <!-- Meeting is open -->
-  <div *ngIf="meeting.isOpen" [class.closed]="!meeting.isOpen">
+  <div [class.closed]="!meeting.isOpen">
     <div class="meeting-item-header">
       <div>
         <p class="meeting-item-seance-number">Séance N</p>
-        <p class="meeting-item-coach">Coach</p>
+        <p class="meeting-item-coach" *ngIf="meeting.coach">{{ meeting.coach.display_name }}</p>
+        <p class="meeting-item-coach" *ngIf="!meeting.coach">Un coach vous sera bientôt attribué</p>
       </div>
       <div>
         <!-- image coach-->
-        <img class="meeting-item-coach-avatar circle img-responsive" alt="coach" src="https://s-media-cache-ak0.pinimg.com/564x/3b/7d/6f/3b7d6f60e2d450b899c322266fc6edfd.jpg">
+        <img *ngIf="meeting.coach" class="meeting-item-coach-avatar circle img-responsive" alt="coach" [src]="meeting.coach.avatar_url">
       </div>
     </div>
 
@@ -20,7 +21,7 @@
     </div>
 
     <div class="meeting-item-body" *ngIf="!meeting.agreed_date">
-      <button class="btn-basic" (click)="goToModifyDate()">Modifier</button>
+      <button class="btn-basic" (click)="goToModifyDate(meeting.id)">Modifier</button>
     </div>
 
     <div class="meeting-item-footer">
@@ -32,33 +33,27 @@
         <a *ngIf="meeting.isOpen">ANNULER</a>
         <a *ngIf="!meeting.isOpen">CONSULTER</a>
 
-        <button class="btn-basic btn-plain btn-red btn-small">OBJECTIF</button>
+        <button class="btn-basic btn-plain btn-red btn-small" *ngIf="meeting.isOpen">OBJECTIF</button>
 
         <button class="btn-basic btn-plain btn-blue btn-small" *ngIf="meeting.isOpen" (click)="bookADate()">LANCER</button>
       </div>
     </div>
 
     <!-- check if you have some reviews-->
-    <div class="container" *ngIf="(hasSomeReviews | async)">
-      <!-- list of reviews -->
-      <div *ngFor="let review of reviews | async">
-        <div class="card">
-          <div class="card-content">
-            <span class="card-title">Meeting Review</span>
-            <div class="list-group-item-text">at : {{review.date}}</div>
-            <div class="list-group-item-text">comment : {{review.comment}}</div>
-            <div class="list-group-item-text">score : {{review.score}}</div>
-          </div>
-        </div>
-      </div>
-    </div><!-- end check-->
-  </div><!--end meeting open-->
-
-  <!-- Meeting is closed-->
-  <div *ngIf="!meeting.isOpen">
-    <h4>Meeting is closed</h4>
-  </div><!--end meeting closed-->
-
+    <!--<div class="container" *ngIf="(hasSomeReviews | async)">-->
+      <!--&lt;!&ndash; list of reviews &ndash;&gt;-->
+      <!--<div *ngFor="let review of reviews | async">-->
+        <!--<div class="card">-->
+          <!--<div class="card-content">-->
+            <!--<span class="card-title">Meeting Review</span>-->
+            <!--<div class="list-group-item-text">at : {{review.date}}</div>-->
+            <!--<div class="list-group-item-text">comment : {{review.comment}}</div>-->
+            <!--<div class="list-group-item-text">score : {{review.score}}</div>-->
+          <!--</div>-->
+        <!--</div>-->
+      <!--</div>-->
+    <!--</div>&lt;!&ndash; end check&ndash;&gt;-->
+  <!--</div>&lt;!&ndash;end meeting open&ndash;&gt;-->
   <!--&lt;!&ndash; add a pre meeting review &ndash;&gt;-->
   <!--<div class="container">-->
   <!--<rb-pre-meeting *ngIf="!(hasSomeReviews | async)" [meeting]="meeting"-->
