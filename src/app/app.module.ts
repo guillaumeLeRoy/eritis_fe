@@ -62,7 +62,6 @@ import {Ng2PageScrollModule} from 'ng2-page-scroll';
     HttpModule,
     routing,
     ReactiveFormsModule,
-    MaterialModule.forRoot(),
     CalendarModule.forRoot(),
     NgbModule.forRoot(),
     SliderModule,
