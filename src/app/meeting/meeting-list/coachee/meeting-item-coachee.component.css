@@ -13,6 +13,10 @@ a:focus{
   color: var(--main-electric-blue) !important;
 }
 
+.card-content, .card-reveal {
+  padding: 0;
+}
+
 .meeting-item{
   padding: 0;
   margin: 32px 0;
@@ -66,7 +70,6 @@ a:focus{
 }
 
 .meeting-item-objectif{
-  color: #000;
   min-height: 64px;
 }
 
@@ -78,4 +81,22 @@ a:focus{
   align-items: center;
   justify-content: space-between;
   align-content: stretch;
+}
+
+.meeting-review-body{
+  padding: 16px;
+  padding-top: 0;
+}
+
+.meeting-review-body .btn-green{
+  margin-bottom: 32px;
+  margin-top: 0;
+}
+
+.meeting-review-close-button{
+  position: absolute;
+  bottom: 16px;
+  right: 16px;
+  cursor: pointer;
+  margin: 0;
 }

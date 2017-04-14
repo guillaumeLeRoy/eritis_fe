@@ -4,7 +4,7 @@
     <div class="col s12">
 
       <div>
-        <h4 class="text-right">Bonjour {{(user | async)?.display_name}}, il vous reste <span class="nb-seances">{{(meetings | async)?.length}}</span> séances</h4>
+        <h4 class="text-right">Bonjour {{(user | async)?.display_name}}, il vous reste <span class="nb-seances">{{ (meetings | async)?.length }}</span> séances</h4>
         <p class="text-right" *ngIf="isUserACoachee((user | async))">
           Planifier une nouvelle séance
           <a class="btn-floating btn-large waves-effect waves-light add-meeting-btn" (click)="goToDate()">

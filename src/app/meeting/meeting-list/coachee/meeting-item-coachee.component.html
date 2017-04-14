@@ -1,14 +1,14 @@
-<div class="meeting-item col-lg-12 z-depth-2">
+<div class="meeting-item col-lg-12 card">
   <!--<span class="card-title">Vous avez choisi {{ coach.display_name }} pour être votre coach.</span>-->
 
-  <!-- Meeting is open -->
-  <div [class.closed]="!meeting.isOpen">
+  <div [class.closed]="!meeting.isOpen" class="card-content">
     <div class="meeting-item-header">
       <div>
-        <p class="meeting-item-seance-number">Séance N</p>
+        <p class="meeting-item-seance-number black-text">Séance N</p>
         <p class="meeting-item-coach" *ngIf="meeting.coach">{{ meeting.coach.display_name }}</p>
         <p class="meeting-item-coach" *ngIf="!meeting.coach">Un coach vous sera bientôt attribué</p>
       </div>
+
       <div>
         <!-- image coach-->
         <img *ngIf="meeting.coach" class="meeting-item-coach-avatar circle img-responsive" alt="coach" [src]="meeting.coach.avatar_url">
@@ -26,12 +26,12 @@
 
     <div class="meeting-item-footer">
       <div class="meeting-item-objectif">
-        <p><b>Objectif: </b></p>
+        <p><span class="black-text bold">Objectif: </span></p>
       </div>
 
       <div class="meeting-item-footer-buttons">
         <a *ngIf="meeting.isOpen">ANNULER</a>
-        <a *ngIf="!meeting.isOpen">CONSULTER</a>
+        <a *ngIf="!meeting.isOpen" class="activator">CONSULTER</a>
 
         <button class="btn-basic btn-plain btn-red btn-small" *ngIf="meeting.isOpen">OBJECTIF</button>
 
@@ -59,7 +59,34 @@
   <!--<rb-pre-meeting *ngIf="!(hasSomeReviews | async)" [meeting]="meeting"-->
   <!--(reviewPosted)="onPreMeetingReviewPosted($event)"-->
   <!--&gt;</rb-pre-meeting>-->
-  <!--</div>-->
+  </div><!--end card-content-->
+
+  <div *ngIf="!meeting.isOpen" class="card-reveal meeting-review">
+
+    <div class="meeting-item-header">
+      <div>
+        <p class="meeting-item-seance-number">Séance N</p>
+        <p class="meeting-item-coach" *ngIf="meeting.coach">{{ meeting.coach.display_name }}</p>
+        <p class="meeting-item-coach" *ngIf="!meeting.coach">Un coach vous sera bientôt attribué</p>
+      </div>
+
+      <div>
+        <img *ngIf="meeting.coach" class="meeting-item-coach-avatar circle img-responsive" alt="coach" [src]="meeting.coach.avatar_url">
+      </div>
+    </div>
+
+    <div class="meeting-review-body">
+      <div class="btn-basic btn-plain btn-small btn-green">FEEDBACK</div>
+
+      <p><span class="black-text bold">Objectif: </span></p>
+      <br>
+      <p><span class="black-text bold">En quoi la séance a-t-elle été utile? </span></p>
+      <br>
+      <p><span class="black-text bold">Avec quoi êtes vous reparti? </span></p>
+    </div>
+
+    <span class="meeting-review-close-button card-title"><i class="mdi-navigation-close"></i></span>
+  </div>
 
 </div><!--end item-->
 

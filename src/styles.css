@@ -135,6 +135,14 @@ a{
   color: #fff;
 }
 
+.black-text{
+  color: black;
+}
+
+.bold{
+  font-weight: bold;
+}
+
 /* Permet d'aligner les icon material avec le texte */
 .material-icons{
   display: inline-block !important;
