@@ -17,6 +17,7 @@
   --main-dark-blue: #235880;
   --main-blue-filter: rgba(35, 88, 128, 0.6);
   --main-red-color: #ff4545;
+  --main-light-green: #3df5d1;
 }
 
 html, body{
@@ -32,6 +33,11 @@ body{
 /* make sure containers are below the navbar */
 body .container {
   padding: 96px 0;
+}
+
+.side-nav{
+  background-color: rgba(255, 255, 255, .9);
+  color: var(--main-dark-grey);
 }
 
 .recipes_grid {
@@ -50,7 +56,7 @@ body .container {
 }
 
 a{
-  text-decoration: none;
+  text-decoration: none !important;
   cursor: pointer;
 }
 
@@ -99,6 +105,12 @@ a{
   color: var(--main-red-color);
 }
 
+.btn-basic.btn-green{
+  background-color: transparent;
+  border-color: var(--main-light-green);
+  color: var(--main-light-green);
+}
+
 .btn-plain.btn-red,
 .btn-red:hover,
 .btn-red:focus{
@@ -112,6 +124,14 @@ a{
 .btn-blue:focus{
   background-color: var(--main-electric-blue);
   border-color: var(--main-electric-blue);
+  color: #fff;
+}
+
+.btn-plain.btn-green,
+.btn-green:hover,
+.btn-green:focus{
+  background-color: var(--main-light-green);
+  border-color: var(--main-light-green);
   color: #fff;
 }
 

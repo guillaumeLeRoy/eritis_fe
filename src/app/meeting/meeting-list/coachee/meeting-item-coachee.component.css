@@ -15,6 +15,7 @@ a:focus{
 
 .meeting-item{
   padding: 0;
+  margin: 32px 0;
 }
 
 .meeting-item-header,
@@ -34,7 +35,7 @@ a:focus{
 }
 
 .meeting-item-coach-avatar{
-  height: 56px;
+  height: 44px;
 }
 
 .meeting-item-body{

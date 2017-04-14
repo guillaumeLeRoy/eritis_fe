@@ -35,6 +35,10 @@ export class HeaderComponent implements OnInit, OnDestroy {
     //     this.cd.detectChanges();
     //   }
     // );
+    if (this.user == null) {
+      // Un utilisateur non connecté est redirigé sur la page d'accueil
+      this.router.navigate(['/']);
+    }
 
     // this.connectedUser = this.authService.getConnectedUserObservable();
     this.subscription = this.authService.getConnectedUserObservable().subscribe(

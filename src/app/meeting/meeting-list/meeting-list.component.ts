@@ -110,11 +110,11 @@ export class MeetingListComponent implements OnInit, AfterViewInit, OnDestroy {
           return;
         }
 
-        //1) create a new meeting
-        //2) redirect to our MeetingDateComponent
+        // 1) create a new meeting
+        // 2) redirect to our MeetingDateComponent
         this.meetingsService.createMeeting(user.id).subscribe(
           (meeting: Meeting) => {
-            //TODO display a loader
+            // TODO display a loader
             console.log('meeting created, go to setup dates')
             this.router.navigate(['/date', meeting.id]);
           }

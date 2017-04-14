@@ -18,7 +18,7 @@
 
             <li *ngIf="(isAuthenticated | async)"><a (click)="onLogout()">Déconnexion</a></li>
 
-            <li *ngIf="!(isAuthenticated | async)"><a (click)="onLogIn()">Sign In</a></li>
+            <li *ngIf="!(isAuthenticated | async)"><a [routerLink]="['/']">Connexion</a></li>
           </ul>
 
           <ul class="side-nav" id="side-nav">
@@ -32,7 +32,7 @@
 
             <li *ngIf="(isAuthenticated | async)"><a (click)="onLogout()">Déconnexion</a></li>
 
-            <li *ngIf="!(isAuthenticated | async)"><a (click)="onLogIn()">Sign In</a></li>
+            <li *ngIf="!(isAuthenticated | async)"><a [routerLink]="['/']">Connexion</a></li>
           </ul>
         </div>
       </div>

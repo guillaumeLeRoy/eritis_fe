@@ -1,12 +1,11 @@
-import {Component, OnInit, Input, ChangeDetectorRef, OnDestroy, Output, EventEmitter} from '@angular/core';
+import {Component, OnInit, ChangeDetectorRef, OnDestroy, Output, EventEmitter} from '@angular/core';
 import {NgbDateStruct} from '@ng-bootstrap/ng-bootstrap';
 import {ApiUser} from '../../model/apiUser';
 import {CoachCoacheeService} from '../../service/CoachCoacheeService';
 import {AuthService} from '../../service/auth.service';
 import {Observable, Subscription} from 'rxjs';
-import {Meeting} from '../../model/meeting';
 import {MeetingDate} from '../../model/MeetingDate';
-import {ActivatedRoute, Router} from "@angular/router";
+import {ActivatedRoute, Router} from '@angular/router';
 
 @Component({
   selector: 'rb-meeting-date',
@@ -15,13 +14,13 @@ import {ActivatedRoute, Router} from "@angular/router";
 })
 export class MeetingDateComponent implements OnInit, OnDestroy {
 
-  @Output()
-  potentialDatePosted = new EventEmitter<MeetingDate>();
+  // @Output()
+  // potentialDatePosted = new EventEmitter<MeetingDate>();
 
   /**
    * Meeting Id for which we want to setup potential dates
    */
-  private meetingId: string
+  private meetingId: string;
 
   months = ['Janvier', 'Février', 'Mars', 'Avril', 'Mai', 'Juin', 'Juillet', 'Août', 'Septembre', 'Octobre', 'Novembre', 'Décembre'];
   days = ['Dimanche', 'Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi'];
@@ -44,7 +43,7 @@ export class MeetingDateComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
 
-    //meetingId should be in the router
+    // meetingId should be in the router
     this.route.params.subscribe(
       (params: any) => {
         this.meetingId = params['meetingId'];
@@ -99,7 +98,9 @@ export class MeetingDateComponent implements OnInit, OnDestroy {
               console.log('updatePotentialTime, meetingDate : ', meetingDate);
               // redirect to meetings page
               // this.router.navigate(['/meetings']);
-              this.potentialDatePosted.emit(meetingDate);
+              //this.potentialDatePosted.emit(meetingDate);
+
+              //TODO find a replace potential
             },
             (error) => {
               console.log('updatePotentialTime error', error);
@@ -118,7 +119,9 @@ export class MeetingDateComponent implements OnInit, OnDestroy {
               console.log('addPotentialDateToMeeting, meetingDate : ', meetingDate);
               // redirect to meetings page
               // this.router.navigate(['/meetings']);
-              this.potentialDatePosted.emit(meetingDate);
+              //this.potentialDatePosted.emit(meetingDate);
+              this.potentialDatesArray.push(meetingDate);
+
             },
             (error) => {
               console.log('addPotentialDateToMeeting error', error);
@@ -128,6 +131,7 @@ export class MeetingDateComponent implements OnInit, OnDestroy {
         }
       }
     );
+    // Mise à jour du calendrier
   }
 
   unbookAdate(potentialDateId: string) {
@@ -167,7 +171,7 @@ export class MeetingDateComponent implements OnInit, OnDestroy {
   }
 
   compareDates(date1: NgbDateStruct, date2: NgbDateStruct) {
-    return (date1.year == date2.year) && (date1.month == date2.month) && (date1.day == date2.day);
+    return (date1.year === date2.year) && (date1.month === date2.month) && (date1.day === date2.day);
   }
 
   hasPotentialDate(date: NgbDateStruct) {
@@ -185,7 +189,8 @@ export class MeetingDateComponent implements OnInit, OnDestroy {
 
   onPotentialDatePosted(date: MeetingDate) {
     console.log('onPotentialDatePosted');
-    this.potentialDatePosted.emit(date);
+    // this.potentialDatePosted.emit(date);
+    this.potentialDatesArray.push(date);
   }
 
   private loadMeetingPotentialTimes(meetingId: string) {
