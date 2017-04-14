@@ -78,7 +78,7 @@ export class MeetingItemCoachComponent implements OnInit,AfterViewInit {
   }
 
   confirmPotentialDate(date: MeetingDate) {
-    this.coachCoacheeService.setPotentialDateToMeeting(this.meeting.id, date.id).subscribe(
+    this.coachCoacheeService.setFinalDateToMeeting(this.meeting.id, date.id).subscribe(
       (meeting: Meeting) => {
         console.log("confirmPotentialDate, response", meeting);
         this.meeting = meeting;

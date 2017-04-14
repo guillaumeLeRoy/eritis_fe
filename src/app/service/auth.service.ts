@@ -36,7 +36,9 @@ export class AuthService {
   public static GET_MEETINGS_FOR_COACH_ID = "/meetings/coach/:coachId";
   public static POST_MEETING_POTENTIAL_DATE = "/meeting/:meetingId/potential";
   public static GET_MEETING_POTENTIAL_DATES = "/meeting/:meetingId/potentials";
-  public static PUT_POTENTIAL_DATE_TO_MEETING = "/meeting/:meetingId/potential/:potentialId";//set the potential date as the meeting selected date
+  public static PUT_POTENTIAL_DATE_TO_MEETING = "/meeting/potential/:potentialId";//update potential date
+  public static DELETE_POTENTIAL_DATE = "/meeting/potentials/:potentialId";//delete potential date
+  public static PUT_FINAL_DATE_TO_MEETING = "/meeting/:meetingId/date/:potentialId";//set the potential date as the meeting selected date
 
   private onAuthStateChangedCalled = false;
   // private user: User
@@ -109,6 +111,20 @@ export class AuthService {
           (headers: Headers) => {
             console.log("4. start request");
             return this.httpService.get(this.generatePath(path, params), {headers: headers})
+          }
+        );
+      }
+    );
+    return method;
+  }
+
+  delete(path: string, params: string[]): Observable<Response> {
+    let method = this.getConnectedApiUser().flatMap(
+      (firebaseUser: ApiUser) => {
+        return this.getHeader(firebaseUser).flatMap(
+          (headers: Headers) => {
+            console.log("4. start request");
+            return this.httpService.delete(this.generatePath(path, params), {headers: headers})
           }
         );
       }

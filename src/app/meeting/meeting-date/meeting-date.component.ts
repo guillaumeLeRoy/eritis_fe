@@ -63,15 +63,18 @@ export class MeetingDateComponent implements OnInit, OnDestroy {
         }
       );
     }
-
   }
+
+
+  private isEdititingPotentialDate: boolean;
+  private mEditingPotentialTimeId: string;
 
   private onConnectedUserReceived(user: ApiUser) {
     this.connectedUser = Observable.of(user);
     this.cd.detectChanges();
   }
 
-  bookADate() {
+  bookOrUpdateADate() {
     console.log('bookADate, dateModel : ', this.dateModel);
     // console.log('bookADate, timeModel : ', this.timeModel);
 
@@ -88,28 +91,69 @@ export class MeetingDateComponent implements OnInit, OnDestroy {
         let timestampMin: number = +minDate.getTime().toFixed(0) / 1000;
         let timestampMax: number = +maxDate.getTime().toFixed(0) / 1000;
 
-        this.coachService.addPotentialDateToMeeting(this.meetingId, timestampMin, timestampMax).subscribe(
-          (meetingDate: MeetingDate) => {
-            console.log('addPotentialDateToMeeting, meetingDate : ', meetingDate);
-            // redirect to meetings page
-            // this.router.navigate(['/meetings']);
-            this.potentialDatePosted.emit(meetingDate);
-          },
-          (error) => {
-            console.log('addPotentialDateToMeeting error', error);
-            this.displayErrorBookingDate = true;
-          }
-        );
+        if (this.isEdititingPotentialDate) {
+
+          //just update potential date
+          this.coachService.updatePotentialTime(this.mEditingPotentialTimeId, timestampMin, timestampMax).subscribe(
+            (meetingDate: MeetingDate) => {
+              console.log('updatePotentialTime, meetingDate : ', meetingDate);
+              // redirect to meetings page
+              // this.router.navigate(['/meetings']);
+              this.potentialDatePosted.emit(meetingDate);
+            },
+            (error) => {
+              console.log('updatePotentialTime error', error);
+              this.displayErrorBookingDate = true;
+            }
+          );
+
+          //reset
+          this.mEditingPotentialTimeId = null;
+          this.isEdititingPotentialDate = false;
+
+        } else {
+          //create new date
+          this.coachService.addPotentialDateToMeeting(this.meetingId, timestampMin, timestampMax).subscribe(
+            (meetingDate: MeetingDate) => {
+              console.log('addPotentialDateToMeeting, meetingDate : ', meetingDate);
+              // redirect to meetings page
+              // this.router.navigate(['/meetings']);
+              this.potentialDatePosted.emit(meetingDate);
+            },
+            (error) => {
+              console.log('addPotentialDateToMeeting error', error);
+              this.displayErrorBookingDate = true;
+            }
+          );
+        }
       }
     );
   }
 
-  unbookAdate() {
-    // A faire
+  unbookAdate(potentialDateId: string) {
+    console.log('unbookAdate');
+    this.coachService.removePotentialTime(potentialDateId).subscribe(
+      (response) => {
+        console.log("unbookAdate, response", response);
+
+        //TODO reload potential dates
+        this.cd.detectChanges();
+      }, (error) => {
+        console.log('unbookAdate, error', error);
+      }
+    );
   }
 
-  modifyADate() {
-    // A faire
+  modifyPotentialDate(potentialDateId: string) {
+    console.log('modifyPotentialDate, potentialDateId', potentialDateId);
+
+    //update time range
+
+    this.timeRange[0] = 9;
+    this.timeRange[1] = 10;
+
+    this.isEdititingPotentialDate = true;
+    this.mEditingPotentialTimeId = potentialDateId;
   }
 
   dateToString(date: NgbDateStruct) {

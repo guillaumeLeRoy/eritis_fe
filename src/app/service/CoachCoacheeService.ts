@@ -91,12 +91,12 @@ export class CoachCoacheeService {
    * @param potentialDateId
    * @returns {Observable<R>}
    */
-  setPotentialDateToMeeting(meetingId: string, potentialDateId: string): Observable<Meeting> {
-    console.log("setPotentialDateToMeeting, meetingId %s, potentialId %s", meetingId, potentialDateId);
+  setFinalDateToMeeting(meetingId: string, potentialDateId: string): Observable<Meeting> {
+    console.log("setFinalDateToMeeting, meetingId %s, potentialId %s", meetingId, potentialDateId);
     let param = [meetingId, potentialDateId];
-    return this.apiService.put(AuthService.PUT_POTENTIAL_DATE_TO_MEETING, param, null).map((response: Response) => {
+    return this.apiService.put(AuthService.PUT_FINAL_DATE_TO_MEETING, param, null).map((response: Response) => {
       let meeting: Meeting = response.json();
-      console.log("setPotentialDateToMeeting, response json : ", meeting);
+      console.log("setFinalDateToMeeting, response json : ", meeting);
       return meeting;
     });
   }
@@ -127,6 +127,41 @@ export class CoachCoacheeService {
     return this.apiService.post(AuthService.POST_MEETING_REVIEW, param, body).map((response: Response) => {
       let json: MeetingReview = response.json();
       console.log("addAMeetingReview, response json : ", json);
+      return json;
+    });
+  }
+
+  /**
+   * Delete a potential date
+   * @param potentialId
+   * @returns {Observable<R>}
+   */
+  updatePotentialTime(potentialId: string, startDate: number, endDate: number): Observable<MeetingDate> {
+    console.log("updatePotentialTime, potentialId %s", potentialId);
+
+    let body = {
+      start_date: startDate.toString(),
+      end_date: endDate.toString(),
+    };
+    let param = [potentialId];
+    return this.apiService.put(AuthService.PUT_POTENTIAL_DATE_TO_MEETING, param, body).map((response: Response) => {
+      let json: MeetingDate = response.json();
+      console.log("updatePotentialTime, response json : ", json);
+      return json;
+    });
+  }
+
+  /**
+   * Delete a potential date
+   * @param potentialId
+   * @returns {Observable<R>}
+   */
+  removePotentialTime(potentialId: string): Observable<any> {
+    console.log("removePotentialTime, potentialId %s", potentialId);
+    let param = [potentialId];
+    return this.apiService.delete(AuthService.DELETE_POTENTIAL_DATE, param).map((response: Response) => {
+      let json: Meeting = response.json();
+      console.log("removePotentialTime, response json : ", json);
       return json;
     });
   }
