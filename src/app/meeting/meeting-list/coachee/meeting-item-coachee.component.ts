@@ -59,7 +59,7 @@ export class MeetingItemCoacheeComponent implements OnInit {
 
         console.log("loadReview, reviews obtained");
 
-        this.hasSomeReviews = Observable.of(reviews != null)
+        this.hasSomeReviews = Observable.of(reviews != null);
         this.reviews = Observable.of(reviews);
 
         this.cd.detectChanges();
