@@ -34,6 +34,7 @@ import {FirebaseService} from './service/firebase.service';
 import {MeetingDateComponent} from './meeting/meeting-date/meeting-date.component';
 import {SliderModule} from 'primeng/components/slider/slider';
 import {Ng2PageScrollModule} from 'ng2-page-scroll';
+import { PostMeetingComponent } from './meeting/review/post-meeting.component';
 
 @NgModule({
   declarations: [
@@ -54,7 +55,8 @@ import {Ng2PageScrollModule} from 'ng2-page-scroll';
     MeetingItemCoacheeComponent,
     MeetingItemCoachComponent,
     MeetingDateComponent,
-    PreMeetingComponent
+    PreMeetingComponent,
+    PostMeetingComponent
   ],
   imports: [
     BrowserModule,

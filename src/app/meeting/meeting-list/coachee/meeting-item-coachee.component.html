@@ -9,6 +9,9 @@
         <p class="meeting-item-coach" *ngIf="!meeting.coach">Un coach vous sera bientôt attribué</p>
       </div>
 
+      <!-- TODO use this component to add post meeting review -->
+      <er-post-meeting></er-post-meeting>
+
       <div>
         <!-- image coach-->
         <img *ngIf="meeting.coach" class="meeting-item-coach-avatar circle img-responsive" alt="coach" [src]="meeting.coach.avatar_url">
@@ -74,6 +77,9 @@
         <img *ngIf="meeting.coach" class="meeting-item-coach-avatar circle img-responsive" alt="coach" [src]="meeting.coach.avatar_url">
       </div>
     </div>
+
+    <!-- TODO use this component to add post meeting review -->
+    <er-post-meeting></er-post-meeting>
 
     <div class="meeting-review-body">
       <div class="btn-basic btn-plain btn-small btn-green">FEEDBACK</div>

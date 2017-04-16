@@ -1,13 +1,16 @@
 import {Injectable} from "@angular/core";
 import {Observable} from "rxjs";
 import {Coach} from "../model/Coach";
-import {MeetingReview} from "../model/MeetingReview";
+
 import {Response} from "@angular/http";
 import {AuthService} from "./auth.service";
 import {Coachee} from "../model/coachee";
-import {ApiUser} from "../model/apiUser";
 import {MeetingDate} from "../model/MeetingDate";
 import {Meeting} from "../model/meeting";
+import {
+  MEETING_REVIEW_TYPE_SESSION_NEXT_STEP, MEETING_REVIEW_TYPE_SESSION_VALUE,
+  MeetingReview
+} from "../model/MeetingReview";
 
 @Injectable()
 export class CoachCoacheeService {
@@ -112,16 +115,27 @@ export class CoachCoacheeService {
     });
   }
 
-
-  addAMeetingReview(meetingId: string, comment: string, rate: string): Observable<MeetingReview> {
-
-    //convert rating into Integer
-    let rating = +rate;
-
-    console.log("addAMeetingReview, meetingId %s, comment : %s, rating : %s", meetingId, comment, rating);
+  //add review for type SESSION_VALUE
+  addAMeetingReviewForValue(meetingId: string, comment: string): Observable<MeetingReview> {
+    console.log("addAMeetingReviewForValue, meetingId %s, comment : %s", meetingId, comment);
     let body = {
       comment: comment,
-      score: rating,
+      type: MEETING_REVIEW_TYPE_SESSION_VALUE,
+    };
+    let param = [meetingId];
+    return this.apiService.post(AuthService.POST_MEETING_REVIEW, param, body).map((response: Response) => {
+      let json: MeetingReview = response.json();
+      console.log("addAMeetingReview, response json : ", json);
+      return json;
+    });
+  }
+
+  //add review for type SESSION_NEXT_STEP
+  addAMeetingReviewForNextStep(meetingId: string, comment: string): Observable<MeetingReview> {
+    console.log("addAMeetingReviewForNextStep, meetingId %s, comment : %s", meetingId, comment);
+    let body = {
+      comment: comment,
+      type: MEETING_REVIEW_TYPE_SESSION_NEXT_STEP
     };
     let param = [meetingId];
     return this.apiService.post(AuthService.POST_MEETING_REVIEW, param, body).map((response: Response) => {

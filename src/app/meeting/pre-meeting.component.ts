@@ -48,17 +48,17 @@ export class PreMeetingComponent implements OnInit {
     //   }
     // );
 
-    this.coachService.addAMeetingReview(this.meeting.id, this.form.value.context, "3").subscribe(
-      (review: MeetingReview) => {
-        console.log("submitMeetingContextForm, get review : ", review);
-        //emit event
-        this.reviewPosted.emit(this.meeting);
-      },
-      (error) => {
-        console.log('submitMeetingContextForm error', error);
-        this.displayErrorPostingReview = true;
-      }
-    );
+    // this.coachService.addAMeetingReview(this.meeting.id, this.form.value.context, "3").subscribe(
+    //   (review: MeetingReview) => {
+    //     console.log("submitMeetingContextForm, get review : ", review);
+    //     //emit event
+    //     this.reviewPosted.emit(this.meeting);
+    //   },
+    //   (error) => {
+    //     console.log('submitMeetingContextForm error', error);
+    //     this.displayErrorPostingReview = true;
+    //   }
+    // );
 
   }
 
