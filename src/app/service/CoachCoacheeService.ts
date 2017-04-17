@@ -2,12 +2,13 @@ import {Injectable} from "@angular/core";
 import {Observable} from "rxjs";
 import {Coach} from "../model/Coach";
 
-import {Response} from "@angular/http";
+import {Response, URLSearchParams} from "@angular/http";
 import {AuthService} from "./auth.service";
 import {Coachee} from "../model/coachee";
 import {MeetingDate} from "../model/MeetingDate";
 import {Meeting} from "../model/meeting";
 import {
+  MEETING_REVIEW_TYPE_SESSION_CONTEXT,
   MEETING_REVIEW_TYPE_SESSION_NEXT_STEP, MEETING_REVIEW_TYPE_SESSION_VALUE,
   MeetingReview
 } from "../model/MeetingReview";
@@ -115,6 +116,36 @@ export class CoachCoacheeService {
     });
   }
 
+  //get all MeetingReview for context == SESSION_CONTEXT
+  getMeetingContext(meetingId: string): Observable<MeetingReview[]> {
+    console.log("getMeetingContext");
+
+    let searchParams: URLSearchParams = new URLSearchParams();
+    searchParams.set('type', MEETING_REVIEW_TYPE_SESSION_CONTEXT);
+
+    let param = [meetingId];
+    return this.apiService.getWithSearchParams(AuthService.GET_MEETING_REVIEWS, param, searchParams).map((response: Response) => {
+      let json: MeetingReview[] = response.json();
+      console.log("getMeetingContext, response json : ", json);
+      return json;
+    });
+  }
+
+  //add review for type SESSION_VALUE
+  addAContextToMeeting(meetingId: string, context: string): Observable<MeetingReview> {
+    console.log("addAContextToMeeting, meetingId %s, comment : %s", meetingId, context);
+    let body = {
+      comment: context,
+      type: MEETING_REVIEW_TYPE_SESSION_CONTEXT,
+    };
+    let param = [meetingId];
+    return this.apiService.post(AuthService.POST_MEETING_REVIEW, param, body).map((response: Response) => {
+      let json: MeetingReview = response.json();
+      console.log("addAMeetingReview, response json : ", json);
+      return json;
+    });
+  }
+
   //add review for type SESSION_VALUE
   addAMeetingReviewForValue(meetingId: string, comment: string): Observable<MeetingReview> {
     console.log("addAMeetingReviewForValue, meetingId %s, comment : %s", meetingId, comment);
@@ -141,6 +172,19 @@ export class CoachCoacheeService {
     return this.apiService.post(AuthService.POST_MEETING_REVIEW, param, body).map((response: Response) => {
       let json: MeetingReview = response.json();
       console.log("addAMeetingReview, response json : ", json);
+      return json;
+    });
+  }
+
+  /**
+   * Delete a review
+   */
+  removeReview(reviewId: string): Observable<any> {
+    console.log("removeReview, reviewId %s", reviewId);
+    let param = [reviewId];
+    return this.apiService.delete(AuthService.DELETE_MEETING_REVIEW, param).map((response: Response) => {
+      let json = response.json();
+      console.log("removeReview, response json : ", json);
       return json;
     });
   }

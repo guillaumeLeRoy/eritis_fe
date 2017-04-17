@@ -3,7 +3,7 @@ import {Router} from "@angular/router";
 import {Injectable} from "@angular/core";
 import {Observable, BehaviorSubject, Subject} from "rxjs";
 import {PromiseObservable} from "rxjs/observable/PromiseObservable";
-import {Response, Http, Headers} from "@angular/http";
+import {Response, Http, Headers, URLSearchParams} from "@angular/http";
 import {ApiUser} from "../model/apiUser";
 import {environment} from "../../environments/environment";
 import {FirebaseService} from "./firebase.service";
@@ -31,6 +31,7 @@ export class AuthService {
   public static POST_MEETING = "/meeting";
   public static GET_MEETING_REVIEWS = "/meeting/:meetingId/reviews";
   public static POST_MEETING_REVIEW = "/meeting/:meetingId/review";
+  public static DELETE_MEETING_REVIEW = "/meeting/reviews/:reviewId";//delete review
   public static CLOSE_MEETING = "/meeting/:meetingId/close";
   public static GET_MEETINGS_FOR_COACHEE_ID = "/meetings/coachee/:coacheeId";
   public static GET_MEETINGS_FOR_COACH_ID = "/meetings/coach/:coachId";
@@ -103,6 +104,10 @@ export class AuthService {
   }
 
   get(path: string, params: string[]): Observable<Response> {
+    return this.getWithSearchParams(path, params, null);
+  }
+
+  getWithSearchParams(path: string, params: string[], searchParams: URLSearchParams): Observable<Response> {
     console.log("1. get");
 
     let method = this.getConnectedApiUser().flatMap(
@@ -110,7 +115,7 @@ export class AuthService {
         return this.getHeader(firebaseUser).flatMap(
           (headers: Headers) => {
             console.log("4. start request");
-            return this.httpService.get(this.generatePath(path, params), {headers: headers})
+            return this.httpService.get(this.generatePath(path, params), {headers: headers, search: searchParams})
           }
         );
       }
