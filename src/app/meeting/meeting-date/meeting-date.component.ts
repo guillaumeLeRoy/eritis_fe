@@ -41,6 +41,9 @@ export class MeetingDateComponent implements OnInit, OnDestroy {
   private meetingObjectif: string
   private meetingContext: string
 
+  isEditingPotentialDate = false;
+  private mEditingPotentialTimeId: string;
+
   constructor(private router: Router, private route: ActivatedRoute, private coachService: CoachCoacheeService, private authService: AuthService, private cd: ChangeDetectorRef) {
   }
 
@@ -68,13 +71,13 @@ export class MeetingDateComponent implements OnInit, OnDestroy {
     }
   }
 
-
-  private isEdititingPotentialDate: boolean;
-  private mEditingPotentialTimeId: string;
-
   private onConnectedUserReceived(user: ApiUser) {
     this.connectedUser = Observable.of(user);
     this.cd.detectChanges();
+  }
+
+  sliderMinPosition(){
+    return this.timeRange[0];
   }
 
   bookOrUpdateADate() {
@@ -94,17 +97,17 @@ export class MeetingDateComponent implements OnInit, OnDestroy {
         let timestampMin: number = +minDate.getTime().toFixed(0) / 1000;
         let timestampMax: number = +maxDate.getTime().toFixed(0) / 1000;
 
-        if (this.isEdititingPotentialDate) {
+        if (this.isEditingPotentialDate) {
 
-          //just update potential date
+          // just update potential date
           this.coachService.updatePotentialTime(this.mEditingPotentialTimeId, timestampMin, timestampMax).subscribe(
             (meetingDate: MeetingDate) => {
               console.log('updatePotentialTime, meetingDate : ', meetingDate);
               // redirect to meetings page
               // this.router.navigate(['/meetings']);
-              //this.potentialDatePosted.emit(meetingDate);
+              // this.potentialDatePosted.emit(meetingDate);
 
-              //TODO find a replace potential
+              // TODO find a replace potential
             },
             (error) => {
               console.log('updatePotentialTime error', error);
@@ -112,20 +115,20 @@ export class MeetingDateComponent implements OnInit, OnDestroy {
             }
           );
 
-          //reset
-          this.mEditingPotentialTimeId = null;
-          this.isEdititingPotentialDate = false;
+          // Reload potential times
+          this.loadMeetingPotentialTimes(this.meetingId);
+
+          this.resetValues();
 
         } else {
-          //create new date
+          // create new date
           this.coachService.addPotentialDateToMeeting(this.meetingId, timestampMin, timestampMax).subscribe(
             (meetingDate: MeetingDate) => {
               console.log('addPotentialDateToMeeting, meetingDate : ', meetingDate);
               // redirect to meetings page
               // this.router.navigate(['/meetings']);
-              //this.potentialDatePosted.emit(meetingDate);
+              // this.potentialDatePosted.emit(meetingDate);
               this.potentialDatesArray.push(meetingDate);
-
             },
             (error) => {
               console.log('addPotentialDateToMeeting error', error);
@@ -133,19 +136,22 @@ export class MeetingDateComponent implements OnInit, OnDestroy {
             }
           );
         }
+
+        // Reload potential times
+        console.log('reload potential times');
+        this.loadMeetingPotentialTimes(this.meetingId);
       }
     );
-    // Mise à jour du calendrier
   }
 
   unbookAdate(potentialDateId: string) {
     console.log('unbookAdate');
     this.coachService.removePotentialTime(potentialDateId).subscribe(
       (response) => {
-        console.log("unbookAdate, response", response);
+        console.log('unbookAdate, response', response);
 
-        //TODO reload potential dates
-        this.cd.detectChanges();
+        // TODO reload potential dates
+        this.loadMeetingPotentialTimes(this.meetingId);
       }, (error) => {
         console.log('unbookAdate, error', error);
       }
@@ -155,13 +161,18 @@ export class MeetingDateComponent implements OnInit, OnDestroy {
   modifyPotentialDate(potentialDateId: string) {
     console.log('modifyPotentialDate, potentialDateId', potentialDateId);
 
-    //update time range
+    // update time range
+    // this.timeRange[0] = 9;
+    // this.timeRange[1] = 10;
 
-    this.timeRange[0] = 9;
-    this.timeRange[1] = 10;
-
-    this.isEdititingPotentialDate = true;
+    this.isEditingPotentialDate = true;
     this.mEditingPotentialTimeId = potentialDateId;
+  }
+
+  resetValues() {
+    this.mEditingPotentialTimeId = null;
+    this.isEditingPotentialDate = false;
+    this.timeRange = [7, 21];
   }
 
   dateToString(date: NgbDateStruct) {
@@ -188,7 +199,7 @@ export class MeetingDateComponent implements OnInit, OnDestroy {
   }
 
   isDisabled(date: NgbDateStruct, current: { month: number }) {
-    return date.month !== current.month;
+    return (date.month !== current.month);
   }
 
   onPotentialDatePosted(date: MeetingDate) {

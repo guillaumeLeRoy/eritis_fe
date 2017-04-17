@@ -26,7 +26,7 @@
             <span class="custom-day"
                   [class.has-potential-date]="hasPotentialDate(date)"
                   [class.bg-primary]="selected"
-                  [class.hidden]="date.month !== currentMonth"
+                  [class.hidden]="disabled"
                   [class.text-muted]="disabled">
               {{ date.day }}
             </span>
@@ -62,7 +62,12 @@
 
         <div class="row">
           <div class="col-lg-12">
-            <button class="btn-basic btn-plain btn-blue" (click)="bookOrUpdateADate()" [disabled]="dateModel==null">Valider</button>
+            <button class="btn-basic btn-plain btn-blue" (click)="bookOrUpdateADate()" [disabled]="dateModel==null" *ngIf="!isEditingPotentialDate">Valider</button>
+            <button class="btn-basic btn-plain btn-blue" (click)="bookOrUpdateADate()" [disabled]="dateModel==null" *ngIf="isEditingPotentialDate">Modifier</button>
+          </div>
+          <div class="col-lg-12">
+            <button class="btn-basic btn-blue" (click)="goToMeetings()" [disabled]="dateModel==null" *ngIf="!isEditingPotentialDate">Terminé</button>
+            <button class="btn-basic btn-blue" (click)="resetValues()" [disabled]="dateModel==null" *ngIf="isEditingPotentialDate">Annuler</button>
           </div>
         </div>
       </div>
