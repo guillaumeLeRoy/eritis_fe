@@ -1,5 +1,8 @@
 <rb-header></rb-header>
 <div class="container">
+
+  <er-pre-meeting [meetingId]="meetingId"></er-pre-meeting>
+
   <h4 class="header-date-picker">Indiquez vos disponiblités grâce au calendrier ci dessous.
   <br>Cliquez sur terminé lorsque vous avez validé toutes vos plages disponibles.</h4>
 
@@ -61,15 +64,17 @@
           <div class="col-lg-12">
             <button class="btn-basic btn-plain btn-blue" (click)="bookOrUpdateADate()" [disabled]="dateModel==null">Valider</button>
           </div>
-          <div class="col-lg-12">
-            <button class="btn-basic btn-blue" (click)="goToMeetings()" [disabled]="dateModel==null">Terminé</button>
-          </div>
         </div>
       </div>
     </div><!--end row-->
   </div><!--end row-->
 
-  <er-pre-meeting [meetingId]="meetingId"></er-pre-meeting>
+  <div class="row">
+    <div class="col-lg-12">
+      <button class="btn-basic btn-blue" (click)="finish()" [disabled]="dateModel==null">Terminer</button>
+    </div>
+  </div>
+
 </div>
 
 <div id="card-alert_seance_book" class="card red" *ngIf="displayErrorBookingDate">

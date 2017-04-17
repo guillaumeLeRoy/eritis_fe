@@ -8,7 +8,7 @@ import {Coachee} from "../model/coachee";
 import {MeetingDate} from "../model/MeetingDate";
 import {Meeting} from "../model/meeting";
 import {
-  MEETING_REVIEW_TYPE_SESSION_CONTEXT,
+  MEETING_REVIEW_TYPE_SESSION_CONTEXT, MEETING_REVIEW_TYPE_SESSION_GOAL,
   MEETING_REVIEW_TYPE_SESSION_NEXT_STEP, MEETING_REVIEW_TYPE_SESSION_VALUE,
   MeetingReview
 } from "../model/MeetingReview";
@@ -131,8 +131,8 @@ export class CoachCoacheeService {
     });
   }
 
-  //add review for type SESSION_VALUE
-  addAContextToMeeting(meetingId: string, context: string): Observable<MeetingReview> {
+  //add review for type SESSION_CONTEXT
+  addAContextForMeeting(meetingId: string, context: string): Observable<MeetingReview> {
     console.log("addAContextToMeeting, meetingId %s, comment : %s", meetingId, context);
     let body = {
       comment: context,
@@ -142,6 +142,48 @@ export class CoachCoacheeService {
     return this.apiService.post(AuthService.POST_MEETING_REVIEW, param, body).map((response: Response) => {
       let json: MeetingReview = response.json();
       console.log("addAMeetingReview, response json : ", json);
+      return json;
+    });
+  }
+
+  updateContextForMeeting(reviewId: string, context: string): Observable<MeetingReview> {
+    console.log("updateContextForMeeting, reviewId %s, comment : %s", reviewId, context);
+    let body = {
+      comment: context,
+    };
+    let param = [reviewId];
+    return this.apiService.put(AuthService.PUT_MEETING_REVIEW, param, body).map((response: Response) => {
+      let json: MeetingReview = response.json();
+      console.log("updateContextForMeeting, response json : ", json);
+      return json;
+    });
+  }
+
+  //add review for type SESSION_GOAL
+  addAGoalToMeeting(meetingId: string, goal: string): Observable<MeetingReview> {
+    console.log("addAContextToMeeting, meetingId %s, comment : %s", meetingId, goal);
+    let body = {
+      comment: goal,
+      type: MEETING_REVIEW_TYPE_SESSION_GOAL,
+    };
+    let param = [meetingId];
+    return this.apiService.post(AuthService.POST_MEETING_REVIEW, param, body).map((response: Response) => {
+      let json: MeetingReview = response.json();
+      console.log("addAMeetingReview, response json : ", json);
+      return json;
+    });
+  }
+
+
+  updateGoalForMeeting(reviewId: string, goal: string): Observable<MeetingReview> {
+    console.log("updateGoalForMeeting, reviewId %s, comment : %s", reviewId, goal);
+    let body = {
+      comment: goal,
+    };
+    let param = [reviewId];
+    return this.apiService.put(AuthService.PUT_MEETING_REVIEW, param, body).map((response: Response) => {
+      let json: MeetingReview = response.json();
+      console.log("updateGoalForMeeting, response json : ", json);
       return json;
     });
   }

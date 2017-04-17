@@ -38,10 +38,14 @@ export class MeetingDateComponent implements OnInit, OnDestroy {
   private connectedUser: Observable<ApiUser>;
   private subscriptionConnectUser: Subscription;
 
+  private meetingObjectif: string
+  private meetingContext: string
+
   constructor(private router: Router, private route: ActivatedRoute, private coachService: CoachCoacheeService, private authService: AuthService, private cd: ChangeDetectorRef) {
   }
 
   ngOnInit() {
+    console.log("MeetingDateComponent onInit");
 
     // meetingId should be in the router
     this.route.params.subscribe(
@@ -206,7 +210,10 @@ export class MeetingDateComponent implements OnInit, OnDestroy {
     );
   }
 
-  goToMeetings() {
+  finish() {
+    // console.log('finish, context :', this.uiMeetingContext);
+    // console.log('finish, objectif :', this.uiMeetingObjectif);
+
     let user = this.authService.getConnectedUser();
     if (user != null) {
       this.router.navigate(['/meetings']);
