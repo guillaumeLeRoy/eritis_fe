@@ -2,14 +2,14 @@
 
 <div class="row">
   <div class="input-field col s12">
-    <input id="objectif" type="text" [ngModel]="uiMeetingObjectif">
+    <input id="objectif" type="text" [ngModel]="uiMeetingGoal" (change)="onGoalValueChanged($event)">
     <label for="objectif">Quel est votre objectif ?</label>
   </div>
 </div>
 
 <div class="row">
   <div class="input-field col s12">
-    <input id="context" type="text" [ngModel]="uiMeetingContext">
+    <input id="context" type="text" [ngModel]="uiMeetingContext" (change)="onContextValueChanged($event)">
     <label for="context">Quel est le context ?</label>
   </div>
 </div>

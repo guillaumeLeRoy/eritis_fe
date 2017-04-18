@@ -1,7 +1,7 @@
 <rb-header></rb-header>
 <div class="container">
 
-  <er-pre-meeting [meetingId]="meetingId"></er-pre-meeting>
+  <er-pre-meeting [meetingId]="meetingId" (meetingGoal)="onGoalValueUpdated($event)" (meetingContext)="onContextValueUpdated($event)"></er-pre-meeting>
 
   <h4 class="header-date-picker">Indiquez vos disponiblités grâce au calendrier ci dessous.
   <br>Cliquez sur terminé lorsque vous avez validé toutes vos plages disponibles.</h4>
@@ -65,10 +65,6 @@
             <button class="btn-basic btn-plain btn-blue" (click)="bookOrUpdateADate()" [disabled]="dateModel==null" *ngIf="!isEditingPotentialDate">Valider</button>
             <button class="btn-basic btn-plain btn-blue" (click)="bookOrUpdateADate()" [disabled]="dateModel==null" *ngIf="isEditingPotentialDate">Modifier</button>
           </div>
-          <div class="col-lg-12">
-            <button class="btn-basic btn-blue" (click)="goToMeetings()" [disabled]="dateModel==null" *ngIf="!isEditingPotentialDate">Terminé</button>
-            <button class="btn-basic btn-blue" (click)="resetValues()" [disabled]="dateModel==null" *ngIf="isEditingPotentialDate">Annuler</button>
-          </div>
         </div>
       </div>
     </div><!--end row-->
@@ -76,7 +72,8 @@
 
   <div class="row">
     <div class="col-lg-12">
-      <button class="btn-basic btn-blue" (click)="finish()" [disabled]="dateModel==null">Terminer</button>
+      <button class="btn-basic btn-blue" (click)="finish()" [disabled]="!canFinish()" *ngIf="!isEditingPotentialDate">Terminer</button>
+      <button class="btn-basic btn-blue" (click)="resetValues()" [disabled]="dateModel==null" *ngIf="isEditingPotentialDate">Annuler</button>
     </div>
   </div>
 

@@ -1,5 +1,4 @@
-import {Component, OnInit, Input, EventEmitter, Output} from '@angular/core';
-import {FormGroup, Validators, FormBuilder} from "@angular/forms";
+import {Component, OnInit, Input, Output, EventEmitter} from '@angular/core';
 import {CoachCoacheeService} from "../service/CoachCoacheeService";
 import {
   MEETING_REVIEW_TYPE_SESSION_CONTEXT, MEETING_REVIEW_TYPE_SESSION_GOAL,
@@ -17,42 +16,69 @@ export class PreMeetingComponent implements OnInit {
   meetingId: string
 
   @Output()
-  uiMeetingObjectif: string
+  meetingGoal = new EventEmitter<string>();
+  private uiMeetingGoal: string;
+
   @Output()
-  uiMeetingContext: string
+  meetingContext = new EventEmitter<string>();
+  private uiMeetingContext: string;
 
   constructor(private coachService: CoachCoacheeService) {
   }
 
   ngOnInit() {
     console.log("PreMeetingComponent onInit");
-
     this.getAllMeetingReviews();
+
   }
 
+  /* Get form API all reviews for the given meeting */
   getAllMeetingReviews() {
     console.log("getAllMeetingReviews, meetingId : ", this.meetingId);
 
-    this.coachService.getMeetingContext(this.meetingId).subscribe(
+    this.coachService.getMeetingReviews(this.meetingId).subscribe(
       (reviews: MeetingReview[]) => {
         console.log("getAllMeetingReviews, got reviews : ", reviews);
 
-        if(reviews !=null){
+        if (reviews != null) {
           //search for correct type
           for (let review of reviews) {
             if (review.type == MEETING_REVIEW_TYPE_SESSION_GOAL) {
-              this.uiMeetingObjectif = review.comment;
+              this.updateGoalValue(review.comment);
             } else if (review.type == MEETING_REVIEW_TYPE_SESSION_CONTEXT) {
-              this.uiMeetingContext = review.comment;
+              this.updateContextValue(review.comment);
             }
           }
         }
-
       },
       (error) => {
         console.log('getAllMeetingReviews error', error);
         //this.displayErrorPostingReview = true;
       });
+  }
+
+  onGoalValueChanged(event) {
+    let goal = event.target.value;
+    console.log('onGoalValueChanged res', goal);
+
+    this.updateGoalValue(goal);
+  }
+
+  onContextValueChanged(event) {
+    let context = event.target.value;
+    console.log('onContextValueChanged res', context);
+
+    this.updateContextValue(context);
+  }
+
+  private updateGoalValue(goal: string) {
+    this.uiMeetingGoal = goal;
+    this.meetingGoal.emit(this.uiMeetingGoal);
+  }
+
+  private updateContextValue(context: string) {
+    this.uiMeetingContext = context;
+    this.meetingContext.emit(this.uiMeetingContext);
   }
 
   // submitMeetingContextForm() {
