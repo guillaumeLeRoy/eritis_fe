@@ -60,6 +60,11 @@ a{
   cursor: pointer;
 }
 
+a:hover,
+a:focus{
+  color: var(--main-electric-blue) !important;
+}
+
 .container{
   max-width: 80% !important;
 }

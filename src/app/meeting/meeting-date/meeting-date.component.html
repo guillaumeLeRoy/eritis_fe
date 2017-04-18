@@ -16,7 +16,8 @@
                           navigation="arrows"
                           minDate="{{ dateModel }}"
                           [dayTemplate]="customDay"
-                          [markDisabled]="isDisabled">
+                          [markDisabled]="isDisabled"
+                          [disabled]="isEditingPotentialDate">
           </ngb-datepicker>
 
           <template #customDay let-date="date" let-currentMonth="currentMonth" let-selected="selected" let-disabled="disabled">
@@ -53,7 +54,7 @@
           <h2 class="plage-horaire">{{timeRange[0]}}:00 - {{timeRange[1]}}:00</h2>
         </div>
 
-        <p-slider [(ngModel)]="timeRange" [style]="{'width':'200px'}" [range]="true" [max]="21" [min]="7"></p-slider>
+        <p-slider [(ngModel)]="timeRange" [style]="{'width':'200px'}" [range]="true" [min]="7" [max]="21"></p-slider>
 
         <p>Faites glisser pour sélectionner votre plage disponible, puis validez</p>
 
@@ -69,10 +70,13 @@
         </div>
       </div>
     </div><!--end row-->
-  </div><!--end row-->
+  </div><!--end input-datepicker-->
+
+  <h4 class="header-date-picker">Veuillez renseigner les éléments de votre demande.</h4>
 
   <er-pre-meeting [meetingId]="meetingId"></er-pre-meeting>
-</div>
+
+</div><!--end container-->
 
 <div id="card-alert_seance_book" class="card red" *ngIf="displayErrorBookingDate">
   <div class="card-content white-text">

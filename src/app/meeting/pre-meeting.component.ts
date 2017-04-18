@@ -11,7 +11,7 @@ import {MeetingReview} from "../model/MeetingReview";
 export class PreMeetingComponent implements OnInit {
 
   @Input()
-  meetingId: string
+  meetingId: string;
 
   private form: FormGroup;
 
@@ -27,7 +27,8 @@ export class PreMeetingComponent implements OnInit {
 
   ngOnInit() {
     this.form = this.formBuilder.group({
-      context: ['', [Validators.required]]
+      context: ['', [Validators.required]],
+      objectif: ['', []]
     });
 
     this.getAllMeetingReviewContexts();
@@ -35,7 +36,7 @@ export class PreMeetingComponent implements OnInit {
 
 
   getAllMeetingReviewContexts() {
-    console.log("getAllMeetingReviewContexts, meetingId : ", this.meetingId)
+    console.log("getAllMeetingReviewContexts, meetingId : ", this.meetingId);
 
     this.coachService.getMeetingContext(this.meetingId).subscribe(
       (reviews: MeetingReview[]) => {
@@ -51,7 +52,7 @@ export class PreMeetingComponent implements OnInit {
   }
 
   submitMeetingContextForm() {
-    console.log("submitMeetingContextForm form : ", this.form.value)
+    console.log("submitMeetingContextForm form : ", this.form.value);
 
     this.coachService.addAContextToMeeting(this.meetingId, this.form.value.context).subscribe(
       (review: MeetingReview) => {
@@ -68,7 +69,7 @@ export class PreMeetingComponent implements OnInit {
 
 
   removeMeetingContext(reviewId) {
-    console.log("removeMeetingContext reviewId : ", reviewId)
+    console.log("removeMeetingContext reviewId : ", reviewId);
 
     this.coachService.removeReview(reviewId).subscribe(
       (res) => {

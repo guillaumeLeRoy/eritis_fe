@@ -4,44 +4,42 @@
   </div>
 </div>
 
-<div class="card">
+<div>
+  <form [formGroup]="form" (ngSubmit)="submitMeetingContextForm()">
+    <div class="row">
+      <div class="input-field col-sm-12">
+        <input id="objectif" type="text" formControlName="objectif">
+        <label for="objectif">Quel est votre objectfif ?</label>
+      </div>
 
-  <div class="card-content">
+      <div class="input-field col-sm-12">
+        <input id="context" type="text" formControlName="context">
+        <label for="context">Donnez nous un peu de context pour ce meeting</label>
+      </div>
+    </div>
 
-    <span class="card-title">Ajouter des explications</span>
+    <!-- submit btn -->
+    <div class="row">
+      <div class="input-field col s12">
+        <button class="btn-basic btn-plain btn-blue" type="submit" name="action" [disabled]="!form.valid">Ajouter
+        </button>
 
-    <form class="col s12" [formGroup]="form" (ngSubmit)="submitMeetingContextForm()">
+      </div>
+    </div>
+
+    <!-- list of saved contexts -->
+    <div *ngFor="let context of meetingReviewContexts">
       <div class="row">
-        <div class="input-field col s12">
-          <input id="context" type="text" formControlName="context">
-          <label for="context">Donnez nous un peu de context pour ce meeting</label>
+        <div class="col-sm-12">
+          <h4> Le {{context.date | date:'short'}}</h4>
+          <p>{{context.comment}}</p>
         </div>
       </div>
-
-      <!-- submit btn -->
       <div class="row">
-        <div class="input-field col s12">
-          <button class="btn-basic btn-plain btn-blue" type="submit" name="action" [disabled]="!form.valid">Ajouter
-          </button>
-
-        </div>
+        <a class="delete-context" (click)="removeMeetingContext(context.id)"><i
+          class="material-icons">delete_sweep</i></a>
       </div>
+    </div>
 
-      <!-- list of saved contexts -->
-      <div *ngFor="let context of meetingReviewContexts">
-        <div class="row">
-          <div class="col s12">
-            <h4> Le {{context.date | date:'short'}}</h4>
-            <p>{{context.comment}}</p>
-          </div>
-        </div>
-        <div class="row">
-          <a class="delete-context" (click)="removeMeetingContext(context.id)"><i
-            class="material-icons">delete_sweep</i></a>
-        </div>
-      </div>
-
-    </form>
-
-  </div>
+  </form>
 </div>

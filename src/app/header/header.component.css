@@ -18,7 +18,7 @@ nav li a{
 
 nav li a:hover,
 nav li a:focus {
-  color: var(--main-dark-grey);
+  color: var(--main-dark-grey) !important;
 }
 
 .navbar-fixed{

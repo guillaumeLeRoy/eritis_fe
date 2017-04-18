@@ -28,7 +28,7 @@ export class MeetingDateComponent implements OnInit, OnDestroy {
   now = new Date();
   dateModel: NgbDateStruct = {year: this.now.getFullYear(), month: this.now.getMonth() + 1, day: this.now.getDate()};
   // timeModel: NgbTimeStruct;
-  timeRange: number[] = [7, 21];
+  timeRange: number[] = [10, 18];
 
   /* Meeting potential dates */
   private potentialDatesArray: MeetingDate[];
@@ -147,28 +147,26 @@ export class MeetingDateComponent implements OnInit, OnDestroy {
         console.log('unbookAdate, response', response);
 
         // TODO reload potential dates
+        this.resetValues();
         this.loadMeetingPotentialTimes(this.meetingId);
       }, (error) => {
         console.log('unbookAdate, error', error);
       }
-    );
+    )
   }
 
   modifyPotentialDate(potentialDateId: string) {
     console.log('modifyPotentialDate, potentialDateId', potentialDateId);
 
-    // update time range
-    // this.timeRange[0] = 9;
-    // this.timeRange[1] = 10;
-
     this.isEditingPotentialDate = true;
     this.mEditingPotentialTimeId = potentialDateId;
+    this.timeRange = [9, 10];
   }
 
   resetValues() {
     this.mEditingPotentialTimeId = null;
     this.isEditingPotentialDate = false;
-    this.timeRange = [7, 21];
+    this.timeRange = [10, 18];
   }
 
   dateToString(date: NgbDateStruct) {
