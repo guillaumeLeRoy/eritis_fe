@@ -1,45 +1,16 @@
-<div id="card-alert_seance_book" class="card red" *ngIf="displayErrorPostingReview">
-  <div class="card-content white-text">
-    <p>Impossible d'enregistrer votre commentaire</p>
+<h4 class="card-title">Veuillez renseigner les éléments de votre demande</h4>
+
+<div class="row">
+  <div class="input-field col s12">
+    <input id="objectif" type="text" [ngModel]="uiMeetingGoal" (change)="onGoalValueChanged($event)">
+    <label for="objectif">Quel est votre objectif ?</label>
   </div>
 </div>
 
-<div>
-  <form [formGroup]="form" (ngSubmit)="submitMeetingContextForm()">
-    <div class="row">
-      <div class="input-field col-sm-12">
-        <input id="objectif" type="text" formControlName="objectif">
-        <label for="objectif">Quel est votre objectfif ?</label>
-      </div>
 
-      <div class="input-field col-sm-12">
-        <input id="context" type="text" formControlName="context">
-        <label for="context">Donnez nous un peu de context pour ce meeting</label>
-      </div>
-    </div>
-
-    <!-- submit btn -->
-    <div class="row">
-      <div class="input-field col s12">
-        <button class="btn-basic btn-plain btn-blue" type="submit" name="action" [disabled]="!form.valid">Ajouter
-        </button>
-
-      </div>
-    </div>
-
-    <!-- list of saved contexts -->
-    <div *ngFor="let context of meetingReviewContexts">
-      <div class="row">
-        <div class="col-sm-12">
-          <h4> Le {{context.date | date:'short'}}</h4>
-          <p>{{context.comment}}</p>
-        </div>
-      </div>
-      <div class="row">
-        <a class="delete-context" (click)="removeMeetingContext(context.id)"><i
-          class="material-icons">delete_sweep</i></a>
-      </div>
-    </div>
-
-  </form>
+<div class="row">
+  <div class="input-field col s12">
+    <input id="context" type="text" [ngModel]="uiMeetingContext" (change)="onContextValueChanged($event)">
+    <label for="context">Quel est le context ?</label>
+  </div>
 </div>

@@ -1,8 +1,13 @@
 import {Component, OnInit, Input, Output, EventEmitter} from '@angular/core';
+
 import {CoachCoacheeService} from "../service/CoachCoacheeService";
+
 import {
+
   MEETING_REVIEW_TYPE_SESSION_CONTEXT, MEETING_REVIEW_TYPE_SESSION_GOAL,
+
   MeetingReview
+
 } from "../model/MeetingReview";
 
 @Component({
@@ -10,10 +15,11 @@ import {
   templateUrl: './pre-meeting.component.html',
   styleUrls: ['./pre-meeting.component.css']
 })
+
 export class PreMeetingComponent implements OnInit {
 
   @Input()
-  meetingId: string;
+  meetingId: string
 
   @Output()
   meetingGoal = new EventEmitter<string>();
@@ -27,30 +33,15 @@ export class PreMeetingComponent implements OnInit {
   }
 
   ngOnInit() {
-<<<<<<< HEAD
-    this.form = this.formBuilder.group({
-      context: ['', [Validators.required]],
-      objectif: ['', []]
-    });
-=======
     console.log("PreMeetingComponent onInit");
     this.getAllMeetingReviews();
->>>>>>> origin/feature/dashboard_coachee
-
   }
 
   /* Get form API all reviews for the given meeting */
   getAllMeetingReviews() {
     console.log("getAllMeetingReviews, meetingId : ", this.meetingId);
 
-<<<<<<< HEAD
-  getAllMeetingReviewContexts() {
-    console.log("getAllMeetingReviewContexts, meetingId : ", this.meetingId);
-
-    this.coachService.getMeetingContext(this.meetingId).subscribe(
-=======
     this.coachService.getMeetingReviews(this.meetingId).subscribe(
->>>>>>> origin/feature/dashboard_coachee
       (reviews: MeetingReview[]) => {
         console.log("getAllMeetingReviews, got reviews : ", reviews);
 
@@ -71,29 +62,17 @@ export class PreMeetingComponent implements OnInit {
       });
   }
 
-<<<<<<< HEAD
-  submitMeetingContextForm() {
-    console.log("submitMeetingContextForm form : ", this.form.value);
-=======
   onGoalValueChanged(event) {
     let goal = event.target.value;
     console.log('onGoalValueChanged res', goal);
->>>>>>> origin/feature/dashboard_coachee
-
     this.updateGoalValue(goal);
   }
 
   onContextValueChanged(event) {
     let context = event.target.value;
     console.log('onContextValueChanged res', context);
-
-<<<<<<< HEAD
-  removeMeetingContext(reviewId) {
-    console.log("removeMeetingContext reviewId : ", reviewId);
-=======
     this.updateContextValue(context);
   }
->>>>>>> origin/feature/dashboard_coachee
 
   private updateGoalValue(goal: string) {
     this.uiMeetingGoal = goal;
@@ -104,6 +83,7 @@ export class PreMeetingComponent implements OnInit {
     this.uiMeetingContext = context;
     this.meetingContext.emit(this.uiMeetingContext);
   }
+
 
   // submitMeetingContextForm() {
   //   console.log("submitMeetingContextForm form : ", this.form.value)
@@ -121,7 +101,6 @@ export class PreMeetingComponent implements OnInit {
   //   );
   // }
 
-
   // removeMeetingContext(reviewId) {
   //   console.log("removeMeetingContext reviewId : ", reviewId)
   //
@@ -138,5 +117,4 @@ export class PreMeetingComponent implements OnInit {
   //   );
   //
   // }
-
 }

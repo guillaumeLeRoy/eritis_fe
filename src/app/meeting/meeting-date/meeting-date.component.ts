@@ -1,4 +1,4 @@
-import {Component, OnInit, ChangeDetectorRef, OnDestroy, Output, EventEmitter} from '@angular/core';
+import {Component, OnInit, ChangeDetectorRef, OnDestroy} from '@angular/core';
 import {NgbDateStruct} from '@ng-bootstrap/ng-bootstrap';
 import {ApiUser} from '../../model/apiUser';
 import {CoachCoacheeService} from '../../service/CoachCoacheeService';
@@ -6,6 +6,7 @@ import {AuthService} from '../../service/auth.service';
 import {Observable, Subscription} from 'rxjs';
 import {MeetingDate} from '../../model/MeetingDate';
 import {ActivatedRoute, Router} from '@angular/router';
+import {MeetingReview} from "../../model/MeetingReview";
 
 @Component({
   selector: 'rb-meeting-date',
@@ -38,6 +39,11 @@ export class MeetingDateComponent implements OnInit, OnDestroy {
   private connectedUser: Observable<ApiUser>;
   private subscriptionConnectUser: Subscription;
 
+  /* MANDATORY */
+  private meetingGoal: string;
+  /* MANDATORY */
+  private meetingContext: string;
+
   isEditingPotentialDate = false;
   private mEditingPotentialTimeId: string;
 
@@ -45,6 +51,7 @@ export class MeetingDateComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+    console.log("MeetingDateComponent onInit");
 
     // meetingId should be in the router
     this.route.params.subscribe(
@@ -72,7 +79,7 @@ export class MeetingDateComponent implements OnInit, OnDestroy {
     this.cd.detectChanges();
   }
 
-  sliderMinPosition(){
+  sliderMinPosition() {
     return this.timeRange[0];
   }
 
@@ -215,16 +222,49 @@ export class MeetingDateComponent implements OnInit, OnDestroy {
     );
   }
 
-  goToMeetings() {
-    let user = this.authService.getConnectedUser();
-    if (user != null) {
-      this.router.navigate(['/meetings']);
-    }
+  /* Call this method to check if all required params are correctly set. */
+  canFinish(): boolean {
+    let canFinish = this.meetingGoal != null && this.meetingContext != null && this.dateModel != null;
+    // console.log('canFinish : ', canFinish);
+    return canFinish;
+  }
+
+  /* Save the different dates and set goal and context.
+   * Navigate to the list of meetings */
+  finish() {
+    console.log('finish, meetingGoal : ', this.meetingGoal);
+    console.log('finish, meetingContext : ', this.meetingContext);
+
+    //save GOAL and CONTEXT
+    this.coachService.addAContextForMeeting(this.meetingId, this.meetingContext).flatMap(
+      (meetingReview: MeetingReview) => {
+        return this.coachService.addAGoalToMeeting(this.meetingId, this.meetingGoal);
+      }
+    ).subscribe(
+      (meetingReview: MeetingReview) => {
+        let user = this.authService.getConnectedUser();
+        if (user != null) {
+          this.router.navigate(['/meetings']);
+        }
+      }
+    );
   }
 
   ngOnDestroy(): void {
     if (this.subscriptionConnectUser) {
       this.subscriptionConnectUser.unsubscribe();
     }
+  }
+
+  //callback when "goal" for this meeting has changed
+  onGoalValueUpdated(goal: string) {
+    console.log('onGoalUpdated goal', goal);
+    this.meetingGoal = goal;
+  }
+
+  //callback when "context" for this meeting has changed
+  onContextValueUpdated(context: string) {
+    console.log('onContextValueUpdated context', context);
+    this.meetingContext = context;
   }
 }
