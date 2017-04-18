@@ -7,6 +7,7 @@ import {Observable, Subscription} from 'rxjs';
 import {MeetingDate} from '../../model/MeetingDate';
 import {ActivatedRoute, Router} from '@angular/router';
 import {MeetingReview} from "../../model/MeetingReview";
+import {startTimeRange} from "@angular/core/src/profile/wtf_impl";
 
 @Component({
   selector: 'rb-meeting-date',
@@ -165,9 +166,23 @@ export class MeetingDateComponent implements OnInit, OnDestroy {
   modifyPotentialDate(potentialDateId: string) {
     console.log('modifyPotentialDate, potentialDateId', potentialDateId);
 
+    let startTime = 7;
+    let endTime = 18;
+
+    for (var potential of this.potentialDatesArray) {
+      if (potential.id === potentialDateId) {
+        startTime = this.getHours(potential.start_date);
+        endTime = this.getHours(potential.end_date);
+      }
+    }
+
     this.isEditingPotentialDate = true;
     this.mEditingPotentialTimeId = potentialDateId;
-    this.timeRange = [9, 10];
+    this.timeRange = [startTime, endTime];
+  }
+
+  private getHours(date: string){
+    return (new Date(date)).getHours();
   }
 
   resetValues() {
