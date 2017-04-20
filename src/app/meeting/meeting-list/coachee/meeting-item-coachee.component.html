@@ -16,8 +16,8 @@
     </div>
 
     <div class="meeting-item-body" *ngIf="meeting.agreed_date ">
-      <h4 class="meeting-item-date">{{meeting.agreed_date.start_date | date}}</h4>
-      <p class="meeting-item-hour">{{meeting.agreed_date.start_date | date:'shortTime'}}</p>
+      <h4 class="meeting-item-date">{{ getDate(meeting.agreed_date.start_date) }}</h4>
+      <p class="meeting-item-hour">{{ getHours(meeting.agreed_date.start_date) }}:00</p>
     </div>
 
     <div class="meeting-item-body" *ngIf="!meeting.agreed_date">
@@ -25,15 +25,19 @@
     </div>
 
     <div class="meeting-item-footer">
-      <div class="meeting-item-objectif">
-        <p><span class="black-text bold">Objectif: </span></p>
+      <div class="meeting-item-goal">
+        <p>
+          <span class="black-text bold">Objectif: </span>
+          <span *ngIf="hasGoal()">{{ goal }}</span>
+          <span *ngIf="!hasGoal()" class="red-text">Veuillez définir votre objectif.</span>
+        </p>
       </div>
 
       <div class="meeting-item-footer-buttons">
         <a *ngIf="meeting.isOpen">ANNULER</a>
         <a *ngIf="!meeting.isOpen" class="activator">CONSULTER</a>
 
-        <button class="btn-basic btn-plain btn-red btn-small" *ngIf="meeting.isOpen" (click)="goToModifyDate(meeting.id)">OBJECTIF</button>
+        <button class="btn-basic btn-plain btn-red btn-small" *ngIf="meeting.isOpen && !hasGoal(meeting.id)" (click)="goToModifyDate(meeting.id)">OBJECTIF</button>
 
         <button class="btn-basic btn-plain btn-blue btn-small" *ngIf="meeting.isOpen" (click)="bookADate()">LANCER</button>
       </div>
@@ -76,9 +80,9 @@
     </div>
 
     <div class="meeting-review-body">
-      <er-post-meeting></er-post-meeting>
+      <er-post-meeting *ngIf="!hasReview(meeting.id)"></er-post-meeting>
 
-      <div>
+      <div *ngIf="hasReview(meeting.id)">
         <div class="btn-basic btn-plain btn-small btn-green">FEEDBACK</div>
 
         <p><span class="black-text bold">Objectif: </span></p>

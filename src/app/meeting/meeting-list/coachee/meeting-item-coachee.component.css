@@ -67,9 +67,10 @@ a:focus{
 
 .meeting-item-hour{
   margin: 0;
+  font-size: 22px;
 }
 
-.meeting-item-objectif{
+.meeting-item-goal{
   min-height: 64px;
 }
 

@@ -131,6 +131,21 @@ export class CoachCoacheeService {
     });
   }
 
+  //get all MeetingReview for context == SESSION_GOAL
+  getMeetingGoal(meetingId: string): Observable<MeetingReview[]> {
+    console.log("getMeetingGoal");
+
+    let searchParams: URLSearchParams = new URLSearchParams();
+    searchParams.set('type', MEETING_REVIEW_TYPE_SESSION_GOAL);
+
+    let param = [meetingId];
+    return this.apiService.getWithSearchParams(AuthService.GET_MEETING_REVIEWS, param, searchParams).map((response: Response) => {
+      let json: MeetingReview[] = response.json();
+      console.log("getMeetingGoal, response json : ", json);
+      return json;
+    });
+  }
+
   //add review for type SESSION_CONTEXT
   addAContextForMeeting(meetingId: string, context: string): Observable<MeetingReview> {
     console.log("addAContextToMeeting, meetingId %s, comment : %s", meetingId, context);

@@ -15,7 +15,8 @@
 
       <!-- views for coach -->
       <div *ngIf="isUserACoach((user | async))">
-        <rb-meeting-item-coach *ngFor="let meeting of meetings | async" [meeting]="meeting"
+        <rb-meeting-item-coach *ngFor="let meeting of meetings | async"
+                               [meeting]="meeting"
                                (meetingUpdated)="onRefreshRequested($event)"></rb-meeting-item-coach>
       </div>
 
