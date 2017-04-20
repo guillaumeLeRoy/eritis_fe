@@ -20,7 +20,7 @@ export class MeetingItemCoacheeComponent implements OnInit {
   @Output()
   potentialDatePosted = new EventEmitter<MeetingDate>();
 
-  months = ['Janvier', 'Février', 'Mars', 'Avril', 'Mai', 'Juin', 'Juillet', 'Août', 'Septembre', 'Octobre', 'Novembre', 'Décembre'];
+  months = ['Jan', 'Feb', 'Mar', 'Avr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 
   private coach: Coach;
   private reviews: Observable<MeetingReview[]>;

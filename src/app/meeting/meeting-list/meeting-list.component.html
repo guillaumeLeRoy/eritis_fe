@@ -24,15 +24,33 @@
 
       <!-- views for coachee -->
       <div *ngIf="isUserACoachee((user | async))">
-        <div class="row">
-          <rb-meeting-item-coachee class="col-lg-3"
-                                   *ngFor="let meeting of meetings | async"
-                                   [meeting]="meeting"
-                                   (potentialDatePosted)="onRefreshRequested($event)">
-          </rb-meeting-item-coachee>
+
+        <div class="row" *ngIf="hasOpenedMeeting()">
+          <h4 class="col-lg-12 black-text">A venir</h4>
+          <div class="card collection col-lg-12">
+            <div class="collection-item" *ngFor="let meeting of meetings | async">
+              <rb-meeting-item-coachee *ngIf="meeting.isOpen"
+                                       [meeting]="meeting"
+                                       (potentialDatePosted)="onRefreshRequested($event)">
+              </rb-meeting-item-coachee>
+            </div>
+          </div>
         </div>
-      </div>
-    </div>
-  </div>
+
+        <div class="row" *ngIf="false">
+          <h4 class="col-lg-12 black-text">Complétés</h4>
+          <div class="card collection col-lg-12">
+            <div class="collection-item" *ngFor="let meeting of meetings | async">
+              <rb-meeting-item-coachee *ngIf="!meeting.isOpen"
+                                       [meeting]="meeting"
+                                       (potentialDatePosted)="onRefreshRequested($event)">
+              </rb-meeting-item-coachee>
+            </div>
+          </div>
+        </div>
+
+      </div><!--end ngif-->
+    </div><!--end row-->
+  </div><!--end container-->
 </div>
 

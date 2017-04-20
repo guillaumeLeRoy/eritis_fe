@@ -1,7 +1,8 @@
 .btn-small{
-  padding: 4px 8px;
-  font-size: 12px;
-  min-width: auto;
+  padding: 0 16px;
+  font-size: 16px;
+  min-width: 120px;
+  height: 40px;
 }
 
 button{
@@ -18,13 +19,12 @@ a:focus{
 }
 
 .meeting-item{
-  padding: 0;
-  margin: 32px 0;
+  margin: 16px 0;
+  padding: 0 !important;
 }
 
-.meeting-item-header,
-.meeting-item-footer{
-  padding: 16px;
+.meeting-item > .row {
+  margin: 0;
 }
 
 .meeting-item-seance-number{
@@ -39,21 +39,12 @@ a:focus{
 }
 
 .meeting-item-coach-avatar{
-  height: 44px;
+  height: 52px;
+  margin-right: 16px;
 }
 
 .meeting-item-body{
-  display: flex;
-  background-color: var(--main-electric-blue);
-  color: #FFF;
-  text-align: center;
-  height: 192px;
-  padding: 0 16px;
-  align-content: center;
-  flex-direction: column;
-  flex-grow: 1;
-  justify-content: center;
-  align-items: center;
+
 }
 
 .closed .meeting-item-body{
@@ -71,11 +62,12 @@ a:focus{
 }
 
 .meeting-item-goal{
-  min-height: 64px;
+  margin: 0;
 }
 
-.meeting-item-footer-buttons,
-.meeting-item-header{
+.meeting-item-footer,
+.meeting-item-header,
+.meeting-item-body{
   display: flex;
   flex-direction: row;
   flex-grow: 1;

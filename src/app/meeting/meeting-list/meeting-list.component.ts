@@ -16,6 +16,7 @@ import {Router} from "@angular/router";
 export class MeetingListComponent implements OnInit, AfterViewInit, OnDestroy {
 
   private meetings: Observable<Meeting[]>;
+  private meetingsArray: Meeting[];
   private subscription: Subscription;
   private connectedUserSubscription: Subscription;
 
@@ -61,6 +62,7 @@ export class MeetingListComponent implements OnInit, AfterViewInit, OnDestroy {
       (meetings: Meeting[]) => {
         console.log("got meetings for coach", meetings);
 
+        this.meetingsArray = meetings;
         this.meetings = Observable.of(meetings);
         this.cd.detectChanges();
       }
@@ -73,6 +75,7 @@ export class MeetingListComponent implements OnInit, AfterViewInit, OnDestroy {
 
         console.log("got meetings for coachee", meetings);
 
+        this.meetingsArray = meetings;
         this.meetings = Observable.of(meetings);
         this.cd.detectChanges();
       }
@@ -120,6 +123,32 @@ export class MeetingListComponent implements OnInit, AfterViewInit, OnDestroy {
           }
         )
       });
+  }
+
+  hasOpenedMeeting() {
+    console.log('Looking for opened meeting');
+    if(this.meetingsArray != null) {
+      for (let meeting of this.meetingsArray){
+        if (meeting.isOpen) {
+          console.log('Opened meeting found', meeting);
+          return true;
+        }
+      }
+    }
+    return false;
+  }
+
+  hasNotOpenedMeeting() {
+    console.log('Looking for closed meeting');
+    if(this.meetingsArray != null) {
+      for (let meeting of this.meetingsArray){
+        if (!meeting.isOpen) {
+          console.log('Closed meeting found', meeting);
+          return true;
+        }
+      }
+    }
+    return false;
   }
 
   ngOnDestroy(): void {
