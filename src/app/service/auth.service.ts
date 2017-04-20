@@ -385,6 +385,7 @@ export class AuthService {
     coachee.start_date = json.start_date;
     coachee.selectedCoach = json.selectedCoach;
     coachee.contractPlan = json.plan;
+    coachee.availableSessionsCount = json.available_sessions;
     return coachee;
   }
 

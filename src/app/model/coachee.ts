@@ -18,6 +18,8 @@ export class Coachee implements ApiUser {
 
   contractPlan : ContractPlan;
 
+  availableSessionsCount  : number
+
   constructor(id: string) {
     this.id = id;
   }
