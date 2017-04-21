@@ -35,7 +35,7 @@ export class PostMeetingComponent implements OnInit {
     console.log("submitMeetingReview form : ", this.form.value)
 
     this.submitMeetingValue(this.form.value.session_value);
-    this.submitMeetingValue(this.form.value.next_step);
+    this.submitMeetingNextStep(this.form.value.next_step);
   }
 
   private submitMeetingValue(comment: string) {

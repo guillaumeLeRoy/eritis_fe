@@ -26,6 +26,8 @@ export class MeetingItemCoacheeComponent implements OnInit {
   private reviews: Observable<MeetingReview[]>;
 
   private goal: string;
+  private reviewValue: string;
+  private reviewNextStep: string;
 
   /* Meeting potential dates */
   private potentialDates: Observable<MeetingDate[]>;
@@ -43,6 +45,8 @@ export class MeetingItemCoacheeComponent implements OnInit {
     this.loadReview();
     this.loadMeetingPotentialTimes();
     this.getGoal();
+    this.getReviewValue();
+    this.getReviewNextStep();
   }
 
   onPreMeetingReviewPosted(meeting: Meeting) {
@@ -93,7 +97,7 @@ export class MeetingItemCoacheeComponent implements OnInit {
     return (new Date(date)).getDate() + ' ' + this.months[(new Date(date)).getMonth()];
   }
 
-  getGoal() {
+  private getGoal() {
     this.coachCoacheeService.getMeetingGoal(this.meeting.id).subscribe(
       (reviews: MeetingReview[]) => {
         console.log("getMeetingGoal, got goal : ", reviews);
@@ -103,35 +107,47 @@ export class MeetingItemCoacheeComponent implements OnInit {
           this.goal = null;
       },
       (error) => {
-        console.log('getMeetingReviews error', error);
+        console.log('getMeetingGoal error', error);
         //this.displayErrorPostingReview = true;
       });
   }
 
-  hasGoal(meetingId: string) {
-    /*this.coachCoacheeService.getMeetingReviews(meetingId).subscribe(
-      (reviews: MeetingReview[]) => {
-        console.log("getAllMeetingReviews, got reviews : ", reviews);
-
-        if (reviews != null) {
-          //search for correct type
-          for (let review of reviews) {
-            if (review.type == MEETING_REVIEW_TYPE_SESSION_GOAL) {
-              return true;
-            }
-          }
-        }
-        return false;
-      },
-      (error) => {
-        console.log('getAllMeetingReviews error', error);
-        //this.displayErrorPostingReview = true;
-      });*/
+  hasGoal() {
     return this.goal != null;
   }
 
-  hasReview(meetingId: string) {
-    return false;
+  private getReviewValue() {
+    this.coachCoacheeService.getMeetingValue(this.meeting.id).subscribe(
+      (reviews: MeetingReview[]) => {
+        console.log("getMeetingValue, got goal : ", reviews);
+        if (reviews != null)
+          this.reviewValue = reviews[0].comment;
+        else
+          this.reviewValue = null;
+      },
+      (error) => {
+        console.log('getMeetingValue error', error);
+        //this.displayErrorPostingReview = true;
+      });
+  }
+
+  private getReviewNextStep() {
+    this.coachCoacheeService.getMeetingNextStep(this.meeting.id).subscribe(
+      (reviews: MeetingReview[]) => {
+        console.log("getMeetingNextStep, got goal : ", reviews);
+        if (reviews != null)
+          this.reviewNextStep = reviews[0].comment;
+        else
+          this.reviewNextStep = null;
+      },
+      (error) => {
+        console.log('getMeetingNextStep error', error);
+        //this.displayErrorPostingReview = true;
+      });
+  }
+
+  hasReview() {
+    return (this.reviewValue != null && this.reviewNextStep != null);
   }
 
   goToModifyDate(meetingId: number) {

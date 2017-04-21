@@ -16,6 +16,8 @@ import {Router} from "@angular/router";
 export class MeetingListComponent implements OnInit, AfterViewInit, OnDestroy {
 
   private meetings: Observable<Meeting[]>;
+  private meetingsOpened: Observable<Meeting[]>;
+  private meetingsClosed: Observable<Meeting[]>;
   private meetingsArray: Meeting[];
   private subscription: Subscription;
   private connectedUserSubscription: Subscription;
@@ -98,7 +100,6 @@ export class MeetingListComponent implements OnInit, AfterViewInit, OnDestroy {
 
       this.user = Observable.of(user);
       this.cd.detectChanges();
-
     }
   }
 
@@ -126,11 +127,11 @@ export class MeetingListComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   hasOpenedMeeting() {
-    console.log('Looking for opened meeting');
-    if(this.meetingsArray != null) {
+    console.log('hasOpenedMeeting');
+    this.getOpenedMeetings();
+    if (this.meetingsArray != null) {
       for (let meeting of this.meetingsArray){
         if (meeting.isOpen) {
-          console.log('Opened meeting found', meeting);
           return true;
         }
       }
@@ -138,17 +139,43 @@ export class MeetingListComponent implements OnInit, AfterViewInit, OnDestroy {
     return false;
   }
 
-  hasNotOpenedMeeting() {
-    console.log('Looking for closed meeting');
-    if(this.meetingsArray != null) {
+  hasClosedMeeting() {
+    console.log('hasClosedMeeting');
+    this.getClosedMeetings();
+    if (this.meetingsArray != null) {
       for (let meeting of this.meetingsArray){
         if (!meeting.isOpen) {
-          console.log('Closed meeting found', meeting);
           return true;
         }
       }
     }
     return false;
+  }
+
+  private getOpenedMeetings() {
+    console.log('getOpenedMeetings');
+    if (this.meetingsArray != null) {
+      let opened: Meeting[] = [];
+      for (let meeting of this.meetingsArray) {
+        if (meeting.isOpen) {
+          opened.push(meeting);
+        }
+      }
+      this.meetingsOpened = Observable.of(opened);
+    }
+  }
+
+  private getClosedMeetings() {
+    console.log('getClosedMeetings');
+    if (this.meetingsArray != null) {
+      let closed: Meeting[] = [];
+      for (let meeting of this.meetingsArray) {
+        if (!meeting.isOpen) {
+          closed.push(meeting);
+        }
+      }
+      this.meetingsClosed = Observable.of(closed);
+    }
   }
 
   ngOnDestroy(): void {

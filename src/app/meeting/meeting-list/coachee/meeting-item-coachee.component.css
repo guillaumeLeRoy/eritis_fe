@@ -1,10 +1,3 @@
-.btn-small{
-  padding: 0 16px;
-  font-size: 16px;
-  min-width: 120px;
-  height: 40px;
-}
-
 button{
   margin: 0;
 }
@@ -14,12 +7,16 @@ a:focus{
   color: var(--main-electric-blue) !important;
 }
 
+p {
+  margin: 0;
+}
+
 .card-content, .card-reveal {
   padding: 0;
 }
 
 .meeting-item{
-  margin: 16px 0;
+  margin: 0;
   padding: 0 !important;
 }
 
@@ -43,53 +40,63 @@ a:focus{
   margin-right: 16px;
 }
 
-.meeting-item-body{
-
+.meeting-item-date-hour{
+  margin-left: 16px;
 }
 
-.closed .meeting-item-body{
-  background-color: var(--main-dark-blue);
-}
-
-.meeting-item-date{
-  margin-top: 0;
-  margin-bottom: 16px;
-}
-
-.meeting-item-hour{
-  margin: 0;
-  font-size: 22px;
-}
-
-.meeting-item-goal{
-  margin: 0;
-}
-
-.meeting-item-footer,
 .meeting-item-header,
-.meeting-item-body{
+.meeting-item-body,
+.meeting-item-date{
   display: flex;
   flex-direction: row;
   flex-grow: 1;
   align-items: center;
+  padding: 8px;
+}
+
+.meeting-item-header {
+  justify-content: flex-start;
+}
+
+.meeting-item-header > div {
+  display: flex;
+  flex-direction: row;
+  flex-grow: 1;
+  align-items: center;
+}
+
+.meeting-item-date{
+  justify-content: space-around;
+  font-size: 22px;
+}
+
+.meeting-item-body{
   justify-content: space-between;
-  align-content: stretch;
 }
 
-.meeting-review-body{
-  padding: 16px;
-  padding-top: 0;
+.meeting-item-body,
+.meeting-item-date {
+  padding: 24px 0;
 }
 
-.meeting-review-body .btn-green{
-  margin-bottom: 32px;
-  margin-top: 0;
+.meeting-item.closed .meeting-item-header,
+.meeting-item.closed .meeting-item-body,
+.meeting-item.closed .meeting-item-date{
+  align-items: flex-start;
 }
 
-.meeting-review-close-button{
-  position: absolute;
-  bottom: 16px;
-  right: 16px;
-  cursor: pointer;
-  margin: 0;
+.meeting-item.closed .meeting-item-body {
+  flex-direction: column;
+  justify-content: flex-start;
+  align-content: flex-start;
+}
+
+.meeting-review {
+  width: 100%;
+}
+
+@media screen and (max-device-width: 1240px) and (min-device-width: 720px) {
+  .meeting-item-date{
+    justify-content: flex-end;
+  }
 }

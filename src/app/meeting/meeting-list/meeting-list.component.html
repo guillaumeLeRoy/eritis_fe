@@ -25,28 +25,44 @@
       <!-- views for coachee -->
       <div *ngIf="isUserACoachee((user | async))">
 
-        <div class="row" *ngIf="hasOpenedMeeting()">
+        <div class="row">
           <h4 class="col-lg-12 black-text">A venir</h4>
           <div class="card collection col-lg-12">
-            <div class="collection-item" *ngFor="let meeting of meetings | async">
-              <rb-meeting-item-coachee *ngIf="meeting.isOpen"
-                                       [meeting]="meeting"
-                                       (potentialDatePosted)="onRefreshRequested($event)">
-              </rb-meeting-item-coachee>
+
+            <div *ngIf="hasOpenedMeeting()">
+              <div class="collection-item" *ngFor="let meeting of meetingsOpened | async">
+                <rb-meeting-item-coachee *ngIf="meeting.isOpen"
+                                         [meeting]="meeting"
+                                         (potentialDatePosted)="onRefreshRequested($event)">
+                </rb-meeting-item-coachee>
+              </div>
             </div>
-          </div>
+
+            <div *ngIf="!hasOpenedMeeting()" class="collection-item text-center">
+              <h5>Vos séances à venir apparaîtront ici</h5>
+            </div>
+
+          </div><!--end card-->
         </div>
 
-        <div class="row" *ngIf="false">
+        <div class="row">
           <h4 class="col-lg-12 black-text">Complétés</h4>
           <div class="card collection col-lg-12">
-            <div class="collection-item" *ngFor="let meeting of meetings | async">
-              <rb-meeting-item-coachee *ngIf="!meeting.isOpen"
-                                       [meeting]="meeting"
-                                       (potentialDatePosted)="onRefreshRequested($event)">
-              </rb-meeting-item-coachee>
+
+            <div *ngIf="hasClosedMeeting()">
+              <div class="collection-item" *ngFor="let meeting of meetingsClosed | async">
+                <rb-meeting-item-coachee *ngIf="!meeting.isOpen"
+                                         [meeting]="meeting"
+                                         (potentialDatePosted)="onRefreshRequested($event)">
+                </rb-meeting-item-coachee>
+              </div>
             </div>
-          </div>
+
+            <div *ngIf="!hasClosedMeeting()" class="collection-item text-center">
+              <h5>Vos séances complétées apparaîtront ici</h5>
+            </div>
+
+          </div><!--end card-->
         </div>
 
       </div><!--end ngif-->

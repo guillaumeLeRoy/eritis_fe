@@ -145,6 +145,13 @@ a:focus{
   color: #fff;
 }
 
+.btn-small{
+  padding: 0 16px;
+  font-size: 16px;
+  min-width: 120px;
+  height: 40px;
+}
+
 .black-text{
   color: black;
 }
