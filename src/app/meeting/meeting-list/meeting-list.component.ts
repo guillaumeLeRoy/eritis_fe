@@ -19,6 +19,10 @@ export class MeetingListComponent implements OnInit, AfterViewInit, OnDestroy {
   private meetingsOpened: Observable<Meeting[]>;
   private meetingsClosed: Observable<Meeting[]>;
   private meetingsArray: Meeting[];
+
+  private hasOpenedMeeting = false;
+  private hasClosedMeeting = false;
+
   private subscription: Subscription;
   private connectedUserSubscription: Subscription;
 
@@ -66,6 +70,8 @@ export class MeetingListComponent implements OnInit, AfterViewInit, OnDestroy {
 
         this.meetingsArray = meetings;
         this.meetings = Observable.of(meetings);
+        this.getOpenedMeetings();
+        this.getClosedMeetings();
         this.cd.detectChanges();
       }
     );
@@ -79,6 +85,8 @@ export class MeetingListComponent implements OnInit, AfterViewInit, OnDestroy {
 
         this.meetingsArray = meetings;
         this.meetings = Observable.of(meetings);
+        this.getOpenedMeetings();
+        this.getClosedMeetings();
         this.cd.detectChanges();
       }
     );
@@ -126,32 +134,6 @@ export class MeetingListComponent implements OnInit, AfterViewInit, OnDestroy {
       });
   }
 
-  hasOpenedMeeting() {
-    console.log('hasOpenedMeeting');
-    this.getOpenedMeetings();
-    if (this.meetingsArray != null) {
-      for (let meeting of this.meetingsArray){
-        if (meeting.isOpen) {
-          return true;
-        }
-      }
-    }
-    return false;
-  }
-
-  hasClosedMeeting() {
-    console.log('hasClosedMeeting');
-    this.getClosedMeetings();
-    if (this.meetingsArray != null) {
-      for (let meeting of this.meetingsArray){
-        if (!meeting.isOpen) {
-          return true;
-        }
-      }
-    }
-    return false;
-  }
-
   private getOpenedMeetings() {
     console.log('getOpenedMeetings');
     if (this.meetingsArray != null) {
@@ -159,6 +141,7 @@ export class MeetingListComponent implements OnInit, AfterViewInit, OnDestroy {
       for (let meeting of this.meetingsArray) {
         if (meeting.isOpen) {
           opened.push(meeting);
+          this.hasOpenedMeeting = true;
         }
       }
       this.meetingsOpened = Observable.of(opened);
@@ -172,6 +155,7 @@ export class MeetingListComponent implements OnInit, AfterViewInit, OnDestroy {
       for (let meeting of this.meetingsArray) {
         if (!meeting.isOpen) {
           closed.push(meeting);
+          this.hasClosedMeeting = true;
         }
       }
       this.meetingsClosed = Observable.of(closed);
