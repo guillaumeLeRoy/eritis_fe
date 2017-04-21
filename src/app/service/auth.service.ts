@@ -385,7 +385,8 @@ export class AuthService {
     coachee.start_date = json.start_date;
     coachee.selectedCoach = json.selectedCoach;
     coachee.contractPlan = json.plan;
-    coachee.availableSessionsCount = json.available_sessions;
+    coachee.availableSessionsCount = json.available_sessions_count;
+    coachee.updateAvailableSessionCountDate = json.update_sessions_count_date;
     return coachee;
   }
 
