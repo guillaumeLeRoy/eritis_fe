@@ -51,7 +51,7 @@
       <!--<a *ngIf="meeting.isOpen">ANNULER</a>
       <a *ngIf="!meeting.isOpen" class="activator">CONSULTER</a>-->
       <button class="btn-basic btn-plain btn-red btn-small" *ngIf="meeting.isOpen && !hasGoal()" (click)="goToModifyDate(meeting.id)">OBJECTIF</button>
-      <button class="btn-basic btn-plain btn-blue btn-small" *ngIf="meeting.isOpen && hasGoal()" (click)="null">LANCER</button>
+      <button class="btn-basic btn-plain btn-blue btn-small" *ngIf="meeting.isOpen && hasGoal()" (click)="null" [disabled]="!meeting.agreed_date">LANCER</button>
     </div><!--end meeting-item-body-->
 
   </div><!--end row-->
