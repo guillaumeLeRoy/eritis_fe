@@ -2,7 +2,6 @@ import {Component, OnInit, AfterViewInit, ChangeDetectorRef, OnDestroy, Input} f
 import {Observable, Subscription} from "rxjs";
 import {Router} from "@angular/router";
 import {Coach} from "../../model/Coach";
-import {CoachCoacheeService} from "../../service/CoachCoacheeService";
 import {AuthService} from "../../service/auth.service";
 import {ApiUser} from "../../model/apiUser";
 import {MeetingsService} from "../../service/meetings.service";

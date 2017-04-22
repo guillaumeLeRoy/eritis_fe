@@ -32,9 +32,12 @@ export class MeetingListComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   ngOnInit() {
+    console.log("ngOnInit");
   }
 
   ngAfterViewInit(): void {
+    console.log("ngAfterViewInit");
+
     this.onRefreshRequested();
   }
 
@@ -42,13 +45,13 @@ export class MeetingListComponent implements OnInit, AfterViewInit, OnDestroy {
     console.log("onRefreshRequested");
 
     let user = this.authService.getConnectedUser();
-    console.log("ngAfterViewInit, user : ", user);
+    console.log("onRefreshRequested, user : ", user);
     this.onUserObtained(user);
 
     if (user == null) {
       this.connectedUserSubscription = this.authService.getConnectedUserObservable().subscribe(
         (user: Coach | Coachee) => {
-          console.log("getConnectedUser");
+          console.log("onRefreshRequested, getConnectedUser");
           this.onUserObtained(user);
         }
       );
@@ -112,7 +115,7 @@ export class MeetingListComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   goToDate() {
-    console.log('goToDate')
+    console.log('goToDate');
 
     this.user.take(1).subscribe(
       (user: ApiUser) => {
@@ -123,14 +126,27 @@ export class MeetingListComponent implements OnInit, AfterViewInit, OnDestroy {
         }
 
         // 1) create a new meeting
-        // 2) redirect to our MeetingDateComponent
-        this.meetingsService.createMeeting(user.id).subscribe(
+        // 2) refresh our user to have a correct number of available sessions
+        // 3) redirect to our MeetingDateComponent
+        this.meetingsService.createMeeting(user.id).flatMap(
+          (meeting: Meeting) => {
+            console.log('goToDate, meeting created');
+
+            //meeting created, now fetch user
+            return this.authService.refreshConnectedUser().flatMap(
+              (user: Coach | Coachee) => {
+                console.log('goToDate, user refreshed');
+                return Observable.of(meeting);
+              }
+            );
+          }
+        ).subscribe(
           (meeting: Meeting) => {
             // TODO display a loader
-            console.log('meeting created, go to setup dates')
+            console.log('goToDate, go to setup dates')
             this.router.navigate(['/date', meeting.id]);
           }
-        )
+        );
       });
   }
 

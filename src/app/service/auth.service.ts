@@ -10,6 +10,7 @@ import {FirebaseService} from "./firebase.service";
 import {Coach} from "../model/Coach";
 import {Coachee} from "../model/coachee";
 import {ContractPlan} from "../model/ContractPlan";
+import {LoginResponse} from "../model/LoginResponse";
 
 @Injectable()
 export class AuthService {
@@ -60,6 +61,43 @@ export class AuthService {
     }.bind(this));
 
     console.log("ctr done");
+  }
+
+  /*
+   * Get connected user from backend
+   */
+  refreshConnectedUser(): Observable<Coach | Coachee> {
+    console.log("refreshConnectedUser");
+
+    if (this.ApiUser != null) {
+      let currentFBtoken = this.ApiUser.firebaseToken;
+      let param = [this.ApiUser.id];
+      if (this.ApiUser instanceof Coach) {
+        let obs = this.get(AuthService.GET_COACH_FOR_ID, param);
+        return obs.map(
+          (res: Response) => {
+            console.log("refreshConnectedUser, coach obtained from API, res : ", res);
+            let coach = this.parseCoach(res.json());
+            this.onAPIuserObtained(coach, currentFBtoken);
+            return coach;
+          }
+        );
+      } else if (this.ApiUser instanceof Coachee) {
+        let obs = this.get(AuthService.GET_COACHEE_FOR_ID, param);
+
+        return obs.map(
+          (res: Response) => {
+            console.log("refreshConnectedUser, coachee obtained from API : ", res);
+            let coachee = this.parseCoachee(res.json());
+            this.onAPIuserObtained(coachee, currentFBtoken);
+            return coachee;
+          }
+        );
+      }
+    } else {
+      console.log("refreshConnectedUser, no connected user");
+    }
+    return Observable.from(null);
   }
 
   getConnectedUser(): Coach | Coachee {
@@ -287,7 +325,7 @@ export class AuthService {
 
     return this.httpService.get(this.generatePath(AuthService.LOGIN, params), {headers: headers}).map(
       response => {
-        let apiUser: any = response.json();
+        let apiUser: LoginResponse = response.json();
         let res = this.parseAPIuser(apiUser);
         console.log("getUserForFirebaseId, apiUser : ", apiUser);
         // console.log("getUserForFirebaseId, token : ", token);
@@ -340,28 +378,28 @@ export class AuthService {
         return this.httpService.post(this.generatePath(path, params), body, {headers: headers})
           .map(
             (response) => {
-              let APIuser = response.json();
-              console.log("signUp, APIuser : ", APIuser);
+              let loginResponse: LoginResponse = response.json();
+              console.log("signUp, loginResponse : ", loginResponse);
               // return json;
               this.isSignInOrUp = false;
-              return this.onAPIuserObtained(this.parseAPIuser(APIuser), token);
+              return this.onAPIuserObtained(this.parseAPIuser(loginResponse), token);
             }
           );
       }
     );
   }
 
-  private parseAPIuser(user: any): Coach | Coachee {
-    console.log("parseAPIuser, user :", user);
+  private parseAPIuser(response: LoginResponse): Coach | Coachee {
+    console.log("parseAPIuser, response :", response);
 
-    if (user.coach) {
-      user = user.coach;
+    if (response.coach) {
+      let coach = response.coach;
       //coach
-      return this.parseCoach(user);
-    } else if (user.coachee) {
-      user = user.coachee;
+      return this.parseCoach(coach);
+    } else if (response.coachee) {
+      let coachee = response.coachee;
       //coachee
-      return this.parseCoachee(user);
+      return this.parseCoachee(coachee);
     }
     return null;
   }
@@ -458,7 +496,7 @@ export class AuthService {
    *
    * @param coacheeId
    * @param coachId
-   * @returns {Observable<R>}
+   * @returns {Observable<Coachee>}
    */
   updateCoacheeSelectedCoach(coacheeId: string, coachId: string): Observable<Coachee> {
     console.log("updateCoacheeSelectedCoach, coacheeId", coacheeId);
@@ -472,9 +510,13 @@ export class AuthService {
       });
   }
 
-
+  /**
+   *
+   * @param response
+   * @returns {Coach|Coachee}
+   */
   private onUserResponse(response: Response): Coach | Coachee {
-    let json = response.json();
+    let json: LoginResponse = response.json();
     console.log("onUserResponse, response json : ", json);
     let res = this.parseAPIuser(json);
     console.log("onUserResponse, parsed user : ", res);
