@@ -29,12 +29,14 @@ export class MeetingItemCoacheeComponent implements OnInit {
   private reviewValue: string;
   private reviewNextStep: string;
 
+  private hasValue: boolean;
+  private hasNextStep: boolean;
+  private hasGoal: boolean;
+
   private loading: boolean;
 
   /* Meeting potential dates */
   private potentialDates: Observable<MeetingDate[]>;
-
-  private hasSomeReviews: Observable<boolean>;
 
   constructor(private router: Router, private coachCoacheeService: CoachCoacheeService, private cd: ChangeDetectorRef) {
   }
@@ -44,16 +46,14 @@ export class MeetingItemCoacheeComponent implements OnInit {
 
     console.log("ngOnInit, coach : ", this.coach);
 
-    this.loadReview();
     this.loadMeetingPotentialTimes();
     this.getGoal();
-    this.getReviewValue();
-    this.getReviewNextStep();
+    this.getReview();
   }
 
   onPreMeetingReviewPosted(meeting: Meeting) {
     console.log("onPreMeetingReviewPosted");
-    this.loadReview();
+    this.getReview();
   }
 
   onPotentialDatePosted(date: MeetingDate) {
@@ -61,26 +61,6 @@ export class MeetingItemCoacheeComponent implements OnInit {
     this.potentialDatePosted.emit(date);
   }
 
-  private loadReview() {
-    console.log("loadReview");
-
-    this.loading = true;
-
-    this.coachCoacheeService.getMeetingReviews(this.meeting.id).subscribe(
-      (reviews: MeetingReview[]) => {
-
-        console.log("loadReview, reviews obtained");
-
-        this.hasSomeReviews = Observable.of(reviews != null);
-        this.reviews = Observable.of(reviews);
-
-        this.cd.detectChanges();
-        this.loading = false;
-      }, (error) => {
-        console.log('loadReview error', error);
-      }
-    );
-  }
 
   private loadMeetingPotentialTimes() {
     this.loading = true;
@@ -117,16 +97,13 @@ export class MeetingItemCoacheeComponent implements OnInit {
           this.goal = null;
 
         this.cd.detectChanges();
+        this.hasGoal = (this.goal != null);
         this.loading = false;
       },
       (error) => {
         console.log('getMeetingGoal error', error);
         //this.displayErrorPostingReview = true;
       });
-  }
-
-  hasGoal() {
-    return this.goal != null;
   }
 
   private getReviewValue() {
@@ -141,6 +118,7 @@ export class MeetingItemCoacheeComponent implements OnInit {
           this.reviewValue = null;
 
         this.cd.detectChanges();
+        this.hasValue = (this.reviewValue != null);
         this.loading = false;
       },
       (error) => {
@@ -161,7 +139,8 @@ export class MeetingItemCoacheeComponent implements OnInit {
           this.reviewNextStep = null;
 
         this.cd.detectChanges();
-        this.loading = false
+        this.hasNextStep = (this.reviewNextStep != null);
+        this.loading = false;
       },
       (error) => {
         console.log('getMeetingNextStep error', error);
@@ -169,8 +148,9 @@ export class MeetingItemCoacheeComponent implements OnInit {
       });
   }
 
-  hasReview() {
-    return (this.reviewValue != null && this.reviewNextStep != null);
+  private getReview() {
+    this.getReviewValue();
+    this.getReviewNextStep();
   }
 
   goToModifyDate(meetingId: number) {

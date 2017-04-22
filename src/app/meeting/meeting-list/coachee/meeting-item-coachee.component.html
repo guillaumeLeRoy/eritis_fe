@@ -45,14 +45,14 @@
     <div class="meeting-item-body col-md-12 col-lg-7">
       <p class="meeting-item-goal">
         <span class="black-text bold">Objectif: </span>
-        <span *ngIf="hasGoal()">{{ goal }}</span>
-        <span *ngIf="!hasGoal()" class="red-text">Veuillez définir votre objectif.</span>
+        <span *ngIf="hasGoal">{{ goal }}</span>
+        <span *ngIf="!hasGoal" class="red-text">Veuillez définir votre objectif.</span>
       </p>
 
       <div *ngIf="!meeting.isOpen" class="meeting-review">
-        <er-post-meeting *ngIf="!hasReview()" [meeting]="meeting"></er-post-meeting>
+        <er-post-meeting *ngIf="!hasValue || !hasNextStep" [meeting]="meeting"></er-post-meeting>
 
-        <div *ngIf="hasReview()">
+        <div *ngIf="hasValue && hasNextStep">
           <br>
           <p><span class="black-text bold">En quoi la séance a-t-elle été utile ? </span>{{ reviewValue }}</p>
           <br>
@@ -62,8 +62,8 @@
 
       <!--<a *ngIf="meeting.isOpen">ANNULER</a>
       <a *ngIf="!meeting.isOpen" class="activator">CONSULTER</a>-->
-      <button class="btn-basic btn-plain btn-red btn-small" *ngIf="meeting.isOpen && !hasGoal()" (click)="goToModifyDate(meeting.id)">OBJECTIF</button>
-      <button class="btn-basic btn-plain btn-blue btn-small" *ngIf="meeting.isOpen && hasGoal()" (click)="null" [disabled]="!meeting.agreed_date">LANCER</button>
+      <button class="btn-basic btn-plain btn-red btn-small" *ngIf="meeting.isOpen && !hasGoal" (click)="goToModifyDate(meeting.id)">OBJECTIF</button>
+      <button class="btn-basic btn-plain btn-blue btn-small" *ngIf="meeting.isOpen && hasGoal" (click)="null" [disabled]="!meeting.agreed_date">LANCER</button>
     </div><!--end meeting-item-body-->
 
   </div><!--end row-->
