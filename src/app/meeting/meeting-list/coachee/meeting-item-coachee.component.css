@@ -100,3 +100,9 @@ p {
     justify-content: flex-end;
   }
 }
+
+.preloader-wrapper{
+  left: 50%;
+  margin-left: -30px;
+  margin: 32px 0;
+}

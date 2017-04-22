@@ -29,6 +29,8 @@ export class MeetingItemCoacheeComponent implements OnInit {
   private reviewValue: string;
   private reviewNextStep: string;
 
+  private loading: boolean;
+
   /* Meeting potential dates */
   private potentialDates: Observable<MeetingDate[]>;
 
@@ -62,6 +64,8 @@ export class MeetingItemCoacheeComponent implements OnInit {
   private loadReview() {
     console.log("loadReview");
 
+    this.loading = true;
+
     this.coachCoacheeService.getMeetingReviews(this.meeting.id).subscribe(
       (reviews: MeetingReview[]) => {
 
@@ -71,6 +75,7 @@ export class MeetingItemCoacheeComponent implements OnInit {
         this.reviews = Observable.of(reviews);
 
         this.cd.detectChanges();
+        this.loading = false;
       }, (error) => {
         console.log('loadReview error', error);
       }
@@ -78,11 +83,14 @@ export class MeetingItemCoacheeComponent implements OnInit {
   }
 
   private loadMeetingPotentialTimes() {
+    this.loading = true;
+
     this.coachCoacheeService.getMeetingPotentialTimes(this.meeting.id).subscribe(
       (dates: MeetingDate[]) => {
         console.log("potential dates obtained, ", dates);
         this.potentialDates = Observable.of(dates);
         this.cd.detectChanges();
+        this.loading = false;
       }, (error) => {
         console.log('get potentials dates error', error);
       }
@@ -98,6 +106,8 @@ export class MeetingItemCoacheeComponent implements OnInit {
   }
 
   private getGoal() {
+    this.loading = true;
+
     this.coachCoacheeService.getMeetingGoal(this.meeting.id).subscribe(
       (reviews: MeetingReview[]) => {
         console.log("getMeetingGoal, got goal : ", reviews);
@@ -105,6 +115,9 @@ export class MeetingItemCoacheeComponent implements OnInit {
           this.goal = reviews[0].comment;
         else
           this.goal = null;
+
+        this.cd.detectChanges();
+        this.loading = false;
       },
       (error) => {
         console.log('getMeetingGoal error', error);
@@ -117,6 +130,8 @@ export class MeetingItemCoacheeComponent implements OnInit {
   }
 
   private getReviewValue() {
+    this.loading = true;
+
     this.coachCoacheeService.getMeetingValue(this.meeting.id).subscribe(
       (reviews: MeetingReview[]) => {
         console.log("getMeetingValue, got goal : ", reviews);
@@ -124,6 +139,9 @@ export class MeetingItemCoacheeComponent implements OnInit {
           this.reviewValue = reviews[0].comment;
         else
           this.reviewValue = null;
+
+        this.cd.detectChanges();
+        this.loading = false;
       },
       (error) => {
         console.log('getMeetingValue error', error);
@@ -132,6 +150,8 @@ export class MeetingItemCoacheeComponent implements OnInit {
   }
 
   private getReviewNextStep() {
+    this.loading = true;
+
     this.coachCoacheeService.getMeetingNextStep(this.meeting.id).subscribe(
       (reviews: MeetingReview[]) => {
         console.log("getMeetingNextStep, got goal : ", reviews);
@@ -139,6 +159,9 @@ export class MeetingItemCoacheeComponent implements OnInit {
           this.reviewNextStep = reviews[0].comment;
         else
           this.reviewNextStep = null;
+
+        this.cd.detectChanges();
+        this.loading = false
       },
       (error) => {
         console.log('getMeetingNextStep error', error);

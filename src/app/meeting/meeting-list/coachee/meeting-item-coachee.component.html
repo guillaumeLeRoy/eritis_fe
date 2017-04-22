@@ -1,7 +1,19 @@
 <div class="meeting-item col-lg-12" [class.closed]="!meeting.isOpen">
   <!--<span class="card-title">Vous avez choisi {{ coach.display_name }} pour être votre coach.</span>-->
 
-  <div class="row">
+  <div class="preloader-wrapper active" *ngIf="loading">
+    <div class="spinner-layer spinner-blue-only">
+      <div class="circle-clipper left">
+        <div class="circle"></div>
+      </div><div class="gap-patch">
+      <div class="circle"></div>
+    </div><div class="circle-clipper right">
+      <div class="circle"></div>
+    </div>
+    </div>
+  </div>
+
+  <div class="row" *ngIf="!loading">
 
     <!-- COACH -->
     <div class="meeting-item-header col-sm-4 col-md-4 col-lg-2">
