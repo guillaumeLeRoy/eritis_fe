@@ -4,11 +4,10 @@
   <div class="row">
     <div class="col s12">
 
-      <div>
-        <!-- TODO : display next line only if user is a Coachee-->
-
-        <h4 class="text-right">Il vous reste <span class="nb-seances">{{(user | async)?.availableSessionsCount}}</span> séances</h4>
-        <p class="text-right" *ngIf="isUserACoachee((user | async))">
+      <!-- welcome message for coachee -->
+      <div *ngIf="isUserACoachee((user | async))">
+        <h4 class="text-right">Il vous reste <span class="nb-seances">{{(user | async)?.availableSessionsCount || 0}}</span> séance<span *ngIf="(user | async)?.availableSessionsCount > 1">s</span></h4>
+        <p class="text-right" *ngIf="(user | async)?.availableSessionsCount > 0">
           Planifier une nouvelle séance
           <a class="btn-floating btn-large waves-effect waves-light add-meeting-btn" (click)="goToDate()">
             <i class="material-icons">add</i>
@@ -40,7 +39,7 @@
             </div>
 
             <div *ngIf="!hasOpenedMeeting" class="collection-item text-center">
-              <h5>Vos séances à venir apparaîtront ici</h5>
+              <h5 class="no-meeting">Vos séances à venir apparaîtront ici</h5>
             </div>
 
           </div><!--end card-->
@@ -60,7 +59,7 @@
             </div>
 
             <div *ngIf="!hasClosedMeeting" class="collection-item text-center">
-              <h5>Vos séances complétées apparaîtront ici</h5>
+              <h5 class="no-meeting">Vos séances complétées apparaîtront ici</h5>
             </div>
 
           </div><!--end card-->

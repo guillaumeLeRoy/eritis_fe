@@ -16,17 +16,17 @@ export class Coachee implements ApiUser {
 
   selectedCoach: Coach;
 
-  contractPlan : ContractPlan;
+  contractPlan: ContractPlan;
 
   /**
    * Number of available sessions
    */
-  availableSessionsCount  : number
+  availableSessionsCount: number;
 
   /**
    * Date when the number of available sessions was updated
    */
-  updateAvailableSessionCountDate : string
+  updateAvailableSessionCountDate: string;
 
   constructor(id: string) {
     this.id = id;
