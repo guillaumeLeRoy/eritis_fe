@@ -1,74 +1,73 @@
-<div class="card">
-  <div class="card-content">
-    <span class="card-title">Vous avez choisi {{ coach.display_name }} pour être votre coach.</span>
+<div class="meeting-item col-lg-12" [class.closed]="!meeting.isOpen">
+  <!--<span class="card-title">Vous avez choisi {{ coach.display_name }} pour être votre coach.</span>-->
 
-    <!-- Meeting is closed-->
-    <div *ngIf="!meeting.isOpen">
-      <h4>Meeting is closed</h4>
+  <div class="preloader-wrapper active" *ngIf="loading">
+    <div class="spinner-layer spinner-blue-only">
+      <div class="circle-clipper left">
+        <div class="circle"></div>
+      </div><div class="gap-patch">
+      <div class="circle"></div>
+    </div><div class="circle-clipper right">
+      <div class="circle"></div>
     </div>
-
-    <!-- Meeting is open -->
-    <div *ngIf="meeting.isOpen">
-      <div class="col s12" *ngIf="meeting.agreed_date == null">
-
-        <!-- some potential dates selected-->
-        <div class="section" *ngIf="(potentialDates | async)!= null">
-          <h5>Vous avez indiqué des préférences horaires</h5>
-
-          <!-- list of potential dates -->
-          <div *ngFor="let date of potentialDates | async">
-            <h6>Possible date</h6>
-            <p>Le : {{date.start_date | date}}</p>
-            <p>De : {{date.start_date | date:'shortTime'}}</p>
-            <p>A : {{date.end_date | date:'shortTime'}}</p>
-
-          </div>
-        </div>
-
-        <!-- add a new date -->
-        <h4>Ajouter un horaire qui vous convient</h4>
-        <!-- add a date for this meeting -->
-        <rb-meeting-date [meeting]="meeting" (potentialDatePosted)="onPotentialDatePosted()"></rb-meeting-date>
-
-      </div>
-
-      <div class="col s12" *ngIf="meeting.agreed_date ">
-        <h5>Votre meeting est le : {{meeting.agreed_date.start_date | date}} à {{meeting.agreed_date.start_date | date:'shortTime'}} </h5>
-
-        <button class="btn cyan waves-effect waves-light right" (click)="bookADate()">
-          Lancer la séance<i class="mdi-content-send right"></i></button>
-
-      </div>
-
-      <!-- check if you have some reviews-->
-      <div class="container" *ngIf="(hasSomeReviews | async)">
-        <!-- list of reviews -->
-        <div *ngFor="let review of reviews | async">
-
-          <div class="card">
-            <div class="card-content">
-              <span class="card-title">Meeting Review</span>
-              <div class="list-group-item-text">at : {{review.date}}</div>
-              <div class="list-group-item-text">comment : {{review.comment}}</div>
-              <div class="list-group-item-text">score : {{review.score}}</div>
-            </div>
-          </div>
-        </div>
-
-      </div>
-      <!-- end check-->
-
     </div>
-
-    <!--&lt;!&ndash; add a pre meeting review &ndash;&gt;-->
-    <!--<div class="container">-->
-    <!--<rb-pre-meeting *ngIf="!(hasSomeReviews | async)" [meeting]="meeting"-->
-    <!--(reviewPosted)="onPreMeetingReviewPosted($event)"-->
-    <!--&gt;</rb-pre-meeting>-->
-    <!--</div>-->
-
   </div>
 
-</div>
+  <div class="row" *ngIf="!loading">
+
+    <!-- COACH -->
+    <div class="meeting-item-header col-sm-4 col-md-4 col-lg-2">
+      <div>
+        <div>
+          <!-- image coach-->
+          <img *ngIf="meeting.coach" class="meeting-item-coach-avatar circle img-responsive" alt="coach" [src]="meeting.coach.avatar_url">
+          <img *ngIf="!meeting.coach" class="meeting-item-coach-avatar circle img-responsive" alt="coach" src="https://s-media-cache-ak0.pinimg.com/originals/af/25/49/af25490494d3338afef00869c59fdd37.png">
+        </div>
+
+        <div>
+          <p class="meeting-item-coach" *ngIf="meeting.coach">{{ meeting.coach.display_name }}</p>
+          <p class="meeting-item-coach" *ngIf="!meeting.coach">Un coach vous sera bientôt attribué</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- DATE -->
+    <div class="meeting-item-date col-sm-8 col-lg-3">
+      <div *ngIf="meeting.agreed_date">
+        <span class="meeting-item-date-date">{{ getDate(meeting.agreed_date.start_date) }}</span>
+        <span class="meeting-item-date-hour">{{ getHours(meeting.agreed_date.start_date) }}:00</span>
+      </div>
+
+      <button *ngIf="!meeting.agreed_date" class="btn-basic btn-blue btn-small" (click)="goToModifyDate(meeting.id)">Modifier</button>
+    </div>
+
+    <!-- GOAL & REVIEW -->
+    <div class="meeting-item-body col-md-12 col-lg-7">
+      <p class="meeting-item-goal">
+        <span class="black-text bold">Objectif: </span>
+        <span *ngIf="hasGoal">{{ goal }}</span>
+        <span *ngIf="!hasGoal" class="red-text">Veuillez définir votre objectif.</span>
+      </p>
+
+      <div *ngIf="!meeting.isOpen" class="meeting-review">
+        <er-post-meeting *ngIf="!hasValue || !hasNextStep" [meeting]="meeting"></er-post-meeting>
+
+        <div *ngIf="hasValue && hasNextStep">
+          <br>
+          <p><span class="black-text bold">En quoi la séance a-t-elle été utile ? </span>{{ reviewValue }}</p>
+          <br>
+          <p><span class="black-text bold">Avec quoi êtes vous reparti ? </span>{{ reviewNextStep }}</p>
+        </div>
+      </div><!--end meeting-review-->
+
+      <!--<a *ngIf="meeting.isOpen">ANNULER</a>
+      <a *ngIf="!meeting.isOpen" class="activator">CONSULTER</a>-->
+      <button class="btn-basic btn-plain btn-red btn-small" *ngIf="meeting.isOpen && !hasGoal" (click)="goToModifyDate(meeting.id)">OBJECTIF</button>
+      <button class="btn-basic btn-plain btn-blue btn-small" *ngIf="meeting.isOpen && hasGoal" (click)="null" [disabled]="!meeting.agreed_date">LANCER</button>
+    </div><!--end meeting-item-body-->
+
+  </div><!--end row-->
+
+</div><!--end meeting-item-->
 
 

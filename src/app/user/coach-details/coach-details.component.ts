@@ -2,16 +2,16 @@ import {Component, OnInit, AfterViewInit, ChangeDetectorRef, OnDestroy, Input} f
 import {Observable, Subscription} from "rxjs";
 import {Router} from "@angular/router";
 import {Coach} from "../../model/Coach";
-import {CoachCoacheeService} from "../../service/CoachCoacheeService";
 import {AuthService} from "../../service/auth.service";
 import {ApiUser} from "../../model/apiUser";
+import {MeetingsService} from "../../service/meetings.service";
 
 @Component({
   selector: 'rb-coach-details',
   templateUrl: './coach-details.component.html',
   styleUrls: ['./coach-details.component.css']
 })
-export class CoachDetailsComponent implements OnInit,AfterViewInit,OnDestroy {
+export class CoachDetailsComponent implements OnInit, AfterViewInit, OnDestroy {
 
   @Input()
   coach: Coach;
@@ -19,7 +19,7 @@ export class CoachDetailsComponent implements OnInit,AfterViewInit,OnDestroy {
   private connectedUser: Observable<ApiUser>;
   private subscriptionConnectUser: Subscription;
 
-  constructor(private router: Router, private authService: AuthService, private cd: ChangeDetectorRef, private coachService: CoachCoacheeService) {
+  constructor(private router: Router, private authService: AuthService, private cd: ChangeDetectorRef, private meetingService: MeetingsService) {
   }
 
   ngOnInit() {
@@ -51,7 +51,7 @@ export class CoachDetailsComponent implements OnInit,AfterViewInit,OnDestroy {
           return;
         }
 
-        this.coachService.createMeetingWithCoach(this.coach.id, user.id).subscribe(
+        this.meetingService.createMeeting(user.id).subscribe(
           (success) => {
             console.log('addPotentialDateToMeeting success', success);
             //redirect to meetings page

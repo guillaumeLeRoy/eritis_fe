@@ -10,6 +10,7 @@ import {CoachDetailsComponent} from "./user/coach-details/coach-details.componen
 import {MeetingListComponent} from "./meeting/meeting-list/meeting-list.component";
 import {ProfileCoachComponent} from "./user/profile/coach/profile-coach.component";
 import {ProfileCoacheeComponent} from "./user/profile/coachee/profile-coachee.component";
+import {MeetingDateComponent} from "./meeting/meeting-date/meeting-date.component";
 
 const APP_ROUTES: Routes = [
   {path: '', redirectTo: '/welcome', pathMatch: 'full'},
@@ -23,7 +24,8 @@ const APP_ROUTES: Routes = [
   {path: 'coachs/:id', component: CoachDetailsComponent},
   {path: 'coachees', component: CoachListComponent},
   {path: 'meetings', component: MeetingListComponent},
+  {path: 'date/:meetingId', component: MeetingDateComponent},
   // {path: 'coachees', component: CoachListComponent, canActivate: [AuthGuard]},
-]
+];
 
-export const routing = RouterModule.forRoot(APP_ROUTES)
+export const routing = RouterModule.forRoot(APP_ROUTES);

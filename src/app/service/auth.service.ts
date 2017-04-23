@@ -3,15 +3,20 @@ import {Router} from "@angular/router";
 import {Injectable} from "@angular/core";
 import {Observable, BehaviorSubject, Subject} from "rxjs";
 import {PromiseObservable} from "rxjs/observable/PromiseObservable";
-import {Response, Http, Headers} from "@angular/http";
+import {Response, Http, Headers, URLSearchParams} from "@angular/http";
 import {ApiUser} from "../model/apiUser";
 import {environment} from "../../environments/environment";
 import {FirebaseService} from "./firebase.service";
 import {Coach} from "../model/Coach";
 import {Coachee} from "../model/coachee";
+import {ContractPlan} from "../model/ContractPlan";
+import {LoginResponse} from "../model/LoginResponse";
 
 @Injectable()
 export class AuthService {
+
+  /* contract plan*/
+  public static GET_CONTRACT_PLANS = "v1/plans/";
 
   public static UPDATE_COACH = "/coachs/:id";
   public static UPDATE_COACHEE = "/coachees/:id";
@@ -27,12 +32,16 @@ export class AuthService {
   public static POST_MEETING = "/meeting";
   public static GET_MEETING_REVIEWS = "/meeting/:meetingId/reviews";
   public static POST_MEETING_REVIEW = "/meeting/:meetingId/review";
+  public static PUT_MEETING_REVIEW = "/meeting/reviews/:reviewId";//update review
+  public static DELETE_MEETING_REVIEW = "/meeting/reviews/:reviewId";//delete review
   public static CLOSE_MEETING = "/meeting/:meetingId/close";
   public static GET_MEETINGS_FOR_COACHEE_ID = "/meetings/coachee/:coacheeId";
   public static GET_MEETINGS_FOR_COACH_ID = "/meetings/coach/:coachId";
   public static POST_MEETING_POTENTIAL_DATE = "/meeting/:meetingId/potential";
   public static GET_MEETING_POTENTIAL_DATES = "/meeting/:meetingId/potentials";
-  public static PUT_POTENTIAL_DATE_TO_MEETING = "/meeting/:meetingId/potential/:potentialId";//set the potential date as the meeting selected date
+  public static PUT_POTENTIAL_DATE_TO_MEETING = "/meeting/potential/:potentialId";//update potential date
+  public static DELETE_POTENTIAL_DATE = "/meeting/potentials/:potentialId";//delete potential date
+  public static PUT_FINAL_DATE_TO_MEETING = "/meeting/:meetingId/date/:potentialId";//set the potential date as the meeting selected date
 
   private onAuthStateChangedCalled = false;
   // private user: User
@@ -52,6 +61,43 @@ export class AuthService {
     }.bind(this));
 
     console.log("ctr done");
+  }
+
+  /*
+   * Get connected user from backend
+   */
+  refreshConnectedUser(): Observable<Coach | Coachee> {
+    console.log("refreshConnectedUser");
+
+    if (this.ApiUser != null) {
+      let currentFBtoken = this.ApiUser.firebaseToken;
+      let param = [this.ApiUser.id];
+      if (this.ApiUser instanceof Coach) {
+        let obs = this.get(AuthService.GET_COACH_FOR_ID, param);
+        return obs.map(
+          (res: Response) => {
+            console.log("refreshConnectedUser, coach obtained from API, res : ", res);
+            let coach = this.parseCoach(res.json());
+            this.onAPIuserObtained(coach, currentFBtoken);
+            return coach;
+          }
+        );
+      } else if (this.ApiUser instanceof Coachee) {
+        let obs = this.get(AuthService.GET_COACHEE_FOR_ID, param);
+
+        return obs.map(
+          (res: Response) => {
+            console.log("refreshConnectedUser, coachee obtained from API : ", res);
+            let coachee = this.parseCoachee(res.json());
+            this.onAPIuserObtained(coachee, currentFBtoken);
+            return coachee;
+          }
+        );
+      }
+    } else {
+      console.log("refreshConnectedUser, no connected user");
+    }
+    return Observable.from(null);
   }
 
   getConnectedUser(): Coach | Coachee {
@@ -97,6 +143,10 @@ export class AuthService {
   }
 
   get(path: string, params: string[]): Observable<Response> {
+    return this.getWithSearchParams(path, params, null);
+  }
+
+  getWithSearchParams(path: string, params: string[], searchParams: URLSearchParams): Observable<Response> {
     console.log("1. get");
 
     let method = this.getConnectedApiUser().flatMap(
@@ -104,7 +154,7 @@ export class AuthService {
         return this.getHeader(firebaseUser).flatMap(
           (headers: Headers) => {
             console.log("4. start request");
-            return this.httpService.get(this.generatePath(path, params), {headers: headers})
+            return this.httpService.get(this.generatePath(path, params), {headers: headers, search: searchParams})
           }
         );
       }
@@ -112,6 +162,23 @@ export class AuthService {
     return method;
   }
 
+  delete(path: string, params: string[]): Observable<Response> {
+    let method = this.getConnectedApiUser().flatMap(
+      (firebaseUser: ApiUser) => {
+        return this.getHeader(firebaseUser).flatMap(
+          (headers: Headers) => {
+            console.log("4. start request");
+            return this.httpService.delete(this.generatePath(path, params), {headers: headers})
+          }
+        );
+      }
+    );
+    return method;
+  }
+
+  getNotAuth(path: string, params: string[]): Observable<Response> {
+    return this.httpService.get(this.generatePath(path, params))
+  }
 
   private getConnectedApiUser(): Observable<ApiUser> {
     console.log("2. getConnectedApiUser");
@@ -258,7 +325,7 @@ export class AuthService {
 
     return this.httpService.get(this.generatePath(AuthService.LOGIN, params), {headers: headers}).map(
       response => {
-        let apiUser: any = response.json();
+        let apiUser: LoginResponse = response.json();
         let res = this.parseAPIuser(apiUser);
         console.log("getUserForFirebaseId, apiUser : ", apiUser);
         // console.log("getUserForFirebaseId, token : ", token);
@@ -267,7 +334,9 @@ export class AuthService {
     );
   }
 
-  signUpCoachee(user: User): Observable<ApiUser> {
+  signUpCoachee(user: User, plan: ContractPlan): Observable<ApiUser> {
+    //add plan
+    user.contractPlanId = plan.plan_id;
     return this.signup(user, AuthService.POST_SIGN_UP_COACHEE);
   }
 
@@ -298,6 +367,7 @@ export class AuthService {
         let body = {
           email: fbUser.email,
           uid: fbUser.uid,
+          plan_id: user.contractPlanId
         };
         let params = [fbUser.uid];
 
@@ -308,28 +378,28 @@ export class AuthService {
         return this.httpService.post(this.generatePath(path, params), body, {headers: headers})
           .map(
             (response) => {
-              let APIuser = response.json();
-              console.log("signUp, APIuser : ", APIuser);
+              let loginResponse: LoginResponse = response.json();
+              console.log("signUp, loginResponse : ", loginResponse);
               // return json;
               this.isSignInOrUp = false;
-              return this.onAPIuserObtained(this.parseAPIuser(APIuser), token);
+              return this.onAPIuserObtained(this.parseAPIuser(loginResponse), token);
             }
           );
       }
     );
   }
 
-  private parseAPIuser(user: any): Coach | Coachee {
-    console.log("parseAPIuser, user :", user);
+  private parseAPIuser(response: LoginResponse): Coach | Coachee {
+    console.log("parseAPIuser, response :", response);
 
-    if (user.coach) {
-      user = user.coach;
+    if (response.coach) {
+      let coach = response.coach;
       //coach
-      return this.parseCoach(user);
-    } else if (user.coachee) {
-      user = user.coachee;
+      return this.parseCoach(coach);
+    } else if (response.coachee) {
+      let coachee = response.coachee;
       //coachee
-      return this.parseCoachee(user);
+      return this.parseCoachee(coachee);
     }
     return null;
   }
@@ -352,6 +422,9 @@ export class AuthService {
     coachee.avatar_url = json.avatar_url;
     coachee.start_date = json.start_date;
     coachee.selectedCoach = json.selectedCoach;
+    coachee.contractPlan = json.plan;
+    coachee.availableSessionsCount = json.available_sessions_count;
+    coachee.updateAvailableSessionCountDate = json.update_sessions_count_date;
     return coachee;
   }
 
@@ -423,7 +496,7 @@ export class AuthService {
    *
    * @param coacheeId
    * @param coachId
-   * @returns {Observable<R>}
+   * @returns {Observable<Coachee>}
    */
   updateCoacheeSelectedCoach(coacheeId: string, coachId: string): Observable<Coachee> {
     console.log("updateCoacheeSelectedCoach, coacheeId", coacheeId);
@@ -437,9 +510,13 @@ export class AuthService {
       });
   }
 
-
+  /**
+   *
+   * @param response
+   * @returns {Coach|Coachee}
+   */
   private onUserResponse(response: Response): Coach | Coachee {
-    let json = response.json();
+    let json: LoginResponse = response.json();
     console.log("onUserResponse, response json : ", json);
     let res = this.parseAPIuser(json);
     console.log("onUserResponse, parsed user : ", res);
