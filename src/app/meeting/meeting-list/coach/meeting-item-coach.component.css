@@ -81,11 +81,15 @@ p {
 
 .meeting-item.closed .meeting-item-header,
 .meeting-item.closed .meeting-item-body,
-.meeting-item.closed .meeting-item-date{
+.meeting-item.closed .meeting-item-date,
+.meeting-item.unbooked .meeting-item-header,
+.meeting-item.unbooked .meeting-item-body,
+.meeting-item.unbooked .meeting-item-date{
   align-items: flex-start;
 }
 
-.meeting-item.closed .meeting-item-body {
+.meeting-item.closed .meeting-item-body,
+.meeting-item.unbooked .meeting-item-body {
   flex-direction: column;
   justify-content: flex-start;
   align-content: flex-start;
@@ -105,4 +109,13 @@ p {
   left: 50%;
   margin-left: -30px;
   margin: 32px 0;
+}
+
+.meeting-potential {
+  margin: 4px 0;
+}
+
+.meeting-potential-date {
+  display: inline-block;
+  width: 60px;
 }

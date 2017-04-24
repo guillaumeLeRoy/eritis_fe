@@ -18,12 +18,12 @@ export class MeetingListComponent implements OnInit, AfterViewInit, OnDestroy {
   private meetings: Observable<Meeting[]>;
   private meetingsOpened: Observable<Meeting[]>;
   private meetingsClosed: Observable<Meeting[]>;
-  private meetingsAsked: Observable<Meeting[]>;
+  private meetingsUnbooked: Observable<Meeting[]>;
   private meetingsArray: Meeting[];
 
   private hasOpenedMeeting = false;
   private hasClosedMeeting = false;
-  private hasAskedMeeting = false;
+  private hasUnbookedMeeting = false;
 
   private subscription: Subscription;
   private connectedUserSubscription: Subscription;
@@ -77,6 +77,7 @@ export class MeetingListComponent implements OnInit, AfterViewInit, OnDestroy {
         this.meetings = Observable.of(meetings);
         this.getOpenedMeetings();
         this.getClosedMeetings();
+        this.getUnbookedMeetings();
         this.cd.detectChanges();
       }
     );
@@ -176,6 +177,20 @@ export class MeetingListComponent implements OnInit, AfterViewInit, OnDestroy {
         }
       }
       this.meetingsClosed = Observable.of(closed);
+    }
+  }
+
+  private getUnbookedMeetings() {
+    console.log('getAskedMeetings');
+    if (this.meetingsArray != null) {
+      let unbooked: Meeting[] = [];
+      for (let meeting of this.meetingsArray) {
+        if (meeting.isOpen && !meeting.agreed_date) {
+          unbooked.push(meeting);
+          this.hasUnbookedMeeting = true;
+        }
+      }
+      this.meetingsUnbooked = Observable.of(unbooked);
     }
   }
 

@@ -1,4 +1,4 @@
-<div class="meeting-item col-lg-12" [class.closed]="!meeting.isOpen">
+<div class="meeting-item col-lg-12" [class.closed]="!meeting.isOpen" [class.unbooked]="!meeting.agreed_date">
   <!--<span class="card-title">Vous avez choisi {{ coach.display_name }} pour être votre coach.</span>-->
 
   <div class="preloader-wrapper active" *ngIf="loading">
@@ -32,7 +32,7 @@
     </div>
 
     <!-- DATE -->
-    <div class="meeting-item-date col-sm-8 col-lg-3">
+    <div class="meeting-item-date col-sm-8 col-lg-3" *ngIf="meeting.agreed_date">
       <div *ngIf="meeting.agreed_date">
         <span class="meeting-item-date-date">{{ getDate(meeting.agreed_date.start_date) }}</span>
         <span class="meeting-item-date-hour">{{ getHours(meeting.agreed_date.start_date) }}:00</span>
@@ -40,19 +40,34 @@
     </div>
 
     <!-- GOAL & REVIEW -->
-    <div class="meeting-item-body col-md-12 col-lg-7">
+    <div class="meeting-item-body col-md-12 col-lg-7" [class.col-lg-10]="!meeting.agreed_date">
       <p class="meeting-item-goal">
         <span class="black-text bold">Objectif: </span>
         <span *ngIf="hasGoal">{{ goal }}</span>
         <span *ngIf="!hasGoal" class="red-text">Pas encore défini...</span>
       </p>
 
+      <!--Complétées-->
       <div *ngIf="!meeting.isOpen" class="meeting-review">
         <div *ngIf="hasValue && hasNextStep">
           <br>
           <p><span class="black-text bold">En quoi la séance a-t-elle été utile ? </span>{{ reviewValue }}</p>
           <br>
           <p><span class="black-text bold">Avec quoi êtes vous reparti ? </span>{{ reviewNextStep }}</p>
+        </div>
+      </div><!--end meeting-review-->
+
+      <!--Demandes disponibles-->
+      <div *ngIf="!meeting.agreed_date" class="meeting-review">
+        <div>
+          <br>
+          <p><span class="black-text bold">Disponibilités :</span></p>
+          <div class="meeting-potential" *ngFor="let potential of potentialDates | async">
+            <span class="meeting-potential-date">{{ getDate(potential.start_date) }}</span>
+            <span class="meeting-potential-hours">{{ getHours(potential.start_date) }}:00 - {{ getHours(potential.end_date) }}:00</span>
+          </div>
+          <br>
+          <p><span class="black-text bold">Réponse :</span></p>
         </div>
       </div><!--end meeting-review-->
     </div><!--end meeting-item-body-->
