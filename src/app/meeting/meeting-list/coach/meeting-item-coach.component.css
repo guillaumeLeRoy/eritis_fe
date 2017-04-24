@@ -1,0 +1,108 @@
+button{
+  margin: 0;
+}
+
+a:hover,
+a:focus{
+  color: var(--main-electric-blue) !important;
+}
+
+p {
+  margin: 0;
+}
+
+.card-content, .card-reveal {
+  padding: 0;
+}
+
+.meeting-item{
+  margin: 0;
+  padding: 0 !important;
+}
+
+.meeting-item > .row {
+  margin: 0;
+}
+
+.meeting-item-seance-number{
+  margin: 0;
+  color: #000;
+  font-weight: 600;
+}
+
+.meeting-item-coach{
+  margin-top: 2px;
+  margin-bottom: 0;
+}
+
+.meeting-item-coach-avatar{
+  height: 52px;
+  margin-right: 16px;
+}
+
+.meeting-item-date-hour{
+  margin-left: 16px;
+}
+
+.meeting-item-header,
+.meeting-item-body,
+.meeting-item-date{
+  display: flex;
+  flex-direction: row;
+  flex-grow: 1;
+  align-items: center;
+  padding: 8px;
+}
+
+.meeting-item-header {
+  justify-content: flex-start;
+}
+
+.meeting-item-header > div {
+  display: flex;
+  flex-direction: row;
+  flex-grow: 1;
+  align-items: center;
+}
+
+.meeting-item-date{
+  justify-content: space-around;
+  font-size: 22px;
+}
+
+.meeting-item-body{
+  justify-content: space-between;
+}
+
+.meeting-item-body,
+.meeting-item-date {
+  padding: 24px 0;
+}
+
+.meeting-item.closed .meeting-item-header,
+.meeting-item.closed .meeting-item-body,
+.meeting-item.closed .meeting-item-date{
+  align-items: flex-start;
+}
+
+.meeting-item.closed .meeting-item-body {
+  flex-direction: column;
+  justify-content: flex-start;
+  align-content: flex-start;
+}
+
+.meeting-review {
+  width: 100%;
+}
+
+@media screen and (max-device-width: 1240px) and (min-device-width: 720px) {
+  .meeting-item-date{
+    justify-content: flex-end;
+  }
+}
+
+.preloader-wrapper{
+  left: 50%;
+  margin-left: -30px;
+  margin: 32px 0;
+}

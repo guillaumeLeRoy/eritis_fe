@@ -18,10 +18,12 @@ export class MeetingListComponent implements OnInit, AfterViewInit, OnDestroy {
   private meetings: Observable<Meeting[]>;
   private meetingsOpened: Observable<Meeting[]>;
   private meetingsClosed: Observable<Meeting[]>;
+  private meetingsAsked: Observable<Meeting[]>;
   private meetingsArray: Meeting[];
 
   private hasOpenedMeeting = false;
   private hasClosedMeeting = false;
+  private hasAskedMeeting = false;
 
   private subscription: Subscription;
   private connectedUserSubscription: Subscription;
@@ -83,7 +85,6 @@ export class MeetingListComponent implements OnInit, AfterViewInit, OnDestroy {
   private getAllMeetingsForCoachee(coacheeId: string) {
     this.subscription = this.meetingsService.getAllMeetingsForCoacheeId(coacheeId).subscribe(
       (meetings: Meeting[]) => {
-
         console.log("got meetings for coachee", meetings);
 
         this.meetingsArray = meetings;

@@ -160,6 +160,10 @@ a:focus{
   color: var(--main-red-color);
 }
 
+.blue-text{
+  color: var(--main-electric-blue);
+}
+
 .bold{
   font-weight: bold;
 }

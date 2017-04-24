@@ -20,10 +20,19 @@ export class MeetingItemCoachComponent implements OnInit,AfterViewInit {
   @Output()
   meetingUpdated = new EventEmitter();
 
+  months = ['Jan', 'Feb', 'Mar', 'Avr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+
   private coachee: Coachee;
 
-  private reviews: Observable<MeetingReview[]>;
-  private hasSomeReviews: Observable<boolean>;
+  private goal: string;
+  private reviewValue: string;
+  private reviewNextStep: string;
+
+  private hasValue: boolean;
+  private hasNextStep: boolean;
+  private hasGoal: boolean;
+
+  private loading: boolean;
 
   /* Meeting potential dates */
   private potentialDates: Observable<MeetingDate[]>;
@@ -46,23 +55,10 @@ export class MeetingItemCoachComponent implements OnInit,AfterViewInit {
 
   ngAfterViewInit(): void {
     console.log("ngAfterViewInit");
-    this.loadReviews();
+    this.getGoal();
+    this.getReviewValue();
+    this.getReviewNextStep();
     this.loadMeetingPotentialTimes();
-  }
-
-  loadReviews() {
-    this.coachCoacheeService.getMeetingReviews(this.meeting.id).subscribe(
-      (reviews: MeetingReview[]) => {
-        console.log("reviews obtained, ", reviews);
-
-        this.hasSomeReviews = Observable.of(reviews != null)
-        this.reviews = Observable.of(reviews);
-
-        this.cd.detectChanges();
-      }, (error) => {
-        console.log('get reviews error', error);
-      }
-    );
   }
 
   loadMeetingPotentialTimes() {
@@ -104,7 +100,77 @@ export class MeetingItemCoachComponent implements OnInit,AfterViewInit {
         //TODO display error
       }
     );
+  }
 
+  private getGoal() {
+    this.loading = true;
+
+    this.coachCoacheeService.getMeetingGoal(this.meeting.id).subscribe(
+      (reviews: MeetingReview[]) => {
+        console.log("getMeetingGoal, got goal : ", reviews);
+        if (reviews != null)
+          this.goal = reviews[0].comment;
+        else
+          this.goal = null;
+
+        this.cd.detectChanges();
+        this.hasGoal = (this.goal != null);
+        this.loading = false;
+      },
+      (error) => {
+        console.log('getMeetingGoal error', error);
+        //this.displayErrorPostingReview = true;
+      });
+  }
+
+  private getReviewValue() {
+    this.loading = true;
+
+    this.coachCoacheeService.getMeetingValue(this.meeting.id).subscribe(
+      (reviews: MeetingReview[]) => {
+        console.log("getMeetingValue, got goal : ", reviews);
+        if (reviews != null)
+          this.reviewValue = reviews[0].comment;
+        else
+          this.reviewValue = null;
+
+        this.cd.detectChanges();
+        this.hasValue = (this.reviewValue != null);
+        this.loading = false;
+      },
+      (error) => {
+        console.log('getMeetingValue error', error);
+        //this.displayErrorPostingReview = true;
+      });
+  }
+
+  private getReviewNextStep() {
+    this.loading = true;
+
+    this.coachCoacheeService.getMeetingNextStep(this.meeting.id).subscribe(
+      (reviews: MeetingReview[]) => {
+        console.log("getMeetingNextStep, got goal : ", reviews);
+        if (reviews != null)
+          this.reviewNextStep = reviews[0].comment;
+        else
+          this.reviewNextStep = null;
+
+        this.cd.detectChanges();
+        this.hasNextStep = (this.reviewNextStep != null);
+        this.loading = false;
+      },
+      (error) => {
+        console.log('getMeetingNextStep error', error);
+        //this.displayErrorPostingReview = true;
+      });
+  }
+
+  getHours(date: string) {
+    return (new Date(date)).getHours();
+  }
+
+  getDate(date: string) {
+    return (new Date(date)).getDate() + ' ' + this.months[(new Date(date)).getMonth()];
   }
 
 }

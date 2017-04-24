@@ -23,7 +23,6 @@ export class MeetingItemCoacheeComponent implements OnInit {
   months = ['Jan', 'Feb', 'Mar', 'Avr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 
   private coach: Coach;
-  private reviews: Observable<MeetingReview[]>;
 
   private goal: string;
   private reviewValue: string;
