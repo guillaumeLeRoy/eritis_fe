@@ -35,6 +35,7 @@ import {MeetingDateComponent} from './meeting/meeting-date/meeting-date.componen
 import {SliderModule} from 'primeng/components/slider/slider';
 import {Ng2PageScrollModule} from 'ng2-page-scroll';
 import { PostMeetingComponent } from './meeting/review/post-meeting.component';
+import { CoachSelectorComponent } from './user/coach-selector/coach-selector.component';
 
 @NgModule({
   declarations: [
@@ -56,7 +57,8 @@ import { PostMeetingComponent } from './meeting/review/post-meeting.component';
     MeetingItemCoachComponent,
     MeetingDateComponent,
     PreMeetingComponent,
-    PostMeetingComponent
+    PostMeetingComponent,
+    CoachSelectorComponent
   ],
   imports: [
     BrowserModule,

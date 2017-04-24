@@ -25,6 +25,7 @@ export class AuthService {
   public static POST_SIGN_UP_COACHEE = "/login/:firebaseId/coachee";
   public static LOGIN = "/login/:firebaseId";
   public static GET_COACHS = "/coachs";
+  public static GET_COACHEES = "/coachees";
   public static GET_COACH_FOR_ID = "/coachs/:id";
   public static GET_COACHEE_FOR_ID = "/coachees/:id";
 
@@ -212,13 +213,13 @@ export class AuthService {
   }
 
   private getHeader(user: ApiUser): Observable<Headers> {
-    console.log("3. getHeader");
+    console.log("getHeader");
 
     if (user) {
-      console.log("getHeader, currentUser : ", user);
+      // console.log("getHeader, currentUser : ", user);
       let token = user.firebaseToken;
       if (token) {
-        console.log("getHeader, token : ", token);
+        // console.log("getHeader, token : ", token);
         let headers = new Headers();
         headers.append('Authorization', 'Bearer ' + token);
         return Observable.of(headers);
@@ -227,14 +228,13 @@ export class AuthService {
       }
     } else {
       console.log("getHeader, NO user");
-
       return Observable.throw('No current user');
     }
   }
 
   private generatePath(path: string, params: string[]): string {
-    console.log("generatePath, path : ", path);
-    console.log("generatePath, params : ", params);
+    // console.log("generatePath, path : ", path);
+    // console.log("generatePath, params : ", params);
 
     var completedPath = "";
     let segs = path.split("/");
@@ -243,8 +243,8 @@ export class AuthService {
       if (seg == "" || seg == null) {
         continue;
       }
-      console.log("generatePath, seg : ", seg);
-      console.log("generatePath, paramIndex : ", paramIndex);
+      // console.log("generatePath, seg : ", seg);
+      // console.log("generatePath, paramIndex : ", paramIndex);
 
       completedPath += "/";
       if (seg.charAt(0) == ":") {
@@ -258,10 +258,13 @@ export class AuthService {
     //always add a "/" at the end
     completedPath += "/";
 
-    console.log("generatePath, completedPath : ", completedPath);
-    console.log("generatePath, BACKEND_BASE_URL : ", environment.BACKEND_BASE_URL);
+    // console.log("generatePath, completedPath : ", completedPath);
+    // console.log("generatePath, BACKEND_BASE_URL : ", environment.BACKEND_BASE_URL);
 
-    return environment.BACKEND_BASE_URL + completedPath;
+    let finalUrl = environment.BACKEND_BASE_URL + completedPath;
+    console.log("generatePath, finalUrl : ", finalUrl);
+
+    return finalUrl;
   }
 
   private updateAuthStatus(fbUser: any) {
