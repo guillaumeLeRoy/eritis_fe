@@ -7,7 +7,6 @@ import {Observable, Subscription} from 'rxjs';
 import {MeetingDate} from '../../model/MeetingDate';
 import {ActivatedRoute, Router} from '@angular/router';
 import {MeetingReview} from "../../model/MeetingReview";
-import {startTimeRange} from "@angular/core/src/profile/wtf_impl";
 
 @Component({
   selector: 'rb-meeting-date',
@@ -15,9 +14,6 @@ import {startTimeRange} from "@angular/core/src/profile/wtf_impl";
   styleUrls: ['./meeting-date.component.css']
 })
 export class MeetingDateComponent implements OnInit, OnDestroy {
-
-  // @Output()
-  // potentialDatePosted = new EventEmitter<MeetingDate>();
 
   /**
    * Meeting Id for which we want to setup potential dates
@@ -29,11 +25,10 @@ export class MeetingDateComponent implements OnInit, OnDestroy {
 
   now = new Date();
   dateModel: NgbDateStruct = {year: this.now.getFullYear(), month: this.now.getMonth() + 1, day: this.now.getDate()};
-  // timeModel: NgbTimeStruct;
   timeRange: number[] = [10, 18];
 
   /* Meeting potential dates */
-  private potentialDatesArray: MeetingDate[];
+  private potentialDatesArray: Array<MeetingDate>;
   private potentialDates: Observable<MeetingDate[]>;
 
   private displayErrorBookingDate = false;
@@ -49,6 +44,7 @@ export class MeetingDateComponent implements OnInit, OnDestroy {
   private mEditingPotentialTimeId: string;
 
   constructor(private router: Router, private route: ActivatedRoute, private coachService: CoachCoacheeService, private authService: AuthService, private cd: ChangeDetectorRef) {
+    this.potentialDatesArray = new Array<MeetingDate>();
   }
 
   ngOnInit() {
@@ -80,10 +76,6 @@ export class MeetingDateComponent implements OnInit, OnDestroy {
     this.cd.detectChanges();
   }
 
-  sliderMinPosition() {
-    return this.timeRange[0];
-  }
-
   bookOrUpdateADate() {
     console.log('bookADate, dateModel : ', this.dateModel);
     // console.log('bookADate, timeModel : ', this.timeModel);
@@ -107,11 +99,10 @@ export class MeetingDateComponent implements OnInit, OnDestroy {
           this.coachService.updatePotentialTime(this.mEditingPotentialTimeId, timestampMin, timestampMax).subscribe(
             (meetingDate: MeetingDate) => {
               console.log('updatePotentialTime, meetingDate : ', meetingDate);
-              // redirect to meetings page
-              // this.router.navigate(['/meetings']);
-              // this.potentialDatePosted.emit(meetingDate);
-
-              // TODO find a replace potential
+              // Reload potential times
+              this.loadMeetingPotentialTimes(this.meetingId);
+              //reset progress bar values
+              this.resetValues();
             },
             (error) => {
               console.log('updatePotentialTime error', error);
@@ -119,20 +110,18 @@ export class MeetingDateComponent implements OnInit, OnDestroy {
             }
           );
 
-          // Reload potential times
-          this.loadMeetingPotentialTimes(this.meetingId);
-
-          this.resetValues();
-
         } else {
           // create new date
           this.coachService.addPotentialDateToMeeting(this.meetingId, timestampMin, timestampMax).subscribe(
             (meetingDate: MeetingDate) => {
               console.log('addPotentialDateToMeeting, meetingDate : ', meetingDate);
-              // redirect to meetings page
-              // this.router.navigate(['/meetings']);
-              // this.potentialDatePosted.emit(meetingDate);
               this.potentialDatesArray.push(meetingDate);
+              // Reload potential times
+              console.log('reload potential times');
+              // Reload potential times
+              this.loadMeetingPotentialTimes(this.meetingId);
+              //reset progress bar values
+              this.resetValues();
             },
             (error) => {
               console.log('addPotentialDateToMeeting error', error);
@@ -140,10 +129,6 @@ export class MeetingDateComponent implements OnInit, OnDestroy {
             }
           );
         }
-
-        // Reload potential times
-        console.log('reload potential times');
-        this.loadMeetingPotentialTimes(this.meetingId);
       }
     );
   }
@@ -153,9 +138,9 @@ export class MeetingDateComponent implements OnInit, OnDestroy {
     this.coachService.removePotentialTime(potentialDateId).subscribe(
       (response) => {
         console.log('unbookAdate, response', response);
-
-        // TODO reload potential dates
+        //reset progress bar values
         this.resetValues();
+        // Reload potential times
         this.loadMeetingPotentialTimes(this.meetingId);
       }, (error) => {
         console.log('unbookAdate, error', error);
@@ -166,22 +151,21 @@ export class MeetingDateComponent implements OnInit, OnDestroy {
   modifyPotentialDate(potentialDateId: string) {
     console.log('modifyPotentialDate, potentialDateId', potentialDateId);
 
-    let startTime = 7;
-    let endTime = 18;
-
-    for (var potential of this.potentialDatesArray) {
+    //find the potentialDate we want to modify
+    for (let potential of this.potentialDatesArray) {
       if (potential.id === potentialDateId) {
-        startTime = this.getHours(potential.start_date);
-        endTime = this.getHours(potential.end_date);
+        let startTime = this.getHours(potential.start_date);
+        let endTime = this.getHours(potential.end_date);
+        //switch to edit mode
+        this.isEditingPotentialDate = true;
+        this.mEditingPotentialTimeId = potentialDateId;
+        this.timeRange = [startTime, endTime];
+        break;
       }
     }
-
-    this.isEditingPotentialDate = true;
-    this.mEditingPotentialTimeId = potentialDateId;
-    this.timeRange = [startTime, endTime];
   }
 
-  private getHours(date: string){
+  private getHours(date: string) {
     return (new Date(date)).getHours();
   }
 
@@ -218,17 +202,20 @@ export class MeetingDateComponent implements OnInit, OnDestroy {
     return (date.month !== current.month);
   }
 
-  onPotentialDatePosted(date: MeetingDate) {
-    console.log('onPotentialDatePosted');
-    // this.potentialDatePosted.emit(date);
-    this.potentialDatesArray.push(date);
-  }
-
+  /**
+   * Fetch from API potential times for the given meeting id.
+   * @param meetingId
+   */
   private loadMeetingPotentialTimes(meetingId: string) {
     this.coachService.getMeetingPotentialTimes(meetingId).subscribe(
       (dates: MeetingDate[]) => {
-        console.log('potential dates obtained, ', dates);
-        this.potentialDatesArray = dates;
+        console.log('loadMeetingPotentialTimes : ', dates);
+        if (dates != null) {
+          //clear array
+          this.potentialDatesArray = new Array<MeetingDate>();
+          //add received dates
+          this.potentialDatesArray.push(...dates);
+        }
         this.potentialDates = Observable.of(dates);
         this.cd.detectChanges();
       }, (error) => {

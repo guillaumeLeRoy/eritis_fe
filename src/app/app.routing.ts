@@ -11,6 +11,7 @@ import {MeetingListComponent} from "./meeting/meeting-list/meeting-list.componen
 import {ProfileCoachComponent} from "./user/profile/coach/profile-coach.component";
 import {ProfileCoacheeComponent} from "./user/profile/coachee/profile-coachee.component";
 import {MeetingDateComponent} from "./meeting/meeting-date/meeting-date.component";
+import {CoachSelectorComponent} from "./user/coach-selector/coach-selector.component";
 
 const APP_ROUTES: Routes = [
   {path: '', redirectTo: '/welcome', pathMatch: 'full'},
@@ -25,6 +26,7 @@ const APP_ROUTES: Routes = [
   {path: 'coachees', component: CoachListComponent},
   {path: 'meetings', component: MeetingListComponent},
   {path: 'date/:meetingId', component: MeetingDateComponent},
+  {path: 'coach-selector', component: CoachSelectorComponent},
   // {path: 'coachees', component: CoachListComponent, canActivate: [AuthGuard]},
 ];
 
