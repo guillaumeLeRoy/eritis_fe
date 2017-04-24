@@ -4,8 +4,7 @@
 
   <div class="row">
     <rb-coach-item class="col-xs-12" *ngFor="let coach of coachs | async" [coach]="coach"
-                   (click)="onPotentialCoachSelected(coach)"></rb-coach-item>
-
+                   (click)="onCoachSelected(coach)" [class.selected]="coach == selectedCoach"></rb-coach-item>
   </div>
 
 
@@ -13,8 +12,7 @@
 
   <div class="row">
     <div class="col-xs-12" *ngFor="let coachee of coachees | async"
-         (click)="onPotentialCoachSelected(coachee)">
-
+         (click)="onCoacheeSelected(coachee)" [class.selected]="coachee == selectedCoachee">
 
       <div class="container">
         <div class="row coach_card">
@@ -22,6 +20,7 @@
           <div class="col s12" style="padding: 16px">
 
             <span>{{coachee.display_name}}</span>
+            <img src="{{coachee.avatar_url}}" alt="">
 
           </div>
 
@@ -31,6 +30,12 @@
 
     </div>
 
+  </div>
+
+  <div class="row">
+    <div class="col-xs-12">
+      <button class="btn-basic btn-blue" (click)="associate()">Associer</button>
+    </div>
   </div>
 
 </div>

@@ -13,6 +13,9 @@ import {Subscription} from "rxjs/Subscription";
 })
 export class CoachSelectorComponent implements OnInit, AfterViewInit, OnDestroy {
 
+  private selectedCoach: Coach;
+  private selectedCoachee: Coachee;
+
   private coachs: Observable<Array<Coach>>;
   private getAllCoachsSub: Subscription;
 
@@ -51,6 +54,28 @@ export class CoachSelectorComponent implements OnInit, AfterViewInit, OnDestroy 
     }
   }
 
+  onCoachSelected(coach: Coach): void {
+    this.selectedCoach = coach;
+  }
+
+  onCoacheeSelected(coachee: Coachee): void {
+    this.selectedCoachee = coachee;
+  }
+
+  /**
+   * Associate selectedCoach with selectedCoachee
+   */
+  associate(): void {
+    // save in backend
+    this.authService.updateCoacheeSelectedCoach(this.selectedCoachee.id, this.selectedCoach.id).subscribe(
+      (coachee: Coachee) => {
+        console.log('coach selected saved');
+        let user = this.authService.getConnectedUser();
+        this.onUserObtained(user);
+      }
+    );
+  }
+
   //TODO change that to Admin
   private onUserObtained(user: Coach | Coachee) {
     console.log('onUserObtained, user', user);
@@ -68,8 +93,14 @@ export class CoachSelectorComponent implements OnInit, AfterViewInit, OnDestroy 
     this.getAllCoacheesSub = this.service.getAllCoachees().subscribe(
       (coachees: Coachee[]) => {
         console.log('getAllCoachees subscribe, coachees : ', coachees);
-
-        this.coachees = Observable.of(coachees);
+        //filter coachee with NO selected coachs
+        let notAssociatedCoachees: Coachee[] = new Array<Coachee>();
+        for (let coachee of coachees) {
+          if (coachee.selectedCoach == null) {
+            notAssociatedCoachees.push(coachee);
+          }
+        }
+        this.coachees = Observable.of(notAssociatedCoachees);
         this.cd.detectChanges();
       }
     );
