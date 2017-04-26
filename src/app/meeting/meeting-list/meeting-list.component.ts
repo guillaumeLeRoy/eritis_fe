@@ -75,7 +75,7 @@ export class MeetingListComponent implements OnInit, AfterViewInit, OnDestroy {
 
         this.meetingsArray = meetings;
         this.meetings = Observable.of(meetings);
-        this.getOpenedMeetings();
+        this.getBookedMeetings();
         this.getClosedMeetings();
         this.getUnbookedMeetings();
         this.cd.detectChanges();
@@ -177,6 +177,20 @@ export class MeetingListComponent implements OnInit, AfterViewInit, OnDestroy {
         }
       }
       this.meetingsClosed = Observable.of(closed);
+    }
+  }
+
+  private getBookedMeetings() {
+    console.log('getOpenedMeetings');
+    if (this.meetingsArray != null) {
+      let opened: Meeting[] = [];
+      for (let meeting of this.meetingsArray) {
+        if (meeting.isOpen && meeting.agreed_date) {
+          opened.push(meeting);
+          this.hasOpenedMeeting = true;
+        }
+      }
+      this.meetingsOpened = Observable.of(opened);
     }
   }
 

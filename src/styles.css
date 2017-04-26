@@ -76,7 +76,6 @@ a:focus{
   border: solid 2px var(--main-white-color);
   color: var(--main-white-color);
   font-size: 25px;
-  line-height: 1;
   padding: 16px 16px;
   margin-top: 32px;
   text-align: center;
@@ -99,7 +98,7 @@ a:focus{
   color: var(--main-dark-grey);
 }
 
-.btn-plain:hover{
+.btn-basic:hover{
   box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.16), 0 2px 10px 0 rgba(0, 0, 0, 0.12);
 }
 
@@ -150,6 +149,23 @@ a:focus{
   font-size: 16px;
   min-width: 120px;
   height: 40px;
+}
+
+.btn-cancel {
+  border-radius: 100%;
+  margin: 0;
+  padding: 0;
+  height: 40px;
+  width: 40px;
+  min-width: auto;
+  border-color: var(--main-light-grey);
+  color: var(--main-light-grey);
+}
+
+.btn-cancel:hover,
+.btn-cancel:focus {
+  background-color: var(--main-light-grey);
+  color: #FFF;
 }
 
 .black-text{

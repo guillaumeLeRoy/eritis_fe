@@ -41,44 +41,60 @@
 
     <!-- GOAL & REVIEW -->
     <div class="meeting-item-body col-md-12 col-lg-7" [class.col-lg-10]="!meeting.agreed_date">
-      <p class="meeting-item-goal">
-        <span class="black-text bold">Objectif: </span>
-        <span *ngIf="hasGoal">{{ goal }}</span>
-        <span *ngIf="!hasGoal" class="red-text">Pas encore défini...</span>
-      </p>
+      <div class="meeting-item-body-content">
+        <p class="meeting-item-goal">
+          <span class="black-text bold">Objectif: </span>
+          <span *ngIf="hasGoal">{{ goal }}</span>
+          <span *ngIf="!hasGoal" class="red-text">Pas encore défini...</span>
+        </p>
 
-      <!--Complétées-->
-      <div *ngIf="!meeting.isOpen" class="meeting-review">
-        <div *ngIf="hasValue && hasNextStep">
-          <br>
-          <p><span class="black-text bold">En quoi la séance a-t-elle été utile ? </span>{{ reviewValue }}</p>
-          <br>
-          <p><span class="black-text bold">Avec quoi êtes vous reparti ? </span>{{ reviewNextStep }}</p>
-        </div>
-      </div><!--end meeting-review-->
-
-      <!--Demandes disponibles-->
-      <div *ngIf="!meeting.agreed_date" class="meeting-review">
-        <div>
-          <br>
-          <p><span class="black-text bold">Disponibilités :</span></p>
-          <div class="meeting-potential" *ngFor="let potential of potentialDates | async">
-            <span class="meeting-potential-date">{{ getDate(potential.start_date) }}</span>
-            <span class="meeting-potential-hours">{{ getHours(potential.start_date) }}:00 - {{ getHours(potential.end_date) }}:00</span>
+        <!--Complétées-->
+        <div *ngIf="!meeting.isOpen" class="meeting-review">
+          <div *ngIf="hasValue && hasNextStep">
+            <br>
+            <p><span class="black-text bold">En quoi la séance a-t-elle été utile ? </span>{{ reviewValue }}</p>
+            <br>
+            <p><span class="black-text bold">Avec quoi êtes vous reparti ? </span>{{ reviewNextStep }}</p>
           </div>
-          <br>
-          <p><span class="black-text bold">Réponse :</span></p>
-        </div>
-      </div><!--end meeting-review-->
-    </div><!--end meeting-item-body-->
+        </div><!--end meeting-review-->
 
-    <button class="btn-basic btn-plain btn-green btn-small" *ngIf="meeting.isOpen && !meeting.agreed_date">DETAIL</button>
+        <!--Demandes disponibles-->
+        <div *ngIf="!meeting.agreed_date && showDetails" class="meeting-review">
+          <div>
+            <br>
+            <p><span class="black-text bold">Disponibilités :</span></p>
+            <div class="meeting-potential" *ngFor="let potential of potentialDates | async">
+              <span class="meeting-potential-date">{{ getDate(potential.start_date) }}</span>
+              <span class="meeting-potential-hours">{{ getHours(potential.start_date) }}:00 - {{ getHours(potential.end_date) }}:00</span>
+            </div>
+            <br>
+            <p><span class="black-text bold">Réponse :</span></p>
+          </div>
+        </div><!--end meeting-review-->
+      </div>
+
+      <div class="meeting-item-body-buttons" *ngIf="meeting.isOpen">
+        <button class="btn-basic btn-plain btn-green btn-small" *ngIf="!meeting.agreed_date" (click)="toggleShowDetails()">DETAIL</button>
+        <button class="btn-basic btn-cancel" *ngIf="meeting.agreed_date">
+          <i class="material-icons">clear</i>
+        </button>
+      </div>
+    </div><!--end meeting-item-body-->
 
   </div><!--end row-->
 
 </div><!--end meeting-item-->
 
-
+<!-- Modal Structure -->
+<div id="modal1" class="modal">
+  <div class="modal-content">
+    <h4>Modal Header</h4>
+    <p>A bunch of text</p>
+  </div>
+  <div class="modal-footer">
+    <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat">Agree</a>
+  </div>
+</div>
 
 <!--
 <div class="card">

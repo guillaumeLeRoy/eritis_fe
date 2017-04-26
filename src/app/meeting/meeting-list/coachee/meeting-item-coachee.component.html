@@ -43,25 +43,30 @@
 
     <!-- GOAL & REVIEW -->
     <div class="meeting-item-body col-md-12 col-lg-7">
-      <p class="meeting-item-goal">
-        <span class="black-text bold">Objectif: </span>
-        <span *ngIf="hasGoal">{{ goal }}</span>
-        <span *ngIf="!hasGoal" class="red-text">Veuillez définir votre objectif.</span>
-      </p>
+      <div class="meeting-item-body-content">
+        <p class="meeting-item-goal">
+          <span class="black-text bold">Objectif: </span>
+          <span *ngIf="hasGoal">{{ goal }}</span>
+          <span *ngIf="!hasGoal" class="red-text">Veuillez définir votre objectif.</span>
+        </p>
 
-      <div *ngIf="!meeting.isOpen" class="meeting-review">
-        <er-post-meeting *ngIf="!hasValue || !hasNextStep" [meeting]="meeting"></er-post-meeting>
+        <div *ngIf="!meeting.isOpen" class="meeting-review">
+          <er-post-meeting *ngIf="!hasValue || !hasNextStep" [meeting]="meeting"></er-post-meeting>
 
-        <div *ngIf="hasValue && hasNextStep">
-          <br>
-          <p><span class="black-text bold">En quoi la séance a-t-elle été utile ? </span>{{ reviewValue }}</p>
-          <br>
-          <p><span class="black-text bold">Avec quoi êtes vous reparti ? </span>{{ reviewNextStep }}</p>
-        </div>
-      </div><!--end meeting-review-->
+          <div *ngIf="hasValue && hasNextStep">
+            <br>
+            <p><span class="black-text bold">En quoi la séance a-t-elle été utile ? </span>{{ reviewValue }}</p>
+            <br>
+            <p><span class="black-text bold">Avec quoi êtes vous reparti ? </span>{{ reviewNextStep }}</p>
+          </div>
+        </div><!--end meeting-review-->
+      </div>
 
-      <button class="btn-basic btn-plain btn-red btn-small" *ngIf="meeting.isOpen && !hasGoal" (click)="goToModifyDate(meeting.id)">OBJECTIF</button>
-      <button class="btn-basic btn-plain btn-blue btn-small" *ngIf="meeting.isOpen && hasGoal" (click)="null" [disabled]="!meeting.agreed_date">LANCER</button>
+      <div class="meeting-item-buttons" *ngIf="meeting.isOpen">
+        <button class="btn-basic btn-plain btn-red btn-small" *ngIf="!hasGoal" (click)="goToModifyDate(meeting.id)">OBJECTIF</button>
+        <button class="btn-basic btn-plain btn-blue btn-small" *ngIf="hasGoal" (click)="null" [disabled]="!meeting.agreed_date">LANCER</button>
+        <button class="btn-basic btn-cancel"><i class="material-icons">clear</i></button>
+      </div>
     </div><!--end meeting-item-body-->
 
   </div><!--end row-->

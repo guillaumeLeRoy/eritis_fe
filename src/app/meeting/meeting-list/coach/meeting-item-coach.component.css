@@ -72,11 +72,16 @@ p {
 
 .meeting-item-body{
   justify-content: space-between;
+  padding: 0;
 }
 
-.meeting-item-body,
+.meeting-item-body-content,
 .meeting-item-date {
   padding: 24px 0;
+}
+
+.meeting-item-body-buttons {
+  padding: 16px 0;
 }
 
 .meeting-item.closed .meeting-item-header,
@@ -88,8 +93,7 @@ p {
   align-items: flex-start;
 }
 
-.meeting-item.closed .meeting-item-body,
-.meeting-item.unbooked .meeting-item-body {
+.meeting-item-body-content {
   flex-direction: column;
   justify-content: flex-start;
   align-content: flex-start;
@@ -102,6 +106,20 @@ p {
 @media screen and (max-device-width: 1240px) and (min-device-width: 720px) {
   .meeting-item-date{
     justify-content: flex-end;
+  }
+}
+
+@media screen and (max-device-width: 1240px) {
+  .meeting-item-body {
+    flex-direction: column;
+    justify-content: flex-start;
+    align-content: flex-start;
+    align-items: left;
+  }
+
+  .meeting-item-buttons {
+    width: 100%;
+    text-align: center;
   }
 }
 
@@ -118,4 +136,8 @@ p {
 .meeting-potential-date {
   display: inline-block;
   width: 60px;
+}
+
+.btn-cancel {
+  margin-left: 8px;
 }

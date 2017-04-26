@@ -33,6 +33,7 @@ export class MeetingItemCoachComponent implements OnInit,AfterViewInit {
   private hasGoal: boolean;
 
   private loading: boolean;
+  private showDetails = false;
 
   /* Meeting potential dates */
   private potentialDates: Observable<MeetingDate[]>;
@@ -163,6 +164,10 @@ export class MeetingItemCoachComponent implements OnInit,AfterViewInit {
         console.log('getMeetingNextStep error', error);
         //this.displayErrorPostingReview = true;
       });
+  }
+
+  toggleShowDetails() {
+    this.showDetails = this.showDetails ? false : true;
   }
 
   getHours(date: string) {
