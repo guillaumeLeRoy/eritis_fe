@@ -21,6 +21,7 @@ import {CoachCoacheeService} from './service/CoachCoacheeService';
 import {CoachDetailsComponent} from './user/coach-details/coach-details.component';
 import {MaterialModule} from '@angular/material'; // lib
 import {CalendarModule} from 'angular-calendar'; // lib
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import {MeetingsService} from './service/meetings.service';
 import {MeetingListComponent} from './meeting/meeting-list/meeting-list.component';
@@ -61,6 +62,7 @@ import { CoachSelectorComponent } from './user/coach-selector/coach-selector.com
     CoachSelectorComponent
   ],
   imports: [
+    BrowserAnimationsModule,
     BrowserModule,
     FormsModule,
     HttpModule,
