@@ -64,6 +64,11 @@ export class AuthService {
     console.log("ctr done");
   }
 
+  getCoachs(): Observable<Response> {
+    // return this.httpService.get('https://eritis-be-glr.appspot.com/api/coachs/', null);
+    return this.httpService.get('http://localhost:8080/api/coachs/', null);
+  }
+
   /*
    * Get connected user from backend
    */
