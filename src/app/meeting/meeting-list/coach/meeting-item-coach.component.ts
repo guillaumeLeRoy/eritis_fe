@@ -6,6 +6,7 @@ import {FormGroup, FormBuilder, Validators} from "@angular/forms";
 import {CoachCoacheeService} from "../../../service/CoachCoacheeService";
 import {Coachee} from "../../../model/coachee";
 import {MeetingDate} from "../../../model/MeetingDate";
+import {min} from "rxjs/operator/min";
 
 @Component({
   selector: 'rb-meeting-item-coach',
@@ -36,7 +37,14 @@ export class MeetingItemCoachComponent implements OnInit,AfterViewInit {
   private showDetails = false;
 
   /* Meeting potential dates */
+  private potentialDatesArray: MeetingDate[];
   private potentialDates: Observable<MeetingDate[]>;
+
+  private selectedDate = null;
+  private selectedHour = null;
+
+  private potentialDays: Observable<number[]>;
+  private potentialHours: Observable<number[]>;
 
   private closeMeetingForm: FormGroup;
 
@@ -66,15 +74,30 @@ export class MeetingItemCoachComponent implements OnInit,AfterViewInit {
     this.coachCoacheeService.getMeetingPotentialTimes(this.meeting.id).subscribe(
       (dates: MeetingDate[]) => {
         console.log("potential dates obtained, ", dates);
+
+        dates.sort(function(a, b){
+          let d1 = new Date(a.start_date);
+          let d2 = new Date(b.start_date);
+          let res = d1.getUTCDate() - d2.getUTCDate();
+          if (res === 0) {
+            res = d1.getUTCHours() - d2.getUTCHours();
+          }
+          return res;
+        });
+
+        this.potentialDatesArray = dates;
         this.potentialDates = Observable.of(dates);
         this.cd.detectChanges();
+        this.loadPotentialDays();
       }, (error) => {
         console.log('get potentials dates error', error);
       }
     );
   }
 
-  confirmPotentialDate(date: MeetingDate) {
+  confirmPotentialDate() {
+    let date = new MeetingDate(this.meeting.id);
+
     this.coachCoacheeService.setFinalDateToMeeting(this.meeting.id, date.id).subscribe(
       (meeting: Meeting) => {
         console.log("confirmPotentialDate, response", meeting);
@@ -164,6 +187,38 @@ export class MeetingItemCoachComponent implements OnInit,AfterViewInit {
         console.log('getMeetingNextStep error', error);
         //this.displayErrorPostingReview = true;
       });
+  }
+
+  private loadPotentialDays() {
+    console.log("loadPotentialDays");
+    let days = [];
+
+    for (let date of this.potentialDatesArray){
+      if (days.indexOf(this.getDate(date.start_date)) < 0) {
+          days.push(this.getDate(date.start_date));
+      }
+    }
+
+    this.potentialDays = Observable.of(days);
+    this.cd.detectChanges();
+    console.log("potentialDays", days);
+  }
+
+  loadPotentialHours(selected) {
+    console.log("loadPotentialHours", selected);
+    let hours = [];
+
+    for (let date of this.potentialDatesArray){
+      if (this.getDate(date.start_date) == selected) {
+        for (let _i = this.getHours(date.start_date); _i < this.getHours(date.end_date); _i++ ) {
+          hours.push(_i);
+        }
+      }
+    }
+
+    this.potentialHours = Observable.of(hours);
+    this.cd.detectChanges();
+    console.log("potentialHours", hours);
   }
 
   toggleShowDetails() {

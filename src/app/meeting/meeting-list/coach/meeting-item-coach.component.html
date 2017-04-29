@@ -68,14 +68,38 @@
               <span class="meeting-potential-hours">{{ getHours(potential.start_date) }}:00 - {{ getHours(potential.end_date) }}:00</span>
             </div>
             <br>
-            <p><span class="black-text bold">Réponse :</span></p>
+            <form class="confirm-meeting-form">
+              <span class="black-text bold">Réponse :</span>
+              <div class="input-field">
+                <select [(ngModel)]="selectedDate" name="meeting-date" class="browser-default" (change)="loadPotentialHours(selectedDate)">
+                  <option value="" disabled>Date</option>
+                  <option *ngFor="let d of potentialDays | async" [ngValue]=" d ">
+                    {{ d }}
+                  </option>
+                </select>
+              </div>
+              <div class="input-field">
+                <select [(ngModel)]="selectedHour" name="meeting-hour" class="browser-default">
+                  <option value="" disabled>Heure</option>
+                  <option *ngFor="let h of potentialHours | async" [ngValue]="h">
+                    {{ h }}:00 - {{ h + 1 }}:00
+                  </option>
+                </select>
+              </div>
+              <div class="input-field">
+                <button type="submit" class="btn-basic btn-blue btn-small"
+                        [disabled]="!selectedDate || !selectedHour"
+                        (click)="confirmPotentialDate()"
+                        onclick="Materialize.toast('Meeting validé !', 3000, 'rounded')">Valider</button>
+              </div>
+            </form>
           </div>
         </div><!--end meeting-review-->
       </div>
 
       <div class="meeting-item-body-buttons" *ngIf="meeting.isOpen">
         <button class="btn-basic btn-plain btn-green btn-small" *ngIf="!meeting.agreed_date" (click)="toggleShowDetails()">DETAIL</button>
-        <button class="btn-basic btn-cancel" *ngIf="meeting.agreed_date">
+        <button class="btn-basic btn-cancel modal-trigger" *ngIf="meeting.agreed_date" onclick="Materialize.toast('Meeting supprimé', 3000, 'rounded')">
           <i class="material-icons">clear</i>
         </button>
       </div>
@@ -86,7 +110,7 @@
 </div><!--end meeting-item-->
 
 <!-- Modal Structure -->
-<div id="modal1" class="modal">
+<div id="modal1" class="modal modal-trigger">
   <div class="modal-content">
     <h4>Modal Header</h4>
     <p>A bunch of text</p>

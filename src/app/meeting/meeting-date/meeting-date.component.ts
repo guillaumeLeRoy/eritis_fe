@@ -142,6 +142,7 @@ export class MeetingDateComponent implements OnInit, OnDestroy {
         this.resetValues();
         // Reload potential times
         this.loadMeetingPotentialTimes(this.meetingId);
+        this.loadMeetingPotentialTimes(this.meetingId);
       }, (error) => {
         console.log('unbookAdate, error', error);
       }
