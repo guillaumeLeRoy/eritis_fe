@@ -8,6 +8,8 @@ import {Coachee} from "../../../model/coachee";
 import {MeetingDate} from "../../../model/MeetingDate";
 import {min} from "rxjs/operator/min";
 
+declare var $: any;
+
 @Component({
   selector: 'rb-meeting-item-coach',
   templateUrl: 'meeting-item-coach.component.html',
@@ -60,6 +62,8 @@ export class MeetingItemCoachComponent implements OnInit,AfterViewInit {
     });
 
     this.coachee = this.meeting.coachee;
+
+    $('select').material_select();
   }
 
   ngAfterViewInit(): void {
@@ -97,6 +101,7 @@ export class MeetingItemCoachComponent implements OnInit,AfterViewInit {
 
   confirmPotentialDate() {
     let date = new MeetingDate(this.meeting.id);
+    // TODO create meeting date and set final date
 
     this.coachCoacheeService.setFinalDateToMeeting(this.meeting.id, date.id).subscribe(
       (meeting: Meeting) => {
@@ -195,7 +200,7 @@ export class MeetingItemCoachComponent implements OnInit,AfterViewInit {
 
     for (let date of this.potentialDatesArray){
       if (days.indexOf(this.getDate(date.start_date)) < 0) {
-          days.push(this.getDate(date.start_date));
+          days.push(date.start_date);
       }
     }
 
@@ -209,7 +214,7 @@ export class MeetingItemCoachComponent implements OnInit,AfterViewInit {
     let hours = [];
 
     for (let date of this.potentialDatesArray){
-      if (this.getDate(date.start_date) == selected) {
+      if (this.getDate(date.start_date) === this.getDate(selected)) {
         for (let _i = this.getHours(date.start_date); _i < this.getHours(date.end_date); _i++ ) {
           hours.push(_i);
         }
@@ -233,4 +238,11 @@ export class MeetingItemCoachComponent implements OnInit,AfterViewInit {
     return (new Date(date)).getDate() + ' ' + this.months[(new Date(date)).getMonth()];
   }
 
+  openModal() {
+    $('#deleteModal').openModal();
+  }
+
+  closeModal() {
+    $('#deleteModal').closeModal();
+  }
 }

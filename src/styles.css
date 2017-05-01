@@ -265,3 +265,22 @@ ngb-datepicker .btn-link:focus{
 ngb-datepicker .btn-link:hover{
   color: var(--main-light-grey);
 }
+
+
+
+
+/* Delete Meeting Modal */
+#deleteModal {
+  height: 200px;
+  width: 800px;
+}
+
+.delete-modal-content {
+  padding: 32px;
+  height: 100%;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-content: space-between;
+}

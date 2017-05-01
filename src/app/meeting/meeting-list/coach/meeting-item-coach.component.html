@@ -74,7 +74,7 @@
                 <select [(ngModel)]="selectedDate" name="meeting-date" class="browser-default" (change)="loadPotentialHours(selectedDate)">
                   <option value="" disabled>Date</option>
                   <option *ngFor="let d of potentialDays | async" [ngValue]=" d ">
-                    {{ d }}
+                    {{ getDate(d) }}
                   </option>
                 </select>
               </div>
@@ -99,7 +99,9 @@
 
       <div class="meeting-item-body-buttons" *ngIf="meeting.isOpen">
         <button class="btn-basic btn-plain btn-green btn-small" *ngIf="!meeting.agreed_date" (click)="toggleShowDetails()">DETAIL</button>
-        <button class="btn-basic btn-cancel modal-trigger" *ngIf="meeting.agreed_date" onclick="Materialize.toast('Meeting supprimé', 3000, 'rounded')">
+        <button class="btn-basic btn-cancel"
+                *ngIf="meeting.agreed_date"
+                (click)="openModal()">
           <i class="material-icons">clear</i>
         </button>
       </div>
@@ -110,13 +112,15 @@
 </div><!--end meeting-item-->
 
 <!-- Modal Structure -->
-<div id="modal1" class="modal modal-trigger">
-  <div class="modal-content">
-    <h4>Modal Header</h4>
-    <p>A bunch of text</p>
-  </div>
-  <div class="modal-footer">
-    <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat">Agree</a>
+<div id="deleteModal" class="modal">
+  <div class="delete-modal-content">
+    <div class="delete-modal-message">
+      <h4>Ce meeting sera supprimé définitivement</h4>
+    </div>
+    <div class="delete-modal-footer">
+      <button class="btn-basic btn-blue" (click)="closeModal()">Annuler</button>
+      <button class="btn-basic btn-plain btn-red" (click)="closeModal()" onclick="Materialize.toast('Meeting supprimé', 3000, 'rounded')">Supprimer</button>
+    </div>
   </div>
 </div>
 

@@ -65,7 +65,7 @@
       <div class="meeting-item-buttons" *ngIf="meeting.isOpen">
         <button class="btn-basic btn-plain btn-red btn-small" *ngIf="!hasGoal" (click)="goToModifyDate(meeting.id)">OBJECTIF</button>
         <button class="btn-basic btn-plain btn-blue btn-small" *ngIf="hasGoal" (click)="null" [disabled]="!meeting.agreed_date">LANCER</button>
-        <button class="btn-basic btn-cancel"><i class="material-icons">clear</i></button>
+        <button class="btn-basic btn-cancel" (click)="openModal()"><i class="material-icons">clear</i></button>
       </div>
     </div><!--end meeting-item-body-->
 
@@ -74,3 +74,16 @@
 </div><!--end meeting-item-->
 
 
+
+<!-- Modal Structure -->
+<div id="deleteModal" class="modal">
+  <div class="delete-modal-content">
+    <div class="delete-modal-message">
+      <h4>Ce meeting sera supprimé définitivement</h4>
+    </div>
+    <div class="delete-modal-footer">
+      <button class="btn-basic btn-blue" (click)="closeModal()">Annuler</button>
+      <button class="btn-basic btn-plain btn-red" (click)="closeModal()" onclick="Materialize.toast('Meeting supprimé', 3000, 'rounded')">Supprimer</button>
+    </div>
+  </div>
+</div>
