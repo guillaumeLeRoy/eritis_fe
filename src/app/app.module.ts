@@ -21,7 +21,7 @@ import {CoachCoacheeService} from './service/CoachCoacheeService';
 import {CoachDetailsComponent} from './user/coach-details/coach-details.component';
 import {MaterialModule} from '@angular/material'; // lib
 import {CalendarModule} from 'angular-calendar'; // lib
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import {MeetingsService} from './service/meetings.service';
 import {MeetingListComponent} from './meeting/meeting-list/meeting-list.component';
@@ -35,8 +35,9 @@ import {FirebaseService} from './service/firebase.service';
 import {MeetingDateComponent} from './meeting/meeting-date/meeting-date.component';
 import {SliderModule} from 'primeng/components/slider/slider';
 import {Ng2PageScrollModule} from 'ng2-page-scroll';
-import { PostMeetingComponent } from './meeting/review/post-meeting.component';
-import { CoachSelectorComponent } from './user/coach-selector/coach-selector.component';
+import {PostMeetingComponent} from './meeting/review/post-meeting.component';
+import {CoachSelectorComponent} from './user/coach-selector/coach-selector.component';
+import {AdminAPIService} from "./service/adminAPI.service";
 
 @NgModule({
   declarations: [
@@ -73,7 +74,7 @@ import { CoachSelectorComponent } from './user/coach-selector/coach-selector.com
     SliderModule,
     Ng2PageScrollModule.forRoot()
   ],
-  providers: [DataService, LogService, AuthService, AuthGuard, CoachCoacheeService, MeetingsService, FirebaseService],
+  providers: [DataService, LogService, AuthService, AuthGuard, CoachCoacheeService, MeetingsService, FirebaseService, AdminAPIService],
   bootstrap: [AppComponent]
 })
 export class AppModule {

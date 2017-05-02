@@ -1,11 +1,9 @@
 import {AfterViewInit, ChangeDetectorRef, Component, OnDestroy, OnInit} from '@angular/core';
 import {Observable} from "rxjs/Observable";
 import {Coach} from "../../model/Coach";
-import {AuthService} from "../../service/auth.service";
-import {CoachCoacheeService} from "../../service/CoachCoacheeService";
 import {Coachee} from "../../model/coachee";
 import {Subscription} from "rxjs/Subscription";
-import {Response} from "@angular/http";
+import {AdminAPIService} from "../../service/adminAPI.service";
 
 @Component({
   selector: 'er-coach-selector',
@@ -23,7 +21,7 @@ export class CoachSelectorComponent implements OnInit, AfterViewInit, OnDestroy 
   private coachees: Observable<Array<Coachee>>;
   private getAllCoacheesSub: Subscription;
 
-  constructor(private service: CoachCoacheeService, private authService: AuthService, private cd: ChangeDetectorRef) {
+  constructor(private apiService: AdminAPIService, private cd: ChangeDetectorRef) {
   }
 
   ngOnInit() {
@@ -32,27 +30,30 @@ export class CoachSelectorComponent implements OnInit, AfterViewInit, OnDestroy 
   ngAfterViewInit(): void {
     console.log('ngAfterViewInit');
 
-    this.getAllCoachsSub = this.authService.getCoachs().subscribe(
-      (coachs: Response) => {
+    this.getAllCoachsSub = this.apiService.getCoachs().subscribe(
+      (coachs: Array<Coach>) => {
         console.log('getAllCoachs subscribe, coachs : ', coachs);
 
-        // this.coachs = Observable.of(coachs);
-        // this.cd.detectChanges();
+        this.coachs = Observable.of(coachs);
+        this.cd.detectChanges();
       }
     );
 
-    //
-    // let user = this.authService.getConnectedUser();
-    // if (user) {
-    //   this.onUserObtained(user);
-    // } else {
-    //   this.authService.getConnectedUserObservable().subscribe(
-    //     (user: Coach | Coachee) => {
-    //       // only a Coachee should see this component
-    //       this.onUserObtained(user);
-    //     }
-    //   );
-    // }
+
+    this.getAllCoacheesSub = this.apiService.getCoachees().subscribe(
+      (coachees: Array<Coachee>) => {
+        console.log('getAllCoachees subscribe, coachees : ', coachees);
+        //filter coachee with NO selected coachs
+        let notAssociatedCoachees: Coachee[] = new Array<Coachee>();
+        for (let coachee of coachees) {
+          if (coachee.selectedCoach == null) {
+            notAssociatedCoachees.push(coachee);
+          }
+        }
+        this.coachees = Observable.of(notAssociatedCoachees);
+        this.cd.detectChanges();
+      }
+    );
   }
 
   ngOnDestroy(): void {
@@ -78,43 +79,11 @@ export class CoachSelectorComponent implements OnInit, AfterViewInit, OnDestroy 
    */
   associate(): void {
     // save in backend
-    this.authService.updateCoacheeSelectedCoach(this.selectedCoachee.id, this.selectedCoach.id).subscribe(
+    this.apiService.updateCoacheeSelectedCoach(this.selectedCoachee.id, this.selectedCoach.id).subscribe(
       (coachee: Coachee) => {
         console.log('coach selected saved');
-        let user = this.authService.getConnectedUser();
-        this.onUserObtained(user);
       }
     );
-  }
-
-  //TODO change that to Admin
-  private onUserObtained(user: Coach | Coachee) {
-    console.log('onUserObtained, user', user);
-
-    //get list of all coachs
-    this.getAllCoachsSub = this.service.getAllCoachs().subscribe(
-      (coachs: Coach[]) => {
-        console.log('getAllCoachs subscribe, coachs : ', coachs);
-
-        this.coachs = Observable.of(coachs);
-        this.cd.detectChanges();
-      }
-    );
-
-    // this.getAllCoacheesSub = this.service.getAllCoachees().subscribe(
-    //   (coachees: Coachee[]) => {
-    //     console.log('getAllCoachees subscribe, coachees : ', coachees);
-    //     //filter coachee with NO selected coachs
-    //     let notAssociatedCoachees: Coachee[] = new Array<Coachee>();
-    //     for (let coachee of coachees) {
-    //       if (coachee.selectedCoach == null) {
-    //         notAssociatedCoachees.push(coachee);
-    //       }
-    //     }
-    //     this.coachees = Observable.of(notAssociatedCoachees);
-    //     this.cd.detectChanges();
-    //   }
-    // );
   }
 
 }
