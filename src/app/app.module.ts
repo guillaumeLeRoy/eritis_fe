@@ -38,6 +38,7 @@ import {Ng2PageScrollModule} from 'ng2-page-scroll';
 import {PostMeetingComponent} from './meeting/review/post-meeting.component';
 import {CoachSelectorComponent} from './user/coach-selector/coach-selector.component';
 import {AdminAPIService} from "./service/adminAPI.service";
+import { AdminComponent } from './admin/admin.component';
 
 @NgModule({
   declarations: [
@@ -60,7 +61,8 @@ import {AdminAPIService} from "./service/adminAPI.service";
     MeetingDateComponent,
     PreMeetingComponent,
     PostMeetingComponent,
-    CoachSelectorComponent
+    CoachSelectorComponent,
+    AdminComponent
   ],
   imports: [
     BrowserAnimationsModule,

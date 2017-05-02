@@ -12,13 +12,13 @@ import {ProfileCoachComponent} from "./user/profile/coach/profile-coach.componen
 import {ProfileCoacheeComponent} from "./user/profile/coachee/profile-coachee.component";
 import {MeetingDateComponent} from "./meeting/meeting-date/meeting-date.component";
 import {CoachSelectorComponent} from "./user/coach-selector/coach-selector.component";
+import {AdminComponent} from "./admin/admin.component";
 
 const APP_ROUTES: Routes = [
   {path: '', redirectTo: '/welcome', pathMatch: 'full'},
   {path: 'welcome', component: WelcomeComponent},
   {path: 'chat', component: ChatComponent},
   {path: 'signin', component: SigninComponent},
-  {path: 'signup', component: SignupComponent},
   {path: 'profile_coach', component: ProfileCoachComponent},
   {path: 'profile_coachee', component: ProfileCoacheeComponent},
   {path: 'coachs', component: CoachListComponent},
@@ -26,7 +26,15 @@ const APP_ROUTES: Routes = [
   {path: 'coachees', component: CoachListComponent},
   {path: 'meetings', component: MeetingListComponent},
   {path: 'date/:meetingId', component: MeetingDateComponent},
-  {path: 'admin/coach-selector', component: CoachSelectorComponent},
+  {
+    path: 'admin', component: AdminComponent,
+    children: [
+      // {path: '', component: AdminComponent},
+      {path: 'signup', component: SignupComponent},
+      {path: 'coach-selector', component: CoachSelectorComponent}
+    ]
+  },
+
   // {path: 'coachees', component: CoachListComponent, canActivate: [AuthGuard]},
 ];
 
