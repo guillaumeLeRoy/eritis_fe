@@ -18,10 +18,12 @@ export class MeetingListComponent implements OnInit, AfterViewInit, OnDestroy {
   private meetings: Observable<Meeting[]>;
   private meetingsOpened: Observable<Meeting[]>;
   private meetingsClosed: Observable<Meeting[]>;
+  private meetingsUnbooked: Observable<Meeting[]>;
   private meetingsArray: Meeting[];
 
   private hasOpenedMeeting = false;
   private hasClosedMeeting = false;
+  private hasUnbookedMeeting = false;
 
   private subscription: Subscription;
   private connectedUserSubscription: Subscription;
@@ -42,7 +44,7 @@ export class MeetingListComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   onRefreshRequested() {
-    console.log("onRefreshRequested");
+    console.log("onRefreshRequested")
 
     let user = this.authService.getConnectedUser();
     console.log("onRefreshRequested, user : ", user);
@@ -73,8 +75,9 @@ export class MeetingListComponent implements OnInit, AfterViewInit, OnDestroy {
 
         this.meetingsArray = meetings;
         this.meetings = Observable.of(meetings);
-        this.getOpenedMeetings();
+        this.getBookedMeetings();
         this.getClosedMeetings();
+        this.getUnbookedMeetings();
         this.cd.detectChanges();
       }
     );
@@ -83,7 +86,6 @@ export class MeetingListComponent implements OnInit, AfterViewInit, OnDestroy {
   private getAllMeetingsForCoachee(coacheeId: string) {
     this.subscription = this.meetingsService.getAllMeetingsForCoacheeId(coacheeId).subscribe(
       (meetings: Meeting[]) => {
-
         console.log("got meetings for coachee", meetings);
 
         this.meetingsArray = meetings;
@@ -178,6 +180,38 @@ export class MeetingListComponent implements OnInit, AfterViewInit, OnDestroy {
     }
   }
 
+  private getBookedMeetings() {
+    console.log('getOpenedMeetings');
+    if (this.meetingsArray != null) {
+      let opened: Meeting[] = [];
+      for (let meeting of this.meetingsArray) {
+        if (meeting.isOpen && meeting.agreed_date) {
+          opened.push(meeting);
+          this.hasOpenedMeeting = true;
+        }
+      }
+      this.meetingsOpened = Observable.of(opened);
+    }
+  }
+
+  private getUnbookedMeetings() {
+    console.log('getAskedMeetings');
+    if (this.meetingsArray != null) {
+      let unbooked: Meeting[] = [];
+      for (let meeting of this.meetingsArray) {
+        if (meeting.isOpen && !meeting.agreed_date) {
+          unbooked.push(meeting);
+          this.hasUnbookedMeeting = true;
+        }
+      }
+      this.meetingsUnbooked = Observable.of(unbooked);
+    }
+  }
+
+  refreshDashboard(){
+    location.reload();
+  }
+
   ngOnDestroy(): void {
     if (this.subscription) {
       this.subscription.unsubscribe();
@@ -186,7 +220,6 @@ export class MeetingListComponent implements OnInit, AfterViewInit, OnDestroy {
     if (this.connectedUserSubscription) {
       this.connectedUserSubscription.unsubscribe();
     }
-
   }
 
 }

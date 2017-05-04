@@ -11,11 +11,11 @@ declare var Materialize: any;
   styleUrls: ['./welcome.component.css']
 })
 export class WelcomeComponent implements OnInit {
-  private loginActivated = false
+  private loginActivated = false;
 
-  private contactForm: FormGroup
-  private error = false
-  private errorMessage: ''
+  private contactForm: FormGroup;
+  private error = false;
+  private errorMessage: '';
 
   constructor(private authService: AuthService, private formBuilder: FormBuilder) {
   }
