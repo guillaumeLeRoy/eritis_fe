@@ -7,6 +7,8 @@ import {MEETING_REVIEW_TYPE_SESSION_GOAL, MeetingReview} from "../../../model/Me
 import {MeetingDate} from "../../../model/MeetingDate";
 import {Router} from "@angular/router";
 
+declare var $: any;
+
 @Component({
   selector: 'rb-meeting-item-coachee',
   templateUrl: 'meeting-item-coachee.component.html',
@@ -23,7 +25,6 @@ export class MeetingItemCoacheeComponent implements OnInit {
   months = ['Jan', 'Feb', 'Mar', 'Avr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 
   private coach: Coach;
-  private reviews: Observable<MeetingReview[]>;
 
   private goal: string;
   private reviewValue: string;
@@ -156,4 +157,13 @@ export class MeetingItemCoacheeComponent implements OnInit {
   goToModifyDate(meetingId: number) {
     this.router.navigate(['/date', meetingId]);
   }
+
+  openModal() {
+    $('#deleteModal').openModal();
+  }
+
+  closeModal() {
+    $('#deleteModal').closeModal();
+  }
+
 }

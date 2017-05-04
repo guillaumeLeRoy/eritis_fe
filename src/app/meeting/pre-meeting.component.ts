@@ -34,30 +34,35 @@ export class PreMeetingComponent implements OnInit {
 
   ngOnInit() {
     console.log("PreMeetingComponent onInit");
-    this.getAllMeetingReviews();
+   //this.getAllMeetingReviews();
+    this.getMeetingGoal();
+    this.getMeetingContext();
   }
 
-  /* Get form API all reviews for the given meeting */
-  getAllMeetingReviews() {
-    console.log("getAllMeetingReviews, meetingId : ", this.meetingId);
-
-    this.coachService.getMeetingReviews(this.meetingId).subscribe(
+  /* Get from API review goal for the given meeting */
+  private getMeetingGoal() {
+    this.coachService.getMeetingGoal(this.meetingId).subscribe(
       (reviews: MeetingReview[]) => {
-        console.log("getAllMeetingReviews, got reviews : ", reviews);
-
-        if (reviews != null) {
-          //search for correct type
-          for (let review of reviews) {
-            if (review.type == MEETING_REVIEW_TYPE_SESSION_GOAL) {
-              this.updateGoalValue(review.comment);
-            } else if (review.type == MEETING_REVIEW_TYPE_SESSION_CONTEXT) {
-              this.updateContextValue(review.comment);
-            }
-          }
-        }
+        console.log("getMeetingGoal, got goal : ", reviews);
+        if (reviews != null)
+          this.updateGoalValue(reviews[0].comment);
       },
       (error) => {
-        console.log('getAllMeetingReviews error', error);
+        console.log('getMeetingGoal error', error);
+        //this.displayErrorPostingReview = true;
+      });
+  }
+
+  /* Get from API all review context for the given meeting */
+  private getMeetingContext() {
+    this.coachService.getMeetingContext(this.meetingId).subscribe(
+      (reviews: MeetingReview[]) => {
+        console.log("getMeetingContext, got context : ", reviews);
+        if (reviews != null)
+          this.updateContextValue(reviews[0].comment);
+      },
+      (error) => {
+        console.log('getMeetingContext error', error);
         //this.displayErrorPostingReview = true;
       });
   }

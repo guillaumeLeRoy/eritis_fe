@@ -6,6 +6,9 @@ import {FormGroup, FormBuilder, Validators} from "@angular/forms";
 import {CoachCoacheeService} from "../../../service/CoachCoacheeService";
 import {Coachee} from "../../../model/coachee";
 import {MeetingDate} from "../../../model/MeetingDate";
+import {Router} from "@angular/router";
+
+declare var $: any;
 
 @Component({
   selector: 'rb-meeting-item-coach',
@@ -20,17 +23,39 @@ export class MeetingItemCoachComponent implements OnInit,AfterViewInit {
   @Output()
   meetingUpdated = new EventEmitter();
 
+  @Output() dateAgreed = new EventEmitter();
+
+  months = ['Jan', 'Feb', 'Mar', 'Avr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+
   private coachee: Coachee;
 
-  private reviews: Observable<MeetingReview[]>;
-  private hasSomeReviews: Observable<boolean>;
+  private goal: string;
+  private reviewValue: string;
+  private reviewNextStep: string;
+
+  private hasValue: boolean;
+  private hasNextStep: boolean;
+  private hasGoal: boolean;
+
+  private loading: boolean;
+  private showDetails = false;
 
   /* Meeting potential dates */
+  private potentialDatesArray: MeetingDate[];
   private potentialDates: Observable<MeetingDate[]>;
+
+  private selectedDate: string;
+  private selectedHour: number;
+
+  private agreedMeeting: MeetingDate;
+
+  private potentialDays: Observable<number[]>;
+  private potentialHours: Observable<number[]>;
 
   private closeMeetingForm: FormGroup;
 
-  constructor(private formBuilder: FormBuilder, private coachCoacheeService: CoachCoacheeService, private cd: ChangeDetectorRef) {
+  constructor(private router: Router, private formBuilder: FormBuilder, private coachCoacheeService: CoachCoacheeService, private cd: ChangeDetectorRef) {
+    $('select').material_select();
   }
 
   ngOnInit() {
@@ -46,45 +71,64 @@ export class MeetingItemCoachComponent implements OnInit,AfterViewInit {
 
   ngAfterViewInit(): void {
     console.log("ngAfterViewInit");
-    this.loadReviews();
+    this.getGoal();
+    this.getReviewValue();
+    this.getReviewNextStep();
     this.loadMeetingPotentialTimes();
-  }
-
-  loadReviews() {
-    this.coachCoacheeService.getMeetingReviews(this.meeting.id).subscribe(
-      (reviews: MeetingReview[]) => {
-        console.log("reviews obtained, ", reviews);
-
-        this.hasSomeReviews = Observable.of(reviews != null)
-        this.reviews = Observable.of(reviews);
-
-        this.cd.detectChanges();
-      }, (error) => {
-        console.log('get reviews error', error);
-      }
-    );
   }
 
   loadMeetingPotentialTimes() {
     this.coachCoacheeService.getMeetingPotentialTimes(this.meeting.id).subscribe(
       (dates: MeetingDate[]) => {
         console.log("potential dates obtained, ", dates);
+
+        dates.sort(function(a, b){
+          let d1 = new Date(a.start_date);
+          let d2 = new Date(b.start_date);
+          let res = d1.getUTCDate() - d2.getUTCDate();
+          if (res === 0) {
+            res = d1.getUTCHours() - d2.getUTCHours();
+          }
+          return res;
+        });
+
+        this.potentialDatesArray = dates;
         this.potentialDates = Observable.of(dates);
         this.cd.detectChanges();
+        this.loadPotentialDays();
       }, (error) => {
         console.log('get potentials dates error', error);
       }
     );
   }
 
-  confirmPotentialDate(date: MeetingDate) {
-    this.coachCoacheeService.setFinalDateToMeeting(this.meeting.id, date.id).subscribe(
-      (meeting: Meeting) => {
-        console.log("confirmPotentialDate, response", meeting);
-        this.meeting = meeting;
-        this.cd.detectChanges();
-      }, (error) => {
-        console.log('get potentials dates error', error);
+  confirmPotentialDate() {
+
+    let minDate = new Date(this.selectedDate);
+    minDate.setHours(this.selectedHour);
+    let maxDate = new Date(this.selectedDate);
+    maxDate.setHours(this.selectedHour + 1);
+    let timestampMin: number = +minDate.getTime().toFixed(0) / 1000;
+    let timestampMax: number = +maxDate.getTime().toFixed(0) / 1000;
+
+    // create new date
+    this.coachCoacheeService.addPotentialDateToMeeting(this.meeting.id, timestampMin, timestampMax).subscribe(
+      (meetingDate: MeetingDate) => {
+        console.log('addPotentialDateToMeeting, meetingDate : ', meetingDate);
+
+        // validate date
+        this.coachCoacheeService.setFinalDateToMeeting(this.meeting.id, meetingDate.id).subscribe(
+          (meeting: Meeting) => {
+            console.log("confirmPotentialDate, response", meeting);
+            // this.reloadDashboard();
+            this.dateAgreed.emit();
+          }, (error) => {
+            console.log('get potentials dates error', error);
+          }
+        );
+      },
+      (error) => {
+        console.log('addPotentialDateToMeeting error', error);
       }
     );
   }
@@ -104,7 +148,128 @@ export class MeetingItemCoachComponent implements OnInit,AfterViewInit {
         //TODO display error
       }
     );
-
   }
 
+  private getGoal() {
+    this.loading = true;
+
+    this.coachCoacheeService.getMeetingGoal(this.meeting.id).subscribe(
+      (reviews: MeetingReview[]) => {
+        console.log("getMeetingGoal, got goal : ", reviews);
+        if (reviews != null)
+          this.goal = reviews[0].comment;
+        else
+          this.goal = null;
+
+        this.cd.detectChanges();
+        this.hasGoal = (this.goal != null);
+        this.loading = false;
+      },
+      (error) => {
+        console.log('getMeetingGoal error', error);
+        //this.displayErrorPostingReview = true;
+      });
+  }
+
+  private getReviewValue() {
+    this.loading = true;
+
+    this.coachCoacheeService.getMeetingValue(this.meeting.id).subscribe(
+      (reviews: MeetingReview[]) => {
+        console.log("getMeetingValue, got goal : ", reviews);
+        if (reviews != null)
+          this.reviewValue = reviews[0].comment;
+        else
+          this.reviewValue = null;
+
+        this.cd.detectChanges();
+        this.hasValue = (this.reviewValue != null);
+        this.loading = false;
+      },
+      (error) => {
+        console.log('getMeetingValue error', error);
+        //this.displayErrorPostingReview = true;
+      });
+  }
+
+  private getReviewNextStep() {
+    this.loading = true;
+
+    this.coachCoacheeService.getMeetingNextStep(this.meeting.id).subscribe(
+      (reviews: MeetingReview[]) => {
+        console.log("getMeetingNextStep, got goal : ", reviews);
+        if (reviews != null)
+          this.reviewNextStep = reviews[0].comment;
+        else
+          this.reviewNextStep = null;
+
+        this.cd.detectChanges();
+        this.hasNextStep = (this.reviewNextStep != null);
+        this.loading = false;
+      },
+      (error) => {
+        console.log('getMeetingNextStep error', error);
+        //this.displayErrorPostingReview = true;
+      });
+  }
+
+  private loadPotentialDays() {
+    console.log("loadPotentialDays");
+    let days = [];
+
+    for (let date of this.potentialDatesArray){
+      let d = new Date(date.start_date);
+      d.setHours(0);
+      if (days.indexOf(d.toString()) < 0)
+        days.push(d.toString());
+    }
+
+    this.potentialDays = Observable.of(days);
+    this.cd.detectChanges();
+    $('select').material_select();
+    console.log("potentialDays", days);
+  }
+
+  loadPotentialHours(selected) {
+    console.log("loadPotentialHours", selected);
+    let hours = [];
+
+    for (let date of this.potentialDatesArray){
+      if (this.getDate(date.start_date) === this.getDate(selected)) {
+        for (let _i = this.getHours(date.start_date); _i < this.getHours(date.end_date); _i++ ) {
+          hours.push(_i);
+        }
+      }
+    }
+
+    this.potentialHours = Observable.of(hours);
+    this.cd.detectChanges();
+    $('select').material_select();
+    console.log("potentialHours", hours);
+  }
+
+  toggleShowDetails() {
+    this.showDetails = this.showDetails ? false : true;
+  }
+
+  getHours(date: string) {
+    return (new Date(date)).getHours();
+  }
+
+  getDate(date: string) {
+    return (new Date(date)).getDate() + ' ' + this.months[(new Date(date)).getMonth()];
+  }
+
+  openModal() {
+    $('#deleteModal').openModal();
+  }
+
+  closeModal() {
+    $('#deleteModal').closeModal();
+  }
+
+  private reloadDashboard() {
+    console.log('reloadCoachDashboard')
+    this.dateAgreed.emit();
+  }
 }
