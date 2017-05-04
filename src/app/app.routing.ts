@@ -29,7 +29,6 @@ const APP_ROUTES: Routes = [
   {
     path: 'admin', component: AdminComponent,
     children: [
-      // {path: '', component: AdminComponent},
       {path: 'signup', component: SignupComponent},
       {path: 'coach-selector', component: CoachSelectorComponent}
     ]
