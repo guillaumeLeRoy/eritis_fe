@@ -6,7 +6,7 @@ import {FormGroup, FormBuilder, Validators} from "@angular/forms";
 import {CoachCoacheeService} from "../../../service/CoachCoacheeService";
 import {Coachee} from "../../../model/coachee";
 import {MeetingDate} from "../../../model/MeetingDate";
-import {min} from "rxjs/operator/min";
+import {Router} from "@angular/router";
 
 declare var $: any;
 
@@ -22,6 +22,8 @@ export class MeetingItemCoachComponent implements OnInit,AfterViewInit {
 
   @Output()
   meetingUpdated = new EventEmitter();
+
+  @Output() dateAgreed = new EventEmitter();
 
   months = ['Jan', 'Feb', 'Mar', 'Avr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 
@@ -42,15 +44,18 @@ export class MeetingItemCoachComponent implements OnInit,AfterViewInit {
   private potentialDatesArray: MeetingDate[];
   private potentialDates: Observable<MeetingDate[]>;
 
-  private selectedDate = null;
-  private selectedHour = null;
+  private selectedDate: string;
+  private selectedHour: number;
+
+  private agreedMeeting: MeetingDate;
 
   private potentialDays: Observable<number[]>;
   private potentialHours: Observable<number[]>;
 
   private closeMeetingForm: FormGroup;
 
-  constructor(private formBuilder: FormBuilder, private coachCoacheeService: CoachCoacheeService, private cd: ChangeDetectorRef) {
+  constructor(private router: Router, private formBuilder: FormBuilder, private coachCoacheeService: CoachCoacheeService, private cd: ChangeDetectorRef) {
+    $('select').material_select();
   }
 
   ngOnInit() {
@@ -62,8 +67,6 @@ export class MeetingItemCoachComponent implements OnInit,AfterViewInit {
     });
 
     this.coachee = this.meeting.coachee;
-
-    $('select').material_select();
   }
 
   ngAfterViewInit(): void {
@@ -100,16 +103,32 @@ export class MeetingItemCoachComponent implements OnInit,AfterViewInit {
   }
 
   confirmPotentialDate() {
-    let date = new MeetingDate(this.meeting.id);
-    // TODO create meeting date and set final date
 
-    this.coachCoacheeService.setFinalDateToMeeting(this.meeting.id, date.id).subscribe(
-      (meeting: Meeting) => {
-        console.log("confirmPotentialDate, response", meeting);
-        this.meeting = meeting;
-        this.cd.detectChanges();
-      }, (error) => {
-        console.log('get potentials dates error', error);
+    let minDate = new Date(this.selectedDate);
+    minDate.setHours(this.selectedHour);
+    let maxDate = new Date(this.selectedDate);
+    maxDate.setHours(this.selectedHour + 1);
+    let timestampMin: number = +minDate.getTime().toFixed(0) / 1000;
+    let timestampMax: number = +maxDate.getTime().toFixed(0) / 1000;
+
+    // create new date
+    this.coachCoacheeService.addPotentialDateToMeeting(this.meeting.id, timestampMin, timestampMax).subscribe(
+      (meetingDate: MeetingDate) => {
+        console.log('addPotentialDateToMeeting, meetingDate : ', meetingDate);
+
+        // validate date
+        this.coachCoacheeService.setFinalDateToMeeting(this.meeting.id, meetingDate.id).subscribe(
+          (meeting: Meeting) => {
+            console.log("confirmPotentialDate, response", meeting);
+            // this.reloadDashboard();
+            this.dateAgreed.emit();
+          }, (error) => {
+            console.log('get potentials dates error', error);
+          }
+        );
+      },
+      (error) => {
+        console.log('addPotentialDateToMeeting error', error);
       }
     );
   }
@@ -199,13 +218,15 @@ export class MeetingItemCoachComponent implements OnInit,AfterViewInit {
     let days = [];
 
     for (let date of this.potentialDatesArray){
-      if (days.indexOf(this.getDate(date.start_date)) < 0) {
-          days.push(date.start_date);
-      }
+      let d = new Date(date.start_date);
+      d.setHours(0);
+      if (days.indexOf(d.toString()) < 0)
+        days.push(d.toString());
     }
 
     this.potentialDays = Observable.of(days);
     this.cd.detectChanges();
+    $('select').material_select();
     console.log("potentialDays", days);
   }
 
@@ -223,6 +244,7 @@ export class MeetingItemCoachComponent implements OnInit,AfterViewInit {
 
     this.potentialHours = Observable.of(hours);
     this.cd.detectChanges();
+    $('select').material_select();
     console.log("potentialHours", hours);
   }
 
@@ -244,5 +266,10 @@ export class MeetingItemCoachComponent implements OnInit,AfterViewInit {
 
   closeModal() {
     $('#deleteModal').closeModal();
+  }
+
+  private reloadDashboard() {
+    console.log('reloadCoachDashboard')
+    this.dateAgreed.emit();
   }
 }

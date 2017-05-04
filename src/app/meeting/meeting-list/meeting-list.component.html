@@ -36,7 +36,8 @@
             <div *ngIf="hasUnbookedMeeting">
               <div class="collection-item" *ngFor="let meeting of meetingsUnbooked | async">
                 <rb-meeting-item-coach [meeting]="meeting"
-                                       (potentialDatePosted)="onRefreshRequested($event)">
+                                       (potentialDatePosted)="onRefreshRequested($event)"
+                                       (dateAgreed)="onRefreshRequested($event)">
                 </rb-meeting-item-coach>
               </div>
             </div>

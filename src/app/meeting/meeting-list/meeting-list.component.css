@@ -10,3 +10,8 @@ rb-meeting-item-coachee.collection-item{
 .no-meeting {
   padding: 16px 0;
 }
+
+.card,
+.collection {
+  overflow: visible;
+}

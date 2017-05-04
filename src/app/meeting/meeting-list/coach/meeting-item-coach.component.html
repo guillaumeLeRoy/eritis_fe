@@ -72,15 +72,15 @@
               <span class="black-text bold">Réponse :</span>
               <div class="input-field">
                 <select [(ngModel)]="selectedDate" name="meeting-date" class="browser-default" (change)="loadPotentialHours(selectedDate)">
-                  <option value="" disabled>Date</option>
+                  <option value="" disabled selected>Date</option>
                   <option *ngFor="let d of potentialDays | async" [ngValue]=" d ">
                     {{ getDate(d) }}
                   </option>
                 </select>
               </div>
               <div class="input-field">
-                <select [(ngModel)]="selectedHour" name="meeting-hour" class="browser-default">
-                  <option value="" disabled>Heure</option>
+                <select [(ngModel)]="selectedHour" name="meeting-hour" class="browser-default" materialize="material_select">
+                  <option value="" disabled selected>Heure</option>
                   <option *ngFor="let h of potentialHours | async" [ngValue]="h">
                     {{ h }}:00 - {{ h + 1 }}:00
                   </option>
