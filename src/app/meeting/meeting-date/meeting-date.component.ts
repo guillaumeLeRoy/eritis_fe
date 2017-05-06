@@ -8,6 +8,8 @@ import {MeetingDate} from '../../model/MeetingDate';
 import {ActivatedRoute, Router} from '@angular/router';
 import {MeetingReview} from "../../model/MeetingReview";
 
+declare var Materialize: any;
+
 @Component({
   selector: 'rb-meeting-date',
   templateUrl: './meeting-date.component.html',
@@ -103,10 +105,12 @@ export class MeetingDateComponent implements OnInit, OnDestroy {
               this.loadMeetingPotentialTimes(this.meetingId);
               //reset progress bar values
               this.resetValues();
+              Materialize.toast('Plage modifiée !', 3000, 'rounded')
             },
             (error) => {
               console.log('updatePotentialTime error', error);
               this.displayErrorBookingDate = true;
+              Materialize.toast('Erreur lors de la modification', 3000, 'rounded')
             }
           );
 
@@ -122,10 +126,12 @@ export class MeetingDateComponent implements OnInit, OnDestroy {
               this.loadMeetingPotentialTimes(this.meetingId);
               //reset progress bar values
               this.resetValues();
+              Materialize.toast('Plage ajoutée !', 3000, 'rounded')
             },
             (error) => {
               console.log('addPotentialDateToMeeting error', error);
               this.displayErrorBookingDate = true;
+              Materialize.toast("Erreur lors de l'ajout", 3000, 'rounded')
             }
           );
         }

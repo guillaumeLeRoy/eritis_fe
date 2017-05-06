@@ -8,6 +8,7 @@ import {MeetingDate} from "../../../model/MeetingDate";
 import {Router} from "@angular/router";
 
 declare var $: any;
+declare var Materialize: any;
 
 @Component({
   selector: 'rb-meeting-item-coachee',

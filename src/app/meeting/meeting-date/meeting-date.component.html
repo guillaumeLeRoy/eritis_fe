@@ -45,8 +45,7 @@
                    class="material-icons">create</i></a>
                 <a class="delete-timeslot"
                    (click)="unbookAdate(date.id)"><i
-                   class="material-icons"
-                   onclick="Materialize.toast('Plage supprimée !', 3000, 'rounded')">delete_sweep</i></a>
+                   class="material-icons">delete_sweep</i></a>
               </div><!--end ngIf-->
             </div><!--end potential-date-->
           </div><!--end potential-dates-->
@@ -70,13 +69,11 @@
           <div class="col-lg-12">
             <button class="btn-basic btn-plain btn-blue"
                     (click)="bookOrUpdateADate()" [disabled]="dateModel==null"
-                    *ngIf="!isEditingPotentialDate"
-                    onclick="Materialize.toast('Plage ajoutée !', 3000, 'rounded')">Valider</button>
+                    *ngIf="!isEditingPotentialDate">Valider</button>
             <button class="btn-basic btn-plain btn-blue"
                     (click)="bookOrUpdateADate()"
                     [disabled]="dateModel==null"
-                    *ngIf="isEditingPotentialDate"
-                    onclick="Materialize.toast('Plage modifiée !', 3000, 'rounded')">Modifier</button>
+                    *ngIf="isEditingPotentialDate">Modifier</button>
           </div>
           <div class="col-lg-12">
             <button class="btn-basic btn-blue" (click)="resetValues()" [disabled]="dateModel==null" *ngIf="isEditingPotentialDate">Annuler</button>

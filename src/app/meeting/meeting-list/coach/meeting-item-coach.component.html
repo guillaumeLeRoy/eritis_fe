@@ -7,7 +7,8 @@
         <div class="circle"></div>
       </div><div class="gap-patch">
       <div class="circle"></div>
-    </div><div class="circle-clipper right">
+    </div>
+    <div class="circle-clipper right">
       <div class="circle"></div>
     </div>
     </div>
@@ -16,7 +17,7 @@
   <div class="row" *ngIf="!loading">
 
     <!-- COACH -->
-    <div class="meeting-item-header col-sm-4 col-md-4 col-lg-2">
+    <div class="meeting-item-header col-sm-4 col-md-4 col-lg-3">
       <div>
         <div>
           <!-- image coach-->
@@ -40,7 +41,7 @@
     </div>
 
     <!-- GOAL & REVIEW -->
-    <div class="meeting-item-body col-md-12 col-lg-7" [class.col-lg-10]="!meeting.agreed_date">
+    <div class="meeting-item-body col-md-12 col-lg-6" [class.col-lg-9]="!meeting.agreed_date">
       <div class="meeting-item-body-content">
         <p class="meeting-item-goal">
           <span class="black-text bold">Objectif: </span>
@@ -89,8 +90,7 @@
               <div class="input-field">
                 <button type="submit" class="btn-basic btn-blue btn-small"
                         [disabled]="!selectedDate || !selectedHour"
-                        (click)="confirmPotentialDate()"
-                        onclick="Materialize.toast('Meeting validé !', 3000, 'rounded')">Valider</button>
+                        (click)="confirmPotentialDate()">Valider</button>
               </div>
             </form>
           </div>
@@ -119,7 +119,7 @@
     </div>
     <div class="delete-modal-footer">
       <button class="btn-basic btn-blue" (click)="closeModal()">Annuler</button>
-      <button class="btn-basic btn-plain btn-red" (click)="closeModal()" onclick="Materialize.toast('Meeting supprimé', 3000, 'rounded')">Supprimer</button>
+      <button class="btn-basic btn-plain btn-red" (click)="closeModal()">Supprimer</button>
     </div>
   </div>
 </div>

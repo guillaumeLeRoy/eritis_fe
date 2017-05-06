@@ -9,6 +9,7 @@ import {MeetingDate} from "../../../model/MeetingDate";
 import {Router} from "@angular/router";
 
 declare var $: any;
+declare var Materialize: any;
 
 @Component({
   selector: 'rb-meeting-item-coach',
@@ -122,8 +123,10 @@ export class MeetingItemCoachComponent implements OnInit,AfterViewInit {
             console.log("confirmPotentialDate, response", meeting);
             // this.reloadDashboard();
             this.dateAgreed.emit();
+            Materialize.toast('Meeting validé !', 3000, 'rounded')
           }, (error) => {
             console.log('get potentials dates error', error);
+            Materialize.toast('Erreur lors de la validation du meeting', 3000, 'rounded')
           }
         );
       },
