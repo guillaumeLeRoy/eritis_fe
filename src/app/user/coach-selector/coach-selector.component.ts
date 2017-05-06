@@ -5,6 +5,9 @@ import {Coachee} from "../../model/coachee";
 import {Subscription} from "rxjs/Subscription";
 import {AdminAPIService} from "../../service/adminAPI.service";
 
+declare var Materialize: any;
+
+
 @Component({
   selector: 'er-coach-selector',
   templateUrl: './coach-selector.component.html',
@@ -29,7 +32,55 @@ export class CoachSelectorComponent implements OnInit, AfterViewInit, OnDestroy 
 
   ngAfterViewInit(): void {
     console.log('ngAfterViewInit');
+    this.fetchData();
+  }
 
+  ngOnDestroy(): void {
+    if (this.getAllCoachsSub != null) {
+      this.getAllCoachsSub.unsubscribe();
+    }
+
+    if (this.getAllCoacheesSub != null) {
+      this.getAllCoacheesSub.unsubscribe();
+    }
+  }
+
+  onCoachSelected(coach: Coach): void {
+    this.selectedCoach = coach;
+  }
+
+  onCoacheeSelected(coachee: Coachee): void {
+    this.selectedCoachee = coachee;
+  }
+
+
+  canAssociate(): boolean {
+    return this.selectedCoachee != null && this.selectedCoach != null;
+  }
+
+  /**
+   * Associate selectedCoach with selectedCoachee
+   * TODO : handle error
+   */
+  associate(): void {
+    // save in backend
+    this.apiService.updateCoacheeSelectedCoach(this.selectedCoachee.id, this.selectedCoach.id).subscribe(
+      (coachee: Coachee) => {
+        console.log('coach selected saved');
+
+        //reset values
+        this.selectedCoach = null;
+        this.selectedCoachee = null;
+
+        Materialize.toast('Association effectuée !', 3000, 'rounded');
+
+        //refresh data
+        this.fetchData();
+      }
+    );
+  }
+
+  private fetchData() {
     this.getAllCoachsSub = this.apiService.getCoachs().subscribe(
       (coachs: Array<Coach>) => {
         console.log('getAllCoachs subscribe, coachs : ', coachs);
@@ -52,36 +103,6 @@ export class CoachSelectorComponent implements OnInit, AfterViewInit, OnDestroy 
         }
         this.coachees = Observable.of(notAssociatedCoachees);
         this.cd.detectChanges();
-      }
-    );
-  }
-
-  ngOnDestroy(): void {
-    if (this.getAllCoachsSub != null) {
-      this.getAllCoachsSub.unsubscribe();
-    }
-
-    if (this.getAllCoacheesSub != null) {
-      this.getAllCoacheesSub.unsubscribe();
-    }
-  }
-
-  onCoachSelected(coach: Coach): void {
-    this.selectedCoach = coach;
-  }
-
-  onCoacheeSelected(coachee: Coachee): void {
-    this.selectedCoachee = coachee;
-  }
-
-  /**
-   * Associate selectedCoach with selectedCoachee
-   */
-  associate(): void {
-    // save in backend
-    this.apiService.updateCoacheeSelectedCoach(this.selectedCoachee.id, this.selectedCoach.id).subscribe(
-      (coachee: Coachee) => {
-        console.log('coach selected saved');
       }
     );
   }
