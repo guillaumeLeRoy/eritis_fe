@@ -172,8 +172,26 @@ export class MeetingDateComponent implements OnInit, OnDestroy {
     }
   }
 
-  private getHours(date: string) {
+  printTimeNumber(hour: number) {
+    if (hour === Math.round(hour))
+      return hour + ':00'
+    else
+      return Math.round(hour) - 1 + ':30'
+  }
+
+  printTimeString(date: string) {
+    return this.getHours(date) + ':' + this.getMinutes(date);
+  }
+
+  getHours(date: string) {
     return (new Date(date)).getHours();
+  }
+
+  getMinutes(date: string) {
+    let m = (new Date(date)).getMinutes();
+    if (m === 0)
+      return '00';
+    return m;
   }
 
   resetValues() {

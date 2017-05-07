@@ -39,7 +39,7 @@
             <div class="potential-date" *ngFor="let date of potentialDates | async">
               <div class="potential-date-content" *ngIf="compareDates(stringToDate(date.start_date), dateModel)">
                 <div class="blue-point"></div>
-                <p class="potential-date-timeslot">{{getHours(date.start_date)}}:00 - {{getHours(date.end_date)}}:00</p>
+                <p class="potential-date-timeslot">{{ printTimeString(date.start_date) }} - {{ printTimeString(date.end_date) }}</p>
                 <a class="modify-timeslot"
                    (click)="modifyPotentialDate(date.id)"><i
                    class="material-icons">create</i></a>
@@ -58,10 +58,10 @@
         <!--<ngb-timepicker #tp [(ngModel)]="timeModel" [minuteStep]="15"></ngb-timepicker>-->
         <div>
           <h5 *ngIf="dateModel">{{ dateToString(dateModel) }}</h5>
-          <h2 class="plage-horaire">{{timeRange[0]}}:00 - {{timeRange[1]}}:00</h2>
+          <h2 class="plage-horaire">{{ printTimeNumber(timeRange[0]) }} - {{ printTimeNumber(timeRange[1]) }}</h2>
         </div>
 
-        <p-slider [(ngModel)]="timeRange" [style]="{'width':'200px'}" [range]="true" [min]="7" [max]="21"></p-slider>
+        <p-slider [(ngModel)]="timeRange" [style]="{'width':'200px'}" [range]="true" [min]="7" [max]="21" ></p-slider>
 
         <p>Faites glisser pour sélectionner votre plage disponible, puis validez</p>
 

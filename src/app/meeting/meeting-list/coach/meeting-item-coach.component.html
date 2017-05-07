@@ -36,7 +36,7 @@
     <div class="meeting-item-date col-sm-8 col-lg-3" *ngIf="meeting.agreed_date">
       <div *ngIf="meeting.agreed_date">
         <span class="meeting-item-date-date">{{ getDate(meeting.agreed_date.start_date) }}</span>
-        <span class="meeting-item-date-hour">{{ getHours(meeting.agreed_date.start_date) }}:00</span>
+        <span class="meeting-item-date-hour">{{ printTimeString(meeting.agreed_date.start_date) }}</span>
       </div>
     </div>
 
@@ -66,7 +66,7 @@
             <p><span class="black-text bold">Disponibilités :</span></p>
             <div class="meeting-potential" *ngFor="let potential of potentialDates | async">
               <span class="meeting-potential-date">{{ getDate(potential.start_date) }}</span>
-              <span class="meeting-potential-hours">{{ getHours(potential.start_date) }}:00 - {{ getHours(potential.end_date) }}:00</span>
+              <span class="meeting-potential-hours">{{ printTimeString(potential.start_date) }} - {{ printTimeString(potential.end_date) }}</span>
             </div>
             <br>
             <form class="confirm-meeting-form">
@@ -83,7 +83,7 @@
                 <select [(ngModel)]="selectedHour" name="meeting-hour" class="browser-default" materialize="material_select">
                   <option value="" disabled selected>Heure</option>
                   <option *ngFor="let h of potentialHours | async" [ngValue]="h">
-                    {{ h }}:00 - {{ h + 1 }}:00
+                    {{ printTimeNumber(h) }} - {{ printTimeNumber(h+0.5) }}
                   </option>
                 </select>
               </div>

@@ -79,8 +79,19 @@ export class MeetingItemCoacheeComponent implements OnInit {
     );
   }
 
+  printTimeString(date: string) {
+    return this.getHours(date) + ':' + this.getMinutes(date);
+  }
+
   getHours(date: string) {
     return (new Date(date)).getHours();
+  }
+
+  getMinutes(date: string) {
+    let m = (new Date(date)).getMinutes();
+    if (m === 0)
+      return '00';
+    return m;
   }
 
   getDate(date: string) {
