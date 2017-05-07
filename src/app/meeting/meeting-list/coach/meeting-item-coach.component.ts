@@ -221,6 +221,7 @@ export class MeetingItemCoachComponent implements OnInit,AfterViewInit {
       });
   }
 
+
   private loadPotentialDays() {
     console.log("loadPotentialDays");
     let days = [];
