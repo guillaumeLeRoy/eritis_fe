@@ -9,6 +9,7 @@ import {MeetingDate} from "../../../model/MeetingDate";
 import {Router} from "@angular/router";
 
 declare var $: any;
+declare var Materialize: any;
 
 @Component({
   selector: 'rb-meeting-item-coach',
@@ -82,7 +83,7 @@ export class MeetingItemCoachComponent implements OnInit,AfterViewInit {
       (dates: MeetingDate[]) => {
         console.log("potential dates obtained, ", dates);
 
-        dates.sort(function(a, b){
+        dates.sort(function (a, b) {
           let d1 = new Date(a.start_date);
           let d2 = new Date(b.start_date);
           let res = d1.getUTCDate() - d2.getUTCDate();
@@ -107,7 +108,13 @@ export class MeetingItemCoachComponent implements OnInit,AfterViewInit {
     let minDate = new Date(this.selectedDate);
     minDate.setHours(this.selectedHour);
     let maxDate = new Date(this.selectedDate);
-    maxDate.setHours(this.selectedHour + 1);
+    if (this.selectedHour === Math.round(this.selectedHour)) {
+      maxDate.setHours(this.selectedHour);
+      maxDate.setMinutes(30);
+    } else {
+      minDate.setMinutes(30);
+      maxDate.setHours(this.selectedHour + 1);
+    }
     let timestampMin: number = +minDate.getTime().toFixed(0) / 1000;
     let timestampMax: number = +maxDate.getTime().toFixed(0) / 1000;
 
@@ -120,10 +127,11 @@ export class MeetingItemCoachComponent implements OnInit,AfterViewInit {
         this.coachCoacheeService.setFinalDateToMeeting(this.meeting.id, meetingDate.id).subscribe(
           (meeting: Meeting) => {
             console.log("confirmPotentialDate, response", meeting);
-            // this.reloadDashboard();
             this.dateAgreed.emit();
+            Materialize.toast('Meeting validé !', 3000, 'rounded')
           }, (error) => {
             console.log('get potentials dates error', error);
+            Materialize.toast('Erreur lors de la validation du meeting', 3000, 'rounded')
           }
         );
       },
@@ -213,13 +221,15 @@ export class MeetingItemCoachComponent implements OnInit,AfterViewInit {
       });
   }
 
+
   private loadPotentialDays() {
     console.log("loadPotentialDays");
     let days = [];
 
-    for (let date of this.potentialDatesArray){
+    for (let date of this.potentialDatesArray) {
       let d = new Date(date.start_date);
       d.setHours(0);
+      d.setMinutes(0);
       if (days.indexOf(d.toString()) < 0)
         days.push(d.toString());
     }
@@ -234,10 +244,11 @@ export class MeetingItemCoachComponent implements OnInit,AfterViewInit {
     console.log("loadPotentialHours", selected);
     let hours = [];
 
-    for (let date of this.potentialDatesArray){
+    for (let date of this.potentialDatesArray) {
       if (this.getDate(date.start_date) === this.getDate(selected)) {
-        for (let _i = this.getHours(date.start_date); _i < this.getHours(date.end_date); _i++ ) {
+        for (let _i = this.getHours(date.start_date); _i < this.getHours(date.end_date); _i++) {
           hours.push(_i);
+          hours.push(_i + 0.5);
         }
       }
     }
@@ -252,8 +263,26 @@ export class MeetingItemCoachComponent implements OnInit,AfterViewInit {
     this.showDetails = this.showDetails ? false : true;
   }
 
+  printTimeNumber(hour: number) {
+    if (hour === Math.round(hour))
+      return hour + ':00'
+    else
+      return Math.round(hour) - 1 + ':30'
+  }
+
+  printTimeString(date: string) {
+    return this.getHours(date) + ':' + this.getMinutes(date);
+  }
+
   getHours(date: string) {
     return (new Date(date)).getHours();
+  }
+
+  getMinutes(date: string) {
+    let m = (new Date(date)).getMinutes();
+    if (m === 0)
+      return '00';
+    return m;
   }
 
   getDate(date: string) {
@@ -266,10 +295,5 @@ export class MeetingItemCoachComponent implements OnInit,AfterViewInit {
 
   closeModal() {
     $('#deleteModal').closeModal();
-  }
-
-  private reloadDashboard() {
-    console.log('reloadCoachDashboard')
-    this.dateAgreed.emit();
   }
 }

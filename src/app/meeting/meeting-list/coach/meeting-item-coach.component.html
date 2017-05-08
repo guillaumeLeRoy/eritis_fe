@@ -7,7 +7,8 @@
         <div class="circle"></div>
       </div><div class="gap-patch">
       <div class="circle"></div>
-    </div><div class="circle-clipper right">
+    </div>
+    <div class="circle-clipper right">
       <div class="circle"></div>
     </div>
     </div>
@@ -16,7 +17,7 @@
   <div class="row" *ngIf="!loading">
 
     <!-- COACH -->
-    <div class="meeting-item-header col-sm-4 col-md-4 col-lg-2">
+    <div class="meeting-item-header col-sm-4 col-md-4 col-lg-3">
       <div>
         <div>
           <!-- image coach-->
@@ -35,12 +36,12 @@
     <div class="meeting-item-date col-sm-8 col-lg-3" *ngIf="meeting.agreed_date">
       <div *ngIf="meeting.agreed_date">
         <span class="meeting-item-date-date">{{ getDate(meeting.agreed_date.start_date) }}</span>
-        <span class="meeting-item-date-hour">{{ getHours(meeting.agreed_date.start_date) }}:00</span>
+        <span class="meeting-item-date-hour">{{ printTimeString(meeting.agreed_date.start_date) }}</span>
       </div>
     </div>
 
     <!-- GOAL & REVIEW -->
-    <div class="meeting-item-body col-md-12 col-lg-7" [class.col-lg-10]="!meeting.agreed_date">
+    <div class="meeting-item-body col-md-12 col-lg-6" [class.col-lg-9]="!meeting.agreed_date">
       <div class="meeting-item-body-content">
         <p class="meeting-item-goal">
           <span class="black-text bold">Objectif: </span>
@@ -65,7 +66,7 @@
             <p><span class="black-text bold">Disponibilités :</span></p>
             <div class="meeting-potential" *ngFor="let potential of potentialDates | async">
               <span class="meeting-potential-date">{{ getDate(potential.start_date) }}</span>
-              <span class="meeting-potential-hours">{{ getHours(potential.start_date) }}:00 - {{ getHours(potential.end_date) }}:00</span>
+              <span class="meeting-potential-hours">{{ printTimeString(potential.start_date) }} - {{ printTimeString(potential.end_date) }}</span>
             </div>
             <br>
             <form class="confirm-meeting-form">
@@ -82,15 +83,14 @@
                 <select [(ngModel)]="selectedHour" name="meeting-hour" class="browser-default" materialize="material_select">
                   <option value="" disabled selected>Heure</option>
                   <option *ngFor="let h of potentialHours | async" [ngValue]="h">
-                    {{ h }}:00 - {{ h + 1 }}:00
+                    {{ printTimeNumber(h) }} - {{ printTimeNumber(h+0.5) }}
                   </option>
                 </select>
               </div>
               <div class="input-field">
                 <button type="submit" class="btn-basic btn-blue btn-small"
                         [disabled]="!selectedDate || !selectedHour"
-                        (click)="confirmPotentialDate()"
-                        onclick="Materialize.toast('Meeting validé !', 3000, 'rounded')">Valider</button>
+                        (click)="confirmPotentialDate()">Valider</button>
               </div>
             </form>
           </div>
@@ -115,11 +115,11 @@
 <div id="deleteModal" class="modal">
   <div class="delete-modal-content">
     <div class="delete-modal-message">
-      <h4>Ce meeting sera supprimé définitivement</h4>
+      <h4>Vous pourrez fixer un autre rendez-vous pour ce meeting.</h4>
     </div>
     <div class="delete-modal-footer">
       <button class="btn-basic btn-blue" (click)="closeModal()">Annuler</button>
-      <button class="btn-basic btn-plain btn-red" (click)="closeModal()" onclick="Materialize.toast('Meeting supprimé', 3000, 'rounded')">Supprimer</button>
+      <button class="btn-basic btn-plain btn-red" (click)="closeModal()">Supprimer</button>
     </div>
   </div>
 </div>

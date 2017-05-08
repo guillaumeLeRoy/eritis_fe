@@ -16,7 +16,7 @@
   <div class="row" *ngIf="!loading">
 
     <!-- COACH -->
-    <div class="meeting-item-header col-sm-4 col-md-4 col-lg-2">
+    <div class="meeting-item-header col-sm-4 col-md-4 col-lg-3">
       <div>
         <div>
           <!-- image coach-->
@@ -35,14 +35,14 @@
     <div class="meeting-item-date col-sm-8 col-lg-3">
       <div *ngIf="meeting.agreed_date">
         <span class="meeting-item-date-date">{{ getDate(meeting.agreed_date.start_date) }}</span>
-        <span class="meeting-item-date-hour">{{ getHours(meeting.agreed_date.start_date) }}:00</span>
+        <span class="meeting-item-date-hour">{{ get(meeting.agreed_date.start_date) }}:00</span>
       </div>
 
       <button *ngIf="!meeting.agreed_date" class="btn-basic btn-blue btn-small" (click)="goToModifyDate(meeting.id)">Modifier</button>
     </div>
 
     <!-- GOAL & REVIEW -->
-    <div class="meeting-item-body col-md-12 col-lg-7">
+    <div class="meeting-item-body col-md-12 col-lg-6">
       <div class="meeting-item-body-content">
         <p class="meeting-item-goal">
           <span class="black-text bold">Objectif: </span>
@@ -79,11 +79,11 @@
 <div id="deleteModal" class="modal">
   <div class="delete-modal-content">
     <div class="delete-modal-message">
-      <h4>Ce meeting sera supprimé définitivement</h4>
+      <h4>Ce meeting sera supprimé définitivement.<</h4>
     </div>
     <div class="delete-modal-footer">
       <button class="btn-basic btn-blue" (click)="closeModal()">Annuler</button>
-      <button class="btn-basic btn-plain btn-red" (click)="closeModal()" onclick="Materialize.toast('Meeting supprimé', 3000, 'rounded')">Supprimer</button>
+      <button class="btn-basic btn-plain btn-red" (click)="closeModal()">Supprimer</button>
     </div>
   </div>
 </div>

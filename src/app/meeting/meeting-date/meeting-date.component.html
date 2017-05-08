@@ -39,14 +39,13 @@
             <div class="potential-date" *ngFor="let date of potentialDates | async">
               <div class="potential-date-content" *ngIf="compareDates(stringToDate(date.start_date), dateModel)">
                 <div class="blue-point"></div>
-                <p class="potential-date-timeslot">{{getHours(date.start_date)}}:00 - {{getHours(date.end_date)}}:00</p>
+                <p class="potential-date-timeslot">{{ printTimeString(date.start_date) }} - {{ printTimeString(date.end_date) }}</p>
                 <a class="modify-timeslot"
                    (click)="modifyPotentialDate(date.id)"><i
                    class="material-icons">create</i></a>
                 <a class="delete-timeslot"
                    (click)="unbookAdate(date.id)"><i
-                   class="material-icons"
-                   onclick="Materialize.toast('Plage supprimée !', 3000, 'rounded')">delete_sweep</i></a>
+                   class="material-icons">delete_sweep</i></a>
               </div><!--end ngIf-->
             </div><!--end potential-date-->
           </div><!--end potential-dates-->
@@ -59,10 +58,10 @@
         <!--<ngb-timepicker #tp [(ngModel)]="timeModel" [minuteStep]="15"></ngb-timepicker>-->
         <div>
           <h5 *ngIf="dateModel">{{ dateToString(dateModel) }}</h5>
-          <h2 class="plage-horaire">{{timeRange[0]}}:00 - {{timeRange[1]}}:00</h2>
+          <h2 class="plage-horaire">{{ printTimeNumber(timeRange[0]) }} - {{ printTimeNumber(timeRange[1]) }}</h2>
         </div>
 
-        <p-slider [(ngModel)]="timeRange" [style]="{'width':'200px'}" [range]="true" [min]="7" [max]="21"></p-slider>
+        <p-slider [(ngModel)]="timeRange" [style]="{'width':'200px'}" [range]="true" [min]="7" [max]="21" ></p-slider>
 
         <p>Faites glisser pour sélectionner votre plage disponible, puis validez</p>
 
@@ -70,13 +69,11 @@
           <div class="col-lg-12">
             <button class="btn-basic btn-plain btn-blue"
                     (click)="bookOrUpdateADate()" [disabled]="dateModel==null"
-                    *ngIf="!isEditingPotentialDate"
-                    onclick="Materialize.toast('Plage ajoutée !', 3000, 'rounded')">Valider</button>
+                    *ngIf="!isEditingPotentialDate">Valider</button>
             <button class="btn-basic btn-plain btn-blue"
                     (click)="bookOrUpdateADate()"
                     [disabled]="dateModel==null"
-                    *ngIf="isEditingPotentialDate"
-                    onclick="Materialize.toast('Plage modifiée !', 3000, 'rounded')">Modifier</button>
+                    *ngIf="isEditingPotentialDate">Modifier</button>
           </div>
           <div class="col-lg-12">
             <button class="btn-basic btn-blue" (click)="resetValues()" [disabled]="dateModel==null" *ngIf="isEditingPotentialDate">Annuler</button>
