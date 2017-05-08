@@ -16,15 +16,16 @@ declare var Materialize: any;
   templateUrl: 'meeting-item-coach.component.html',
   styleUrls: ['meeting-item-coach.component.css']
 })
-export class MeetingItemCoachComponent implements OnInit,AfterViewInit {
+export class MeetingItemCoachComponent implements OnInit, AfterViewInit {
 
   @Input()
   meeting: Meeting;
 
   @Output()
-  meetingUpdated = new EventEmitter();
+  dateAgreed = new EventEmitter();
 
-  @Output() dateAgreed = new EventEmitter();
+  @Output()
+  dateRemoved = new EventEmitter();
 
   months = ['Jan', 'Feb', 'Mar', 'Avr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 
@@ -293,7 +294,25 @@ export class MeetingItemCoachComponent implements OnInit,AfterViewInit {
     $('#deleteModal').openModal();
   }
 
-  closeModal() {
+  cancelCancelMeeting() {
     $('#deleteModal').closeModal();
   }
+
+  validateCancelMeeting() {
+    console.log('validateCancelMeeting');
+
+    //hide modal
+    $('#deleteModal').closeModal();
+    //
+    this.coachCoacheeService.removePotentialTime(this.meeting.agreed_date.id).subscribe(
+      (response: Response) => {
+        console.log('validateCancelMeeting, res ', response);
+        console.log('emit');
+        this.dateRemoved.emit(null);
+      }, (error) => {
+        console.log('unbookAdate, error', error);
+      }
+    );
+  }
+
 }

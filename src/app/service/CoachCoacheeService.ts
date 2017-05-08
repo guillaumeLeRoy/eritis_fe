@@ -30,40 +30,6 @@ export class CoachCoacheeService {
       });
   }
 
-  getAllCoachees(): Observable<Coachee[]> {
-    console.log("getAllCoachees, start request");
-
-    return this.apiService.get(AuthService.GET_COACHEES, null).map(
-      (response: Response) => {
-        let json = response.json();
-        console.log("getAllCoachees, response json : ", json);
-        return json;
-      });
-  }
-
-
-  getCoachForId(id: string): Observable<Coach> {
-    console.log("getCoachForId, id", id);
-
-    let param = [id];
-    return this.apiService.get(AuthService.GET_COACH_FOR_ID, param).map((response: Response) => {
-      let json = response.json();
-      console.log("getCoachForId, response json : ", json);
-      return json;
-    });
-  }
-
-  getCoacheeForId(id: string): Observable<Coachee> {
-    console.log("getCoacheeForId, id", id);
-
-    let param = [id];
-    return this.apiService.get(AuthService.GET_COACHEE_FOR_ID, param).map((response: Response) => {
-      let json: Coachee = response.json();
-      console.log("getCoacheeForId, response json : ", json);
-      return json;
-    });
-  }
-
   /**
    * Add this date as a Potential Date for the given meeting
    * @param meetingId
@@ -116,16 +82,16 @@ export class CoachCoacheeService {
     });
   }
 
-  getMeetingReviews(meetingId: string): Observable<MeetingReview[]> {
-    console.log("getMeetingReviews");
-
-    let param = [meetingId];
-    return this.apiService.get(AuthService.GET_MEETING_REVIEWS, param).map((response: Response) => {
-      let json: MeetingReview[] = response.json();
-      console.log("getMeetingReviews, response json : ", json);
-      return json;
-    });
-  }
+  // getMeetingReviews(meetingId: string): Observable<MeetingReview[]> {
+  //   console.log("getMeetingReviews");
+  //
+  //   let param = [meetingId];
+  //   return this.apiService.get(AuthService.GET_MEETING_REVIEWS, param).map((response: Response) => {
+  //     let json: MeetingReview[] = response.json();
+  //     console.log("getMeetingReviews, response json : ", json);
+  //     return json;
+  //   });
+  // }
 
   //get all MeetingReview for context == SESSION_CONTEXT
   getMeetingContext(meetingId: string): Observable<MeetingReview[]> {
@@ -202,18 +168,18 @@ export class CoachCoacheeService {
     });
   }
 
-  updateContextForMeeting(reviewId: string, context: string): Observable<MeetingReview> {
-    console.log("updateContextForMeeting, reviewId %s, comment : %s", reviewId, context);
-    let body = {
-      comment: context,
-    };
-    let param = [reviewId];
-    return this.apiService.put(AuthService.PUT_MEETING_REVIEW, param, body).map((response: Response) => {
-      let json: MeetingReview = response.json();
-      console.log("updateContextForMeeting, response json : ", json);
-      return json;
-    });
-  }
+  // updateContextForMeeting(reviewId: string, context: string): Observable<MeetingReview> {
+  //   console.log("updateContextForMeeting, reviewId %s, comment : %s", reviewId, context);
+  //   let body = {
+  //     comment: context,
+  //   };
+  //   let param = [reviewId];
+  //   return this.apiService.put(AuthService.PUT_MEETING_REVIEW, param, body).map((response: Response) => {
+  //     let json: MeetingReview = response.json();
+  //     console.log("updateContextForMeeting, response json : ", json);
+  //     return json;
+  //   });
+  // }
 
   //add review for type SESSION_GOAL
   addAGoalToMeeting(meetingId: string, goal: string): Observable<MeetingReview> {
@@ -231,18 +197,18 @@ export class CoachCoacheeService {
   }
 
 
-  updateGoalForMeeting(reviewId: string, goal: string): Observable<MeetingReview> {
-    console.log("updateGoalForMeeting, reviewId %s, comment : %s", reviewId, goal);
-    let body = {
-      comment: goal,
-    };
-    let param = [reviewId];
-    return this.apiService.put(AuthService.PUT_MEETING_REVIEW, param, body).map((response: Response) => {
-      let json: MeetingReview = response.json();
-      console.log("updateGoalForMeeting, response json : ", json);
-      return json;
-    });
-  }
+  // updateGoalForMeeting(reviewId: string, goal: string): Observable<MeetingReview> {
+  //   console.log("updateGoalForMeeting, reviewId %s, comment : %s", reviewId, goal);
+  //   let body = {
+  //     comment: goal,
+  //   };
+  //   let param = [reviewId];
+  //   return this.apiService.put(AuthService.PUT_MEETING_REVIEW, param, body).map((response: Response) => {
+  //     let json: MeetingReview = response.json();
+  //     console.log("updateGoalForMeeting, response json : ", json);
+  //     return json;
+  //   });
+  // }
 
   //add review for type SESSION_VALUE
   addAMeetingReviewForValue(meetingId: string, comment: string): Observable<MeetingReview> {
@@ -274,18 +240,18 @@ export class CoachCoacheeService {
     });
   }
 
-  /**
-   * Delete a review
-   */
-  removeReview(reviewId: string): Observable<any> {
-    console.log("removeReview, reviewId %s", reviewId);
-    let param = [reviewId];
-    return this.apiService.delete(AuthService.DELETE_MEETING_REVIEW, param).map((response: Response) => {
-      let json = response.json();
-      console.log("removeReview, response json : ", json);
-      return json;
-    });
-  }
+  // /**
+  //  * Delete a review
+  //  */
+  // removeReview(reviewId: string): Observable<any> {
+  //   console.log("removeReview, reviewId %s", reviewId);
+  //   let param = [reviewId];
+  //   return this.apiService.delete(AuthService.DELETE_MEETING_REVIEW, param).map((response: Response) => {
+  //     let json = response.json();
+  //     console.log("removeReview, response json : ", json);
+  //     return json;
+  //   });
+  // }
 
   /**
    * Delete a potential date

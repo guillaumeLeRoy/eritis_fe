@@ -31,6 +31,7 @@ export class AuthService {
 
   /*Meeting*/
   public static POST_MEETING = "/meeting";
+  public static DELETE_MEETING = "/meeting/:meetingId";
   public static GET_MEETING_REVIEWS = "/meeting/:meetingId/reviews";
   public static POST_MEETING_REVIEW = "/meeting/:meetingId/review";
   public static PUT_MEETING_REVIEW = "/meeting/reviews/:reviewId";//update review
@@ -43,7 +44,6 @@ export class AuthService {
   public static PUT_POTENTIAL_DATE_TO_MEETING = "/meeting/potential/:potentialId";//update potential date
   public static DELETE_POTENTIAL_DATE = "/meeting/potentials/:potentialId";//delete potential date
   public static PUT_FINAL_DATE_TO_MEETING = "/meeting/:meetingId/date/:potentialId";//set the potential date as the meeting selected date
-  public static DELETE_MEETING = "/meeting/:meetingId";//delete meeting ( action will be different following who call this method )
 
   private onAuthStateChangedCalled = false;
   // private user: User

@@ -44,12 +44,8 @@ export class MeetingListComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   onRefreshRequested() {
-    console.log("onRefreshRequested")
-
     let user = this.authService.getConnectedUser();
     console.log("onRefreshRequested, user : ", user);
-    this.onUserObtained(user);
-
     if (user == null) {
       this.connectedUserSubscription = this.authService.getConnectedUserObservable().subscribe(
         (user: Coach | Coachee) => {
@@ -57,6 +53,8 @@ export class MeetingListComponent implements OnInit, AfterViewInit, OnDestroy {
           this.onUserObtained(user);
         }
       );
+    } else {
+      this.onUserObtained(user);
     }
   }
 
@@ -208,7 +206,7 @@ export class MeetingListComponent implements OnInit, AfterViewInit, OnDestroy {
     }
   }
 
-  refreshDashboard(){
+  refreshDashboard() {
     location.reload();
   }
 

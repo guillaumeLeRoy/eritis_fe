@@ -152,7 +152,7 @@ export class MeetingDateComponent implements OnInit, OnDestroy {
       }, (error) => {
         console.log('unbookAdate, error', error);
       }
-    )
+    );
   }
 
   modifyPotentialDate(potentialDateId: string) {

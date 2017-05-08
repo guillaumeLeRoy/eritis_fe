@@ -48,4 +48,13 @@ export class MeetingsService {
       return meeting;
     });
   }
+
+  /**
+   * Delete a meeting
+   * @returns {Observable<Response>}
+   */
+  deleteMeeting(meetingId: string): Observable<Response> {
+    let param = [meetingId];
+    return this.apiService.delete(AuthService.DELETE_MEETING, param);
+  }
 }

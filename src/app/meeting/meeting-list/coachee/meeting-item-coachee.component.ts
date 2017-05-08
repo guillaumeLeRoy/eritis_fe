@@ -3,9 +3,11 @@ import {Meeting} from "../../../model/meeting";
 import {CoachCoacheeService} from "../../../service/CoachCoacheeService";
 import {Observable} from "rxjs";
 import {Coach} from "../../../model/Coach";
-import {MEETING_REVIEW_TYPE_SESSION_GOAL, MeetingReview} from "../../../model/MeetingReview";
+import {MeetingReview} from "../../../model/MeetingReview";
 import {MeetingDate} from "../../../model/MeetingDate";
 import {Router} from "@angular/router";
+import {MeetingsService} from "../../../service/meetings.service";
+import {Response} from "@angular/http";
 
 declare var $: any;
 declare var Materialize: any;
@@ -21,7 +23,10 @@ export class MeetingItemCoacheeComponent implements OnInit {
   meeting: Meeting;
 
   @Output()
-  potentialDatePosted = new EventEmitter<MeetingDate>();
+  onMeetingCancelled = new EventEmitter<any>();
+
+  // @Output()
+  // potentialDatePosted = new EventEmitter<MeetingDate>();
 
   months = ['Jan', 'Feb', 'Mar', 'Avr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 
@@ -40,7 +45,7 @@ export class MeetingItemCoacheeComponent implements OnInit {
   /* Meeting potential dates */
   private potentialDates: Observable<MeetingDate[]>;
 
-  constructor(private router: Router, private coachCoacheeService: CoachCoacheeService, private cd: ChangeDetectorRef) {
+  constructor(private router: Router, private coachCoacheeService: CoachCoacheeService, private meetingAPIService: MeetingsService, private cd: ChangeDetectorRef) {
   }
 
   ngOnInit() {
@@ -53,15 +58,15 @@ export class MeetingItemCoacheeComponent implements OnInit {
     this.getReview();
   }
 
-  onPreMeetingReviewPosted(meeting: Meeting) {
-    console.log("onPreMeetingReviewPosted");
-    this.getReview();
-  }
-
-  onPotentialDatePosted(date: MeetingDate) {
-    console.log("onPotentialDatePosted");
-    this.potentialDatePosted.emit(date);
-  }
+  // onPreMeetingReviewPosted(meeting: Meeting) {
+  //   console.log("onPreMeetingReviewPosted");
+  //   this.getReview();
+  // }
+  //
+  // onPotentialDatePosted(date: MeetingDate) {
+  //   console.log("onPotentialDatePosted");
+  //   this.potentialDatePosted.emit(date);
+  // }
 
 
   private loadMeetingPotentialTimes() {
@@ -174,8 +179,26 @@ export class MeetingItemCoacheeComponent implements OnInit {
     $('#deleteModal').openModal();
   }
 
-  closeModal() {
+  cancelCancelMeeting() {
     $('#deleteModal').closeModal();
+
+  }
+
+  confirmCancelMeeting() {
+    console.log('confirmCancelMeeting');
+
+    $('#deleteModal').closeModal();
+
+    this.meetingAPIService.deleteMeeting(this.meeting.id).subscribe(
+      (response: Response) => {
+        console.log('confirmCancelMeeting, done');
+
+        this.onMeetingCancelled.emit();
+      },
+      (err) => {
+
+      }
+    );
   }
 
 }

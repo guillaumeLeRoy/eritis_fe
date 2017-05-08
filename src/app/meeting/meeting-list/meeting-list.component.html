@@ -6,7 +6,9 @@
 
       <!-- welcome message for coachee -->
       <div *ngIf="isUserACoachee((user | async))">
-        <h4 class="text-right">Il vous reste <span class="blue-text">{{(user | async)?.availableSessionsCount || 0}}</span> séance<span *ngIf="(user | async)?.availableSessionsCount > 1">s</span></h4>
+        <h4 class="text-right">Il vous reste <span
+          class="blue-text">{{(user | async)?.availableSessionsCount || 0}}</span> séance<span
+          *ngIf="(user | async)?.availableSessionsCount > 1">s</span></h4>
         <p class="text-right" *ngIf="(user | async)?.availableSessionsCount > 0">
           <span>Cliquez</span> ici pour planifier une nouvelle séance
           <a class="btn-floating btn-large waves-effect waves-light add-meeting-btn" (click)="goToDate()">
@@ -17,7 +19,8 @@
 
       <!-- welcome message for coach -->
       <div *ngIf="isUserACoach((user | async))">
-        <h4 class="text-right">Vous avez <span class="blue-text">{{(meetingsOpened | async)?.length}}</span> séance<span *ngIf="(user | async)?.availableSessionsCount > 1">s</span> cette semaine</h4>
+        <h4 class="text-right">Vous avez <span class="blue-text">{{(meetingsOpened | async)?.length}}</span> séance<span
+          *ngIf="(user | async)?.availableSessionsCount > 1">s</span> cette semaine</h4>
         <p class="text-right">
           <span class="blue-text">Cliquez</span> ici pour votre salon
           <a class="btn-floating btn-large waves-effect waves-light add-meeting-btn" (click)="null">
@@ -36,8 +39,8 @@
             <div *ngIf="hasUnbookedMeeting">
               <div class="collection-item" *ngFor="let meeting of meetingsUnbooked | async">
                 <rb-meeting-item-coach [meeting]="meeting"
-                                       (potentialDatePosted)="onRefreshRequested($event)"
-                                       (dateAgreed)="onRefreshRequested($event)">
+                                       (dateAgreed)="onRefreshRequested($event)"
+                                       (dateRemoved)="onRefreshRequested($event)">
                 </rb-meeting-item-coach>
               </div>
             </div>
@@ -56,7 +59,7 @@
             <div *ngIf="hasOpenedMeeting">
               <div class="collection-item" *ngFor="let meeting of meetingsOpened | async">
                 <rb-meeting-item-coach [meeting]="meeting"
-                                       (potentialDatePosted)="onRefreshRequested($event)">
+                                       (dateRemoved)="onRefreshRequested($event)">
                 </rb-meeting-item-coach>
               </div>
             </div>
@@ -75,7 +78,7 @@
             <div *ngIf="hasClosedMeeting">
               <div class="collection-item" *ngFor="let meeting of meetingsClosed | async">
                 <rb-meeting-item-coach [meeting]="meeting"
-                                       (potentialDatePosted)="onRefreshRequested($event)">
+                                       (dateRemoved)="onRefreshRequested($event)">
                 </rb-meeting-item-coach>
               </div>
             </div>
@@ -89,7 +92,6 @@
       </div><!--end view coach-->
 
 
-
       <!-- views for coachee -->
       <div *ngIf="isUserACoachee((user | async))">
 
@@ -100,7 +102,7 @@
             <div *ngIf="hasOpenedMeeting">
               <div class="collection-item" *ngFor="let meeting of meetingsOpened | async">
                 <rb-meeting-item-coachee [meeting]="meeting"
-                                         (potentialDatePosted)="onRefreshRequested($event)">
+                                         (onMeetingCancelled)="onRefreshRequested($event)">
                 </rb-meeting-item-coachee>
               </div>
             </div>
@@ -119,7 +121,7 @@
             <div *ngIf="hasClosedMeeting">
               <div class="collection-item" *ngFor="let meeting of meetingsClosed | async">
                 <rb-meeting-item-coachee [meeting]="meeting"
-                                         (potentialDatePosted)="onRefreshRequested($event)">
+                                         (onMeetingCancelled)="onRefreshRequested($event)">
                 </rb-meeting-item-coachee>
               </div>
             </div>

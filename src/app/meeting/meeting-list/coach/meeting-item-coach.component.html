@@ -5,12 +5,13 @@
     <div class="spinner-layer spinner-blue-only">
       <div class="circle-clipper left">
         <div class="circle"></div>
-      </div><div class="gap-patch">
-      <div class="circle"></div>
-    </div>
-    <div class="circle-clipper right">
-      <div class="circle"></div>
-    </div>
+      </div>
+      <div class="gap-patch">
+        <div class="circle"></div>
+      </div>
+      <div class="circle-clipper right">
+        <div class="circle"></div>
+      </div>
     </div>
   </div>
 
@@ -21,8 +22,10 @@
       <div>
         <div>
           <!-- image coach-->
-          <img *ngIf="meeting.coachee" class="meeting-item-coach-avatar circle img-responsive" alt="coachee" [src]="meeting.coachee.avatar_url">
-          <img *ngIf="!meeting.coachee" class="meeting-item-coach-avatar circle img-responsive" alt="coachee" src="https://s-media-cache-ak0.pinimg.com/originals/af/25/49/af25490494d3338afef00869c59fdd37.png">
+          <img *ngIf="meeting.coachee" class="meeting-item-coach-avatar circle img-responsive" alt="coachee"
+               [src]="meeting.coachee.avatar_url">
+          <img *ngIf="!meeting.coachee" class="meeting-item-coach-avatar circle img-responsive" alt="coachee"
+               src="https://s-media-cache-ak0.pinimg.com/originals/af/25/49/af25490494d3338afef00869c59fdd37.png">
         </div>
 
         <div>
@@ -72,7 +75,8 @@
             <form class="confirm-meeting-form">
               <span class="black-text bold">Réponse :</span>
               <div class="input-field">
-                <select [(ngModel)]="selectedDate" name="meeting-date" class="browser-default" (change)="loadPotentialHours(selectedDate)">
+                <select [(ngModel)]="selectedDate" name="meeting-date" class="browser-default"
+                        (change)="loadPotentialHours(selectedDate)">
                   <option value="" disabled selected>Date</option>
                   <option *ngFor="let d of potentialDays | async" [ngValue]=" d ">
                     {{ getDate(d) }}
@@ -80,7 +84,8 @@
                 </select>
               </div>
               <div class="input-field">
-                <select [(ngModel)]="selectedHour" name="meeting-hour" class="browser-default" materialize="material_select">
+                <select [(ngModel)]="selectedHour" name="meeting-hour" class="browser-default"
+                        materialize="material_select">
                   <option value="" disabled selected>Heure</option>
                   <option *ngFor="let h of potentialHours | async" [ngValue]="h">
                     {{ printTimeNumber(h) }} - {{ printTimeNumber(h+0.5) }}
@@ -90,7 +95,8 @@
               <div class="input-field">
                 <button type="submit" class="btn-basic btn-blue btn-small"
                         [disabled]="!selectedDate || !selectedHour"
-                        (click)="confirmPotentialDate()">Valider</button>
+                        (click)="confirmPotentialDate()">Valider
+                </button>
               </div>
             </form>
           </div>
@@ -98,7 +104,9 @@
       </div>
 
       <div class="meeting-item-body-buttons" *ngIf="meeting.isOpen">
-        <button class="btn-basic btn-plain btn-green btn-small" *ngIf="!meeting.agreed_date" (click)="toggleShowDetails()">DETAIL</button>
+        <button class="btn-basic btn-plain btn-green btn-small" *ngIf="!meeting.agreed_date"
+                (click)="toggleShowDetails()">DETAIL
+        </button>
         <button class="btn-basic btn-cancel"
                 *ngIf="meeting.agreed_date"
                 (click)="openModal()">
@@ -118,8 +126,8 @@
       <h4>Vous pourrez fixer un autre rendez-vous pour ce meeting.</h4>
     </div>
     <div class="delete-modal-footer">
-      <button class="btn-basic btn-blue" (click)="closeModal()">Annuler</button>
-      <button class="btn-basic btn-plain btn-red" (click)="closeModal()">Supprimer</button>
+      <button class="btn-basic btn-blue" (click)="cancelCancelMeeting()">Annuler</button>
+      <button class="btn-basic btn-plain btn-red" (click)="validateCancelMeeting()">Supprimer</button>
     </div>
   </div>
 </div>
