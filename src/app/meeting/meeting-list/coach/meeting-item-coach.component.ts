@@ -23,8 +23,8 @@ export class MeetingItemCoachComponent implements OnInit, AfterViewInit {
   @Output()
   dateAgreed = new EventEmitter();
 
-  @Output()
-  dateRemoved = new EventEmitter();
+  // @Output()
+  // dateRemoved = new EventEmitter();
 
   @Output()
   cancelMeetingTimeEvent = new EventEmitter<Meeting>();

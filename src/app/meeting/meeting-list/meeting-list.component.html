@@ -40,8 +40,7 @@
               <div class="collection-item" *ngFor="let meeting of meetingsUnbooked | async">
                 <rb-meeting-item-coach [meeting]="meeting"
                                        (dateAgreed)="onRefreshRequested($event)"
-                                       (dateRemoved)="onRefreshRequested($event)"
-                                       (cancelMeetingTimeEvent)="openCancelMeetingModal($event)">
+                                       (cancelMeetingTimeEvent)="openCoachCancelMeetingModal($event)">
                 </rb-meeting-item-coach>
               </div>
             </div>
@@ -61,8 +60,7 @@
               <div class="collection-item" *ngFor="let meeting of meetingsOpened | async">
                 <rb-meeting-item-coach [meeting]="meeting"
                                        (dateAgreed)="onRefreshRequested($event)"
-                                       (dateRemoved)="onRefreshRequested($event)"
-                                       (cancelMeetingTimeEvent)="openCancelMeetingModal($event)">
+                                       (cancelMeetingTimeEvent)="openCoachCancelMeetingModal($event)">
                 </rb-meeting-item-coach>
               </div>
             </div>
@@ -82,8 +80,7 @@
               <div class="collection-item" *ngFor="let meeting of meetingsClosed | async">
                 <rb-meeting-item-coach [meeting]="meeting"
                                        (dateAgreed)="onRefreshRequested($event)"
-                                       (dateRemoved)="onRefreshRequested($event)"
-                                       (cancelMeetingTimeEvent)="openCancelMeetingModal($event)">
+                                       (cancelMeetingTimeEvent)="openCoachCancelMeetingModal($event)">
                 </rb-meeting-item-coach>
               </div>
             </div>
@@ -107,7 +104,7 @@
             <div *ngIf="hasOpenedMeeting">
               <div class="collection-item" *ngFor="let meeting of meetingsOpened | async">
                 <rb-meeting-item-coachee [meeting]="meeting"
-                                         (onMeetingCancelled)="onRefreshRequested($event)">
+                                         (cancelMeetingTimeEvent)="openCoacheeDeleteMeetingModal($event)">
                 </rb-meeting-item-coachee>
               </div>
             </div>
@@ -126,7 +123,7 @@
             <div *ngIf="hasClosedMeeting">
               <div class="collection-item" *ngFor="let meeting of meetingsClosed | async">
                 <rb-meeting-item-coachee [meeting]="meeting"
-                                         (onMeetingCancelled)="onRefreshRequested($event)">
+                                         (cancelMeetingTimeEvent)="openCoacheeDeleteMeetingModal($event)">
                 </rb-meeting-item-coachee>
               </div>
             </div>
@@ -145,14 +142,28 @@
 
 
 <!-- Modal Structure -->
-<div id="cancel_meeting" class="modal">
+<div id="coach_cancel_meeting" class="modal">
   <div class="delete-modal-content">
     <div class="delete-modal-message">
       <h4>Vous pourrez fixer un autre rendez-vous pour ce meeting.</h4>
     </div>
     <div class="delete-modal-footer">
-      <button class="btn-basic btn-blue" (click)="cancelCancelMeeting()">Annuler</button>
-      <button class="btn-basic btn-plain btn-red" (click)="validateCancelMeeting()">Supprimer</button>
+      <button class="btn-basic btn-blue" (click)="cancelCoachCancelMeeting()">Annuler</button>
+      <button class="btn-basic btn-plain btn-red" (click)="validateCoachCancelMeeting()">Supprimer</button>
+    </div>
+  </div>
+</div>
+
+
+<!-- Modal Structure -->
+<div id="coachee_delete_meeting_modal" class="modal">
+  <div class="delete-modal-content">
+    <div class="delete-modal-message">
+      <h4>Ce meeting sera supprimé définitivement.</h4>
+    </div>
+    <div class="delete-modal-footer">
+      <button class="btn-basic btn-blue" (click)="cancelCoacheeDeleteMeeting()">Annuler</button>
+      <button class="btn-basic btn-plain btn-red" (click)="validateCoacheeDeleteMeeting()">Supprimer</button>
     </div>
   </div>
 </div>

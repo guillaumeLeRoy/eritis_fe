@@ -1,4 +1,4 @@
-import {Component, OnInit, AfterViewInit, ChangeDetectorRef, OnDestroy} from '@angular/core';
+import {AfterViewInit, ChangeDetectorRef, Component, OnDestroy, OnInit} from "@angular/core";
 import {MeetingsService} from "../../service/meetings.service";
 import {Meeting} from "../../model/meeting";
 import {Observable, Subscription} from "rxjs";
@@ -7,6 +7,7 @@ import {ApiUser} from "../../model/apiUser";
 import {Coach} from "../../model/Coach";
 import {Coachee} from "../../model/coachee";
 import {Router} from "@angular/router";
+import {Response} from "@angular/http";
 
 
 declare var $: any;
@@ -230,23 +231,32 @@ export class MeetingListComponent implements OnInit, AfterViewInit, OnDestroy {
 
   private meetingToCancel: Meeting;
 
-  openCancelMeetingModal(meeting: Meeting) {
-    this.meetingToCancel = meeting;
-    $('#cancel_meeting').openModal();
+  private coachCancelModalVisibility(isVisible: boolean) {
+    if (isVisible) {
+      $('#coach_cancel_meeting').openModal();
+    } else {
+      $('#coach_cancel_meeting').closeModal();
+    }
   }
 
-  cancelCancelMeeting() {
-    $('#cancel_meeting').closeModal();
+  openCoachCancelMeetingModal(meeting: Meeting) {
+    this.meetingToCancel = meeting;
+    this.coachCancelModalVisibility(true);
+  }
+
+  cancelCoachCancelMeeting() {
+    this.coachCancelModalVisibility(false);
+    this.meetingToCancel = null;
   }
 
   //remove MeetingTime
-  validateCancelMeeting() {
+  validateCoachCancelMeeting() {
     console.log('validateCancelMeeting, agreed date : ', this.meetingToCancel.agreed_date);
     let meetingTimeId = this.meetingToCancel.agreed_date.id;
     console.log('validateCancelMeeting, id : ', meetingTimeId);
 
     //hide modal
-    $('#cancel_meeting').closeModal();
+    this.coachCancelModalVisibility(false);
     this.meetingToCancel = null;
     //perform request
     this.meetingsService.removePotentialTime(meetingTimeId).subscribe(
@@ -258,6 +268,46 @@ export class MeetingListComponent implements OnInit, AfterViewInit, OnDestroy {
         this.onRefreshRequested()
       }, (error) => {
         console.log('unbookAdate, error', error);
+      }
+    );
+  }
+
+
+  private coacheeDeleteModalVisibility(isVisible: boolean) {
+    if (isVisible) {
+      $('#coachee_delete_meeting_modal').openModal();
+    } else {
+      $('#coachee_delete_meeting_modal').closeModal();
+    }
+  }
+
+  openCoacheeDeleteMeetingModal(meeting: Meeting) {
+    this.meetingToCancel = meeting;
+    this.coacheeDeleteModalVisibility(true);
+  }
+
+  cancelCoacheeDeleteMeeting() {
+    this.coacheeDeleteModalVisibility(false);
+    this.meetingToCancel = null;
+  }
+
+  validateCoacheeDeleteMeeting() {
+    console.log('validateCoacheeDeleteMeeting');
+
+    let meetingId = this.meetingToCancel.id;
+
+    this.coacheeDeleteModalVisibility(false);
+    this.meetingToCancel = null;
+
+    this.meetingsService.deleteMeeting(meetingId).subscribe(
+      (response: Response) => {
+        console.log('confirmCancelMeeting, res', response);
+        // this.onMeetingCancelled.emit();
+        this.onRefreshRequested()
+        Materialize.toast('Meeting supprimé !', 3000, 'rounded')
+      }, (error) => {
+        console.log('confirmCancelMeeting, error', error);
+        Materialize.toast('Impossible de supprimer le meeting', 3000, 'rounded')
       }
     );
   }

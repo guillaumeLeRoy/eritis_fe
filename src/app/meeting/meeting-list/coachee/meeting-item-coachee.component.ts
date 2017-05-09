@@ -1,13 +1,11 @@
-import {Component, OnInit, Input, ChangeDetectorRef, Output, EventEmitter} from '@angular/core';
+import {ChangeDetectorRef, Component, EventEmitter, Input, OnInit, Output} from "@angular/core";
 import {Meeting} from "../../../model/meeting";
-import {CoachCoacheeService} from "../../../service/CoachCoacheeService";
 import {Observable} from "rxjs";
 import {Coach} from "../../../model/Coach";
 import {MeetingReview} from "../../../model/MeetingReview";
 import {MeetingDate} from "../../../model/MeetingDate";
 import {Router} from "@angular/router";
 import {MeetingsService} from "../../../service/meetings.service";
-import {Response} from "@angular/http";
 
 declare var $: any;
 declare var Materialize: any;
@@ -22,11 +20,11 @@ export class MeetingItemCoacheeComponent implements OnInit {
   @Input()
   meeting: Meeting;
 
-  @Output()
-  onMeetingCancelled = new EventEmitter<any>();
-
   // @Output()
-  // potentialDatePosted = new EventEmitter<MeetingDate>();
+  // onMeetingCancelled = new EventEmitter<any>();
+
+  @Output()
+  cancelMeetingTimeEvent = new EventEmitter<Meeting>();
 
   months = ['Jan', 'Feb', 'Mar', 'Avr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 
@@ -45,7 +43,7 @@ export class MeetingItemCoacheeComponent implements OnInit {
   /* Meeting potential dates */
   private potentialDates: Observable<MeetingDate[]>;
 
-  constructor(private router: Router, private coachCoacheeService: CoachCoacheeService, private meetingService: MeetingsService, private meetingAPIService: MeetingsService, private cd: ChangeDetectorRef) {
+  constructor(private router: Router, private meetingService: MeetingsService, private cd: ChangeDetectorRef) {
   }
 
   ngOnInit() {
@@ -176,29 +174,31 @@ export class MeetingItemCoacheeComponent implements OnInit {
   }
 
   openModal() {
-    $('#deleteModal').openModal();
+    this.cancelMeetingTimeEvent.emit(this.meeting);//TODO to improve
+
+    // $('#deleteModal').openModal();
   }
 
-  cancelCancelMeeting() {
-    $('#deleteModal').closeModal();
-
-  }
-
-  confirmCancelMeeting() {
-    console.log('confirmCancelMeeting');
-
-    $('#deleteModal').closeModal();
-
-    this.meetingAPIService.deleteMeeting(this.meeting.id).subscribe(
-      (response: Response) => {
-        console.log('confirmCancelMeeting, res', response);
-        this.onMeetingCancelled.emit();
-        Materialize.toast('Meeting supprimé !', 3000, 'rounded')
-      }, (error) => {
-        console.log('confirmCancelMeeting, error', error);
-        Materialize.toast('Impossible de supprimer le meeting', 3000, 'rounded')
-      }
-    );
-  }
+  // cancelCancelMeeting() {
+  //   $('#deleteModal').closeModal();
+  //
+  // }
+  //
+  // confirmCancelMeeting() {
+  //   console.log('confirmCancelMeeting');
+  //
+  //   $('#deleteModal').closeModal();
+  //
+  //   this.meetingAPIService.deleteMeeting(this.meeting.id).subscribe(
+  //     (response: Response) => {
+  //       console.log('confirmCancelMeeting, res', response);
+  //       this.onMeetingCancelled.emit();
+  //       Materialize.toast('Meeting supprimé !', 3000, 'rounded')
+  //     }, (error) => {
+  //       console.log('confirmCancelMeeting, error', error);
+  //       Materialize.toast('Impossible de supprimer le meeting', 3000, 'rounded')
+  //     }
+  //   );
+  // }
 
 }
