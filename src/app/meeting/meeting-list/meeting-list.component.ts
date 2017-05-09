@@ -8,6 +8,10 @@ import {Coach} from "../../model/Coach";
 import {Coachee} from "../../model/coachee";
 import {Router} from "@angular/router";
 
+
+declare var $: any;
+declare var Materialize: any;
+
 @Component({
   selector: 'rb-meeting-list',
   templateUrl: './meeting-list.component.html',
@@ -218,6 +222,44 @@ export class MeetingListComponent implements OnInit, AfterViewInit, OnDestroy {
     if (this.connectedUserSubscription) {
       this.connectedUserSubscription.unsubscribe();
     }
+  }
+
+  /* ************************************
+   ----Modal to cancel Meeting ----------
+   *************************************/
+
+  private meetingToCancel: Meeting;
+
+  openCancelMeetingModal(meeting: Meeting) {
+    this.meetingToCancel = meeting;
+    $('#cancel_meeting').openModal();
+  }
+
+  cancelCancelMeeting() {
+    $('#cancel_meeting').closeModal();
+  }
+
+  //remove MeetingTime
+  validateCancelMeeting() {
+    console.log('validateCancelMeeting, agreed date : ', this.meetingToCancel.agreed_date);
+    let meetingTimeId = this.meetingToCancel.agreed_date.id;
+    console.log('validateCancelMeeting, id : ', meetingTimeId);
+
+    //hide modal
+    $('#cancel_meeting').closeModal();
+    this.meetingToCancel = null;
+    //perform request
+    this.meetingsService.removePotentialTime(meetingTimeId).subscribe(
+      (response: Response) => {
+        console.log('validateCancelMeeting, res ', response);
+        console.log('emit');
+        // this.dateRemoved.emit(null);
+
+        this.onRefreshRequested()
+      }, (error) => {
+        console.log('unbookAdate, error', error);
+      }
+    );
   }
 
 }

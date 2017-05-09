@@ -45,7 +45,7 @@ export class MeetingItemCoacheeComponent implements OnInit {
   /* Meeting potential dates */
   private potentialDates: Observable<MeetingDate[]>;
 
-  constructor(private router: Router, private coachCoacheeService: CoachCoacheeService, private meetingAPIService: MeetingsService, private cd: ChangeDetectorRef) {
+  constructor(private router: Router, private coachCoacheeService: CoachCoacheeService, private meetingService: MeetingsService, private meetingAPIService: MeetingsService, private cd: ChangeDetectorRef) {
   }
 
   ngOnInit() {
@@ -72,7 +72,7 @@ export class MeetingItemCoacheeComponent implements OnInit {
   private loadMeetingPotentialTimes() {
     this.loading = true;
 
-    this.coachCoacheeService.getMeetingPotentialTimes(this.meeting.id).subscribe(
+    this.meetingService.getMeetingPotentialTimes(this.meeting.id).subscribe(
       (dates: MeetingDate[]) => {
         console.log("potential dates obtained, ", dates);
         this.potentialDates = Observable.of(dates);
@@ -106,7 +106,7 @@ export class MeetingItemCoacheeComponent implements OnInit {
   private getGoal() {
     this.loading = true;
 
-    this.coachCoacheeService.getMeetingGoal(this.meeting.id).subscribe(
+    this.meetingService.getMeetingGoal(this.meeting.id).subscribe(
       (reviews: MeetingReview[]) => {
         console.log("getMeetingGoal, got goal : ", reviews);
         if (reviews != null)
@@ -127,7 +127,7 @@ export class MeetingItemCoacheeComponent implements OnInit {
   private getReviewValue() {
     this.loading = true;
 
-    this.coachCoacheeService.getMeetingValue(this.meeting.id).subscribe(
+    this.meetingService.getMeetingValue(this.meeting.id).subscribe(
       (reviews: MeetingReview[]) => {
         console.log("getMeetingValue, got goal : ", reviews);
         if (reviews != null)
@@ -148,7 +148,7 @@ export class MeetingItemCoacheeComponent implements OnInit {
   private getReviewNextStep() {
     this.loading = true;
 
-    this.coachCoacheeService.getMeetingNextStep(this.meeting.id).subscribe(
+    this.meetingService.getMeetingNextStep(this.meeting.id).subscribe(
       (reviews: MeetingReview[]) => {
         console.log("getMeetingNextStep, got goal : ", reviews);
         if (reviews != null)
