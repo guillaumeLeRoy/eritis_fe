@@ -191,12 +191,12 @@ export class MeetingItemCoacheeComponent implements OnInit {
 
     this.meetingAPIService.deleteMeeting(this.meeting.id).subscribe(
       (response: Response) => {
-        console.log('confirmCancelMeeting, done');
-
+        console.log('confirmCancelMeeting, res', response);
         this.onMeetingCancelled.emit();
-      },
-      (err) => {
-
+        Materialize.toast('Meeting supprimé !', 3000, 'rounded')
+      }, (error) => {
+        console.log('confirmCancelMeeting, error', error);
+        Materialize.toast('Impossible de supprimer le meeting', 3000, 'rounded')
       }
     );
   }
