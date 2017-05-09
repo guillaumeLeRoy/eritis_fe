@@ -303,14 +303,15 @@ export class MeetingItemCoachComponent implements OnInit, AfterViewInit {
 
     //hide modal
     $('#deleteModal').closeModal();
-    //
+
     this.coachCoacheeService.removePotentialTime(this.meeting.agreed_date.id).subscribe(
       (response: Response) => {
         console.log('validateCancelMeeting, res ', response);
-        console.log('emit');
         this.dateRemoved.emit(null);
+        Materialize.toast('Meeting annulé !', 3000, 'rounded')
       }, (error) => {
         console.log('unbookAdate, error', error);
+        Materialize.toast("Impossible d'annuler le meeting", 3000, 'rounded')
       }
     );
   }
