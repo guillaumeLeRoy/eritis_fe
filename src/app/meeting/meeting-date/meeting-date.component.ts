@@ -7,6 +7,7 @@ import {Observable, Subscription} from 'rxjs';
 import {MeetingDate} from '../../model/MeetingDate';
 import {ActivatedRoute, Router} from '@angular/router';
 import {MeetingReview} from "../../model/MeetingReview";
+import {log} from "util";
 
 declare var Materialize: any;
 
@@ -224,7 +225,8 @@ export class MeetingDateComponent implements OnInit, OnDestroy {
   }
 
   isDisabled(date: NgbDateStruct, current: { month: number }) {
-    return (date.month !== current.month);
+    let now = new Date();
+    return (date.month !== current.month || date.year < now.getFullYear() || date.month < now.getMonth()+1 || (date.month == now.getMonth()+1 && date.day < now.getDate()));
   }
 
   /**
