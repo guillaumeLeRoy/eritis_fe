@@ -39,6 +39,7 @@ import {PostMeetingComponent} from './meeting/review/post-meeting.component';
 import {CoachSelectorComponent} from './user/coach-selector/coach-selector.component';
 import {AdminAPIService} from "./service/adminAPI.service";
 import { AdminComponent } from './admin/admin.component';
+import { RhComponent } from './meeting/meeting-list/rh/meeting-item-rh.component';
 
 @NgModule({
   declarations: [
@@ -62,7 +63,8 @@ import { AdminComponent } from './admin/admin.component';
     PreMeetingComponent,
     PostMeetingComponent,
     CoachSelectorComponent,
-    AdminComponent
+    AdminComponent,
+    RhComponent
   ],
   imports: [
     BrowserAnimationsModule,

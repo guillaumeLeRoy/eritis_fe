@@ -1,0 +1,50 @@
+<div class="meeting-item col-lg-12">
+
+  <div class="preloader-wrapper active" *ngIf="loading">
+    <div class="spinner-layer spinner-blue-only">
+      <div class="circle-clipper left">
+        <div class="circle"></div>
+      </div><div class="gap-patch">
+      <div class="circle"></div>
+    </div>
+      <div class="circle-clipper right">
+        <div class="circle"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row" *ngIf="!loading">
+
+    <!-- COACH -->
+    <div class="meeting-item-header col-sm-4 col-md-4 col-lg-3">
+      <div>
+        <div>
+          <!-- image coachee-->
+          <img class="meeting-item-coach-avatar circle img-responsive" alt="coachee" [src]="coachee.avatar_url">
+          <!--<img class="meeting-item-coach-avatar circle img-responsive" alt="coachee" src="https://s-media-cache-ak0.pinimg.com/originals/af/25/49/af25490494d3338afef00869c59fdd37.png">-->
+        </div>
+
+        <div>
+          <p class="meeting-item-coach">{{ coachee.display_name }}</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- USAGE -->
+    <div class="meeting-item-date col-sm-8 col-lg-3">
+        <span class="meeting-item-date-date">Usage: <span class="blue-text">xx%</span></span>
+    </div>
+
+    <!-- GOAL -->
+    <div class="meeting-item-body col-md-12 col-lg-6">
+      <div class="meeting-item-body-content">
+        <p class="meeting-item-goal">
+          <span class="black-text bold">Objectif: </span>
+          <span *ngIf="hasGoal">{{ goal }}</span>
+          <span *ngIf="!hasGoal">n/a.</span>
+        </p>
+    </div><!--end meeting-item-body-->
+
+  </div><!--end row-->
+
+</div><!--end meeting-item-->

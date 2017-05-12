@@ -7,6 +7,7 @@ import {ApiUser} from "../../model/apiUser";
 import {Coach} from "../../model/Coach";
 import {Coachee} from "../../model/coachee";
 import {Router} from "@angular/router";
+import {CoachCoacheeService} from "../../service/CoachCoacheeService";
 
 @Component({
   selector: 'rb-meeting-list',
@@ -15,6 +16,7 @@ import {Router} from "@angular/router";
 })
 export class MeetingListComponent implements OnInit, AfterViewInit, OnDestroy {
 
+  private coachees: Observable<Coachee[]>;
   private meetings: Observable<Meeting[]>;
   private meetingsOpened: Observable<Meeting[]>;
   private meetingsClosed: Observable<Meeting[]>;
@@ -24,13 +26,14 @@ export class MeetingListComponent implements OnInit, AfterViewInit, OnDestroy {
   private hasOpenedMeeting = false;
   private hasClosedMeeting = false;
   private hasUnbookedMeeting = false;
+  private hasCollaborators = false;
 
   private subscription: Subscription;
   private connectedUserSubscription: Subscription;
 
   private user: Observable<Coach | Coachee>;
 
-  constructor(private router: Router, private meetingsService: MeetingsService, private authService: AuthService, private cd: ChangeDetectorRef) {
+  constructor(private router: Router, private meetingsService: MeetingsService, private coachCoacheeService: CoachCoacheeService, private authService: AuthService, private cd: ChangeDetectorRef) {
   }
 
   ngOnInit() {
@@ -68,6 +71,11 @@ export class MeetingListComponent implements OnInit, AfterViewInit, OnDestroy {
     return user instanceof Coachee;
   }
 
+  isUserARh(user: Coach | Coachee) {
+    //TODO return correct result
+    return true;
+  }
+
   private getAllMeetingsForCoach(coachId: string) {
     this.subscription = this.meetingsService.getAllMeetingsForCoachId(coachId).subscribe(
       (meetings: Meeting[]) => {
@@ -97,6 +105,20 @@ export class MeetingListComponent implements OnInit, AfterViewInit, OnDestroy {
     );
   }
 
+  private getAllCoacheesForRh() {
+    //TODO pass a rh parameter
+    //TODO return only coachees for the RH
+    this.subscription = this.coachCoacheeService.getAllCoachees().subscribe(
+      (coachees: Coachee[]) => {
+        console.log("got coachees for rh", coachees);
+
+        this.coachees = Observable.of(coachees);
+        this.hasCollaborators = true;
+        this.cd.detectChanges();
+      }
+    );
+  }
+
   private onUserObtained(user: ApiUser) {
     console.log("onUserObtained, user : ", user);
     if (user) {
@@ -110,6 +132,8 @@ export class MeetingListComponent implements OnInit, AfterViewInit, OnDestroy {
         console.log("get a coachee");
         this.getAllMeetingsForCoachee(user.id);
       }
+
+      this.getAllCoacheesForRh();
 
       this.user = Observable.of(user);
       this.cd.detectChanges();
