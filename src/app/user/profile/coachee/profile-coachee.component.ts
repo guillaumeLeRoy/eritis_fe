@@ -15,7 +15,7 @@ export class ProfileCoacheeComponent implements OnInit, AfterViewInit,OnDestroy 
   private coachee: Observable<Coachee>;
 
   private connectedUser: Observable<ApiUser>;
-  private connectedUserSubscription: Subscription
+  private connectedUserSubscription: Subscription;
 
   private formCoachee: FormGroup;
 

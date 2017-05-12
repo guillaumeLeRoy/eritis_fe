@@ -12,3 +12,7 @@
 #signup_btn {
   margin-top: 2em;
 }
+
+.contract_selected {
+  background-color: #00acc1;
+}

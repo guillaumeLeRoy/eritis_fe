@@ -1,0 +1,37 @@
+
+
+<div id="card-alert_seance_book" class="card red" *ngIf="displayErrorReview">
+  <div class="card-content white-text">
+    <p>Impossible d'enregistrer votre commentaire</p>
+  </div>
+</div>
+
+<div>
+  <form class="col s12" [formGroup]="form" (ngSubmit)="submitMeetingReview()">
+    <div class="row">
+      <div class="input-field col s12">
+        <input id="session_value" type="text" formControlName="session_value">
+        <label for="session_value">En quoi la séance a-t-elle été utile ?</label>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="input-field col s12">
+        <input id="next_step" type="text" formControlName="next_step">
+        <label for="next_step">Avec quoi êtes-vous repartis ?</label>
+      </div>
+    </div>
+
+    <!-- submit btn -->
+    <div class="row">
+      <div class="input-field col s12">
+        <!--<button class="btn cyan waves-effect waves-light right" type="submit" name="action" [disabled]="!form.valid">-->
+        <!--Envoyer-->
+        <!--<i class="mdi-content-send right"></i>-->
+        <!--</button>-->
+
+        <button class="btn-basic btn-blue btn-small" type="submit" name="action">Envoyer</button>
+      </div>
+    </div>
+  </form>
+</div>

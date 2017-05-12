@@ -1,25 +1,138 @@
-<div class="container">
-  <h4> Liste de vos meetings</h4>
+<rb-header></rb-header>
 
+<div class="container">
   <div class="row">
     <div class="col s12">
 
-      <div *ngIf="(meetings | async)?.length == 0">
-        <h5>Vous n'avez aucun meeting</h5>
+      <!-- welcome message for coachee -->
+      <div *ngIf="isUserACoachee((user | async))">
+        <h4 class="text-right">Il vous reste <span class="blue-text">{{(user | async)?.availableSessionsCount || 0}}</span> séance<span *ngIf="(user | async)?.availableSessionsCount > 1">s</span></h4>
+        <p class="text-right" *ngIf="(user | async)?.availableSessionsCount > 0">
+          <span>Cliquez</span> ici pour planifier une nouvelle séance
+          <a class="btn-floating btn-large waves-effect waves-light add-meeting-btn" (click)="goToDate()">
+            <i class="material-icons">add</i>
+          </a>
+        </p>
+      </div>
+
+      <!-- welcome message for coach -->
+      <div *ngIf="isUserACoach((user | async))">
+        <h4 class="text-right">Vous avez <span class="blue-text">{{(meetingsOpened | async)?.length}}</span> séance<span *ngIf="(user | async)?.availableSessionsCount > 1">s</span> cette semaine</h4>
+        <p class="text-right">
+          <span class="blue-text">Cliquez</span> ici pour votre salon
+          <a class="btn-floating btn-large waves-effect waves-light add-meeting-btn" (click)="null">
+            <i class="material-icons">videocam</i>
+          </a>
+        </p>
       </div>
 
       <!-- views for coach -->
       <div *ngIf="isUserACoach((user | async))">
-        <rb-meeting-item-coach *ngFor="let meeting of meetings | async" [meeting]="meeting"
-                               (meetingUpdated)="onRefreshRequested($event)"></rb-meeting-item-coach>
-      </div>
+
+        <div class="row">
+          <h4 class="col-lg-12 black-text">Demandes disponibles</h4>
+          <div class="card collection col-lg-12">
+
+            <div *ngIf="hasUnbookedMeeting">
+              <div class="collection-item" *ngFor="let meeting of meetingsUnbooked | async">
+                <rb-meeting-item-coach [meeting]="meeting"
+                                       (potentialDatePosted)="onRefreshRequested($event)"
+                                       (dateAgreed)="onRefreshRequested($event)">
+                </rb-meeting-item-coach>
+              </div>
+            </div>
+
+            <div *ngIf="!hasUnbookedMeeting" class="collection-item text-center">
+              <h5 class="no-meeting">Les demandes disponibles apparaîtront ici</h5>
+            </div>
+
+          </div><!--end card-->
+        </div><!--end row-->
+
+        <div class="row">
+          <h4 class="col-lg-12 black-text">A venir</h4>
+          <div class="card collection col-lg-12">
+
+            <div *ngIf="hasOpenedMeeting">
+              <div class="collection-item" *ngFor="let meeting of meetingsOpened | async">
+                <rb-meeting-item-coach [meeting]="meeting"
+                                       (potentialDatePosted)="onRefreshRequested($event)">
+                </rb-meeting-item-coach>
+              </div>
+            </div>
+
+            <div *ngIf="!hasOpenedMeeting" class="collection-item text-center">
+              <h5 class="no-meeting">Vos séances à venir apparaîtront ici</h5>
+            </div>
+
+          </div><!--end card-->
+        </div><!--end row-->
+
+        <div class="row">
+          <h4 class="col-lg-12 black-text">Complétées</h4>
+          <div class="card collection col-lg-12">
+
+            <div *ngIf="hasClosedMeeting">
+              <div class="collection-item" *ngFor="let meeting of meetingsClosed | async">
+                <rb-meeting-item-coach [meeting]="meeting"
+                                       (potentialDatePosted)="onRefreshRequested($event)">
+                </rb-meeting-item-coach>
+              </div>
+            </div>
+
+            <div *ngIf="!hasClosedMeeting" class="collection-item text-center">
+              <h5 class="no-meeting">Vos séances complétées apparaîtront ici</h5>
+            </div>
+
+          </div><!--end card-->
+        </div><!--end row-->
+      </div><!--end view coach-->
+
+
 
       <!-- views for coachee -->
       <div *ngIf="isUserACoachee((user | async))">
-        <rb-meeting-item-coachee *ngFor="let meeting of meetings | async"
-                                 [meeting]="meeting" (potentialDatePosted)="onRefreshRequested($event)"></rb-meeting-item-coachee>
-      </div>
-    </div>
-  </div>
+
+        <div class="row">
+          <h4 class="col-lg-12 black-text">A venir</h4>
+          <div class="card collection col-lg-12">
+
+            <div *ngIf="hasOpenedMeeting">
+              <div class="collection-item" *ngFor="let meeting of meetingsOpened | async">
+                <rb-meeting-item-coachee [meeting]="meeting"
+                                         (potentialDatePosted)="onRefreshRequested($event)">
+                </rb-meeting-item-coachee>
+              </div>
+            </div>
+
+            <div *ngIf="!hasOpenedMeeting" class="collection-item text-center">
+              <h5 class="no-meeting">Vos séances à venir apparaîtront ici</h5>
+            </div>
+
+          </div><!--end card-->
+        </div><!--end row-->
+
+        <div class="row">
+          <h4 class="col-lg-12 black-text">Complétées</h4>
+          <div class="card collection col-lg-12">
+
+            <div *ngIf="hasClosedMeeting">
+              <div class="collection-item" *ngFor="let meeting of meetingsClosed | async">
+                <rb-meeting-item-coachee [meeting]="meeting"
+                                         (potentialDatePosted)="onRefreshRequested($event)">
+                </rb-meeting-item-coachee>
+              </div>
+            </div>
+
+            <div *ngIf="!hasClosedMeeting" class="collection-item text-center">
+              <h5 class="no-meeting">Vos séances complétées apparaîtront ici</h5>
+            </div>
+
+          </div><!--end card-->
+        </div><!--end row-->
+
+      </div><!--end ngif-->
+    </div><!--end row-->
+  </div><!--end container-->
 </div>
 

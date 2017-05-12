@@ -1,0 +1,115 @@
+.container{
+  /*Evite que le texte se sélectionne pendant la sélection sur le slider*/
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+.header-date-picker{
+  line-height: 1.5;
+  margin-bottom: 64px;
+}
+
+.custom-day{
+  display: inline-block;
+  border-radius: 100%;
+  color: var(--main-dark-grey);
+  font-size: 16px;
+  line-height: 40px;
+  height: 40px;
+  width: 40px;
+}
+
+.custom-day:hover{
+  background-color: var(--main-light-grey);
+}
+
+.custom-day.text-muted{
+  color: #e7e7e7 !important;
+  pointer-events: none;
+  cursor: default;
+}
+
+.bg-primary{
+  background-color: var(--main-electric-blue) !important;
+  color: #FFF !important;
+}
+
+.has-potential-date{
+  color: var(--main-electric-blue);
+  font-weight: 600;
+}
+
+.plage-horaire{
+  font-weight: 800;
+}
+
+#datepicker-container{
+  display: inline-block;
+  width: 361.5px;
+  border-radius: 0.25rem;
+  margin-bottom: 32px;
+}
+
+#potential-dates{
+  padding: 0 32px 16px;
+}
+
+.potential-date{
+  margin-bottom: 16px;
+}
+
+.potential-date-content{
+  display: flex;
+  align-items: center;
+  align-content: center;
+}
+
+.blue-point{
+  background-color: var(--main-electric-blue);
+  width: 20px;
+  height: 20px;
+  border-radius: 100%;
+  margin-right: 8px;
+}
+
+.potential-date-timeslot{
+  font-size: 20px;
+  font-weight: 600;
+  margin: 0;
+}
+
+.modify-timeslot,
+.delete-timeslot{
+  color: var(--main-light-grey) !important;
+  margin-left: 8px;
+}
+
+.modify-timeslot:hover,
+.delete-timeslot:hover{
+  color: var(--main-electric-blue) !important;
+  cursor: pointer;
+}
+
+@media(max-width: 1180px) {
+  #datepicker-container{
+    -webkit-transform: scale(.7);
+    -moz-transform: scale(.7);
+    -ms-transform: scale(.7);
+    -o-transform: scale(.7);
+    transform: scale(.7);
+  }
+}
+
+@media(max-width: 990px) {
+  #datepicker-container{
+    -webkit-transform: scale(1);
+    -moz-transform: scale(1);
+    -ms-transform: scale(1);
+    -o-transform: scale(1);
+    transform: scale(1);
+  }
+}

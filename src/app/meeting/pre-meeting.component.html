@@ -1,42 +1,16 @@
+<h4 class="card-title">Veuillez renseigner les éléments de votre demande</h4>
 
-
-<div id="card-alert_seance_book" class="card red" *ngIf="displayErrorPostingReview">
-  <div class="card-content white-text">
-    <p>Impossible d'enregistrer votre commentaire</p>
+<div class="row">
+  <div class="input-field col s12">
+    <input id="objectif" type="text" [ngModel]="uiMeetingGoal" (change)="onGoalValueChanged($event)">
+    <label for="objectif">Quel est votre objectif ?</label>
   </div>
 </div>
 
-<div class="card">
 
-  <div class="card-content">
-
-    <span class="card-title">Ajouter des explications</span>
-
-    <form class="col s12" [formGroup]="form" (ngSubmit)="submitMeetingContextForm()">
-      <div class="row">
-        <div class="input-field col s12">
-          <input id="context" type="text" formControlName="context">
-          <label for="context">Donnez nous un peu de context pour ce meeting</label>
-
-        </div>
-      </div>
-
-      <!-- submit btn -->
-      <div class="row">
-        <div class="input-field col s12">
-          <!--<button class="btn cyan waves-effect waves-light right" type="submit" name="action" [disabled]="!form.valid">-->
-          <!--Envoyer-->
-          <!--<i class="mdi-content-send right"></i>-->
-          <!--</button>-->
-
-          <button class="btn cyan waves-effect waves-light right" type="submit" name="action">
-            Envoyer
-            <i class="mdi-content-send right"></i>
-          </button>
-        </div>
-      </div>
-
-    </form>
-
+<div class="row">
+  <div class="input-field col s12">
+    <input id="context" type="text" [ngModel]="uiMeetingContext" (change)="onContextValueChanged($event)">
+    <label for="context">Quel est le context ?</label>
   </div>
 </div>

@@ -20,12 +20,10 @@ nav li:focus a{
 
 .bg-top-image {
   position: fixed;
-  top: 0px;
-  left: 0px;
-  background-image: url("../../assets/img/eritis-mountain-bg-2.jpg");
+  top: 0;
+  left: 0;
   background-size: cover;
-  background-repeat: no-repeat;
-  background-position: center;
+  background: url("../../assets/img/eritis-mountain-bg-2.jpg") no-repeat center;
   height: 1000px;
   width: 100%;
   max-width: 100%;
@@ -34,9 +32,9 @@ nav li:focus a{
 
 .bg-top-filter{
   position: fixed;
-  top: 0px;
-  left: 0px;
-  background-color: rgba(0, 72, 129, 0.6);
+  top: 0;
+  left: 0;
+  background-color: var(--main-blue-filter);
   height: 1000px;
   width: 100%;
   max-width: 100%;
@@ -61,30 +59,24 @@ header.section .container{
 }
 
 .header-title{
-  font-size: 66px;
+  /*font-size: 66px*/
+  font-size: 8vmin; /*Test taille adaptative relative à la taille minimale de l'écran*/
   font-weight: 500;
   letter-spacing: 1.1px;
   margin: 0;
 }
 
 .header-subtitle{
-  font-size: 36px;
+  /*font-size: 36px;*/
+  font-size: 4vmin;
   font-weight: 300;
   letter-spacing: 2.3px;
   margin: 64px 0;
   opacity: 0.6;
 }
 
-.header-btn-left{
-  padding-right: 16px;
-}
-
-.header-btn-right{
-  padding-left: 16px;
-}
-
-.btn-connexion .material-icons{
-  vertical-align: text-bottom;
+.header-btn .btn-basic{
+  min-width: 200px;
 }
 
 .header-arrow-bottom{
@@ -92,6 +84,7 @@ header.section .container{
   color: var(--main-white-color);
   opacity: 0.6;
 }
+
 .header-arrow-bottom:hover{
   opacity: 1;
 }
@@ -116,7 +109,9 @@ rb-signin{
 }
 
 .section_title{
-  font-size: 42px;
+  /*font-size: 42px;*/
+  color: #000;
+  font-size: 5vmin;
   font-weight: 600;
   margin-bottom: 128px;
   margin-top: 0;
@@ -135,13 +130,15 @@ rb-signin{
 }
 
 .presentation_item_title{
-  font-size: 32px;
+  /*font-size: 32px;*/
+  font-size: 4vmin;
   height: 64px;
   color: #1D1D1D;
 }
 
 .presentation_item_text{
-  font-size: 22px;
+  /*font-size: 22px;*/
+  font-size: 3vmin;
   color: var(--main-light-grey);
 }
 
@@ -154,6 +151,7 @@ rb-signin{
 }
 
 .coach_section_title {
+  color: var(--main-white-color);
   margin-bottom: 32px;
 }
 
@@ -171,11 +169,13 @@ rb-signin{
 }
 
 .coach_description h4{
-  font-size: 36px;
+  /*font-size: 36px;*/
+  font-size: 4vmin;
   height: 72px;
 }
 
 .coach_description p{
+  font-size: 2.5vmin;
   opacity: 0.8;
 }
 
@@ -229,18 +229,12 @@ textarea{
 }
 
 .address{
-  margin-top: 128px;
+  color: #000;
 }
 
 .address p{
   font-size: 22px;
   font-weight: 400;
-}
-
-.contacts{
-  color: var(--main-light-grey);
-  font-size: 22px;
-  margin-top: 64px;
 }
 
 .btn-submit{
@@ -249,6 +243,10 @@ textarea{
 }
 
 .btn-submit:disabled{
-  border-color: #44AFFE;
+  border-color: #E8E8E8;
   background-color: #E8E8E8;
+}
+
+.side-nav{
+  background-color: rgba(255, 255, 255, .9)
 }
