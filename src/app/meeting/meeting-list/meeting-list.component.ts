@@ -264,10 +264,11 @@ export class MeetingListComponent implements OnInit, AfterViewInit, OnDestroy {
         console.log('validateCancelMeeting, res ', response);
         console.log('emit');
         // this.dateRemoved.emit(null);
-
-        this.onRefreshRequested()
+        this.onRefreshRequested();
+        Materialize.toast('Meeting annulé !', 3000, 'rounded');
       }, (error) => {
         console.log('unbookAdate, error', error);
+        Materialize.toast("Impossible d'annuler le meeting", 3000, 'rounded');
       }
     );
   }
@@ -303,11 +304,11 @@ export class MeetingListComponent implements OnInit, AfterViewInit, OnDestroy {
       (response: Response) => {
         console.log('confirmCancelMeeting, res', response);
         // this.onMeetingCancelled.emit();
-        this.onRefreshRequested()
-        Materialize.toast('Meeting supprimé !', 3000, 'rounded')
+        this.onRefreshRequested();
+        Materialize.toast('Meeting supprimé !', 3000, 'rounded');
       }, (error) => {
         console.log('confirmCancelMeeting, error', error);
-        Materialize.toast('Impossible de supprimer le meeting', 3000, 'rounded')
+        Materialize.toast('Impossible de supprimer le meeting', 3000, 'rounded');
       }
     );
   }
