@@ -31,6 +31,7 @@ export class AuthService {
 
   /*Meeting*/
   public static POST_MEETING = "/meeting";
+  public static DELETE_MEETING = "/meeting/:meetingId";
   public static GET_MEETING_REVIEWS = "/meeting/:meetingId/reviews";
   public static POST_MEETING_REVIEW = "/meeting/:meetingId/review";
   public static PUT_MEETING_REVIEW = "/meeting/reviews/:reviewId";//update review

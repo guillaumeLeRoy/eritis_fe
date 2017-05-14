@@ -9,6 +9,7 @@ import {
   MeetingReview
 
 } from "../model/MeetingReview";
+import {MeetingsService} from "../service/meetings.service";
 
 @Component({
   selector: 'er-pre-meeting',
@@ -29,19 +30,19 @@ export class PreMeetingComponent implements OnInit {
   meetingContext = new EventEmitter<string>();
   private uiMeetingContext: string;
 
-  constructor(private coachService: CoachCoacheeService) {
+  constructor(private meetingService: MeetingsService) {
   }
 
   ngOnInit() {
     console.log("PreMeetingComponent onInit");
-   //this.getAllMeetingReviews();
+    //this.getAllMeetingReviews();
     this.getMeetingGoal();
     this.getMeetingContext();
   }
 
   /* Get from API review goal for the given meeting */
   private getMeetingGoal() {
-    this.coachService.getMeetingGoal(this.meetingId).subscribe(
+    this.meetingService.getMeetingGoal(this.meetingId).subscribe(
       (reviews: MeetingReview[]) => {
         console.log("getMeetingGoal, got goal : ", reviews);
         if (reviews != null)
@@ -55,7 +56,7 @@ export class PreMeetingComponent implements OnInit {
 
   /* Get from API all review context for the given meeting */
   private getMeetingContext() {
-    this.coachService.getMeetingContext(this.meetingId).subscribe(
+    this.meetingService.getMeetingContext(this.meetingId).subscribe(
       (reviews: MeetingReview[]) => {
         console.log("getMeetingContext, got context : ", reviews);
         if (reviews != null)

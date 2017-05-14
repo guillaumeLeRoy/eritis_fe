@@ -3,10 +3,9 @@ import {Meeting} from "../../../model/meeting";
 import {Observable} from "rxjs";
 import {MeetingReview} from "../../../model/MeetingReview";
 import {FormGroup, FormBuilder, Validators} from "@angular/forms";
-import {CoachCoacheeService} from "../../../service/CoachCoacheeService";
 import {Coachee} from "../../../model/coachee";
 import {MeetingDate} from "../../../model/MeetingDate";
-import {Router} from "@angular/router";
+import {MeetingsService} from "../../../service/meetings.service";
 
 declare var $: any;
 declare var Materialize: any;
@@ -16,15 +15,19 @@ declare var Materialize: any;
   templateUrl: 'meeting-item-coach.component.html',
   styleUrls: ['meeting-item-coach.component.css']
 })
-export class MeetingItemCoachComponent implements OnInit,AfterViewInit {
+export class MeetingItemCoachComponent implements OnInit, AfterViewInit {
 
   @Input()
   meeting: Meeting;
 
   @Output()
-  meetingUpdated = new EventEmitter();
+  dateAgreed = new EventEmitter();
 
-  @Output() dateAgreed = new EventEmitter();
+  // @Output()
+  // dateRemoved = new EventEmitter();
+
+  @Output()
+  cancelMeetingTimeEvent = new EventEmitter<Meeting>();
 
   months = ['Jan', 'Feb', 'Mar', 'Avr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 
@@ -48,14 +51,12 @@ export class MeetingItemCoachComponent implements OnInit,AfterViewInit {
   private selectedDate: string;
   private selectedHour: number;
 
-  private agreedMeeting: MeetingDate;
-
   private potentialDays: Observable<number[]>;
   private potentialHours: Observable<number[]>;
 
   private closeMeetingForm: FormGroup;
 
-  constructor(private router: Router, private formBuilder: FormBuilder, private coachCoacheeService: CoachCoacheeService, private cd: ChangeDetectorRef) {
+  constructor(private formBuilder: FormBuilder, private meetingService: MeetingsService, private cd: ChangeDetectorRef) {
     $('select').material_select();
   }
 
@@ -79,7 +80,7 @@ export class MeetingItemCoachComponent implements OnInit,AfterViewInit {
   }
 
   loadMeetingPotentialTimes() {
-    this.coachCoacheeService.getMeetingPotentialTimes(this.meeting.id).subscribe(
+    this.meetingService.getMeetingPotentialTimes(this.meeting.id).subscribe(
       (dates: MeetingDate[]) => {
         console.log("potential dates obtained, ", dates);
 
@@ -119,12 +120,12 @@ export class MeetingItemCoachComponent implements OnInit,AfterViewInit {
     let timestampMax: number = +maxDate.getTime().toFixed(0) / 1000;
 
     // create new date
-    this.coachCoacheeService.addPotentialDateToMeeting(this.meeting.id, timestampMin, timestampMax).subscribe(
+    this.meetingService.addPotentialDateToMeeting(this.meeting.id, timestampMin, timestampMax).subscribe(
       (meetingDate: MeetingDate) => {
         console.log('addPotentialDateToMeeting, meetingDate : ', meetingDate);
 
         // validate date
-        this.coachCoacheeService.setFinalDateToMeeting(this.meeting.id, meetingDate.id).subscribe(
+        this.meetingService.setFinalDateToMeeting(this.meeting.id, meetingDate.id).subscribe(
           (meeting: Meeting) => {
             console.log("confirmPotentialDate, response", meeting);
             this.dateAgreed.emit();
@@ -145,7 +146,7 @@ export class MeetingItemCoachComponent implements OnInit,AfterViewInit {
     console.log("submitCloseMeetingForm form : ", this.closeMeetingForm.value)
 
     //TODO use score value
-    this.coachCoacheeService.closeMeeting(this.meeting.id, this.closeMeetingForm.value.recap, "5").subscribe(
+    this.meetingService.closeMeeting(this.meeting.id, this.closeMeetingForm.value.recap, "5").subscribe(
       (meeting: Meeting) => {
         console.log("submitCloseMeetingForm, got meeting : ", meeting);
         //refresh list of meetings
@@ -161,7 +162,7 @@ export class MeetingItemCoachComponent implements OnInit,AfterViewInit {
   private getGoal() {
     this.loading = true;
 
-    this.coachCoacheeService.getMeetingGoal(this.meeting.id).subscribe(
+    this.meetingService.getMeetingGoal(this.meeting.id).subscribe(
       (reviews: MeetingReview[]) => {
         console.log("getMeetingGoal, got goal : ", reviews);
         if (reviews != null)
@@ -182,7 +183,7 @@ export class MeetingItemCoachComponent implements OnInit,AfterViewInit {
   private getReviewValue() {
     this.loading = true;
 
-    this.coachCoacheeService.getMeetingValue(this.meeting.id).subscribe(
+    this.meetingService.getMeetingValue(this.meeting.id).subscribe(
       (reviews: MeetingReview[]) => {
         console.log("getMeetingValue, got goal : ", reviews);
         if (reviews != null)
@@ -203,7 +204,7 @@ export class MeetingItemCoachComponent implements OnInit,AfterViewInit {
   private getReviewNextStep() {
     this.loading = true;
 
-    this.coachCoacheeService.getMeetingNextStep(this.meeting.id).subscribe(
+    this.meetingService.getMeetingNextStep(this.meeting.id).subscribe(
       (reviews: MeetingReview[]) => {
         console.log("getMeetingNextStep, got goal : ", reviews);
         if (reviews != null)
@@ -290,10 +291,40 @@ export class MeetingItemCoachComponent implements OnInit,AfterViewInit {
   }
 
   openModal() {
-    $('#deleteModal').openModal();
+    console.log('openModal, agreed date : ', this.meeting.agreed_date);
+    console.log('openModal, meeting : ', this.meeting);
+    // $('#deleteModal').openModal();
+
+    this.cancelMeetingTimeEvent.emit(this.meeting);//TODO to improve
   }
 
-  closeModal() {
-    $('#deleteModal').closeModal();
-  }
+  // cancelCancelMeeting() {
+  //   // $('#deleteModal').closeModal();
+  //
+  // }
+  //
+  // //remove MeetingTime
+  // validateCancelMeeting() {
+  //
+  //   console.log('validateCancelMeeting, agreed date : ', this.meeting.agreed_date);
+  //   console.log('validateCancelMeeting, meeting : ', this.meeting);
+  //
+  //   let meetingTimeId = this.meeting.agreed_date.id;
+  //
+  //   console.log('validateCancelMeeting, id : ', meetingTimeId);
+  //
+  //   //hide modal
+  //   $('#deleteModal').closeModal();
+  //   //
+  //   this.coachCoacheeService.removePotentialTime(meetingTimeId).subscribe(
+  //     (response: Response) => {
+  //       console.log('validateCancelMeeting, res ', response);
+  //       console.log('emit');
+  //       this.dateRemoved.emit(null);
+  //     }, (error) => {
+  //       console.log('unbookAdate, error', error);
+  //     }
+  //   );
+  // }
+
 }

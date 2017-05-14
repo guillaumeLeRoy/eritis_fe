@@ -1,11 +1,11 @@
-import {Component, OnInit, Input, ChangeDetectorRef, Output, EventEmitter} from '@angular/core';
+import {ChangeDetectorRef, Component, EventEmitter, Input, OnInit, Output} from "@angular/core";
 import {Meeting} from "../../../model/meeting";
-import {CoachCoacheeService} from "../../../service/CoachCoacheeService";
 import {Observable} from "rxjs";
 import {Coach} from "../../../model/Coach";
-import {MEETING_REVIEW_TYPE_SESSION_GOAL, MeetingReview} from "../../../model/MeetingReview";
+import {MeetingReview} from "../../../model/MeetingReview";
 import {MeetingDate} from "../../../model/MeetingDate";
 import {Router} from "@angular/router";
+import {MeetingsService} from "../../../service/meetings.service";
 
 declare var $: any;
 declare var Materialize: any;
@@ -20,8 +20,11 @@ export class MeetingItemCoacheeComponent implements OnInit {
   @Input()
   meeting: Meeting;
 
+  // @Output()
+  // onMeetingCancelled = new EventEmitter<any>();
+
   @Output()
-  potentialDatePosted = new EventEmitter<MeetingDate>();
+  cancelMeetingTimeEvent = new EventEmitter<Meeting>();
 
   months = ['Jan', 'Feb', 'Mar', 'Avr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 
@@ -40,7 +43,7 @@ export class MeetingItemCoacheeComponent implements OnInit {
   /* Meeting potential dates */
   private potentialDates: Observable<MeetingDate[]>;
 
-  constructor(private router: Router, private coachCoacheeService: CoachCoacheeService, private cd: ChangeDetectorRef) {
+  constructor(private router: Router, private meetingService: MeetingsService, private cd: ChangeDetectorRef) {
   }
 
   ngOnInit() {
@@ -53,21 +56,21 @@ export class MeetingItemCoacheeComponent implements OnInit {
     this.getReview();
   }
 
-  onPreMeetingReviewPosted(meeting: Meeting) {
-    console.log("onPreMeetingReviewPosted");
-    this.getReview();
-  }
-
-  onPotentialDatePosted(date: MeetingDate) {
-    console.log("onPotentialDatePosted");
-    this.potentialDatePosted.emit(date);
-  }
+  // onPreMeetingReviewPosted(meeting: Meeting) {
+  //   console.log("onPreMeetingReviewPosted");
+  //   this.getReview();
+  // }
+  //
+  // onPotentialDatePosted(date: MeetingDate) {
+  //   console.log("onPotentialDatePosted");
+  //   this.potentialDatePosted.emit(date);
+  // }
 
 
   private loadMeetingPotentialTimes() {
     this.loading = true;
 
-    this.coachCoacheeService.getMeetingPotentialTimes(this.meeting.id).subscribe(
+    this.meetingService.getMeetingPotentialTimes(this.meeting.id).subscribe(
       (dates: MeetingDate[]) => {
         console.log("potential dates obtained, ", dates);
         this.potentialDates = Observable.of(dates);
@@ -101,7 +104,7 @@ export class MeetingItemCoacheeComponent implements OnInit {
   private getGoal() {
     this.loading = true;
 
-    this.coachCoacheeService.getMeetingGoal(this.meeting.id).subscribe(
+    this.meetingService.getMeetingGoal(this.meeting.id).subscribe(
       (reviews: MeetingReview[]) => {
         console.log("getMeetingGoal, got goal : ", reviews);
         if (reviews != null)
@@ -122,7 +125,7 @@ export class MeetingItemCoacheeComponent implements OnInit {
   private getReviewValue() {
     this.loading = true;
 
-    this.coachCoacheeService.getMeetingValue(this.meeting.id).subscribe(
+    this.meetingService.getMeetingValue(this.meeting.id).subscribe(
       (reviews: MeetingReview[]) => {
         console.log("getMeetingValue, got goal : ", reviews);
         if (reviews != null)
@@ -143,7 +146,7 @@ export class MeetingItemCoacheeComponent implements OnInit {
   private getReviewNextStep() {
     this.loading = true;
 
-    this.coachCoacheeService.getMeetingNextStep(this.meeting.id).subscribe(
+    this.meetingService.getMeetingNextStep(this.meeting.id).subscribe(
       (reviews: MeetingReview[]) => {
         console.log("getMeetingNextStep, got goal : ", reviews);
         if (reviews != null)
@@ -171,11 +174,31 @@ export class MeetingItemCoacheeComponent implements OnInit {
   }
 
   openModal() {
-    $('#deleteModal').openModal();
+    this.cancelMeetingTimeEvent.emit(this.meeting);//TODO to improve
+
+    // $('#deleteModal').openModal();
   }
 
-  closeModal() {
-    $('#deleteModal').closeModal();
-  }
+  // cancelCancelMeeting() {
+  //   $('#deleteModal').closeModal();
+  //
+  // }
+  //
+  // confirmCancelMeeting() {
+  //   console.log('confirmCancelMeeting');
+  //
+  //   $('#deleteModal').closeModal();
+  //
+  //   this.meetingAPIService.deleteMeeting(this.meeting.id).subscribe(
+  //     (response: Response) => {
+  //       console.log('confirmCancelMeeting, res', response);
+  //       this.onMeetingCancelled.emit();
+  //       Materialize.toast('Meeting supprimé !', 3000, 'rounded')
+  //     }, (error) => {
+  //       console.log('confirmCancelMeeting, error', error);
+  //       Materialize.toast('Impossible de supprimer le meeting', 3000, 'rounded')
+  //     }
+  //   );
+  // }
 
 }

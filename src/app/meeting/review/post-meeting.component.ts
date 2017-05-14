@@ -1,8 +1,8 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
-import {CoachCoacheeService} from "../../service/CoachCoacheeService";
 import {Meeting} from "../../model/meeting";
 import {MeetingReview} from "../../model/MeetingReview";
+import {MeetingsService} from "../../service/meetings.service";
 
 @Component({
   selector: 'er-post-meeting',
@@ -21,7 +21,7 @@ export class PostMeetingComponent implements OnInit {
   @Output()
   reviewPosted = new EventEmitter<Meeting>();
 
-  constructor(private formBuilder: FormBuilder, private coachService: CoachCoacheeService) {
+  constructor(private formBuilder: FormBuilder, private meetingService: MeetingsService) {
   }
 
   ngOnInit() {
@@ -41,7 +41,7 @@ export class PostMeetingComponent implements OnInit {
   private submitMeetingValue(comment: string) {
     console.log("submitMeetingValue comment : ", comment)
 
-    this.coachService.addAMeetingReviewForValue(this.meeting.id, comment).subscribe(
+    this.meetingService.addAMeetingReviewForValue(this.meeting.id, comment).subscribe(
       (review: MeetingReview) => {
         console.log("submitMeetingValue, get review : ", review);
         //emit event
@@ -57,7 +57,7 @@ export class PostMeetingComponent implements OnInit {
   private submitMeetingNextStep(comment: string) {
     console.log("submitMeetingNextStep comment : ", comment)
 
-    this.coachService.addAMeetingReviewForNextStep(this.meeting.id, comment).subscribe(
+    this.meetingService.addAMeetingReviewForNextStep(this.meeting.id, comment).subscribe(
       (review: MeetingReview) => {
         console.log("submitMeetingNextStep, get review : ", review);
         //emit event

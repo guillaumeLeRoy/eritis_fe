@@ -1,4 +1,4 @@
-import {Component, OnInit, AfterViewInit, ChangeDetectorRef, OnDestroy} from '@angular/core';
+import {AfterViewInit, ChangeDetectorRef, Component, OnDestroy, OnInit} from "@angular/core";
 import {MeetingsService} from "../../service/meetings.service";
 import {Meeting} from "../../model/meeting";
 import {Observable, Subscription} from "rxjs";
@@ -7,6 +7,11 @@ import {ApiUser} from "../../model/apiUser";
 import {Coach} from "../../model/Coach";
 import {Coachee} from "../../model/coachee";
 import {Router} from "@angular/router";
+import {Response} from "@angular/http";
+
+
+declare var $: any;
+declare var Materialize: any;
 
 @Component({
   selector: 'rb-meeting-list',
@@ -44,12 +49,8 @@ export class MeetingListComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   onRefreshRequested() {
-    console.log("onRefreshRequested")
-
     let user = this.authService.getConnectedUser();
     console.log("onRefreshRequested, user : ", user);
-    this.onUserObtained(user);
-
     if (user == null) {
       this.connectedUserSubscription = this.authService.getConnectedUserObservable().subscribe(
         (user: Coach | Coachee) => {
@@ -57,6 +58,8 @@ export class MeetingListComponent implements OnInit, AfterViewInit, OnDestroy {
           this.onUserObtained(user);
         }
       );
+    } else {
+      this.onUserObtained(user);
     }
   }
 
@@ -208,7 +211,7 @@ export class MeetingListComponent implements OnInit, AfterViewInit, OnDestroy {
     }
   }
 
-  refreshDashboard(){
+  refreshDashboard() {
     location.reload();
   }
 
@@ -220,6 +223,94 @@ export class MeetingListComponent implements OnInit, AfterViewInit, OnDestroy {
     if (this.connectedUserSubscription) {
       this.connectedUserSubscription.unsubscribe();
     }
+  }
+
+  /* ************************************
+   ----Modal to cancel Meeting ----------
+   *************************************/
+
+  private meetingToCancel: Meeting;
+
+  private coachCancelModalVisibility(isVisible: boolean) {
+    if (isVisible) {
+      $('#coach_cancel_meeting').openModal();
+    } else {
+      $('#coach_cancel_meeting').closeModal();
+    }
+  }
+
+  openCoachCancelMeetingModal(meeting: Meeting) {
+    this.meetingToCancel = meeting;
+    this.coachCancelModalVisibility(true);
+  }
+
+  cancelCoachCancelMeeting() {
+    this.coachCancelModalVisibility(false);
+    this.meetingToCancel = null;
+  }
+
+  //remove MeetingTime
+  validateCoachCancelMeeting() {
+    console.log('validateCancelMeeting, agreed date : ', this.meetingToCancel.agreed_date);
+    let meetingTimeId = this.meetingToCancel.agreed_date.id;
+    console.log('validateCancelMeeting, id : ', meetingTimeId);
+
+    //hide modal
+    this.coachCancelModalVisibility(false);
+    this.meetingToCancel = null;
+    //perform request
+    this.meetingsService.removePotentialTime(meetingTimeId).subscribe(
+      (response: Response) => {
+        console.log('validateCancelMeeting, res ', response);
+        console.log('emit');
+        // this.dateRemoved.emit(null);
+        this.onRefreshRequested();
+        Materialize.toast('Meeting annulé !', 3000, 'rounded');
+      }, (error) => {
+        console.log('unbookAdate, error', error);
+        Materialize.toast("Impossible d'annuler le meeting", 3000, 'rounded');
+      }
+    );
+  }
+
+
+  private coacheeDeleteModalVisibility(isVisible: boolean) {
+    if (isVisible) {
+      $('#coachee_delete_meeting_modal').openModal();
+    } else {
+      $('#coachee_delete_meeting_modal').closeModal();
+    }
+  }
+
+  openCoacheeDeleteMeetingModal(meeting: Meeting) {
+    this.meetingToCancel = meeting;
+    this.coacheeDeleteModalVisibility(true);
+  }
+
+  cancelCoacheeDeleteMeeting() {
+    this.coacheeDeleteModalVisibility(false);
+    this.meetingToCancel = null;
+  }
+
+  validateCoacheeDeleteMeeting() {
+    console.log('validateCoacheeDeleteMeeting');
+
+    let meetingId = this.meetingToCancel.id;
+
+    this.coacheeDeleteModalVisibility(false);
+    this.meetingToCancel = null;
+
+    this.meetingsService.deleteMeeting(meetingId).subscribe(
+      (response: Response) => {
+        console.log('confirmCancelMeeting, res', response);
+        // this.onMeetingCancelled.emit();
+        this.onRefreshRequested();
+        Materialize.toast('Meeting supprimé !', 3000, 'rounded');
+      }, (error) => {
+        console.log('confirmCancelMeeting, error', error);
+        Materialize.toast('Impossible de supprimer le meeting', 3000, 'rounded');
+      }
+    );
   }
 
 }

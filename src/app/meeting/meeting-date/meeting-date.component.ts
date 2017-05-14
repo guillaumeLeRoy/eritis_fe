@@ -7,6 +7,7 @@ import {Observable, Subscription} from 'rxjs';
 import {MeetingDate} from '../../model/MeetingDate';
 import {ActivatedRoute, Router} from '@angular/router';
 import {MeetingReview} from "../../model/MeetingReview";
+import {MeetingsService} from "../../service/meetings.service";
 
 declare var Materialize: any;
 
@@ -45,7 +46,7 @@ export class MeetingDateComponent implements OnInit, OnDestroy {
   isEditingPotentialDate = false;
   private mEditingPotentialTimeId: string;
 
-  constructor(private router: Router, private route: ActivatedRoute, private coachService: CoachCoacheeService, private authService: AuthService, private cd: ChangeDetectorRef) {
+  constructor(private router: Router, private route: ActivatedRoute, private meetingService: MeetingsService, private authService: AuthService, private cd: ChangeDetectorRef) {
     this.potentialDatesArray = new Array<MeetingDate>();
   }
 
@@ -98,7 +99,7 @@ export class MeetingDateComponent implements OnInit, OnDestroy {
         if (this.isEditingPotentialDate) {
 
           // just update potential date
-          this.coachService.updatePotentialTime(this.mEditingPotentialTimeId, timestampMin, timestampMax).subscribe(
+          this.meetingService.updatePotentialTime(this.mEditingPotentialTimeId, timestampMin, timestampMax).subscribe(
             (meetingDate: MeetingDate) => {
               console.log('updatePotentialTime, meetingDate : ', meetingDate);
               // Reload potential times
@@ -116,7 +117,7 @@ export class MeetingDateComponent implements OnInit, OnDestroy {
 
         } else {
           // create new date
-          this.coachService.addPotentialDateToMeeting(this.meetingId, timestampMin, timestampMax).subscribe(
+          this.meetingService.addPotentialDateToMeeting(this.meetingId, timestampMin, timestampMax).subscribe(
             (meetingDate: MeetingDate) => {
               console.log('addPotentialDateToMeeting, meetingDate : ', meetingDate);
               this.potentialDatesArray.push(meetingDate);
@@ -141,7 +142,7 @@ export class MeetingDateComponent implements OnInit, OnDestroy {
 
   unbookAdate(potentialDateId: string) {
     console.log('unbookAdate');
-    this.coachService.removePotentialTime(potentialDateId).subscribe(
+    this.meetingService.removePotentialTime(potentialDateId).subscribe(
       (response) => {
         console.log('unbookAdate, response', response);
         //reset progress bar values
@@ -152,7 +153,7 @@ export class MeetingDateComponent implements OnInit, OnDestroy {
       }, (error) => {
         console.log('unbookAdate, error', error);
       }
-    )
+    );
   }
 
   modifyPotentialDate(potentialDateId: string) {
@@ -232,7 +233,7 @@ export class MeetingDateComponent implements OnInit, OnDestroy {
    * @param meetingId
    */
   private loadMeetingPotentialTimes(meetingId: string) {
-    this.coachService.getMeetingPotentialTimes(meetingId).subscribe(
+    this.meetingService.getMeetingPotentialTimes(meetingId).subscribe(
       (dates: MeetingDate[]) => {
         console.log('loadMeetingPotentialTimes : ', dates);
         if (dates != null) {
@@ -263,9 +264,9 @@ export class MeetingDateComponent implements OnInit, OnDestroy {
     console.log('finish, meetingContext : ', this.meetingContext);
 
     //save GOAL and CONTEXT
-    this.coachService.addAContextForMeeting(this.meetingId, this.meetingContext).flatMap(
+    this.meetingService.addAContextForMeeting(this.meetingId, this.meetingContext).flatMap(
       (meetingReview: MeetingReview) => {
-        return this.coachService.addAGoalToMeeting(this.meetingId, this.meetingGoal);
+        return this.meetingService.addAGoalToMeeting(this.meetingId, this.meetingGoal);
       }
     ).subscribe(
       (meetingReview: MeetingReview) => {
