@@ -1,13 +1,17 @@
-import {Component, OnInit, AfterViewInit, ChangeDetectorRef, OnDestroy} from '@angular/core';
-import {MeetingsService} from "../../service/meetings.service";
-import {Meeting} from "../../model/meeting";
-import {Observable, Subscription} from "rxjs";
-import {AuthService} from "../../service/auth.service";
-import {ApiUser} from "../../model/apiUser";
-import {Coach} from "../../model/Coach";
-import {Coachee} from "../../model/coachee";
-import {Router} from "@angular/router";
-import {CoachCoacheeService} from "../../service/CoachCoacheeService";
+import {AfterViewInit, ChangeDetectorRef, Component, OnDestroy, OnInit} from '@angular/core';
+import {MeetingsService} from '../../service/meetings.service';
+import {Meeting} from '../../model/meeting';
+import {Observable, Subscription} from 'rxjs';
+import {AuthService} from '../../service/auth.service';
+import {ApiUser} from '../../model/apiUser';
+import {Coach} from '../../model/Coach';
+import {Coachee} from '../../model/coachee';
+import {Router} from '@angular/router';
+import {CoachCoacheeService} from '../../service/CoachCoacheeService';
+import {Response} from '@angular/http';
+
+declare var $: any;
+declare var Materialize: any;
 
 @Component({
   selector: 'rb-meeting-list',
@@ -16,7 +20,7 @@ import {CoachCoacheeService} from "../../service/CoachCoacheeService";
 })
 export class MeetingListComponent implements OnInit, AfterViewInit, OnDestroy {
 
-  private coachees: Observable<Coachee[]>;
+  private coachees: Observable<Coach[]>;
   private meetings: Observable<Meeting[]>;
   private meetingsOpened: Observable<Meeting[]>;
   private meetingsClosed: Observable<Meeting[]>;
@@ -37,29 +41,27 @@ export class MeetingListComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   ngOnInit() {
-    console.log("ngOnInit");
+    console.log('ngOnInit');
   }
 
   ngAfterViewInit(): void {
-    console.log("ngAfterViewInit");
+    console.log('ngAfterViewInit');
 
     this.onRefreshRequested();
   }
 
   onRefreshRequested() {
-    console.log("onRefreshRequested")
-
     let user = this.authService.getConnectedUser();
-    console.log("onRefreshRequested, user : ", user);
-    this.onUserObtained(user);
-
+    console.log('onRefreshRequested, user : ', user);
     if (user == null) {
       this.connectedUserSubscription = this.authService.getConnectedUserObservable().subscribe(
         (user: Coach | Coachee) => {
-          console.log("onRefreshRequested, getConnectedUser");
+          console.log('onRefreshRequested, getConnectedUser');
           this.onUserObtained(user);
         }
       );
+    } else {
+      this.onUserObtained(user);
     }
   }
 
@@ -72,14 +74,14 @@ export class MeetingListComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   isUserARh(user: Coach | Coachee) {
-    //TODO return correct result
+    // TODO return correct result
     return true;
   }
 
   private getAllMeetingsForCoach(coachId: string) {
     this.subscription = this.meetingsService.getAllMeetingsForCoachId(coachId).subscribe(
       (meetings: Meeting[]) => {
-        console.log("got meetings for coach", meetings);
+        console.log('got meetings for coach', meetings);
 
         this.meetingsArray = meetings;
         this.meetings = Observable.of(meetings);
@@ -94,7 +96,7 @@ export class MeetingListComponent implements OnInit, AfterViewInit, OnDestroy {
   private getAllMeetingsForCoachee(coacheeId: string) {
     this.subscription = this.meetingsService.getAllMeetingsForCoacheeId(coacheeId).subscribe(
       (meetings: Meeting[]) => {
-        console.log("got meetings for coachee", meetings);
+        console.log('got meetings for coachee', meetings);
 
         this.meetingsArray = meetings;
         this.meetings = Observable.of(meetings);
@@ -106,11 +108,11 @@ export class MeetingListComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   private getAllCoacheesForRh() {
-    //TODO pass a rh parameter
-    //TODO return only coachees for the RH
-    this.subscription = this.coachCoacheeService.getAllCoachees().subscribe(
-      (coachees: Coachee[]) => {
-        console.log("got coachees for rh", coachees);
+    // TODO pass a rh parameter
+    // TODO return only coachees for the RH
+    this.subscription = this.coachCoacheeService.getAllCoachs().subscribe(
+      (coachees: Coach[]) => {
+        console.log('got coachees for rh', coachees);
 
         this.coachees = Observable.of(coachees);
         this.hasCollaborators = true;
@@ -120,16 +122,16 @@ export class MeetingListComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   private onUserObtained(user: ApiUser) {
-    console.log("onUserObtained, user : ", user);
+    console.log('onUserObtained, user : ', user);
     if (user) {
 
       if (user instanceof Coach) {
         // coach
-        console.log("get a coach");
+        console.log('get a coach');
         this.getAllMeetingsForCoach(user.id);
       } else if (user instanceof Coachee) {
         // coachee
-        console.log("get a coachee");
+        console.log('get a coachee');
         this.getAllMeetingsForCoachee(user.id);
       }
 
@@ -232,7 +234,7 @@ export class MeetingListComponent implements OnInit, AfterViewInit, OnDestroy {
     }
   }
 
-  refreshDashboard(){
+  refreshDashboard() {
     location.reload();
   }
 
@@ -244,6 +246,94 @@ export class MeetingListComponent implements OnInit, AfterViewInit, OnDestroy {
     if (this.connectedUserSubscription) {
       this.connectedUserSubscription.unsubscribe();
     }
+  }
+
+  /* ************************************
+   ----Modal to cancel Meeting ----------
+   *************************************/
+
+  private meetingToCancel: Meeting;
+
+  private coachCancelModalVisibility(isVisible: boolean) {
+    if (isVisible) {
+      $('#coach_cancel_meeting').openModal();
+    } else {
+      $('#coach_cancel_meeting').closeModal();
+    }
+  }
+
+  openCoachCancelMeetingModal(meeting: Meeting) {
+    this.meetingToCancel = meeting;
+    this.coachCancelModalVisibility(true);
+  }
+
+  cancelCoachCancelMeeting() {
+    this.coachCancelModalVisibility(false);
+    this.meetingToCancel = null;
+  }
+
+  // remove MeetingTime
+  validateCoachCancelMeeting() {
+    console.log('validateCancelMeeting, agreed date : ', this.meetingToCancel.agreed_date);
+    let meetingTimeId = this.meetingToCancel.agreed_date.id;
+    console.log('validateCancelMeeting, id : ', meetingTimeId);
+
+    // hide modal
+    this.coachCancelModalVisibility(false);
+    this.meetingToCancel = null;
+    // perform request
+    this.meetingsService.removePotentialTime(meetingTimeId).subscribe(
+      (response: Response) => {
+        console.log('validateCancelMeeting, res ', response);
+        console.log('emit');
+        // this.dateRemoved.emit(null);
+        this.onRefreshRequested();
+        Materialize.toast('Meeting annulé !', 3000, 'rounded');
+      }, (error) => {
+        console.log('unbookAdate, error', error);
+        Materialize.toast('Impossible d\'annuler le meeting', 3000, 'rounded');
+      }
+    );
+  }
+
+
+  private coacheeDeleteModalVisibility(isVisible: boolean) {
+    if (isVisible) {
+      $('#coachee_delete_meeting_modal').openModal();
+    } else {
+      $('#coachee_delete_meeting_modal').closeModal();
+    }
+  }
+
+  openCoacheeDeleteMeetingModal(meeting: Meeting) {
+    this.meetingToCancel = meeting;
+    this.coacheeDeleteModalVisibility(true);
+  }
+
+  cancelCoacheeDeleteMeeting() {
+    this.coacheeDeleteModalVisibility(false);
+    this.meetingToCancel = null;
+  }
+
+  validateCoacheeDeleteMeeting() {
+    console.log('validateCoacheeDeleteMeeting');
+
+    let meetingId = this.meetingToCancel.id;
+
+    this.coacheeDeleteModalVisibility(false);
+    this.meetingToCancel = null;
+
+    this.meetingsService.deleteMeeting(meetingId).subscribe(
+      (response: Response) => {
+        console.log('confirmCancelMeeting, res', response);
+        // this.onMeetingCancelled.emit();
+        this.onRefreshRequested();
+        Materialize.toast('Meeting supprimé !', 3000, 'rounded');
+      }, (error) => {
+        console.log('confirmCancelMeeting, error', error);
+        Materialize.toast('Impossible de supprimer le meeting', 3000, 'rounded');
+      }
+    );
   }
 
 }

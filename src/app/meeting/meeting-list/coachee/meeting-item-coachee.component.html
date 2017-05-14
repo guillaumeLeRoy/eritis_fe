@@ -5,11 +5,13 @@
     <div class="spinner-layer spinner-blue-only">
       <div class="circle-clipper left">
         <div class="circle"></div>
-      </div><div class="gap-patch">
-      <div class="circle"></div>
-    </div><div class="circle-clipper right">
-      <div class="circle"></div>
-    </div>
+      </div>
+      <div class="gap-patch">
+        <div class="circle"></div>
+      </div>
+      <div class="circle-clipper right">
+        <div class="circle"></div>
+      </div>
     </div>
   </div>
 
@@ -20,8 +22,10 @@
       <div>
         <div>
           <!-- image coach-->
-          <img *ngIf="meeting.coach" class="meeting-item-coach-avatar circle img-responsive" alt="coach" [src]="meeting.coach.avatar_url">
-          <img *ngIf="!meeting.coach" class="meeting-item-coach-avatar circle img-responsive" alt="coach" src="https://s-media-cache-ak0.pinimg.com/originals/af/25/49/af25490494d3338afef00869c59fdd37.png">
+          <img *ngIf="meeting.coach" class="meeting-item-coach-avatar circle img-responsive" alt="coach"
+               [src]="meeting.coach.avatar_url">
+          <img *ngIf="!meeting.coach" class="meeting-item-coach-avatar circle img-responsive" alt="coach"
+               src="https://s-media-cache-ak0.pinimg.com/originals/af/25/49/af25490494d3338afef00869c59fdd37.png">
         </div>
 
         <div>
@@ -35,10 +39,12 @@
     <div class="meeting-item-date col-sm-8 col-lg-3">
       <div *ngIf="meeting.agreed_date">
         <span class="meeting-item-date-date">{{ getDate(meeting.agreed_date.start_date) }}</span>
-        <span class="meeting-item-date-hour">{{ get(meeting.agreed_date.start_date) }}:00</span>
+        <span class="meeting-item-date-hour">{{ printTimeString(meeting.agreed_date.start_date) }}</span>
       </div>
 
-      <button *ngIf="!meeting.agreed_date" class="btn-basic btn-blue btn-small" (click)="goToModifyDate(meeting.id)">Modifier</button>
+      <button *ngIf="!meeting.agreed_date" class="btn-basic btn-blue btn-small" (click)="goToModifyDate(meeting.id)">
+        Modifier
+      </button>
     </div>
 
     <!-- GOAL & REVIEW -->
@@ -63,8 +69,12 @@
       </div>
 
       <div class="meeting-item-buttons" *ngIf="meeting.isOpen">
-        <button class="btn-basic btn-plain btn-red btn-small" *ngIf="!hasGoal" (click)="goToModifyDate(meeting.id)">OBJECTIF</button>
-        <button class="btn-basic btn-plain btn-blue btn-small" *ngIf="hasGoal" (click)="null" [disabled]="!meeting.agreed_date">LANCER</button>
+        <button class="btn-basic btn-plain btn-red btn-small" *ngIf="!hasGoal" (click)="goToModifyDate(meeting.id)">
+          OBJECTIF
+        </button>
+        <button class="btn-basic btn-plain btn-blue btn-small" *ngIf="hasGoal" (click)="null"
+                [disabled]="!meeting.agreed_date">LANCER
+        </button>
         <button class="btn-basic btn-cancel" (click)="openModal()"><i class="material-icons">clear</i></button>
       </div>
     </div><!--end meeting-item-body-->
@@ -72,18 +82,3 @@
   </div><!--end row-->
 
 </div><!--end meeting-item-->
-
-
-
-<!-- Modal Structure -->
-<div id="deleteModal" class="modal">
-  <div class="delete-modal-content">
-    <div class="delete-modal-message">
-      <h4>Ce meeting sera supprimé définitivement.<</h4>
-    </div>
-    <div class="delete-modal-footer">
-      <button class="btn-basic btn-blue" (click)="closeModal()">Annuler</button>
-      <button class="btn-basic btn-plain btn-red" (click)="closeModal()">Supprimer</button>
-    </div>
-  </div>
-</div>
