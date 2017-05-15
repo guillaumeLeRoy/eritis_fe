@@ -18,8 +18,8 @@
   <div class="row" *ngIf="!loading">
 
     <!-- COACH -->
-    <div class="meeting-item-header col-sm-4 col-md-4 col-lg-3">
-      <div>
+    <div class="meeting-item-header col-md-12 col-lg-4">
+      <div class="meeting-item-coach">
         <div>
           <!-- image coach-->
           <img *ngIf="meeting.coach" class="meeting-item-coach-avatar circle img-responsive" alt="coach"
@@ -33,22 +33,23 @@
           <p class="meeting-item-coach" *ngIf="!meeting.coach">Un coach vous sera bientôt attribué</p>
         </div>
       </div>
-    </div>
 
-    <!-- DATE -->
-    <div class="meeting-item-date col-sm-8 col-lg-3">
-      <div *ngIf="meeting.agreed_date">
-        <span class="meeting-item-date-date">{{ getDate(meeting.agreed_date.start_date) }}</span>
-        <span class="meeting-item-date-hour">{{ printTimeString(meeting.agreed_date.start_date) }}</span>
+      <!-- DATE -->
+      <div class="meeting-item-date">
+        <div *ngIf="meeting.agreed_date">
+          <span class="meeting-item-date-date">{{ getDate(meeting.agreed_date.start_date) }}</span>
+          <span class="meeting-item-date-hour">{{ printTimeString(meeting.agreed_date.start_date) }}</span>
+        </div>
+
+        <button *ngIf="!meeting.agreed_date" class="btn-basic btn-blue btn-small" (click)="goToModifyDate(meeting.id)">
+          Modifier
+        </button>
       </div>
-
-      <button *ngIf="!meeting.agreed_date" class="btn-basic btn-blue btn-small" (click)="goToModifyDate(meeting.id)">
-        Modifier
-      </button>
     </div>
+
 
     <!-- GOAL & REVIEW -->
-    <div class="meeting-item-body col-md-12 col-lg-6">
+    <div class="meeting-item-body col-md-12 col-lg-8  ">
       <div class="meeting-item-body-content">
         <p class="meeting-item-goal">
           <span class="black-text bold">Objectif: </span>
