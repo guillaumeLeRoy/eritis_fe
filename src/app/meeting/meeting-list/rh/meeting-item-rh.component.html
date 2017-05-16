@@ -15,28 +15,27 @@
 
   <div class="row" *ngIf="!loading">
 
-    <!-- COACH -->
-    <div class="meeting-item-header col-sm-4 col-md-4 col-lg-3">
-      <div>
+    <!-- RH -->
+    <div class="meeting-item-header col-md-12 col-lg-4">
+      <div class="meeting-item-coach">
         <div>
-          <!-- image coachee-->
+          <!-- image coachee -->
           <img class="meeting-item-coach-avatar circle img-responsive" alt="coachee" [src]="coachee.avatar_url">
-          <!--<img class="meeting-item-coach-avatar circle img-responsive" alt="coachee" src="https://s-media-cache-ak0.pinimg.com/originals/af/25/49/af25490494d3338afef00869c59fdd37.png">-->
         </div>
 
         <div>
           <p class="meeting-item-coach">{{ coachee.display_name }}</p>
         </div>
       </div>
-    </div>
 
-    <!-- USAGE -->
-    <div class="meeting-item-date col-sm-8 col-lg-3">
+      <!-- USAGE -->
+      <div class="meeting-item-date">
         <span class="meeting-item-date-date">Usage: <span class="blue-text">xx%</span></span>
+      </div>
     </div>
 
     <!-- GOAL -->
-    <div class="meeting-item-body col-md-12 col-lg-6">
+    <div class="meeting-item-body col-md-12 col-lg-8">
       <div class="meeting-item-body-content">
         <p class="meeting-item-goal">
           <span class="black-text bold">Objectif: </span>

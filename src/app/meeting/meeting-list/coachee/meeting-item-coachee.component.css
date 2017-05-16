@@ -2,11 +2,6 @@ button{
   margin: 0;
 }
 
-a:hover,
-a:focus{
-  color: var(--main-electric-blue) !important;
-}
-
 p {
   margin: 0;
 }

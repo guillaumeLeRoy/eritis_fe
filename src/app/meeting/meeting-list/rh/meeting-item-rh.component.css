@@ -2,11 +2,6 @@ button{
   margin: 0;
 }
 
-a:hover,
-a:focus{
-  color: var(--main-electric-blue) !important;
-}
-
 p {
   margin: 0;
 }
@@ -21,17 +16,11 @@ p {
 
 .meeting-item{
   margin: 0;
-  padding: 0 !important;
+  padding: 16px 0 !important;
 }
 
 .meeting-item > .row {
   margin: 0;
-}
-
-.meeting-item-seance-number{
-  margin: 0;
-  color: #000;
-  font-weight: 600;
 }
 
 .meeting-item-coach{
@@ -49,20 +38,19 @@ p {
 }
 
 .meeting-item-header,
-.meeting-item-body,
-.meeting-item-date{
+.meeting-item-body{
   display: flex;
   flex-direction: row;
   flex-grow: 1;
   align-items: center;
-  padding: 8px;
+  padding: 0px;
 }
 
 .meeting-item-header {
-  justify-content: flex-start;
+  justify-content: space-between;
 }
 
-.meeting-item-header > div {
+.meeting-item-coach{
   display: flex;
   flex-direction: row;
   flex-grow: 1;
@@ -71,102 +59,44 @@ p {
 
 .meeting-item-date{
   font-size: 22px;
+  margin-left: 32px;
 }
 
 .meeting-item-body{
   justify-content: space-between;
-  padding: 0;
-}
-
-.meeting-item-body-content,
-.meeting-item-date {
-  padding: 24px 0;
-}
-
-.meeting-item-body-buttons {
-  padding: 16px 0;
-}
-
-.meeting-item.closed .meeting-item-header,
-.meeting-item.closed .meeting-item-body,
-.meeting-item.closed .meeting-item-date,
-.meeting-item.unbooked .meeting-item-header,
-.meeting-item.unbooked .meeting-item-body,
-.meeting-item.unbooked .meeting-item-date{
-  align-items: flex-start;
+  padding-left: 112px;
 }
 
 .meeting-item-body-content {
   flex-direction: column;
   justify-content: flex-start;
   align-content: flex-start;
+  padding: 24px 0;
 }
 
 .meeting-review {
   width: 100%;
 }
 
-.preloader-wrapper{
-  left: 50%;
-  margin-left: -30px;
-  margin: 32px 0;
-}
-
-.meeting-potential {
-  margin: 4px 0;
-}
-
-.meeting-potential-date {
-  display: inline-block;
-  width: 60px;
-}
-
-.btn-cancel {
-  margin-left: 8px;
-}
-
-.confirm-meeting-form {
-  display: flex;
-  flex-direction: row;
-  flex-grow: 1;
-  align-items: center;
-  align-content: center;
-}
-
-.confirm-meeting-form .input-field {
-  margin-left: 16px;
-}
-
-.confirm-meeting-form select {
-  min-width: 150px;
-}
-
-@media screen and (max-device-width: 1240px) and (min-device-width: 720px) {
-  .meeting-item-date{
-    justify-content: flex-end;
-  }
-}
-
-@media screen and (max-device-width: 1240px) {
+@media screen and (max-device-width: 1240px), (max-width: 992px) {
   .meeting-item-body {
     flex-direction: column;
     justify-content: flex-start;
     align-content: flex-start;
     align-items: left;
+    padding-left: 0;
   }
 
   .meeting-item-buttons {
     width: 100%;
-    text-align: center;
+    text-align: right;
+    align-content: space-between;
+    justify-content: space-between;
   }
+}
 
-  .confirm-meeting-form {
-    flex-direction: column;
-    align-items: flex-start;
-    align-content: flex-start;
-  }
-
-  .confirm-meeting-form .input-field {
-    margin-left: 0;
-  }
+.preloader-wrapper{
+  left: 50%;
+  margin-left: -30px;
+  margin: 32px 0;
 }
