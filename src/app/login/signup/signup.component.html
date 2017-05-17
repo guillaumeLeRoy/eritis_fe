@@ -1,5 +1,6 @@
-<div id="main_container">
+<rb-header></rb-header>
 
+<div class="container">
   <div class="section">
     <div class="row">
       <div class="col s12 m12 l6">
@@ -45,10 +46,30 @@
                 <!--<label for="status">Are you a coach ?</label>-->
               <!--</p>-->
 
+              <div class="input-field">
+                <select [(ngModel)]="signUpSelectedType"
+                        [ngModelOptions]="{standalone: true}"
+                        name="signup_type_selector"
+                        class="browser-default">
+                  <option value="" disabled selected>Sélectionnez un Type</option>
+                  <option *ngFor="let type of signUpTypes" [ngValue]="type">
+                    {{ getSignUpTypeName(type) }}
+                  </option>
+                </select>
+              </div>
+
+              <div *ngIf="signUpSelectedType == 2">
+                <div *ngFor="let plan of plans | async" (click)="onSelectPlan(plan)"  [class.contract_selected]="plan == mSelectedPlan">
+                  Plan id : {{plan.plan_id}}
+                  Plan Name : {{plan.plan_name}}
+                  Plan Sessions count : {{plan.sessions_count}}
+                </div>
+              </div>
+
               <div class="row">
                 <div class="input-field col s12">
                   <button class="btn cyan waves-effect waves-light right" type="submit" name="action"
-                          [disabled]="!signUpForm.valid">Submit
+                          [disabled]="!signUpForm.valid || (signUpSelectedType == 2 && !mSelectedPlan)">Submit
                     <i class="mdi-content-send right"></i>
                   </button>
                 </div>
@@ -69,26 +90,8 @@
 
             </form>
           </div>
-        </div>
+        </div><!--end card panel-->
       </div>
-    </div>
-  </div>
-
-
-  <div class="input-field">
-    <select [(ngModel)]="signUpSelectedType" name="signup_type_selector" class="browser-default">
-      <option value="" disabled selected>Sélectionnez un Type</option>
-      <option *ngFor="let type of signUpTypes" [ngValue]="type">
-        {{ getSignUpTypeName(type) }}
-      </option>
-    </select>
-  </div>
-
-  <div *ngFor="let plan of plans | async" (click)="onSelectPlan(plan)"  [class.contract_selected]="plan == mSelectedPlan">
-    Plan id : {{plan.plan_id}}
-    Plan Name : {{plan.plan_name}}
-    Plan Sessions count : {{plan.sessions_count}}
-  </div>
-
-
-</div>
+    </div><!--end row-->
+  </div><!--end section-->
+</div><!--end container-->
