@@ -1,10 +1,10 @@
-import {Component, OnDestroy, ChangeDetectorRef, OnInit} from '@angular/core';
-import {Router} from '@angular/router';
-import {AuthService} from '../service/auth.service';
-import {Subscription, Observable} from 'rxjs';
-import {ApiUser} from '../model/apiUser';
-import {Coach} from '../model/Coach';
-import {Coachee} from '../model/coachee';
+import {ChangeDetectorRef, Component, OnDestroy, OnInit} from "@angular/core";
+import {Router} from "@angular/router";
+import {AuthService} from "../service/auth.service";
+import {Observable, Subscription} from "rxjs";
+import {Coach} from "../model/Coach";
+import {Coachee} from "../model/coachee";
+import {Rh} from "../model/Rh";
 
 @Component({
   selector: 'rb-header',
@@ -17,7 +17,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   private isAuthenticated: Observable<boolean>;
   private subscription: Subscription;
 
-  private mUser: Coach | Coachee;
+  private mUser: Coach | Coachee | Rh;
   private user: Observable<Coach | Coachee>;
 
   constructor(private router: Router, private authService: AuthService, private cd: ChangeDetectorRef) {
@@ -49,7 +49,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
     );
   }
 
-  private onUserObtained(user: Coach | Coachee) {
+  private onUserObtained(user: Coach | Coachee | Rh) {
     console.log('onUserObtained : ' + user);
 
     if (user == null) {

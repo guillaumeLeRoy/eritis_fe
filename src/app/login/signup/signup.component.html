@@ -40,10 +40,10 @@
                 </div>
               </div>
 
-              <p>
-                <input type="checkbox" id="status" [(ngModel)]="checked" formControlName="status"/>
-                <label for="status">Are you a coach ?</label>
-              </p>
+              <!--<p>-->
+                <!--<input type="checkbox" id="status" [(ngModel)]="checked" formControlName="status"/>-->
+                <!--<label for="status">Are you a coach ?</label>-->
+              <!--</p>-->
 
               <div class="row">
                 <div class="input-field col s12">
@@ -72,6 +72,16 @@
         </div>
       </div>
     </div>
+  </div>
+
+
+  <div class="input-field">
+    <select [(ngModel)]="signUpSelectedType" name="signup_type_selector" class="browser-default">
+      <option value="" disabled selected>Sélectionnez un Type</option>
+      <option *ngFor="let type of signUpTypes" [ngValue]="type">
+        {{ getSignUpTypeName(type) }}
+      </option>
+    </select>
   </div>
 
   <div *ngFor="let plan of plans | async" (click)="onSelectPlan(plan)"  [class.contract_selected]="plan == mSelectedPlan">
