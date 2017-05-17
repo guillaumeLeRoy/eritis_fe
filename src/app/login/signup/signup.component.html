@@ -58,7 +58,7 @@
                 </select>
               </div>
 
-              <div *ngIf="signUpSelectedType == 2">
+              <div *ngIf="signUpSelectedType == 1">
                 <div *ngFor="let plan of plans | async" (click)="onSelectPlan(plan)"  [class.contract_selected]="plan == mSelectedPlan">
                   Plan id : {{plan.plan_id}}
                   Plan Name : {{plan.plan_name}}
@@ -68,9 +68,8 @@
 
               <div class="row">
                 <div class="input-field col s12">
-                  <button class="btn cyan waves-effect waves-light right" type="submit" name="action"
-                          [disabled]="!signUpForm.valid || (signUpSelectedType == 2 && !mSelectedPlan)">Submit
-                    <i class="mdi-content-send right"></i>
+                  <button class="btn-basic btn-blue right" type="submit" name="action"
+                          [disabled]="!signUpForm.valid || (signUpSelectedType == 1 && !mSelectedPlan)">Valider
                   </button>
                 </div>
               </div>
