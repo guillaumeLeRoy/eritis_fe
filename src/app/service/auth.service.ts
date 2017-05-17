@@ -1,9 +1,9 @@
 import {User} from "../user/user";
 import {Router} from "@angular/router";
 import {Injectable} from "@angular/core";
-import {Observable, BehaviorSubject, Subject} from "rxjs";
+import {BehaviorSubject, Observable, Subject} from "rxjs";
 import {PromiseObservable} from "rxjs/observable/PromiseObservable";
-import {Response, Http, Headers, URLSearchParams} from "@angular/http";
+import {Headers, Http, Response, URLSearchParams} from "@angular/http";
 import {ApiUser} from "../model/apiUser";
 import {environment} from "../../environments/environment";
 import {FirebaseService} from "./firebase.service";
@@ -11,6 +11,7 @@ import {Coach} from "../model/Coach";
 import {Coachee} from "../model/coachee";
 import {ContractPlan} from "../model/ContractPlan";
 import {LoginResponse} from "../model/LoginResponse";
+import {Rh} from "../model/Rh";
 
 @Injectable()
 export class AuthService {
@@ -23,11 +24,13 @@ export class AuthService {
   public static UPDATE_COACHEE_SELECTED_COACH = "/coachees/:coacheeId/coach/:coachId";
   public static POST_SIGN_UP_COACH = "/login/:firebaseId/coach";
   public static POST_SIGN_UP_COACHEE = "/login/:firebaseId/coachee";
+  public static POST_SIGN_UP_RH = "/login/:firebaseId/rh";
   public static LOGIN = "/login/:firebaseId";
   public static GET_COACHS = "/coachs";
   public static GET_COACHEES = "/coachees";
   public static GET_COACH_FOR_ID = "/coachs/:id";
   public static GET_COACHEE_FOR_ID = "/coachees/:id";
+  public static GET_RH_FOR_ID = "/rh/:id";
 
   /*Meeting*/
   public static POST_MEETING = "/meeting";
@@ -53,7 +56,7 @@ export class AuthService {
   /* flag to know if we are in the sign in or sign up process. Block updateAuthStatus(FBuser) is true */
   private isSignInOrUp = false;
 
-  private ApiUser?: Coach | Coachee = null;
+  private ApiUser?: Coach | Coachee | Rh = null;
 
   constructor(private firebase: FirebaseService, private router: Router, private httpService: Http) {
     firebase.auth().onAuthStateChanged(function (user) {
@@ -68,7 +71,7 @@ export class AuthService {
   /*
    * Get connected user from backend
    */
-  refreshConnectedUser(): Observable<Coach | Coachee> {
+  refreshConnectedUser(): Observable<Coach | Coachee | Rh> {
     console.log("refreshConnectedUser");
 
     if (this.ApiUser != null) {
@@ -95,6 +98,8 @@ export class AuthService {
             return coachee;
           }
         );
+      } else if (this.ApiUser instanceof Rh) {
+        return this.fetchRh(this.ApiUser.id);
       }
     } else {
       console.log("refreshConnectedUser, no connected user");
@@ -102,7 +107,20 @@ export class AuthService {
     return Observable.from(null);
   }
 
-  getConnectedUser(): Coach | Coachee {
+  private fetchRh(userId: string): Observable<Rh> {
+    let param = [userId];
+    let obs = this.get(AuthService.GET_RH_FOR_ID, param);
+    return obs.map(
+      (res: Response) => {
+        console.log("fetchRh, obtained from API : ", res);
+        let rh = this.parseRh(res.json());
+        this.onAPIuserObtained(rh, this.ApiUser.firebaseToken);
+        return rh;
+      }
+    );
+  }
+
+  getConnectedUser(): Coach | Coachee | Rh {
     return this.ApiUser;
   }
 
@@ -302,7 +320,7 @@ export class AuthService {
   }
 
   /* when we obtained a User from the API ( coach or coachee ) */
-  private onAPIuserObtained(user: Coach | Coachee, firebaseToken: string): Coach | Coachee {
+  private onAPIuserObtained(user: Coach | Coachee | Rh, firebaseToken: string): Coach | Coachee | Rh {
     console.log("onAPIuserObtained, user : ", user);
     if (user) {
       //keep current user
@@ -320,7 +338,7 @@ export class AuthService {
   }
 
 
-  private getUserForFirebaseId(firebaseId: string, token: string): Observable<ApiUser> {
+  private getUserForFirebaseId(firebaseId: string, token: string): Observable<Coach | Coachee | Rh> {
     console.log("getUserForFirebaseId : ", firebaseId);
     let params = [firebaseId];
 
@@ -338,16 +356,20 @@ export class AuthService {
     );
   }
 
+  signUpCoach(user: User): Observable<ApiUser> {
+    return this.signup(user, AuthService.POST_SIGN_UP_COACH);
+  }
+
   signUpCoachee(user: User, plan: ContractPlan): Observable<ApiUser> {
     //add plan
     user.contractPlanId = plan.plan_id;
     return this.signup(user, AuthService.POST_SIGN_UP_COACHEE);
   }
 
-
-  signUpCoach(user: User): Observable<ApiUser> {
-    return this.signup(user, AuthService.POST_SIGN_UP_COACH);
+  signUpRh(user: User): Observable<ApiUser> {
+    return this.signup(user, AuthService.POST_SIGN_UP_RH);
   }
+
 
   private signup(user: User, path: string): Observable<ApiUser> {
     console.log("1. user signUp : ", user);
@@ -393,7 +415,7 @@ export class AuthService {
     );
   }
 
-  private parseAPIuser(response: LoginResponse): Coach | Coachee {
+  private parseAPIuser(response: LoginResponse): Coach | Coachee | Rh {
     console.log("parseAPIuser, response :", response);
 
     if (response.coach) {
@@ -404,6 +426,9 @@ export class AuthService {
       let coachee = response.coachee;
       //coachee
       return this.parseCoachee(coachee);
+    } else if (response.rh) {
+      let rh = response.rh;
+      return this.parseRh(rh);
     }
     return null;
   }
@@ -432,7 +457,15 @@ export class AuthService {
     return coachee;
   }
 
-  signIn(user: User): Observable<Coach | Coachee> {
+  private parseRh(json: any): Rh {
+    let rh: Rh = new Rh(json.id);
+    rh.email = json.email;
+    rh.display_name = json.display_name;
+    rh.start_date = json.start_date;
+    return rh;
+  }
+
+  signIn(user: User): Observable<Coach | Coachee | Rh> {
     console.log("1. user signIn : ", user);
     this.isSignInOrUp = true;
 
@@ -519,7 +552,7 @@ export class AuthService {
    * @param response
    * @returns {Coach|Coachee}
    */
-  private onUserResponse(response: Response): Coach | Coachee {
+  private onUserResponse(response: Response): Coach | Coachee | Rh {
     let json: LoginResponse = response.json();
     console.log("onUserResponse, response json : ", json);
     let res = this.parseAPIuser(json);

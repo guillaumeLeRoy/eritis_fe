@@ -1,10 +1,18 @@
-import {Component, OnInit} from '@angular/core';
-import {FormGroup, FormBuilder, Validators, FormControl} from "@angular/forms";
+import {Component, OnInit} from "@angular/core";
+import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
 import {AuthService} from "../../service/auth.service";
 import {Router} from "@angular/router";
 import {Observable} from "rxjs";
 import {ContractPlan} from "../../model/ContractPlan";
 import {Response} from "@angular/http";
+
+
+declare var $: any;
+declare var Materialize: any;
+
+enum SignUpType {
+  COACH, COACHEE, RH
+}
 
 @Component({
   selector: 'rb-signup',
@@ -12,6 +20,9 @@ import {Response} from "@angular/http";
   styleUrls: ['./signup.component.css']
 })
 export class SignupComponent implements OnInit {
+
+  private signUpSelectedType: SignUpType;
+  private signUpTypes: SignUpType[];
 
   private signUpForm: FormGroup;
   private error = false;
@@ -38,7 +49,9 @@ export class SignupComponent implements OnInit {
   }
 
   ngOnInit() {
-    console.log("ngOnInit")
+    console.log("ngOnInit");
+
+    this.signUpTypes = [SignUpType.COACH, SignUpType.COACHEE, SignUpType.RH];
 
     this.signUpForm = this.formBuilder.group({
       email: ['', Validators.compose([
@@ -53,7 +66,13 @@ export class SignupComponent implements OnInit {
         [Validators.required, this.isEqualPassword.bind(this)]
       ],
 
-      status: ['']
+      // type: ['',
+      //   [Validators.required]
+      // ],
+      //
+      // coacheeTYpe: ['',
+      //   [Validators.required]
+      // ]
     });
 
     this.getListOfContractPlans();
@@ -74,7 +93,7 @@ export class SignupComponent implements OnInit {
     this.errorMessage = '';
 
 
-    if (this.signUpForm.value.status) {
+    if (this.signUpSelectedType == SignUpType.COACH) {
       console.log("onSignUp, coach");
 
       this.authService.signUpCoach(this.signUpForm.value).subscribe(
@@ -87,7 +106,7 @@ export class SignupComponent implements OnInit {
           this.error = true;
           this.errorMessage = error
         })
-    } else {
+    } else if (this.signUpSelectedType == SignUpType.COACHEE) {
       console.log("onSignUp, coachee");
 
       //contract Plan is mandatory
@@ -108,6 +127,20 @@ export class SignupComponent implements OnInit {
           this.error = true;
           this.errorMessage = error
         })
+    } else if (this.signUpSelectedType == SignUpType.RH) {
+      this.authService.signUpRh(this.signUpForm.value).subscribe(
+        data => {
+          console.log("onSignUp, RH, data obtained", data)
+          /*L'utilisateur est TOUJOURS redirigé vers ses meetings*/
+          this.router.navigate(['/meetings']);//TODO change that
+        },
+        error => {
+          console.log("onSignUp, error obtained", error)
+          this.error = true;
+          this.errorMessage = error
+        })
+    }else{
+      Materialize.toast('Vous devez sélectionner un type', 3000, 'rounded')
     }
   }
 
@@ -123,7 +156,7 @@ export class SignupComponent implements OnInit {
     );
   }
 
-  isEmail(control: FormControl): {[s: string]: boolean;} {
+  isEmail(control: FormControl): { [s: string]: boolean; } {
     if (!control.value.match("[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?")) {
       console.log("email NOT ok")
       // this.test = false
@@ -133,7 +166,7 @@ export class SignupComponent implements OnInit {
     console.log("email ok")
   }
 
-  isEqualPassword(control: FormControl): {[s: string]: boolean;} {
+  isEqualPassword(control: FormControl): { [s: string]: boolean; } {
     if (!this.signUpForm) {
       return {passwordNoMatch: true}
     }
@@ -142,6 +175,17 @@ export class SignupComponent implements OnInit {
       console.log("isEqualPassword, NO")
 
       return {passwordNoMatch: true}
+    }
+  }
+
+  getSignUpTypeName(type: SignUpType): string {
+    switch (type) {
+      case SignUpType.COACH:
+        return "Coach";
+      case SignUpType.COACHEE:
+        return "Coaché";
+      case SignUpType.RH:
+        return "RH";
     }
   }
 
