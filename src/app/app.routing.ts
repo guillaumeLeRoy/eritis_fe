@@ -13,6 +13,7 @@ import {ProfileCoacheeComponent} from "./user/profile/coachee/profile-coachee.co
 import {MeetingDateComponent} from "./meeting/meeting-date/meeting-date.component";
 import {CoachSelectorComponent} from "./user/coach-selector/coach-selector.component";
 import {AdminComponent} from "./admin/admin.component";
+import {ProfileRhComponent} from "./user/profile/rh/profile-rh.component";
 
 const APP_ROUTES: Routes = [
   {path: '', redirectTo: '/welcome', pathMatch: 'full'},
@@ -22,6 +23,7 @@ const APP_ROUTES: Routes = [
   {path: 'signup', component: SignupComponent},
   {path: 'profile_coach', component: ProfileCoachComponent},
   {path: 'profile_coachee', component: ProfileCoacheeComponent},
+  {path: 'profile_rh', component: ProfileRhComponent},
   {path: 'coachs', component: CoachListComponent},
   {path: 'coachs/:id', component: CoachDetailsComponent},
   {path: 'coachees', component: CoachListComponent},

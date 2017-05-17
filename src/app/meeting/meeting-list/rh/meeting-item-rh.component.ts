@@ -6,7 +6,7 @@ import {Coachee} from "../../../model/coachee";
   templateUrl: './meeting-item-rh.component.html',
   styleUrls: ['./meeting-item-rh.component.css']
 })
-export class RhComponent implements OnInit {
+export class MeetingItemRhComponent implements OnInit {
 
   @Input()
   coachee: Coachee;
@@ -14,7 +14,6 @@ export class RhComponent implements OnInit {
   private goal: string;
   private hasGoal: false;
   private loading: boolean;
-
 
   constructor() { }
 

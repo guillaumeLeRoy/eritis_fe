@@ -38,8 +38,9 @@ import {Ng2PageScrollModule} from 'ng2-page-scroll';
 import {PostMeetingComponent} from './meeting/review/post-meeting.component';
 import {CoachSelectorComponent} from './user/coach-selector/coach-selector.component';
 import {AdminAPIService} from "./service/adminAPI.service";
-import { AdminComponent } from './admin/admin.component';
-import { RhComponent } from './meeting/meeting-list/rh/meeting-item-rh.component';
+import {AdminComponent} from './admin/admin.component';
+import {MeetingItemRhComponent} from './meeting/meeting-list/rh/meeting-item-rh.component';
+import {ProfileRhComponent} from "./user/profile/rh/profile-rh.component";
 
 @NgModule({
   declarations: [
@@ -49,6 +50,7 @@ import { RhComponent } from './meeting/meeting-list/rh/meeting-item-rh.component
     SigninComponent,
     ProfileCoachComponent,
     ProfileCoacheeComponent,
+    ProfileRhComponent,
     ProfileCoachSummaryComponent,
     WelcomeComponent,
     ChatComponent,
@@ -64,7 +66,7 @@ import { RhComponent } from './meeting/meeting-list/rh/meeting-item-rh.component
     PostMeetingComponent,
     CoachSelectorComponent,
     AdminComponent,
-    RhComponent
+    MeetingItemRhComponent
   ],
   imports: [
     BrowserAnimationsModule,

@@ -9,6 +9,9 @@ export class Rh implements ApiUser {
   firebaseToken : string;
 
   email: string
+
+  avatar_url: string;
+
   display_name: string;
 
   start_date: string;

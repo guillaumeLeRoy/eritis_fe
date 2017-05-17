@@ -9,6 +9,7 @@ import {Coachee} from '../../model/coachee';
 import {Router} from '@angular/router';
 import {CoachCoacheeService} from '../../service/CoachCoacheeService';
 import {Response} from '@angular/http';
+import {Rh} from "../../model/Rh";
 
 declare var $: any;
 declare var Materialize: any;
@@ -35,7 +36,7 @@ export class MeetingListComponent implements OnInit, AfterViewInit, OnDestroy {
   private subscription: Subscription;
   private connectedUserSubscription: Subscription;
 
-  private user: Observable<Coach | Coachee>;
+  private user: Observable<Coach | Coachee | Rh>;
 
   constructor(private router: Router, private meetingsService: MeetingsService, private coachCoacheeService: CoachCoacheeService, private authService: AuthService, private cd: ChangeDetectorRef) {
   }
@@ -65,17 +66,16 @@ export class MeetingListComponent implements OnInit, AfterViewInit, OnDestroy {
     }
   }
 
-  isUserACoach(user: Coach | Coachee) {
+  isUserACoach(user: Coach | Coachee | Rh) {
     return user instanceof Coach;
   }
 
-  isUserACoachee(user: Coach | Coachee) {
+  isUserACoachee(user: Coach | Coachee | Rh) {
     return user instanceof Coachee;
   }
 
-  isUserARh(user: Coach | Coachee) {
-    // TODO return correct result
-    return true;
+  isUserARh(user: Coach | Coachee | Rh) {
+    return user instanceof Rh;
   }
 
   private getAllMeetingsForCoach(coachId: string) {
@@ -133,9 +133,11 @@ export class MeetingListComponent implements OnInit, AfterViewInit, OnDestroy {
         // coachee
         console.log('get a coachee');
         this.getAllMeetingsForCoachee(user.id);
+      } else if (user instanceof Rh) {
+        // rh
+        console.log('get a rh');
+        this.getAllCoacheesForRh();
       }
-
-      this.getAllCoacheesForRh();
 
       this.user = Observable.of(user);
       this.cd.detectChanges();
