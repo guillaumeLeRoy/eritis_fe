@@ -38,9 +38,9 @@
           et votre taux d'utilisation est de
           <span class="blue-text"> xx%</span>
         </h4>
-        <p class="text-right" *ngIf="(user | async)?.availableSessionsCount > 0">
+        <p class="text-right">
           <span class="blue-text">Cliquez</span> ici pour ajouter un collaborateur
-          <a class="btn-floating btn-large waves-effect waves-light add-meeting-btn" (click)="goToDate()">
+          <a class="btn-floating btn-large waves-effect waves-light add-meeting-btn" (click)="addPotentialCoacheeModalVisibility(true)">
             <i class="material-icons">add</i>
           </a>
         </p>
@@ -186,7 +186,7 @@
 <div id="coach_cancel_meeting" class="modal">
   <div class="delete-modal-content">
     <div class="delete-modal-message">
-      <h4>Vous pourrez fixer un autre rendez-vous pour ce meeting.</h4>
+      <h5>Vous pourrez fixer un autre rendez-vous pour ce meeting.</h5>
     </div>
     <div class="delete-modal-footer">
       <button class="btn-basic btn-blue" (click)="cancelCoachCancelMeeting()">Annuler</button>
@@ -200,11 +200,25 @@
 <div id="coachee_delete_meeting_modal" class="modal">
   <div class="delete-modal-content">
     <div class="delete-modal-message">
-      <h4>Ce meeting sera supprimé définitivement.</h4>
+      <h5>Ce meeting sera supprimé définitivement.</h5>
     </div>
     <div class="delete-modal-footer">
       <button class="btn-basic btn-blue" (click)="cancelCoacheeDeleteMeeting()">Annuler</button>
       <button class="btn-basic btn-plain btn-red" (click)="validateCoacheeDeleteMeeting()">Supprimer</button>
+    </div>
+  </div>
+</div>
+
+<!-- Modal Structure -->
+<div id="add_potential_coachee_modal" class="modal">
+  <div class="delete-modal-content">
+    <div class="delete-modal-message">
+      <h5>Veuiller saisir l'adresse mail du collaborateur. Un mail lui sera envoyé pour finaliser son inscription.</h5>
+      <input type="email" placeholder="Email" id="potential_mail">
+    </div>
+    <div class="delete-modal-footer">
+      <button class="btn-basic btn-red btn-plain" (click)="cancelAddPotentialCoachee()">Annuler</button>
+      <button class="btn-basic btn-blue" (click)="validateAddPotentialCoachee()">Ajouter</button>
     </div>
   </div>
 </div>

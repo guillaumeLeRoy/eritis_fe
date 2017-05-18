@@ -307,6 +307,14 @@ export class MeetingListComponent implements OnInit, AfterViewInit, OnDestroy {
     }
   }
 
+  private addPotentialCoacheeModalVisibility(isVisible: boolean) {
+    if (isVisible) {
+      $('#add_potential_coachee_modal').openModal();
+    } else {
+      $('#add_potential_coachee_modal').closeModal();
+    }
+  }
+
   openCoacheeDeleteMeetingModal(meeting: Meeting) {
     this.meetingToCancel = meeting;
     this.coacheeDeleteModalVisibility(true);
@@ -334,6 +342,30 @@ export class MeetingListComponent implements OnInit, AfterViewInit, OnDestroy {
       }, (error) => {
         console.log('confirmCancelMeeting, error', error);
         Materialize.toast('Impossible de supprimer le meeting', 3000, 'rounded');
+      }
+    );
+  }
+
+  cancelAddPotentialCoachee() {
+    this.addPotentialCoacheeModalVisibility(false);
+  }
+
+  validateAddPotentialCoachee() {
+    console.log('validateCoacheeDeleteMeeting');
+
+    let meetingId = this.meetingToCancel.id;
+
+    this.addPotentialCoacheeModalVisibility(false);
+
+    this.meetingsService.deleteMeeting(meetingId).subscribe(
+      (response: Response) => {
+        console.log('confirmCancelMeeting, res', response);
+        // this.onMeetingCancelled.emit();
+        this.onRefreshRequested();
+        Materialize.toast('Collaborateur ajouté !', 3000, 'rounded');
+      }, (error) => {
+        console.log('confirmCancelMeeting, error', error);
+        Materialize.toast("Impossible d'ajouter le collaborateur", 3000, 'rounded');
       }
     );
   }
