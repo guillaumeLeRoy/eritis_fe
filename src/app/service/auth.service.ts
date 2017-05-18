@@ -9,7 +9,6 @@ import {environment} from "../../environments/environment";
 import {FirebaseService} from "./firebase.service";
 import {Coach} from "../model/Coach";
 import {Coachee} from "../model/coachee";
-import {ContractPlan} from "../model/ContractPlan";
 import {LoginResponse} from "../model/LoginResponse";
 import {Rh} from "../model/Rh";
 
@@ -25,9 +24,11 @@ export class AuthService {
   public static POST_SIGN_UP_COACH = "/login/:firebaseId/coach";
   public static POST_SIGN_UP_COACHEE = "/login/:firebaseId/coachee";
   public static POST_SIGN_UP_RH = "/login/:firebaseId/rh";
+  public static POST_POTENTIAL_COACHEE = "/v1/rhs/:uid/coachees";
   public static LOGIN = "/login/:firebaseId";
   public static GET_COACHS = "/coachs";
   public static GET_COACHEES = "/coachees";
+  public static GET_COACHEES_FOR_RH = "/v1/rhs/:uid/coachees";
   public static GET_COACH_FOR_ID = "/coachs/:id";
   public static GET_COACHEE_FOR_ID = "/coachees/:id";
   public static GET_RH_FOR_ID = "/rh/:id";
@@ -360,9 +361,8 @@ export class AuthService {
     return this.signup(user, AuthService.POST_SIGN_UP_COACH);
   }
 
-  signUpCoachee(user: User, plan: ContractPlan): Observable<ApiUser> {
+  signUpCoachee(user: User): Observable<ApiUser> {
     //add plan
-    user.contractPlanId = plan.plan_id;
     return this.signup(user, AuthService.POST_SIGN_UP_COACHEE);
   }
 
@@ -454,6 +454,7 @@ export class AuthService {
     coachee.contractPlan = json.plan;
     coachee.availableSessionsCount = json.available_sessions_count;
     coachee.updateAvailableSessionCountDate = json.update_sessions_count_date;
+    coachee.associatedRh = json.associatedRh;
     return coachee;
   }
 

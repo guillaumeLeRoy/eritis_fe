@@ -40,13 +40,12 @@
         </h4>
         <p class="text-right">
           <span class="blue-text">Cliquez</span> ici pour ajouter un collaborateur
-          <a class="btn-floating btn-large waves-effect waves-light add-meeting-btn" (click)="addPotentialCoacheeModalVisibility(true)">
+          <a class="btn-floating btn-large waves-effect waves-light add-meeting-btn"
+             (click)="addPotentialCoacheeModalVisibility(true)">
             <i class="material-icons">add</i>
           </a>
         </p>
       </div>
-
-
 
 
       <!-- views for coach -->
@@ -214,11 +213,13 @@
   <div class="delete-modal-content">
     <div class="delete-modal-message">
       <h5>Veuiller saisir l'adresse mail du collaborateur. Un mail lui sera envoyé pour finaliser son inscription.</h5>
-      <input type="email" placeholder="Email" id="potential_mail">
+      <input type="email" placeholder="Email" id="potential_mail" [(ngModel)]="potentialCoacheeEmail">
     </div>
     <div class="delete-modal-footer">
       <button class="btn-basic btn-red btn-plain" (click)="cancelAddPotentialCoachee()">Annuler</button>
-      <button class="btn-basic btn-blue" (click)="validateAddPotentialCoachee()">Ajouter</button>
+      <button class="btn-basic btn-blue" (click)="validateAddPotentialCoachee()"
+              [disabled]="potentialCoacheeEmail==null">Ajouter
+      </button>
     </div>
   </div>
 </div>

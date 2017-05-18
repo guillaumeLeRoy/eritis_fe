@@ -1,15 +1,16 @@
-import {AfterViewInit, ChangeDetectorRef, Component, OnDestroy, OnInit} from '@angular/core';
-import {MeetingsService} from '../../service/meetings.service';
-import {Meeting} from '../../model/meeting';
-import {Observable, Subscription} from 'rxjs';
-import {AuthService} from '../../service/auth.service';
-import {ApiUser} from '../../model/apiUser';
-import {Coach} from '../../model/Coach';
-import {Coachee} from '../../model/coachee';
-import {Router} from '@angular/router';
-import {CoachCoacheeService} from '../../service/CoachCoacheeService';
-import {Response} from '@angular/http';
+import {AfterViewInit, ChangeDetectorRef, Component, OnDestroy, OnInit} from "@angular/core";
+import {MeetingsService} from "../../service/meetings.service";
+import {Meeting} from "../../model/meeting";
+import {Observable, Subscription} from "rxjs";
+import {AuthService} from "../../service/auth.service";
+import {ApiUser} from "../../model/apiUser";
+import {Coach} from "../../model/Coach";
+import {Coachee} from "../../model/coachee";
+import {Router} from "@angular/router";
+import {CoachCoacheeService} from "../../service/CoachCoacheeService";
+import {Response} from "@angular/http";
 import {Rh} from "../../model/Rh";
+import {PotentialCoachee} from "../../model/PotentialCoachee";
 
 declare var $: any;
 declare var Materialize: any;
@@ -21,7 +22,7 @@ declare var Materialize: any;
 })
 export class MeetingListComponent implements OnInit, AfterViewInit, OnDestroy {
 
-  private coachees: Observable<Coach[]>;
+  private coachees: Observable<Coachee[]>;
   private meetings: Observable<Meeting[]>;
   private meetingsOpened: Observable<Meeting[]>;
   private meetingsClosed: Observable<Meeting[]>;
@@ -107,11 +108,11 @@ export class MeetingListComponent implements OnInit, AfterViewInit, OnDestroy {
     );
   }
 
-  private getAllCoacheesForRh() {
+  private getAllCoacheesForRh(rhId: string) {
     // TODO pass a rh parameter
     // TODO return only coachees for the RH
-    this.subscription = this.coachCoacheeService.getAllCoachs().subscribe(
-      (coachees: Coach[]) => {
+    this.subscription = this.coachCoacheeService.getAllCoacheesForRh(rhId).subscribe(
+      (coachees: Coachee[]) => {
         console.log('got coachees for rh', coachees);
 
         this.coachees = Observable.of(coachees);
@@ -136,7 +137,7 @@ export class MeetingListComponent implements OnInit, AfterViewInit, OnDestroy {
       } else if (user instanceof Rh) {
         // rh
         console.log('get a rh');
-        this.getAllCoacheesForRh();
+        this.getAllCoacheesForRh(user.id);
       }
 
       this.user = Observable.of(user);
@@ -350,24 +351,34 @@ export class MeetingListComponent implements OnInit, AfterViewInit, OnDestroy {
     this.addPotentialCoacheeModalVisibility(false);
   }
 
-  validateAddPotentialCoachee() {
-    console.log('validateCoacheeDeleteMeeting');
+  private potentialCoacheeEmail?;
 
-    let meetingId = this.meetingToCancel.id;
+  validateAddPotentialCoachee() {
+    console.log('validateCoacheeDeleteMeeting, potentialCoacheeEmail : ', this.potentialCoacheeEmail);
 
     this.addPotentialCoacheeModalVisibility(false);
 
-    this.meetingsService.deleteMeeting(meetingId).subscribe(
-      (response: Response) => {
-        console.log('confirmCancelMeeting, res', response);
-        // this.onMeetingCancelled.emit();
-        this.onRefreshRequested();
-        Materialize.toast('Collaborateur ajouté !', 3000, 'rounded');
-      }, (error) => {
-        console.log('confirmCancelMeeting, error', error);
-        Materialize.toast("Impossible d'ajouter le collaborateur", 3000, 'rounded');
+    this.user.take(1).subscribe(
+      (user: ApiUser) => {
+
+        let body = {
+          "email": this.potentialCoacheeEmail,
+          "plan_id": 1
+        };
+
+        this.coachCoacheeService.postPotentialCoachee(user.id, body).subscribe(
+          (res: PotentialCoachee) => {
+            console.log('postPotentialCoachee, res', res);
+            this.onRefreshRequested();
+            Materialize.toast('Collaborateur ajouté !', 3000, 'rounded');
+          }, (error) => {
+            console.log('postPotentialCoachee, error', error);
+            Materialize.toast("Impossible d'ajouter le collaborateur", 3000, 'rounded');
+          }
+        );
       }
     );
+
   }
 
 }

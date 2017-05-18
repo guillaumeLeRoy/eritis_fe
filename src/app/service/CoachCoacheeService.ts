@@ -4,6 +4,8 @@ import {Coach} from "../model/Coach";
 
 import {Response} from "@angular/http";
 import {AuthService} from "./auth.service";
+import {PotentialCoachee} from "../model/PotentialCoachee";
+import {Coachee} from "../model/coachee";
 
 
 @Injectable()
@@ -19,6 +21,28 @@ export class CoachCoacheeService {
       (response: Response) => {
         let json = response.json();
         console.log("getAllCoachs, response json : ", json);
+        return json;
+      });
+  }
+
+  getAllCoacheesForRh(rhId: string): Observable<Coachee[]> {
+    console.log("getAllCoacheesForRh, start request");
+    let param = [rhId];
+    return this.apiService.get(AuthService.GET_COACHEES_FOR_RH, param).map(
+      (response: Response) => {
+        let json: Coachee[] = response.json();
+        console.log("getAllCoacheesForRh, response json : ", json);
+        return json;
+      });
+  }
+
+  postPotentialCoachee(rhId: string, body: any): Observable<PotentialCoachee> {
+    console.log("postPotentialCoachee, start request");
+    let param = [rhId];
+    return this.apiService.post(AuthService.POST_POTENTIAL_COACHEE, param, body).map(
+      (response: Response) => {
+        let json: PotentialCoachee = response.json();
+        console.log("postPotentialCoachee, response json : ", json);
         return json;
       });
   }

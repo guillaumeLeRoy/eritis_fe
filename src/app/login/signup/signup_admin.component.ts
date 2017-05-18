@@ -5,6 +5,7 @@ import {Router} from "@angular/router";
 import {Observable} from "rxjs";
 import {ContractPlan} from "../../model/ContractPlan";
 import {Response} from "@angular/http";
+import {User} from "../../user/user";
 
 
 declare var $: any;
@@ -16,10 +17,10 @@ enum SignUpType {
 
 @Component({
   selector: 'rb-signup',
-  templateUrl: './signup.component.html',
-  styleUrls: ['./signup.component.css']
+  templateUrl: './signup_admin.component.html',
+  styleUrls: ['./signup_admin.component.css']
 })
-export class SignupComponent implements OnInit {
+export class SignupAdminComponent implements OnInit {
 
   private signUpSelectedType: SignUpType;
   private signUpTypes: SignUpType[];
@@ -116,7 +117,9 @@ export class SignupComponent implements OnInit {
         return;
       }
 
-      this.authService.signUpCoachee(this.signUpForm.value, this.mSelectedPlan).subscribe(
+      let user: User = this.signUpForm.value;
+      user.contractPlanId = this.mSelectedPlan.plan_id;
+      this.authService.signUpCoachee(user).subscribe(
         data => {
           console.log("onSignUp, data obtained", data)
           /*L'utilisateur est TOUJOURS redirigé vers ses meetings*/
@@ -139,7 +142,7 @@ export class SignupComponent implements OnInit {
           this.error = true;
           this.errorMessage = error
         })
-    }else{
+    } else {
       Materialize.toast('Vous devez sélectionner un type', 3000, 'rounded')
     }
   }
