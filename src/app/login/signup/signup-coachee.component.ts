@@ -3,8 +3,9 @@ import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
 import {Observable} from "rxjs/Observable";
 import {ContractPlan} from "../../model/ContractPlan";
 import {AuthService} from "../../service/auth.service";
-import {Router} from "@angular/router";
+import {ActivatedRoute, Router} from "@angular/router";
 import {Response} from "@angular/http";
+import {CoachCoacheeService} from "../../service/CoachCoacheeService";
 
 declare var $: any;
 declare var Materialize: any;
@@ -43,12 +44,32 @@ export class SignupCoacheeComponent implements OnInit {
   /* ----- END Contract Plan ----*/
 
 
-  constructor(private formBuilder: FormBuilder, private authService: AuthService, private router: Router) {
+  constructor(private formBuilder: FormBuilder, private authService: AuthService, private coachCoacheeService: CoachCoacheeService, private router: Router, private route: ActivatedRoute) {
     console.log("constructor")
   }
 
   ngOnInit() {
     console.log("ngOnInit");
+
+    // meetingId should be in the router
+    this.route.queryParams.subscribe(
+      (params: any) => {
+        let token = params['token'];
+
+        console.log("ngOnInit, param token", token);
+
+        this.coachCoacheeService.getPotentialCoachee(token).subscribe(
+          data => {
+            //TODO use this potential coachee
+            console.log("getPotentialCoachee, data obtained", data)
+          },
+          error => {
+            console.log("getPotentialCoachee, error obtained", error)
+
+          }
+        );
+      }
+    );
 
     this.signUpTypes = [SignUpType.COACHEE];
 
@@ -64,14 +85,6 @@ export class SignupCoacheeComponent implements OnInit {
       confirmPassword: ['',
         [Validators.required, this.isEqualPassword.bind(this)]
       ],
-
-      // type: ['',
-      //   [Validators.required]
-      // ],
-      //
-      // coacheeTYpe: ['',
-      //   [Validators.required]
-      // ]
     });
 
     this.getListOfContractPlans();

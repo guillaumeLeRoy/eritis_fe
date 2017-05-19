@@ -26,6 +26,7 @@ export class AuthService {
   public static POST_SIGN_UP_RH = "/login/:firebaseId/rh";
   public static POST_POTENTIAL_COACHEE = "/v1/rhs/:uid/coachees";
   public static LOGIN = "/login/:firebaseId";
+  public static GET_POTENTIAL_COACHEE_FOR_TOKEN = "/v1/potential/:token";
   public static GET_COACHS = "/coachs";
   public static GET_COACHEES = "/coachees";
   public static GET_COACHEES_FOR_RH = "/v1/rhs/:uid/coachees";
