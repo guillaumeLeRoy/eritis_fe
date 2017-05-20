@@ -1,5 +1,6 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {Coachee} from "../../../model/coachee";
+import {PotentialCoachee} from "../../../model/PotentialCoachee";
 
 @Component({
   selector: 'rb-meeting-item-rh',
@@ -10,6 +11,9 @@ export class MeetingItemRhComponent implements OnInit {
 
   @Input()
   coachee: Coachee;
+
+  @Input()
+  potentialCoachee: PotentialCoachee;
 
   private goal: string;
   private hasGoal: false;

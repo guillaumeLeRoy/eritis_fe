@@ -36,6 +36,17 @@ export class CoachCoacheeService {
       });
   }
 
+  getAllPotentialCoacheesForRh(rhId: string): Observable<Coachee[]> {
+    console.log("getAllPotentialCoacheesForRh, start request");
+    let param = [rhId];
+    return this.apiService.get(AuthService.GET_POTENTIAL_COACHEES_FOR_RH, param).map(
+      (response: Response) => {
+        let json: PotentialCoachee[] = response.json();
+        console.log("getAllPotentialCoacheesForRh, response json : ", json);
+        return json;
+      });
+  }
+
   getPotentialCoachee(token: string) {
     console.log("getPotentialCoachee, start request");
     let param = [token];

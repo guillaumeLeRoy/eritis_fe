@@ -79,6 +79,10 @@ p {
   align-items: flex-start;
 }
 
+.meeting-item.unbooked .meeting-item-header {
+  padding: 8px 0;
+}
+
 .meeting-item-body-content {
   flex-direction: column;
   justify-content: space-between;

@@ -33,6 +33,7 @@ export class MeetingListComponent implements OnInit, AfterViewInit, OnDestroy {
   private hasClosedMeeting = false;
   private hasUnbookedMeeting = false;
   private hasCollaborators = false;
+  private hasPotentialCollaborators = false;
 
   private subscription: Subscription;
   private connectedUserSubscription: Subscription;
@@ -109,14 +110,23 @@ export class MeetingListComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   private getAllCoacheesForRh(rhId: string) {
-    // TODO pass a rh parameter
-    // TODO return only coachees for the RH
     this.subscription = this.coachCoacheeService.getAllCoacheesForRh(rhId).subscribe(
       (coachees: Coachee[]) => {
         console.log('got coachees for rh', coachees);
 
         this.coachees = Observable.of(coachees);
-        this.hasCollaborators = true;
+        if (coachees !== null) this.hasCollaborators = true;
+        this.cd.detectChanges();
+      }
+    );
+  }
+
+  private getAllPotentialCoacheesForRh(rhId: string) {
+    this.subscription = this.coachCoacheeService.getAllPotentialCoacheesForRh(rhId).subscribe(
+        console.log('got potentialCoachees for rh', coachees);
+
+        this.potentialCoachees = Observable.of(coachees);
+        if (coachees !== null) this.hasPotentialCollaborators = true;
         this.cd.detectChanges();
       }
     );
@@ -138,6 +148,7 @@ export class MeetingListComponent implements OnInit, AfterViewInit, OnDestroy {
         // rh
         console.log('get a rh');
         this.getAllCoacheesForRh(user.id);
+        this.getAllPotentialCoacheesForRh(user.id);
       }
 
       this.user = Observable.of(user);
@@ -348,6 +359,7 @@ export class MeetingListComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   cancelAddPotentialCoachee() {
+    this.potentialCoacheeEmail = null;
     this.addPotentialCoacheeModalVisibility(false);
   }
 

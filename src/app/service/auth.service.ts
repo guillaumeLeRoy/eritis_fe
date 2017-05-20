@@ -30,6 +30,7 @@ export class AuthService {
   public static GET_COACHS = "/coachs";
   public static GET_COACHEES = "/coachees";
   public static GET_COACHEES_FOR_RH = "/v1/rhs/:uid/coachees";
+  public static GET_POTENTIAL_COACHEES_FOR_RH = "/v1/rhs/:uid/potentials";
   public static GET_COACH_FOR_ID = "/coachs/:id";
   public static GET_COACHEE_FOR_ID = "/coachees/:id";
   public static GET_RH_FOR_ID = "/rh/:id";
