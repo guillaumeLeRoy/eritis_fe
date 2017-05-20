@@ -23,6 +23,7 @@ declare var Materialize: any;
 export class MeetingListComponent implements OnInit, AfterViewInit, OnDestroy {
 
   private coachees: Observable<Coachee[]>;
+  private potentialCoachees: Observable<PotentialCoachee[]>;
   private meetings: Observable<Meeting[]>;
   private meetingsOpened: Observable<Meeting[]>;
   private meetingsClosed: Observable<Meeting[]>;
@@ -123,6 +124,7 @@ export class MeetingListComponent implements OnInit, AfterViewInit, OnDestroy {
 
   private getAllPotentialCoacheesForRh(rhId: string) {
     this.subscription = this.coachCoacheeService.getAllPotentialCoacheesForRh(rhId).subscribe(
+      (coachees: PotentialCoachee[]) => {
         console.log('got potentialCoachees for rh', coachees);
 
         this.potentialCoachees = Observable.of(coachees);

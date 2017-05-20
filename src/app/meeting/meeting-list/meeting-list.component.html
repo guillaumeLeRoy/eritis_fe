@@ -180,6 +180,8 @@
           <div class="card collection col-lg-12">
 
             <div *ngIf="hasPotentialCollaborators">
+              <div class="collection-item" *ngFor="let potentialCoachee of potentialCoachees | async">
+                <rb-meeting-item-rh [potentialCoachee]="potentialCoachee"></rb-meeting-item-rh>
               </div>
             </div>
 
