@@ -368,7 +368,7 @@ export class MeetingListComponent implements OnInit, AfterViewInit, OnDestroy {
   private potentialCoacheeEmail?;
 
   validateAddPotentialCoachee() {
-    console.log('validateCoacheeDeleteMeeting, potentialCoacheeEmail : ', this.potentialCoacheeEmail);
+    console.log('validateAddPotentialCoachee, potentialCoacheeEmail : ', this.potentialCoacheeEmail);
 
     this.addPotentialCoacheeModalVisibility(false);
 
