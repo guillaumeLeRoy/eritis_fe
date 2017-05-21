@@ -6,6 +6,7 @@ import {AuthService} from "../../service/auth.service";
 import {ActivatedRoute, Router} from "@angular/router";
 import {Response} from "@angular/http";
 import {CoachCoacheeService} from "../../service/CoachCoacheeService";
+import {PotentialCoachee} from "../../model/PotentialCoachee";
 
 declare var $: any;
 declare var Materialize: any;
@@ -21,19 +22,14 @@ enum SignUpType {
 })
 export class SignupCoacheeComponent implements OnInit {
 
-  private signUpSelectedType: SignUpType;
+  potentialCoachee: PotentialCoachee;
+
+  private signUpSelectedType = SignUpType.COACHEE;
   private signUpTypes: SignUpType[];
 
   private signUpForm: FormGroup;
   private error = false;
   private errorMessage = "";
-
-  /* ----- Contract Plan ----*/
-
-  /**
-   * All available Plans
-   */
-  private plans: Observable<ContractPlan[]>;
 
   /**
    * Selected Plan.
@@ -59,9 +55,10 @@ export class SignupCoacheeComponent implements OnInit {
         console.log("ngOnInit, param token", token);
 
         this.coachCoacheeService.getPotentialCoachee(token).subscribe(
-          data => {
+          (coachee: PotentialCoachee) => {
             //TODO use this potential coachee
-            console.log("getPotentialCoachee, data obtained", data)
+            console.log("getPotentialCoachee, data obtained", coachee);
+            this.potentialCoachee = coachee;
           },
           error => {
             console.log("getPotentialCoachee, error obtained", error)
@@ -86,15 +83,6 @@ export class SignupCoacheeComponent implements OnInit {
         [Validators.required, this.isEqualPassword.bind(this)]
       ],
     });
-
-    this.getListOfContractPlans();
-  }
-
-
-  onSelectPlan(plan: ContractPlan) {
-    console.log("onSelectPlan, plan ", plan)
-
-    this.mSelectedPlan = plan;
   }
 
   onSignUpSubmitted() {
@@ -130,18 +118,6 @@ export class SignupCoacheeComponent implements OnInit {
     }
   }
 
-
-  getListOfContractPlans() {
-    this.authService.getNotAuth(AuthService.GET_CONTRACT_PLANS, null).subscribe(
-      (response: Response) => {
-        let json: ContractPlan[] = response.json();
-        console.log("getListOfContractPlans, response json : ", json);
-        this.plans = Observable.of(json);
-        // this.cd.detectChanges();
-      }
-    );
-  }
-
   isEmail(control: FormControl): { [s: string]: boolean; } {
     if (!control.value.match("[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?")) {
       console.log("email NOT ok")
@@ -159,7 +135,6 @@ export class SignupCoacheeComponent implements OnInit {
 
     if (control.value !== this.signUpForm.controls["password"].value) {
       console.log("isEqualPassword, NO")
-
       return {passwordNoMatch: true}
     }
   }

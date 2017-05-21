@@ -11,7 +11,7 @@ rb-meeting-item-coachee.collection-item{
   padding: 16px 0;
 }
 
-.card,
-.collection {
+.card.collection {
   overflow: visible;
+  padding: 0;
 }

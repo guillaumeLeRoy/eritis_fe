@@ -15,35 +15,60 @@
 
   <div class="row" *ngIf="!loading">
 
-    <!-- RH -->
-    <div class="meeting-item-header col-md-12 col-lg-4">
-      <div class="meeting-item-coach">
-        <div>
-          <!-- image coachee -->
-          <img class="meeting-item-coach-avatar circle img-responsive" alt="coachee" [src]="coachee.avatar_url">
+    <!-- COACHEE -->
+    <div *ngIf="coachee != null">
+      <div class="meeting-item-header col-md-12 col-lg-4">
+        <div class="meeting-item-coach">
+          <div>
+            <!-- image coachee -->
+            <img class="meeting-item-coach-avatar circle img-responsive" alt="coachee" [src]="coachee.avatar_url">
+          </div>
+
+          <div>
+            <p class="meeting-item-coach">{{ coachee.display_name }}</p>
+          </div>
         </div>
 
-        <div>
-          <p class="meeting-item-coach">{{ coachee.display_name }}</p>
+        <!-- USAGE -->
+        <div class="meeting-item-date">
+          <span class="meeting-item-date-date">Usage: <span class="blue-text">xx%</span></span>
         </div>
       </div>
 
-      <!-- USAGE -->
-      <div class="meeting-item-date">
-        <span class="meeting-item-date-date">Usage: <span class="blue-text">xx%</span></span>
-      </div>
-    </div>
+      <!-- GOAL -->
+      <div class="meeting-item-body col-md-12 col-lg-8">
+        <div class="meeting-item-body-content">
+          <p class="meeting-item-goal">
+            <span class="black-text bold">Objectif: </span>
+            <span *ngIf="hasGoal">{{ goal }}</span>
+            <span *ngIf="!hasGoal">n/a.</span>
+          </p>
+        </div>
+      </div><!--end meeting-item-body-->
+    </div><!--end coachee-->
 
-    <!-- GOAL -->
-    <div class="meeting-item-body col-md-12 col-lg-8">
-      <div class="meeting-item-body-content">
-        <p class="meeting-item-goal">
-          <span class="black-text bold">Objectif: </span>
-          <span *ngIf="hasGoal">{{ goal }}</span>
-          <span *ngIf="!hasGoal">n/a.</span>
-        </p>
-    </div><!--end meeting-item-body-->
+    <!-- POTENTIAL COACHEE -->
+    <div *ngIf="potentialCoachee != null">
+      <div class="meeting-item-header col-lg-12">
+        <div class="meeting-item-coach">
+          <div>
+            <!-- image coachee -->
+            <img class="meeting-item-coach-avatar circle img-responsive" alt="potentialCoachee"
+                 src="https://s-media-cache-ak0.pinimg.com/originals/af/25/49/af25490494d3338afef00869c59fdd37.png">
+          </div>
+
+          <div>
+            <p class="meeting-item-coach">{{ potentialCoachee.email }}</p>
+          </div>
+        </div>
+
+        <!-- PLAN -->
+        <div class="meeting-item-date">
+          <span class="meeting-item-date-date"><span class="blue-text">x</span> séances</span>
+        </div>
+      </div>
+    </div><!--end potentialCoachee-->
 
   </div><!--end row-->
 
-</div><!--end meeting-item-->
+  </div><!--end meeting-item-->

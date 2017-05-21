@@ -4,5 +4,4 @@
 
 export class PotentialCoachee {
   readonly id: string;
-
 }

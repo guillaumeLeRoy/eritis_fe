@@ -7,10 +7,9 @@
           <form class="col s12" [formGroup]="signUpForm" (ngSubmit)="onSignUpSubmitted()">
             <div class="row">
               <div class="input-field col s12">
-                <input id="email" type="email" formControlName="email">
                 <label for="email">Email</label>
                 <small
-                  *ngIf="!signUpForm.controls['email'].pristine &&!signUpForm.controls['email'].valid"
+                  *ngIf="!signUpForm.controls['email'].pristine && !signUpForm.controls['email'].valid"
                   class="text-danger">
                   Email is required and format should be <i>john@doe.com</i>.
                 </small>
@@ -38,30 +37,10 @@
               </div>
             </div>
 
-            <div class="input-field">
-              <select [(ngModel)]="signUpSelectedType"
-                      [ngModelOptions]="{standalone: true}"
-                      name="signup_type_selector"
-                      class="browser-default">
-                <option value="" disabled selected>Sélectionnez un Type</option>
-                <option *ngFor="let type of signUpTypes" [ngValue]="type">
-                  {{ getSignUpTypeName(type) }}
-                </option>
-              </select>
-            </div>
-
-            <div *ngIf="signUpSelectedType == 1">
-              <div *ngFor="let plan of plans | async" (click)="onSelectPlan(plan)"  [class.contract_selected]="plan == mSelectedPlan">
-                Plan id : {{plan.plan_id}}
-                Plan Name : {{plan.plan_name}}
-                Plan Sessions count : {{plan.sessions_count}}
-              </div>
-            </div>
-
             <div class="row">
               <div class="input-field col s12">
                 <button class="btn-basic btn-blue right" type="submit" name="action"
-                        [disabled]="!signUpForm.valid || (signUpSelectedType == 1 && !mSelectedPlan)">Valider
+                        [disabled]="!signUpForm.valid">Valider
                 </button>
               </div>
             </div>

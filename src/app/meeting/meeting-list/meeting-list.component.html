@@ -164,7 +164,9 @@
 
             <div *ngIf="hasCollaborators">
               <div class="collection-item" *ngFor="let coachee of coachees | async">
-                <rb-meeting-item-rh [coachee]="coachee"></rb-meeting-item-rh>
+                <rb-meeting-item-rh [coachee]="coachee"
+                                    [potentialCoachee]="null">
+                </rb-meeting-item-rh>
               </div>
             </div>
 
@@ -181,7 +183,9 @@
 
             <div *ngIf="hasPotentialCollaborators">
               <div class="collection-item" *ngFor="let potentialCoachee of potentialCoachees | async">
-                <rb-meeting-item-rh [potentialCoachee]="potentialCoachee"></rb-meeting-item-rh>
+                <rb-meeting-item-rh [potentialCoachee]="potentialCoachee"
+                                    [coachee]="null">
+                </rb-meeting-item-rh>
               </div>
             </div>
 
