@@ -7,6 +7,7 @@ import {ActivatedRoute, Router} from "@angular/router";
 import {Response} from "@angular/http";
 import {CoachCoacheeService} from "../../service/CoachCoacheeService";
 import {PotentialCoachee} from "../../model/PotentialCoachee";
+import {User} from "../../user/user";
 
 declare var $: any;
 declare var Materialize: any;
@@ -22,6 +23,7 @@ enum SignUpType {
 })
 export class SignupCoacheeComponent implements OnInit {
 
+  potentialCoacheeObs: Observable<PotentialCoachee>;
   potentialCoachee: PotentialCoachee;
 
   private signUpSelectedType = SignUpType.COACHEE;
@@ -30,12 +32,6 @@ export class SignupCoacheeComponent implements OnInit {
   private signUpForm: FormGroup;
   private error = false;
   private errorMessage = "";
-
-  /**
-   * Selected Plan.
-   * Mandatory for a Coachee
-   */
-  private mSelectedPlan: ContractPlan;
 
   /* ----- END Contract Plan ----*/
 
@@ -58,6 +54,7 @@ export class SignupCoacheeComponent implements OnInit {
           (coachee: PotentialCoachee) => {
             //TODO use this potential coachee
             console.log("getPotentialCoachee, data obtained", coachee);
+            this.potentialCoacheeObs = Observable.of(coachee);
             this.potentialCoachee = coachee;
           },
           error => {
@@ -71,16 +68,14 @@ export class SignupCoacheeComponent implements OnInit {
     this.signUpTypes = [SignUpType.COACHEE];
 
     this.signUpForm = this.formBuilder.group({
-      email: ['', Validators.compose([
+      password: ['', Validators.compose([
         Validators.required,
-        this.isEmail
-      ])],
-      password: ['', Validators.compose([Validators.required,
         Validators.minLength(6)]
       )
       ],
       confirmPassword: ['',
-        [Validators.required, this.isEqualPassword.bind(this)]
+        [Validators.required,
+        this.isEqualPassword.bind(this)]
       ],
     });
   }
@@ -95,14 +90,11 @@ export class SignupCoacheeComponent implements OnInit {
     if (this.signUpSelectedType == SignUpType.COACHEE) {
       console.log("onSignUp, coachee");
 
-      //contract Plan is mandatory
-      if (this.mSelectedPlan == null) {
-        this.error = true;
-        this.errorMessage = "Selectionnez un contract";
-        return;
-      }
+      let user: User = this.signUpForm.value;
+      user.email = this.potentialCoachee.email;
+      user.contractPlanId = this.potentialCoachee.plan.plan_id;
 
-      this.authService.signUpCoachee(this.signUpForm.value).subscribe(
+      this.authService.signUpCoachee(user).subscribe(
         data => {
           console.log("onSignUp, data obtained", data)
           /*L'utilisateur est TOUJOURS redirigé vers ses meetings*/
@@ -116,16 +108,6 @@ export class SignupCoacheeComponent implements OnInit {
     } else {
       Materialize.toast('Vous devez sélectionner un type', 3000, 'rounded')
     }
-  }
-
-  isEmail(control: FormControl): { [s: string]: boolean; } {
-    if (!control.value.match("[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?")) {
-      console.log("email NOT ok")
-      // this.test = false
-      return {noEmail: true}
-    }
-    // this.test = true
-    console.log("email ok")
   }
 
   isEqualPassword(control: FormControl): { [s: string]: boolean; } {
