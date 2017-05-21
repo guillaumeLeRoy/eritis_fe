@@ -235,6 +235,15 @@
     <div class="delete-modal-message">
       <h5>Veuiller saisir l'adresse mail du collaborateur. Un mail lui sera envoyé pour finaliser son inscription.</h5>
       <input type="email" placeholder="Email" id="potential_mail" [(ngModel)]="potentialCoacheeEmail">
+      <select [(ngModel)]="selectedPlan"
+              [ngModelOptions]="{standalone: true}"
+              name="plan_selector"
+              class="browser-default">
+        <option value="" disabled selected>Sélectionnez un plan</option>
+        <option *ngFor="let plan of plans | async" [ngValue]="plan">
+          {{ plan.sessions_count }} séances
+        </option>
+      </select>
     </div>
     <div class="delete-modal-footer">
       <button class="btn-basic btn-red btn-plain" (click)="cancelAddPotentialCoachee()">Annuler</button>
