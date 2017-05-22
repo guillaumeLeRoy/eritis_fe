@@ -1,8 +1,8 @@
-import {Component, OnInit, Input, AfterViewInit, ChangeDetectorRef, EventEmitter, Output} from '@angular/core';
+import {AfterViewInit, ChangeDetectorRef, Component, EventEmitter, Input, OnInit, Output} from "@angular/core";
 import {Meeting} from "../../../model/meeting";
 import {Observable} from "rxjs";
 import {MeetingReview} from "../../../model/MeetingReview";
-import {FormGroup, FormBuilder, Validators} from "@angular/forms";
+import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {Coachee} from "../../../model/coachee";
 import {MeetingDate} from "../../../model/MeetingDate";
 import {MeetingsService} from "../../../service/meetings.service";
@@ -286,7 +286,7 @@ export class MeetingItemCoachComponent implements OnInit, AfterViewInit {
     return m;
   }
 
-  getDate(date: string) {
+  getDate(date: string): string {
     return (new Date(date)).getDate() + ' ' + this.months[(new Date(date)).getMonth()];
   }
 

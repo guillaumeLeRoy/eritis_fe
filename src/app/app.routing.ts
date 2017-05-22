@@ -19,6 +19,7 @@ const APP_ROUTES: Routes = [
   {path: 'welcome', component: WelcomeComponent},
   {path: 'chat', component: ChatComponent},
   {path: 'signin', component: SigninComponent},
+  {path: 'signup', component: SignupComponent},
   {path: 'profile_coach', component: ProfileCoachComponent},
   {path: 'profile_coachee', component: ProfileCoacheeComponent},
   {path: 'coachs', component: CoachListComponent},
