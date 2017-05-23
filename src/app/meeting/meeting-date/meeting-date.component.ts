@@ -225,7 +225,8 @@ export class MeetingDateComponent implements OnInit, OnDestroy {
   }
 
   isDisabled(date: NgbDateStruct, current: { month: number }) {
-    return (date.month !== current.month);
+    let now = new Date();
+    return (date.month !== current.month || date.year < now.getFullYear() || date.month < now.getMonth()+1 || (date.month == now.getMonth()+1 && date.day < now.getDate()));
   }
 
   /**

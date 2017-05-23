@@ -1,0 +1,68 @@
+<div class="section">
+  <div class="row">
+    <div class="col s12 m12 l6">
+      <div class="card-panel">
+        <h4>Bonjour, vous bénéficiez de <span class="blue-text">{{ (potentialCoacheeObs | async)?.plan.sessions_count }}</span> séances !</h4>
+        <h5>{{ (potentialCoacheeObs | async)?.email }}</h5>
+        <p>Choississez un mot de passe pour finaliser votre inscription.</p>
+        <div class="row">
+          <form class="col s12" [formGroup]="signUpForm" (ngSubmit)="onSignUpSubmitted()">
+            <!--<div class="row">-->
+              <!--<div class="input-field col s12">-->
+                <!--<input id="email" type="email" formControlName="email" [value]="(potentialCoacheeObs | async)?.email" disabled>-->
+                <!--<small-->
+                  <!--*ngIf="!signUpForm.controls['email'].pristine && !signUpForm.controls['email'].valid"-->
+                  <!--class="text-danger">-->
+                  <!--Email is required and format should be <i>john@doe.com</i>.-->
+                <!--</small>-->
+              <!--</div>-->
+            <!--</div>-->
+            <div class="row">
+              <div class="input-field col s12">
+                <input id="password" type="password" formControlName="password">
+                <label for="password">Password</label>
+                <small class="text-danger"
+                       *ngIf="!signUpForm.controls['password'].pristine && !signUpForm.controls['password'].valid">
+                  Password must be at least 6 characters.
+                </small>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="input-field col s12">
+                <input id="confirm_password" type="password" formControlName="confirmPassword">
+                <label for="confirm_password">Confirm Password</label>
+                <small class="text-danger"
+                       *ngIf="!signUpForm.controls['confirmPassword'].pristine && signUpForm.controls['confirmPassword'].errors && signUpForm.controls['confirmPassword'].errors['passwordNoMatch']">
+                  Confirm Password is incorrect
+                </small>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="input-field col s12">
+                <button class="btn-basic btn-blue right" type="submit" name="action"
+                        [disabled]="!signUpForm.valid">Valider
+                </button>
+              </div>
+            </div>
+
+
+            <!-- sign up error div-->
+
+            <div *ngIf="error && errorMessage != ''">
+
+              <!-- add extra separator-->
+              <hr>
+
+              <small class="text-danger">
+                {{errorMessage}}
+              </small>
+            </div>
+
+          </form>
+        </div>
+      </div><!--end card panel-->
+    </div>
+  </div><!--end row-->
+</div><!--end section-->

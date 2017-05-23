@@ -3,15 +3,14 @@
   margin-left: 16px;
 }
 
-rb-meeting-item-coachee.collection-item{
-  padding: 0;
+.collection-item{
+  padding: 0 16px;
 }
 
 .no-meeting {
   padding: 16px 0;
 }
 
-.card,
-.collection {
+.card.collection {
   overflow: visible;
 }

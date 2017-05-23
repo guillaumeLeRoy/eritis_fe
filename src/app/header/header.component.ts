@@ -18,7 +18,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   private subscription: Subscription;
 
   private mUser: Coach | Coachee | Rh;
-  private user: Observable<Coach | Coachee>;
+  private user: Observable<Coach | Coachee | Rh>;
 
   constructor(private router: Router, private authService: AuthService, private cd: ChangeDetectorRef) {
   }
@@ -91,6 +91,8 @@ export class HeaderComponent implements OnInit, OnDestroy {
       this.router.navigate(['/profile_coach']);
     } else if (this.mUser instanceof Coachee) {
       this.router.navigate(['/profile_coachee']);
+    } else if (this.mUser instanceof Rh) {
+      this.router.navigate(['/profile_rh']);
     }
   }
 

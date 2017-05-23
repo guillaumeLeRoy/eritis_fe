@@ -1,0 +1,149 @@
+<rb-header></rb-header>
+<!--start container-->
+<div class="container">
+
+  <div id="profile-page" class="section">
+    <!-- profile-page-header -->
+    <div id="profile-page-header" class="card">
+      <div class="card-image waves-effect waves-block waves-light">
+        <img class="activator" src="images/user-profile-bg.jpg" alt="user background">
+      </div>
+      <figure class="card-profile-image">
+        <img src="{{ ( rh | async)?.avatar_url}}" alt="profile image"
+             class="circle z-depth-2 responsive-img activator">
+      </figure>
+      <div class="card-content">
+        <div class="row">
+          <div class="col s3 offset-s2">
+            <h4 class="card-title grey-text text-darken-4">{{ (rh | async)?.display_name }}</h4>
+            <p class="medium-small grey-text">Coachee</p>
+          </div>
+          <div class="col s2 center-align">
+            <h4 class="card-title grey-text text-darken-4">10+</h4>
+            <p class="medium-small grey-text">Work Experience</p>
+          </div>
+          <div class="col s2 center-align">
+            <h4 class="card-title grey-text text-darken-4">6</h4>
+            <p class="medium-small grey-text">Completed Sessions</p>
+          </div>
+          <div class="col s2 center-align">
+            <h4 class="card-title grey-text text-darken-4">$ 1,253,000</h4>
+            <p class="medium-small grey-text">Business Profit</p>
+          </div>
+          <div class="col s1 right-align">
+            <a class="btn-floating activator waves-effect waves-light darken-2 right">
+              <i class="mdi-action-perm-identity"></i>
+            </a>
+          </div>
+        </div>
+      </div>
+      <div class="card-reveal">
+        <p>
+            <span class="card-title grey-text text-darken-4">{{ (rh | async)?.display_name }} <i
+              class="mdi-navigation-close right"></i></span>
+          <span><i class="mdi-action-perm-identity cyan-text text-darken-2"></i>Coach</span>
+        </p>
+
+        <p>Coachee description</p>
+
+        <p><i class="mdi-action-perm-phone-msg cyan-text text-darken-2"></i> +1 (612) 222 8989</p>
+        <p><i class="mdi-communication-email cyan-text text-darken-2"></i> {{ (rh | async)?.email }}</p>
+        <p><i class="mdi-social-cake cyan-text text-darken-2"></i> Start Date : {{ (rh | async)?.start_date }}
+        </p>
+        <p><i class="mdi-device-airplanemode-on cyan-text text-darken-2"></i> BAR - AUS</p>
+        <p><i class="mdi-social-cake cyan-text text-darken-2"></i> eritis id : {{ (rh | async)?.id }}</p>
+
+      </div>
+    </div>
+    <!--/ profile-page-header -->
+
+    <!-- profile-page-content -->
+    <div id="profile-page-content" class="row">
+      <!-- profile-page-sidebar-->
+      <div id="profile-page-sidebar" class="col s12 m4">
+        <!-- Profile About  -->
+        <div class="card light-blue">
+          <div class="card-content white-text">
+            <span class="card-title">About Me!</span>
+            <p>Coachee description</p>
+
+          </div>
+        </div>
+        <!-- Profile About  -->
+
+        <!-- Profile About Details  -->
+        <ul id="profile-page-about-details" class="collection z-depth-1">
+          <li class="collection-item">
+            <div class="row">
+              <div class="col s5 grey-text darken-1"><i class="mdi-action-wallet-travel"></i> Project</div>
+              <div class="col s7 grey-text text-darken-4 right-align">ABC Name</div>
+            </div>
+          </li>
+          <li class="collection-item">
+            <div class="row">
+              <div class="col s5 grey-text darken-1"><i class="mdi-social-poll"></i> Skills</div>
+              <div class="col s7 grey-text text-darken-4 right-align">HTML, CSS</div>
+            </div>
+          </li>
+          <li class="collection-item">
+            <div class="row">
+              <div class="col s5 grey-text darken-1"><i class="mdi-social-domain"></i> Lives in</div>
+              <div class="col s7 grey-text text-darken-4 right-align">NY, USA</div>
+            </div>
+          </li>
+          <li class="collection-item">
+            <div class="row">
+              <div class="col s5 grey-text darken-1"><i class="mdi-social-cake"></i> Birth date</div>
+              <div class="col s7 grey-text text-darken-4 right-align">18th June, 1991</div>
+            </div>
+          </li>
+        </ul>
+        <!--/ Profile About Details  -->
+
+        <!-- Profile About  -->
+
+        <!-- Profile Edit  -->
+        <div class="card">
+          <div class="card-content">
+            <span class="card-title">Modifier votre profile</span>
+
+            <form [formGroup]="formRh" (ngSubmit)="submitRhProfileUpdate()">
+
+              <div class="row">
+                <div class="input-field col s10">
+                  <input id="edit_username" type="text" formControlName="pseudo" class="validate"
+                         placeholder="{{ (rh | async)?.display_name }}">
+                  <label for="edit_username">Username</label>
+                </div>
+              </div>
+
+
+              <div class="row">
+                <div class="input-field col s10">
+                    <textarea id="edit_description" row="2" class="materialize-textarea"
+                              placeholder="Décrivez-vous"></textarea>
+                  <label for="edit_description">Description</label>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="input-field col s10">
+                  <input id="edit_avatar_url" type="text" formControlName="avatar"
+                         placeholder="{{ (rh | async)?.avatar_url }}">
+                  <label for="edit_avatar_url">Avatar url</label>
+                </div>
+              </div>
+
+              <button type="submit" class="btn btn-success" [disabled]="!formRh.valid">Mettre à jour</button>
+
+            </form>
+
+          </div>
+        </div>
+        <!-- / Profile Edit  -->
+      </div>
+    </div>
+  </div>
+</div>
+
+

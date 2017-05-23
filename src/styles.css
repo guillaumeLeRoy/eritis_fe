@@ -177,7 +177,7 @@ a:focus{
 }
 
 .blue-text{
-  color: var(--main-electric-blue);
+  color: var(--main-electric-blue) !important;
 }
 
 .bold{
@@ -270,19 +270,22 @@ ngb-datepicker .btn-link:hover{
 
 
 /* Delete Meeting Modal */
-#deleteModal {
-  height: 200px;
+.modal {
+  height: 350px;
   max-width: 800px;
 }
 
 .delete-modal-content {
-  padding: 32px;
+  padding: 32px 64px;
   height: 100%;
   text-align: center;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   align-content: space-between;
+}
+.delete-modal-message {
+  text-align: left;
 }
 
 .delete-modal-footer button {

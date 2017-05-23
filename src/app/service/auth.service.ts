@@ -9,9 +9,10 @@ import {environment} from "../../environments/environment";
 import {FirebaseService} from "./firebase.service";
 import {Coach} from "../model/Coach";
 import {Coachee} from "../model/coachee";
-import {ContractPlan} from "../model/ContractPlan";
 import {LoginResponse} from "../model/LoginResponse";
 import {Rh} from "../model/Rh";
+import {PotentialCoachee} from "../model/PotentialCoachee";
+import {flatMap} from "tslint/lib/utils";
 
 @Injectable()
 export class AuthService {
@@ -25,12 +26,18 @@ export class AuthService {
   public static POST_SIGN_UP_COACH = "/login/:firebaseId/coach";
   public static POST_SIGN_UP_COACHEE = "/login/:firebaseId/coachee";
   public static POST_SIGN_UP_RH = "/login/:firebaseId/rh";
+  public static POST_POTENTIAL_COACHEE = "/v1/rhs/:uid/coachees";
   public static LOGIN = "/login/:firebaseId";
+  public static GET_POTENTIAL_COACHEE_FOR_TOKEN = "/v1/potential/:token";
   public static GET_COACHS = "/coachs";
   public static GET_COACHEES = "/coachees";
+  public static GET_COACHEES_FOR_RH = "/v1/rhs/:uid/coachees";
+  public static GET_POTENTIAL_COACHEES_FOR_RH = "/v1/rhs/:uid/potentials";
   public static GET_COACH_FOR_ID = "/coachs/:id";
   public static GET_COACHEE_FOR_ID = "/coachees/:id";
   public static GET_RH_FOR_ID = "/rh/:id";
+  public static GET_USAGE_RATE_FOR_RH = "/v1/rhs/:id/usage";
+
 
   /*Meeting*/
   public static POST_MEETING = "/meeting";
@@ -75,29 +82,10 @@ export class AuthService {
     console.log("refreshConnectedUser");
 
     if (this.ApiUser != null) {
-      let currentFBtoken = this.ApiUser.firebaseToken;
-      let param = [this.ApiUser.id];
       if (this.ApiUser instanceof Coach) {
-        let obs = this.get(AuthService.GET_COACH_FOR_ID, param);
-        return obs.map(
-          (res: Response) => {
-            console.log("refreshConnectedUser, coach obtained from API, res : ", res);
-            let coach = this.parseCoach(res.json());
-            this.onAPIuserObtained(coach, currentFBtoken);
-            return coach;
-          }
-        );
+        return this.fetchCoach(this.ApiUser.id);
       } else if (this.ApiUser instanceof Coachee) {
-        let obs = this.get(AuthService.GET_COACHEE_FOR_ID, param);
-
-        return obs.map(
-          (res: Response) => {
-            console.log("refreshConnectedUser, coachee obtained from API : ", res);
-            let coachee = this.parseCoachee(res.json());
-            this.onAPIuserObtained(coachee, currentFBtoken);
-            return coachee;
-          }
-        );
+        return this.fetchCoachee(this.ApiUser.id);
       } else if (this.ApiUser instanceof Rh) {
         return this.fetchRh(this.ApiUser.id);
       }
@@ -105,6 +93,32 @@ export class AuthService {
       console.log("refreshConnectedUser, no connected user");
     }
     return Observable.from(null);
+  }
+
+  private fetchCoach(userId: string): Observable<Coach> {
+    let param = [userId];
+    let obs = this.get(AuthService.GET_COACH_FOR_ID, param);
+    return obs.map(
+      (res: Response) => {
+        console.log("fetchCoach, obtained from API : ", res);
+        let coach = this.parseCoach(res.json());
+        this.onAPIuserObtained(coach, this.ApiUser.firebaseToken);
+        return coach;
+      }
+    );
+  }
+
+  private fetchCoachee(userId: string): Observable<Coachee> {
+    let param = [userId];
+    let obs = this.get(AuthService.GET_COACHEE_FOR_ID, param);
+    return obs.map(
+      (res: Response) => {
+        console.log("fetchCoachee, obtained from API : ", res);
+        let coachee = this.parseCoachee(res.json());
+        this.onAPIuserObtained(coachee, this.ApiUser.firebaseToken);
+        return coachee;
+      }
+    );
   }
 
   private fetchRh(userId: string): Observable<Rh> {
@@ -200,6 +214,14 @@ export class AuthService {
     return this.httpService.get(this.generatePath(path, params))
   }
 
+  getPotentialCoachee(path: string, params: string[]): Observable<PotentialCoachee> {
+    return this.httpService.get(this.generatePath(path, params)).map(
+      (res: Response) => {
+        return this.parsePotentialCoachee(res.json());
+      }
+    );
+  }
+
   private getConnectedApiUser(): Observable<ApiUser> {
     console.log("2. getConnectedApiUser");
     if (this.ApiUser) {
@@ -255,9 +277,9 @@ export class AuthService {
     // console.log("generatePath, path : ", path);
     // console.log("generatePath, params : ", params);
 
-    var completedPath = "";
+    let completedPath = "";
     let segs = path.split("/");
-    var paramIndex = 0;
+    let paramIndex = 0;
     for (let seg of segs) {
       if (seg == "" || seg == null) {
         continue;
@@ -337,7 +359,6 @@ export class AuthService {
     return user;
   }
 
-
   private getUserForFirebaseId(firebaseId: string, token: string): Observable<Coach | Coachee | Rh> {
     console.log("getUserForFirebaseId : ", firebaseId);
     let params = [firebaseId];
@@ -360,9 +381,8 @@ export class AuthService {
     return this.signup(user, AuthService.POST_SIGN_UP_COACH);
   }
 
-  signUpCoachee(user: User, plan: ContractPlan): Observable<ApiUser> {
+  signUpCoachee(user: User): Observable<ApiUser> {
     //add plan
-    user.contractPlanId = plan.plan_id;
     return this.signup(user, AuthService.POST_SIGN_UP_COACHEE);
   }
 
@@ -454,6 +474,7 @@ export class AuthService {
     coachee.contractPlan = json.plan;
     coachee.availableSessionsCount = json.available_sessions_count;
     coachee.updateAvailableSessionCountDate = json.update_sessions_count_date;
+    coachee.associatedRh = json.associatedRh;
     return coachee;
   }
 
@@ -463,6 +484,14 @@ export class AuthService {
     rh.display_name = json.display_name;
     rh.start_date = json.start_date;
     return rh;
+  }
+
+  private parsePotentialCoachee(json: any): PotentialCoachee {
+    let potentialCoachee: PotentialCoachee = new PotentialCoachee(json.id);
+    potentialCoachee.email = json.email;
+    potentialCoachee.start_date = json.create_date;
+    potentialCoachee.plan = json.plan;
+    return potentialCoachee;
   }
 
   signIn(user: User): Observable<Coach | Coachee | Rh> {

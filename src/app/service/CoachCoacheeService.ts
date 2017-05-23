@@ -4,6 +4,9 @@ import {Coach} from "../model/Coach";
 
 import {Response} from "@angular/http";
 import {AuthService} from "./auth.service";
+import {PotentialCoachee} from "../model/PotentialCoachee";
+import {Coachee} from "../model/coachee";
+import {RhUsageRate} from "../model/UsageRate";
 
 
 @Injectable()
@@ -19,6 +22,57 @@ export class CoachCoacheeService {
       (response: Response) => {
         let json = response.json();
         console.log("getAllCoachs, response json : ", json);
+        return json;
+      });
+  }
+
+  getAllCoacheesForRh(rhId: string): Observable<Coachee[]> {
+    console.log("getAllCoacheesForRh, start request");
+    let param = [rhId];
+    return this.apiService.get(AuthService.GET_COACHEES_FOR_RH, param).map(
+      (response: Response) => {
+        let json: Coachee[] = response.json();
+        console.log("getAllCoacheesForRh, response json : ", json);
+        return json;
+      });
+  }
+
+  getAllPotentialCoacheesForRh(rhId: string): Observable<PotentialCoachee[]> {
+    console.log("getAllPotentialCoacheesForRh, start request");
+    let param = [rhId];
+    return this.apiService.get(AuthService.GET_POTENTIAL_COACHEES_FOR_RH, param).map(
+      (response: Response) => {
+        let json: PotentialCoachee[] = response.json();
+        console.log("getAllPotentialCoacheesForRh, response json : ", json);
+        return json;
+      });
+  }
+
+  getPotentialCoachee(token: string): Observable<PotentialCoachee> {
+    console.log("getPotentialCoachee, start request");
+    let param = [token];
+    return this.apiService.getPotentialCoachee(AuthService.GET_POTENTIAL_COACHEE_FOR_TOKEN, param);
+  }
+
+  getUsageRate(rhId: string): Observable<RhUsageRate> {
+    console.log("getUsageRate, start request");
+    let param = [rhId];
+    return this.apiService.get(AuthService.GET_USAGE_RATE_FOR_RH, param).map(
+      (response: Response) => {
+        let json: RhUsageRate = response.json();
+        console.log("getUsageRate, response json : ", json);
+        return json;
+      });
+  }
+
+
+  postPotentialCoachee(rhId: string, body: any): Observable<PotentialCoachee> {
+    console.log("postPotentialCoachee, start request");
+    let param = [rhId];
+    return this.apiService.post(AuthService.POST_POTENTIAL_COACHEE, param, body).map(
+      (response: Response) => {
+        let json: PotentialCoachee = response.json();
+        console.log("postPotentialCoachee, response json : ", json);
         return json;
       });
   }

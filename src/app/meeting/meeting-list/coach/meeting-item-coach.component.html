@@ -17,9 +17,9 @@
 
   <div class="row" *ngIf="!loading">
 
-    <!-- COACH -->
-    <div class="meeting-item-header col-sm-4 col-md-4 col-lg-3">
-      <div>
+    <!-- COACHEE -->
+    <div class="meeting-item-header col-md-12" [class.col-lg-3]="!meeting.agreed_date" [class.col-lg-4]="meeting.agreed_date">
+      <div class="meeting-item-coach">
         <div>
           <!-- image coach-->
           <img *ngIf="meeting.coachee" class="meeting-item-coach-avatar circle img-responsive" alt="coachee"
@@ -32,19 +32,19 @@
           <p class="meeting-item-coach" *ngIf="meeting.coachee">{{ meeting.coachee.display_name }}</p>
           <p class="meeting-item-coach" *ngIf="!meeting.coachee">Un coach vous sera bientôt attribué</p>
         </div>
-      </div>
-    </div>
+      </div><!--end meeting-item-coach-->
 
-    <!-- DATE -->
-    <div class="meeting-item-date col-sm-8 col-lg-3" *ngIf="meeting.agreed_date">
-      <div *ngIf="meeting.agreed_date">
-        <span class="meeting-item-date-date">{{ getDate(meeting.agreed_date.start_date) }}</span>
-        <span class="meeting-item-date-hour">{{ printTimeString(meeting.agreed_date.start_date) }}</span>
+      <!-- DATE -->
+      <div class="meeting-item-date" *ngIf="meeting.agreed_date">
+        <div *ngIf="meeting.agreed_date">
+          <span class="meeting-item-date-date">{{ getDate(meeting.agreed_date.start_date) }}</span>
+          <span class="meeting-item-date-hour">{{ printTimeString(meeting.agreed_date.start_date) }}</span>
+        </div>
       </div>
     </div>
 
     <!-- GOAL & REVIEW -->
-    <div class="meeting-item-body col-md-12 col-lg-6" [class.col-lg-9]="!meeting.agreed_date">
+    <div class="meeting-item-body col-md-12" [class.col-lg-9]="!meeting.agreed_date" [class.col-lg-8]="meeting.agreed_date">
       <div class="meeting-item-body-content">
         <p class="meeting-item-goal">
           <span class="black-text bold">Objectif: </span>
@@ -73,7 +73,7 @@
             </div>
             <br>
             <form class="confirm-meeting-form">
-              <span class="black-text bold">Réponse :</span>
+              <!--<span class="black-text bold">Réponse :</span>-->
               <div class="input-field">
                 <select [(ngModel)]="selectedDate" name="meeting-date" class="browser-default"
                         (change)="loadPotentialHours(selectedDate)">
@@ -92,7 +92,7 @@
                   </option>
                 </select>
               </div>
-              <div class="input-field">
+              <div>
                 <button type="submit" class="btn-basic btn-blue btn-small"
                         [disabled]="!selectedDate || !selectedHour"
                         (click)="confirmPotentialDate()">Valider

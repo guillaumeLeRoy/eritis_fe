@@ -1,6 +1,7 @@
 import {ApiUser} from "./apiUser";
 import {Coach} from "./Coach";
 import {ContractPlan} from "./ContractPlan";
+import {Rh} from "./Rh";
 export class Coachee implements ApiUser {
 
   id: string;
@@ -27,6 +28,11 @@ export class Coachee implements ApiUser {
    * Date when the number of available sessions was updated
    */
   updateAvailableSessionCountDate: string;
+
+  /**
+   * Rh associated with this user.
+   */
+  associatedRh : Rh
 
   constructor(id: string) {
     this.id = id;
