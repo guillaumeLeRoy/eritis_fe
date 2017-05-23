@@ -34,7 +34,7 @@
         <h4 class="text-right">Vous avez souscrit à
           <span class="blue-text"> {{(user | async)?.availableSessionsCount || 0}} séance
             <span *ngIf="(user | async)?.availableSessionsCount > 1">s/mois </span>
-          </span>et votre taux d'utilisation est de <span class="blue-text">{{(rhUsageRate | async)?.usage_rate}}</span>
+          </span>et votre taux d'utilisation est de <span class="blue-text">{{(rhUsageRate | async)?.usage_rate}}%</span>
         </h4>
         <p class="text-right">
           <span class="blue-text">Cliquez</span> ici pour ajouter un collaborateur

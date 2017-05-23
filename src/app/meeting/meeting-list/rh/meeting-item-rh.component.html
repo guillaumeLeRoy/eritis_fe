@@ -31,7 +31,7 @@
 
         <!-- USAGE -->
         <div class="meeting-item-date">
-          <span class="meeting-item-date-date">Usage: <span class="blue-text">xx%</span></span>
+          <span class="meeting-item-date-date">Usage: <span class="blue-text">{{ (coacheeUsageRate | async)?.usage_rate }}%</span></span>
         </div>
       </div>
 
