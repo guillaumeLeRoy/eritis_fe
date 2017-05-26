@@ -12,6 +12,7 @@ import {Response} from "@angular/http";
 import {Rh} from "../../model/Rh";
 import {PotentialCoachee} from "../../model/PotentialCoachee";
 import {ContractPlan} from "../../model/ContractPlan";
+import {RhUsageRate} from "../../model/UsageRate";
 
 declare var $: any;
 declare var Materialize: any;
@@ -48,6 +49,8 @@ export class MeetingListComponent implements OnInit, AfterViewInit, OnDestroy {
   private meetingToCancel: Meeting;
 
   private user: Observable<Coach | Coachee | Rh>;
+
+  private rhUsageRate: Observable<RhUsageRate>;
 
   constructor(private router: Router, private meetingsService: MeetingsService, private coachCoacheeService: CoachCoacheeService, private authService: AuthService, private cd: ChangeDetectorRef) {
   }
@@ -160,6 +163,7 @@ export class MeetingListComponent implements OnInit, AfterViewInit, OnDestroy {
         this.getAllCoacheesForRh(user.id);
         this.getAllPotentialCoacheesForRh(user.id);
         this.getAllContractPlans();
+        this.getUsageRate(user.id)
       }
 
       this.user = Observable.of(user);
@@ -266,6 +270,15 @@ export class MeetingListComponent implements OnInit, AfterViewInit, OnDestroy {
         console.log("getListOfContractPlans, response json : ", json);
         this.plans = Observable.of(json);
         // this.cd.detectChanges();
+      }
+    );
+  }
+
+  private getUsageRate(rhId: string) {
+    this.coachCoacheeService.getUsageRate(rhId).subscribe(
+      (rate: RhUsageRate) => {
+        console.log("getUsageRate, rate : ", rate);
+        this.rhUsageRate = Observable.of(rate);
       }
     );
   }

@@ -36,6 +36,8 @@ export class AuthService {
   public static GET_COACH_FOR_ID = "/coachs/:id";
   public static GET_COACHEE_FOR_ID = "/coachees/:id";
   public static GET_RH_FOR_ID = "/rh/:id";
+  public static GET_USAGE_RATE_FOR_RH = "/v1/rhs/:id/usage";
+
 
   /*Meeting*/
   public static POST_MEETING = "/meeting";

@@ -4,7 +4,7 @@
       <div class="card-panel">
         <h4>Bonjour, vous bénéficiez de <span class="blue-text">{{ (potentialCoacheeObs | async)?.plan.sessions_count }}</span> séances !</h4>
         <h5>{{ (potentialCoacheeObs | async)?.email }}</h5>
-        <p>Choississez un mot de passe pour finaliser votre iscription.</p>
+        <p>Choississez un mot de passe pour finaliser votre inscription.</p>
         <div class="row">
           <form class="col s12" [formGroup]="signUpForm" (ngSubmit)="onSignUpSubmitted()">
             <!--<div class="row">-->

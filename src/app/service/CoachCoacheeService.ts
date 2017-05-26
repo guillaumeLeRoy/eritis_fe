@@ -6,6 +6,7 @@ import {Response} from "@angular/http";
 import {AuthService} from "./auth.service";
 import {PotentialCoachee} from "../model/PotentialCoachee";
 import {Coachee} from "../model/coachee";
+import {RhUsageRate} from "../model/UsageRate";
 
 
 @Injectable()
@@ -52,6 +53,18 @@ export class CoachCoacheeService {
     let param = [token];
     return this.apiService.getPotentialCoachee(AuthService.GET_POTENTIAL_COACHEE_FOR_TOKEN, param);
   }
+
+  getUsageRate(rhId: string): Observable<RhUsageRate> {
+    console.log("getUsageRate, start request");
+    let param = [rhId];
+    return this.apiService.get(AuthService.GET_USAGE_RATE_FOR_RH, param).map(
+      (response: Response) => {
+        let json: RhUsageRate = response.json();
+        console.log("getUsageRate, response json : ", json);
+        return json;
+      });
+  }
+
 
   postPotentialCoachee(rhId: string, body: any): Observable<PotentialCoachee> {
     console.log("postPotentialCoachee, start request");

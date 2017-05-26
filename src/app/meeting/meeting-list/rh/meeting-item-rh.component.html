@@ -13,10 +13,10 @@
     </div>
   </div>
 
-  <div class="row" *ngIf="!loading">
+  <div *ngIf="!loading">
 
     <!-- COACHEE -->
-    <div *ngIf="coachee != null">
+    <div *ngIf="coachee != null" class="row">
       <div class="meeting-item-header col-md-12 col-lg-4">
         <div class="meeting-item-coach">
           <div>
@@ -31,7 +31,7 @@
 
         <!-- USAGE -->
         <div class="meeting-item-date">
-          <span class="meeting-item-date-date">Usage: <span class="blue-text">xx%</span></span>
+          <span class="meeting-item-date-date">Usage: <span class="blue-text">{{ (coacheeUsageRate | async)?.usage_rate }}%</span></span>
         </div>
       </div>
 
@@ -48,7 +48,7 @@
     </div><!--end coachee-->
 
     <!-- POTENTIAL COACHEE -->
-    <div *ngIf="potentialCoachee != null">
+    <div *ngIf="potentialCoachee != null" class="row">
       <div class="meeting-item-header col-lg-12">
         <div class="meeting-item-coach">
           <div>
@@ -64,7 +64,7 @@
 
         <!-- PLAN -->
         <div class="meeting-item-date">
-          <span class="meeting-item-date-date"><span class="blue-text">x</span> séances</span>
+          <span class="meeting-item-date-date"><span class="blue-text">{{ potentialCoachee.plan.sessions_count }}</span> séances</span>
         </div>
       </div>
     </div><!--end potentialCoachee-->
