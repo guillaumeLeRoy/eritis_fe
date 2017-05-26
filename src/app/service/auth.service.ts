@@ -460,6 +460,7 @@ export class AuthService {
     coach.avatar_url = json.avatar_url;
     coach.start_date = json.start_date;
     coach.description = json.description;
+    coach.chat_room_url = json.chat_room_url;
     return coach;
   }
 

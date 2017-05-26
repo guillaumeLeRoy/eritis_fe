@@ -397,7 +397,7 @@ export class MeetingListComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   validateAddPotentialCoachee() {
-    console.log('validateCoacheeDeleteMeeting, potentialCoacheeEmail : ', this.potentialCoacheeEmail);
+    console.log('validateAddPotentialCoachee, potentialCoacheeEmail : ', this.potentialCoacheeEmail);
 
     this.addPotentialCoacheeModalVisibility(false);
 
@@ -419,6 +419,21 @@ export class MeetingListComponent implements OnInit, AfterViewInit, OnDestroy {
             Materialize.toast("Impossible d'ajouter le collaborateur", 3000, 'rounded');
           }
         );
+      }
+    );
+
+  }
+
+  onCoachStartRoomClicked() {
+    console.log('onCoachStartRoomClicked');
+
+    this.user.take(1).subscribe(
+      (usr: ApiUser) => {
+        console.log('onCoachStartRoomClicked, get user');
+        let coach: Coach = usr as Coach;
+        var win = window.open(coach.chat_room_url, "_blank");
+
+
       }
     );
 

@@ -4,23 +4,19 @@ import {ApiUser} from "./apiUser";
  */
 export class Coach implements ApiUser {
   readonly id: string;
-  firebaseToken : string;
+  firebaseToken: string;
 
   email: string
-
-  // firebase_id: string;
 
   avatar_url: string;
 
   display_name: string;
 
-  // //1 for coach, 2 for coachee
-  // status: Number;
-
   start_date: string;
 
   description: string;
 
+  chat_room_url: string;
 
   constructor(id: string) {
     this.id = id;
