@@ -11,6 +11,7 @@ import {CoachCoacheeService} from "../../service/CoachCoacheeService";
 import {Response} from "@angular/http";
 import {Rh} from "../../model/Rh";
 import {PotentialCoachee} from "../../model/PotentialCoachee";
+import {ContractPlan} from "../../model/ContractPlan";
 
 declare var $: any;
 declare var Materialize: any;
@@ -38,6 +39,13 @@ export class MeetingListComponent implements OnInit, AfterViewInit, OnDestroy {
 
   private subscription: Subscription;
   private connectedUserSubscription: Subscription;
+
+  private plans: Observable<ContractPlan[]>;
+  selectedPlan: ContractPlan;
+
+  potentialCoacheeEmail?;
+
+  private meetingToCancel: Meeting;
 
   private user: Observable<Coach | Coachee | Rh>;
 
@@ -151,6 +159,7 @@ export class MeetingListComponent implements OnInit, AfterViewInit, OnDestroy {
         console.log('get a rh');
         this.getAllCoacheesForRh(user.id);
         this.getAllPotentialCoacheesForRh(user.id);
+        this.getAllContractPlans();
       }
 
       this.user = Observable.of(user);
@@ -250,6 +259,17 @@ export class MeetingListComponent implements OnInit, AfterViewInit, OnDestroy {
     }
   }
 
+  private getAllContractPlans() {
+    this.authService.getNotAuth(AuthService.GET_CONTRACT_PLANS, null).subscribe(
+      (response: Response) => {
+        let json: ContractPlan[] = response.json();
+        console.log("getListOfContractPlans, response json : ", json);
+        this.plans = Observable.of(json);
+        // this.cd.detectChanges();
+      }
+    );
+  }
+
   refreshDashboard() {
     location.reload();
   }
@@ -268,9 +288,7 @@ export class MeetingListComponent implements OnInit, AfterViewInit, OnDestroy {
    ----Modal to cancel Meeting ----------
    *************************************/
 
-  private meetingToCancel: Meeting;
-
-  private coachCancelModalVisibility(isVisible: boolean) {
+  coachCancelModalVisibility(isVisible: boolean) {
     if (isVisible) {
       $('#coach_cancel_meeting').openModal();
     } else {
@@ -313,7 +331,7 @@ export class MeetingListComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
 
-  private coacheeDeleteModalVisibility(isVisible: boolean) {
+  coacheeDeleteModalVisibility(isVisible: boolean) {
     if (isVisible) {
       $('#coachee_delete_meeting_modal').openModal();
     } else {
@@ -321,7 +339,7 @@ export class MeetingListComponent implements OnInit, AfterViewInit, OnDestroy {
     }
   }
 
-  private addPotentialCoacheeModalVisibility(isVisible: boolean) {
+  addPotentialCoacheeModalVisibility(isVisible: boolean) {
     if (isVisible) {
       $('#add_potential_coachee_modal').openModal();
     } else {
@@ -365,8 +383,6 @@ export class MeetingListComponent implements OnInit, AfterViewInit, OnDestroy {
     this.addPotentialCoacheeModalVisibility(false);
   }
 
-  private potentialCoacheeEmail?;
-
   validateAddPotentialCoachee() {
     console.log('validateAddPotentialCoachee, potentialCoacheeEmail : ', this.potentialCoacheeEmail);
 
@@ -377,7 +393,7 @@ export class MeetingListComponent implements OnInit, AfterViewInit, OnDestroy {
 
         let body = {
           "email": this.potentialCoacheeEmail,
-          "plan_id": 1
+          "plan_id": this.selectedPlan.plan_id
         };
 
         this.coachCoacheeService.postPotentialCoachee(user.id, body).subscribe(
@@ -390,6 +406,21 @@ export class MeetingListComponent implements OnInit, AfterViewInit, OnDestroy {
             Materialize.toast("Impossible d'ajouter le collaborateur", 3000, 'rounded');
           }
         );
+      }
+    );
+
+  }
+
+  onCoachStartRoomClicked() {
+    console.log('onCoachStartRoomClicked');
+
+    this.user.take(1).subscribe(
+      (usr: ApiUser) => {
+        console.log('onCoachStartRoomClicked, get user');
+        let coach: Coach = usr as Coach;
+        var win = window.open(coach.chat_room_url, "_blank");
+
+
       }
     );
 
