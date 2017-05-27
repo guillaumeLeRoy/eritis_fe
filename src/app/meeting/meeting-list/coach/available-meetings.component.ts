@@ -17,6 +17,8 @@ export class AvailableMeetingsComponent implements OnInit {
 
   private availableMeetings: Observable<Meeting[]>;
 
+  private hasAvailableMeetings = false;
+
   private connectedUserSubscription: Subscription;
   private user: Observable<Coach>;
 
@@ -62,6 +64,7 @@ export class AvailableMeetingsComponent implements OnInit {
       (meetings: Meeting[]) => {
         console.log('got getAllMeetings', meetings);
         this.availableMeetings = Observable.of(meetings);
+        if (meetings != null && meetings.length > 0) this.hasAvailableMeetings = true;
         this.cd.detectChanges();
       }
     );

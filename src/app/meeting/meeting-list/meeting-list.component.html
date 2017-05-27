@@ -49,25 +49,25 @@
       <!-- views for coach -->
       <div *ngIf="isUserACoach((user | async))">
 
-        <div class="row">
-          <h4 class="col-lg-12 black-text">Demandes disponibles</h4>
-          <div class="card collection col-lg-12">
+        <!--<div class="row">-->
+          <!--<h4 class="col-lg-12 black-text">Demandes disponibles</h4>-->
+          <!--<div class="card collection col-lg-12">-->
 
-            <div *ngIf="hasUnbookedMeeting">
-              <div class="collection-item" *ngFor="let meeting of meetingsUnbooked | async">
-                <rb-meeting-item-coach [meeting]="meeting"
-                                       (dateAgreed)="onRefreshRequested($event)"
-                                       (cancelMeetingTimeEvent)="openCoachCancelMeetingModal($event)">
-                </rb-meeting-item-coach>
-              </div>
-            </div>
+            <!--<div *ngIf="hasUnbookedMeeting">-->
+              <!--<div class="collection-item" *ngFor="let meeting of meetingsUnbooked | async">-->
+                <!--<rb-meeting-item-coach [meeting]="meeting"-->
+                                       <!--(dateAgreed)="onRefreshRequested($event)"-->
+                                       <!--(cancelMeetingTimeEvent)="openCoachCancelMeetingModal($event)">-->
+                <!--</rb-meeting-item-coach>-->
+              <!--</div>-->
+            <!--</div>-->
 
-            <div *ngIf="!hasUnbookedMeeting" class="collection-item text-center">
-              <h5 class="no-meeting">Les demandes disponibles apparaîtront ici</h5>
-            </div>
+            <!--<div *ngIf="!hasUnbookedMeeting" class="collection-item text-center">-->
+              <!--<h5 class="no-meeting">Les demandes disponibles apparaîtront ici</h5>-->
+            <!--</div>-->
 
-          </div><!--end card-->
-        </div><!--end row-->
+          <!--</div>&lt;!&ndash;end card&ndash;&gt;-->
+        <!--</div>&lt;!&ndash;end row&ndash;&gt;-->
 
         <div class="row">
           <h4 class="col-lg-12 black-text">A venir</h4>

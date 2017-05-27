@@ -34,6 +34,8 @@ export class MeetingDateComponent implements OnInit, OnDestroy {
   private potentialDatesArray: Array<MeetingDate>;
   private potentialDates: Observable<MeetingDate[]>;
 
+  private hasPotentialDates = false;
+
   private displayErrorBookingDate = false;
   private connectedUser: Observable<ApiUser>;
   private subscriptionConnectUser: Subscription;
@@ -239,6 +241,7 @@ export class MeetingDateComponent implements OnInit, OnDestroy {
         console.log('loadMeetingPotentialTimes : ', dates);
         if (dates != null) {
           //clear array
+          if (dates.length > 0) this.hasPotentialDates = true;
           this.potentialDatesArray = new Array<MeetingDate>();
           //add received dates
           this.potentialDatesArray.push(...dates);
@@ -253,7 +256,7 @@ export class MeetingDateComponent implements OnInit, OnDestroy {
 
   /* Call this method to check if all required params are correctly set. */
   canFinish(): boolean {
-    let canFinish = this.meetingGoal != null && this.meetingContext != null && this.dateModel != null;
+    let canFinish = this.meetingGoal != null && this.meetingContext != null && this.dateModel != null && this.hasPotentialDates;
     // console.log('canFinish : ', canFinish);
     return canFinish;
   }
