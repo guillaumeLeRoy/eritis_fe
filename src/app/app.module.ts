@@ -41,6 +41,7 @@ import {AdminComponent} from "./admin/admin.component";
 import {MeetingItemRhComponent} from "./meeting/meeting-list/rh/meeting-item-rh.component";
 import {ProfileRhComponent} from "./user/profile/rh/profile-rh.component";
 import { SignupCoacheeComponent } from './login/signup/signup-coachee.component';
+import { AvailableMeetingsComponent } from './meeting/meeting-list/coach/available-meetings.component';
 
 @NgModule({
   declarations: [
@@ -67,7 +68,8 @@ import { SignupCoacheeComponent } from './login/signup/signup-coachee.component'
     CoachSelectorComponent,
     AdminComponent,
     MeetingItemRhComponent,
-    SignupCoacheeComponent
+    SignupCoacheeComponent,
+    AvailableMeetingsComponent
   ],
   imports: [
     BrowserAnimationsModule,

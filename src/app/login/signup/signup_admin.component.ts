@@ -66,14 +66,6 @@ export class SignupAdminComponent implements OnInit {
       confirmPassword: ['',
         [Validators.required, this.isEqualPassword.bind(this)]
       ],
-
-      // type: ['',
-      //   [Validators.required]
-      // ],
-      //
-      // coacheeTYpe: ['',
-      //   [Validators.required]
-      // ]
     });
 
     this.getListOfContractPlans();
