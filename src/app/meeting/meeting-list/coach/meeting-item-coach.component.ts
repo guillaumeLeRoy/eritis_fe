@@ -6,6 +6,10 @@ import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {Coachee} from "../../../model/coachee";
 import {MeetingDate} from "../../../model/MeetingDate";
 import {MeetingsService} from "../../../service/meetings.service";
+import {Coach} from "../../../model/Coach";
+import {AuthService} from "../../../service/auth.service";
+import {ApiUser} from "../../../model/apiUser";
+import {Subscription} from "rxjs/Subscription";
 
 declare var $: any;
 declare var Materialize: any;
@@ -32,6 +36,7 @@ export class MeetingItemCoachComponent implements OnInit, AfterViewInit {
   months = ['Jan', 'Feb', 'Mar', 'Avr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 
   private coachee: Coachee;
+  private user: Observable<Coach>;
 
   private goal: string;
   private reviewValue: string;
@@ -56,12 +61,16 @@ export class MeetingItemCoachComponent implements OnInit, AfterViewInit {
 
   private closeMeetingForm: FormGroup;
 
-  constructor(private formBuilder: FormBuilder, private meetingService: MeetingsService, private cd: ChangeDetectorRef) {
+  private connectedUserSubscription: Subscription;
+
+  constructor(private authService: AuthService, private formBuilder: FormBuilder, private meetingService: MeetingsService, private cd: ChangeDetectorRef) {
     $('select').material_select();
   }
 
   ngOnInit() {
     console.log("ngOnInit, meeting : ", this.meeting);
+
+    this.onRefreshRequested();
 
     this.closeMeetingForm = this.formBuilder.group({
       recap: ["", Validators.required],
@@ -77,6 +86,29 @@ export class MeetingItemCoachComponent implements OnInit, AfterViewInit {
     this.getReviewValue();
     this.getReviewNextStep();
     this.loadMeetingPotentialTimes();
+  }
+
+  onRefreshRequested() {
+    let user = this.authService.getConnectedUser();
+    console.log('onRefreshRequested, user : ', user);
+    if (user == null) {
+      this.connectedUserSubscription = this.authService.getConnectedUserObservable().subscribe(
+        (user: Coach) => {
+          console.log('onRefreshRequested, getConnectedUser');
+          this.onUserObtained(user);
+        }
+      );
+    } else {
+      this.onUserObtained(user);
+    }
+  }
+
+  private onUserObtained(user: ApiUser) {
+    console.log('onUserObtained, user : ', user);
+    if (user) {
+      this.user = Observable.of(user);
+      this.cd.detectChanges();
+    }
   }
 
   loadMeetingPotentialTimes() {
@@ -260,10 +292,6 @@ export class MeetingItemCoachComponent implements OnInit, AfterViewInit {
     console.log("potentialHours", hours);
   }
 
-  toggleShowDetails() {
-    this.showDetails = this.showDetails ? false : true;
-  }
-
   printTimeNumber(hour: number) {
     if (hour === Math.round(hour))
       return hour + ':00'
@@ -290,12 +318,31 @@ export class MeetingItemCoachComponent implements OnInit, AfterViewInit {
     return (new Date(date)).getDate() + ' ' + this.months[(new Date(date)).getMonth()];
   }
 
+  toggleShowDetails() {
+    this.showDetails = this.showDetails ? false : true;
+  }
+
   openModal() {
     console.log('openModal, agreed date : ', this.meeting.agreed_date);
     console.log('openModal, meeting : ', this.meeting);
     // $('#deleteModal').openModal();
 
     this.cancelMeetingTimeEvent.emit(this.meeting);//TODO to improve
+  }
+
+  onSubmitValidateMeeting(meeting: Meeting) {
+    this.user.take(1).subscribe(
+      (user: Coach) => {
+        this.meetingService.associateCoachToMeeting(this.meeting.id, user.id).subscribe(
+          (meeting: Meeting) => {
+            console.log('on meeting associated : ', meeting);
+            //navigate to dashboard
+            this.confirmPotentialDate();
+            this.cd.detectChanges();
+          }
+        );
+      }
+    );
   }
 
   // cancelCancelMeeting() {
