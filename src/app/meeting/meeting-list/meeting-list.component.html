@@ -200,34 +200,35 @@
 </div>
 
 
-<!-- Modal Structure -->
+<!-- Modal Coach Delete Meeting -->
 <div id="coach_cancel_meeting" class="modal">
   <div class="delete-modal-content">
     <div class="delete-modal-message">
-      <h5>Vous pourrez fixer un autre rendez-vous pour ce meeting.</h5>
+      <h5>Voulez-vous retirer définitivement du meeting ou simplement annuler le créneau ?</h5>
     </div>
     <div class="delete-modal-footer">
-      <button class="btn-basic btn-blue" (click)="cancelCoachCancelMeeting()">Annuler</button>
-      <button class="btn-basic btn-plain btn-red" (click)="validateCoachCancelMeeting()">Supprimer</button>
+      <button class="btn-basic btn-plain" (click)="cancelCoachCancelMeeting()">Annuler</button>
+      <button class="btn-basic btn-blue" (click)="validateCoachCancelMeeting()">Annuler créneau</button>
+      <button class="btn-basic btn-red" (click)="validateCoachCancelMeeting()">Se retirer</button>
     </div>
   </div>
 </div>
 
 
-<!-- Modal Structure -->
+<!-- Modal Coachee Delete Meeting -->
 <div id="coachee_delete_meeting_modal" class="modal">
   <div class="delete-modal-content">
     <div class="delete-modal-message">
       <h5>Ce meeting sera supprimé définitivement.</h5>
     </div>
     <div class="delete-modal-footer">
-      <button class="btn-basic btn-blue" (click)="cancelCoacheeDeleteMeeting()">Annuler</button>
-      <button class="btn-basic btn-plain btn-red" (click)="validateCoacheeDeleteMeeting()">Supprimer</button>
+      <button class="btn-basic btn-plain" (click)="cancelCoacheeDeleteMeeting()">Annuler</button>
+      <button class="btn-basic btn-red" (click)="validateCoacheeDeleteMeeting()">Supprimer</button>
     </div>
   </div>
 </div>
 
-<!-- Modal Structure -->
+<!-- Modal RH add Coachee -->
 <div id="add_potential_coachee_modal" class="modal">
   <div class="delete-modal-content">
     <div class="delete-modal-message">
@@ -244,7 +245,7 @@
       </select>
     </div>
     <div class="delete-modal-footer">
-      <button class="btn-basic btn-red btn-plain" (click)="cancelAddPotentialCoachee()">Annuler</button>
+      <button class="btn-basic btn-plain" (click)="cancelAddPotentialCoachee()">Annuler</button>
       <button class="btn-basic btn-blue" (click)="validateAddPotentialCoachee()"
               [disabled]="!potentialCoacheeEmail">Ajouter
       </button>
