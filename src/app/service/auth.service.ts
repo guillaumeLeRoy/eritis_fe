@@ -54,6 +54,8 @@ export class AuthService {
   public static PUT_POTENTIAL_DATE_TO_MEETING = "/meeting/potential/:potentialId";//update potential date
   public static DELETE_POTENTIAL_DATE = "/meeting/potentials/:potentialId";//delete potential date
   public static PUT_FINAL_DATE_TO_MEETING = "/meeting/:meetingId/date/:potentialId";//set the potential date as the meeting selected date
+  public static GET_AVAILABLE_MEETINGS = "v1/meetings";//get available meetings ( meetings with NO coach associated )
+  public static PUT_COACH_TO_MEETING = "v1/meeting/:meetingId/coach/:coachId";//associate coach with meeting
 
   private onAuthStateChangedCalled = false;
   // private user: User

@@ -86,6 +86,13 @@ export class HeaderComponent implements OnInit, OnDestroy {
     }
   }
 
+  goToAvailableSessions(){
+    let user = this.authService.getConnectedUser();
+    if (user != null) {
+      this.router.navigate(['/available_meetings']);
+    }
+  }
+
   goToProfile() {
     if (this.mUser instanceof Coach) {
       this.router.navigate(['/profile_coach']);
@@ -94,6 +101,10 @@ export class HeaderComponent implements OnInit, OnDestroy {
     } else if (this.mUser instanceof Rh) {
       this.router.navigate(['/profile_rh']);
     }
+  }
+
+  isUserACoach(): boolean {
+    return this.mUser instanceof Coach
   }
 
   goToCoachs() {
