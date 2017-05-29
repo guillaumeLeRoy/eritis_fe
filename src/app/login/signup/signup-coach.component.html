@@ -2,14 +2,12 @@
   <div class="row">
     <div class="col s12 m12 l6">
       <div class="card-panel">
-        <h4>Bonjour, vous bénéficiez de <span
-          class="blue-text">{{ (potentialCoacheeObs | async)?.plan.sessions_count }}</span> séances !</h4>
+        <h4>Bienvenue chez Eritis</h4>
         <div class="row">
           <form class="col s12" [formGroup]="signUpForm" (ngSubmit)="onSignUpSubmitted()">
-
             <div class="row">
               <div class="input-field col s12">
-                <p>Votre email {{ (potentialCoacheeObs | async)?.email }}</p>
+                <p>Votre email {{ (potentialCoachObs | async)?.email }}</p>
               </div>
             </div>
 

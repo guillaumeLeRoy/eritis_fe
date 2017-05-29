@@ -1,5 +1,8 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit} from "@angular/core";
 import {Router} from "@angular/router";
+import {Admin} from "../model/Admin";
+import {AdminAPIService} from "../service/adminAPI.service";
+import {Observable} from "rxjs/Observable";
 
 @Component({
   selector: 'er-admin',
@@ -8,10 +11,32 @@ import {Router} from "@angular/router";
 })
 export class AdminComponent implements OnInit {
 
-  constructor(private router: Router) {
+  private admin: Observable<Admin>;
+
+  constructor(private router: Router, private adminHttpService: AdminAPIService) {
   }
 
   ngOnInit() {
+    this.getAdmin();
+  }
+
+
+  getAdmin() {
+    this.adminHttpService.getAdmin().subscribe(
+      (admin: Admin) => {
+        this.admin = Observable.of(admin);
+      },
+
+      // (error: string) => {
+      //   console.log("getAdmin error ", error)
+      //
+      // }
+
+      error => {
+        console.log('getAdmin, error obtained', error);
+
+      }
+    );
   }
 
   navigateAdminHome() {
@@ -24,9 +49,9 @@ export class AdminComponent implements OnInit {
     this.router.navigate(['admin/signup']);
   }
 
-  navigateToCoachSelector() {
-    console.log("navigateToCoachSelector")
-    this.router.navigate(['admin/coach-selector']);
-  }
+  // navigateToCoachSelector() {
+  //   console.log("navigateToCoachSelector")
+  //   this.router.navigate(['admin/coach-selector']);
+  // }
 
 }

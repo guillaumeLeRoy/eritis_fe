@@ -1,32 +1,25 @@
 import {Component, OnInit} from "@angular/core";
-import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
 import {Observable} from "rxjs/Observable";
+import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
 import {AuthService} from "../../service/auth.service";
-import {ActivatedRoute, Router} from "@angular/router";
 import {CoachCoacheeService} from "../../service/CoachCoacheeService";
-import {PotentialCoachee} from "../../model/PotentialCoachee";
+import {ActivatedRoute, Router} from "@angular/router";
 import {User} from "../../user/user";
-
-declare var $: any;
-declare var Materialize: any;
-
+import {PotentialRh} from "../../model/PotentialRh";
 
 @Component({
-  selector: 'er-signup-coachee',
-  templateUrl: './signup-coachee.component.html',
-  styleUrls: ['./signup-coachee.component.css']
+  selector: 'er-signup-rh',
+  templateUrl: './signup-rh.component.html',
+  styleUrls: ['./signup-rh.component.css']
 })
-export class SignupCoacheeComponent implements OnInit {
+export class SignupRhComponent implements OnInit {
 
-  potentialCoacheeObs: Observable<PotentialCoachee>;
-  potentialCoachee: PotentialCoachee;
+  potentialRhObs: Observable<PotentialRh>;
+  potentialRh: PotentialRh;
 
   private signUpForm: FormGroup;
   private error = false;
   private errorMessage = "";
-
-  /* ----- END Contract Plan ----*/
-
 
   constructor(private formBuilder: FormBuilder, private authService: AuthService, private coachCoacheeService: CoachCoacheeService, private router: Router, private route: ActivatedRoute) {
     console.log("constructor")
@@ -42,15 +35,14 @@ export class SignupCoacheeComponent implements OnInit {
 
         console.log("ngOnInit, param token", token);
 
-        this.coachCoacheeService.getPotentialCoachee(token).subscribe(
-          (coachee: PotentialCoachee) => {
-            //TODO use this potential coachee
-            console.log("getPotentialCoachee, data obtained", coachee);
-            this.potentialCoacheeObs = Observable.of(coachee);
-            this.potentialCoachee = coachee;
+        this.coachCoacheeService.getPotentialRh(token).subscribe(
+          (coach: PotentialRh) => {
+            console.log("getPotentialRh, data obtained", coach);
+            this.potentialRhObs = Observable.of(coach);
+            this.potentialRh = coach;
           },
           error => {
-            console.log("getPotentialCoachee, error obtained", error)
+            console.log("getPotentialRh, error obtained", error)
 
           }
         );
@@ -77,13 +69,12 @@ export class SignupCoacheeComponent implements OnInit {
     this.error = false;
     this.errorMessage = '';
 
-    console.log("onSignUp, coachee");
+    console.log("onSignUp, rh");
 
     let user: User = this.signUpForm.value;
-    user.email = this.potentialCoachee.email;
-    user.contractPlanId = this.potentialCoachee.plan.plan_id;
+    user.email = this.potentialRh.email;
 
-    this.authService.signUpCoachee(user).subscribe(
+    this.authService.signUpRh(user).subscribe(
       data => {
         console.log("onSignUp, data obtained", data)
         /*L'utilisateur est TOUJOURS redirigé vers ses meetings*/
@@ -94,7 +85,6 @@ export class SignupCoacheeComponent implements OnInit {
         this.error = true;
         this.errorMessage = error
       })
-
   }
 
   isEqualPassword(control: FormControl): { [s: string]: boolean; } {

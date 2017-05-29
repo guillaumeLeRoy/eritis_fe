@@ -12,7 +12,6 @@ import {Coachee} from "../model/coachee";
 import {LoginResponse} from "../model/LoginResponse";
 import {Rh} from "../model/Rh";
 import {PotentialCoachee} from "../model/PotentialCoachee";
-import {flatMap} from "tslint/lib/utils";
 
 @Injectable()
 export class AuthService {
@@ -22,13 +21,18 @@ export class AuthService {
 
   public static UPDATE_COACH = "/coachs/:id";
   public static UPDATE_COACHEE = "/coachees/:id";
-  public static UPDATE_COACHEE_SELECTED_COACH = "/coachees/:coacheeId/coach/:coachId";
-  public static POST_SIGN_UP_COACH = "/login/:firebaseId/coach";
-  public static POST_SIGN_UP_COACHEE = "/login/:firebaseId/coachee";
-  public static POST_SIGN_UP_RH = "/login/:firebaseId/rh";
-  public static POST_POTENTIAL_COACHEE = "/v1/rhs/:uid/coachees";
+  // public static UPDATE_COACHEE_SELECTED_COACH = "/coachees/:coacheeId/coach/:coachId";
+  public static POST_SIGN_UP_COACH = "/v1/coachs";
+  public static POST_SIGN_UP_COACHEE = "/v1/coachees";
+  public static POST_SIGN_UP_RH = "/v1/rhs";
+  public static POST_POTENTIAL_COACHEE = "/v1/potentials/coachees";
+  public static POST_POTENTIAL_COACH = "/v1/potentials/coachs";
+  public static POST_POTENTIAL_RH = "/v1/potentials/rhs";
   public static LOGIN = "/login/:firebaseId";
-  public static GET_POTENTIAL_COACHEE_FOR_TOKEN = "/v1/potential/:token";
+  public static GET_ADMIN = "/v1/admin";
+  public static GET_POTENTIAL_COACHEE_FOR_TOKEN = "/v1/potentials/coachees/:token";
+  public static GET_POTENTIAL_COACH_FOR_TOKEN = "/v1/potentials/coachs/:token";
+  public static GET_POTENTIAL_RH_FOR_TOKEN = "/v1/potentials/rhs/:token";
   public static GET_COACHS = "/coachs";
   public static GET_COACHEES = "/coachees";
   public static GET_COACHEES_FOR_RH = "/v1/rhs/:uid/coachees";
@@ -561,23 +565,23 @@ export class AuthService {
       });
   }
 
-  /**
-   *
-   * @param coacheeId
-   * @param coachId
-   * @returns {Observable<Coachee>}
-   */
-  updateCoacheeSelectedCoach(coacheeId: string, coachId: string): Observable<Coachee> {
-    console.log("updateCoacheeSelectedCoach, coacheeId", coacheeId);
-    console.log("updateCoacheeSelectedCoach, coachId", coachId);
-
-    let params = [coacheeId, coachId];
-    return this.put(AuthService.UPDATE_COACHEE_SELECTED_COACH, params, null).map(
-      (response: Response) => {
-        //convert to coachee
-        return this.parseCoachee(response.json());
-      });
-  }
+  // /**
+  //  *
+  //  * @param coacheeId
+  //  * @param coachId
+  //  * @returns {Observable<Coachee>}
+  //  */
+  // updateCoacheeSelectedCoach(coacheeId: string, coachId: string): Observable<Coachee> {
+  //   console.log("updateCoacheeSelectedCoach, coacheeId", coacheeId);
+  //   console.log("updateCoacheeSelectedCoach, coachId", coachId);
+  //
+  //   let params = [coacheeId, coachId];
+  //   return this.put(AuthService.UPDATE_COACHEE_SELECTED_COACH, params, null).map(
+  //     (response: Response) => {
+  //       //convert to coachee
+  //       return this.parseCoachee(response.json());
+  //     });
+  // }
 
   /**
    *

@@ -58,27 +58,27 @@ export class CoachSelectorComponent implements OnInit, AfterViewInit, OnDestroy 
     return this.selectedCoachee != null && this.selectedCoach != null;
   }
 
-  /**
-   * Associate selectedCoach with selectedCoachee
-   * TODO : handle error
-   */
-  associate(): void {
-    // save in backend
-    this.apiService.updateCoacheeSelectedCoach(this.selectedCoachee.id, this.selectedCoach.id).subscribe(
-      (coachee: Coachee) => {
-        console.log('coach selected saved');
-
-        //reset values
-        this.selectedCoach = null;
-        this.selectedCoachee = null;
-
-        Materialize.toast('Association effectuée !', 3000, 'rounded');
-
-        //refresh data
-        this.fetchData();
-      }
-    );
-  }
+  // /**
+  //  * Associate selectedCoach with selectedCoachee
+  //  * TODO : handle error
+  //  */
+  // associate(): void {
+  //   // save in backend
+  //   this.apiService.updateCoacheeSelectedCoach(this.selectedCoachee.id, this.selectedCoach.id).subscribe(
+  //     (coachee: Coachee) => {
+  //       console.log('coach selected saved');
+  //
+  //       //reset values
+  //       this.selectedCoach = null;
+  //       this.selectedCoachee = null;
+  //
+  //       Materialize.toast('Association effectuée !', 3000, 'rounded');
+  //
+  //       //refresh data
+  //       this.fetchData();
+  //     }
+  //   );
+  // }
 
   private fetchData() {
     this.getAllCoachsSub = this.apiService.getCoachs().subscribe(

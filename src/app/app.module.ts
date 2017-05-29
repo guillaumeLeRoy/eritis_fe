@@ -41,6 +41,8 @@ import {AdminComponent} from "./admin/admin.component";
 import {MeetingItemRhComponent} from "./meeting/meeting-list/rh/meeting-item-rh.component";
 import {ProfileRhComponent} from "./user/profile/rh/profile-rh.component";
 import { SignupCoacheeComponent } from './login/signup/signup-coachee.component';
+import { SignupCoachComponent } from './login/signup/signup-coach.component';
+import { SignupRhComponent } from './login/signup/signup-rh.component';
 import { AvailableMeetingsComponent } from './meeting/meeting-list/coach/available-meetings.component';
 
 @NgModule({
@@ -69,6 +71,8 @@ import { AvailableMeetingsComponent } from './meeting/meeting-list/coach/availab
     AdminComponent,
     MeetingItemRhComponent,
     SignupCoacheeComponent,
+  SignupCoachComponent,
+  SignupRhComponent,
     AvailableMeetingsComponent
   ],
   imports: [

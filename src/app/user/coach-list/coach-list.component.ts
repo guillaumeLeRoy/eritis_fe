@@ -11,6 +11,7 @@ import {Router} from '@angular/router';
   templateUrl: './coach-list.component.html',
   styleUrls: ['./coach-list.component.css']
 })
+//TODO to remove ?
 export class CoachListComponent implements OnInit, AfterViewInit, OnDestroy {
 
   private coachs: Observable<Coach[]>;
@@ -58,20 +59,20 @@ export class CoachListComponent implements OnInit, AfterViewInit, OnDestroy {
     // reset pot coach
     this.potSelectedCoach = null;
 
-    // save in backend
-    this.coachee.last().flatMap(
-      (coachee: Coachee) => {
-        console.log('onFinalCoachSelected, get coachee', coachee);
-        return this.authService.updateCoacheeSelectedCoach(coachee.id, selectedCoach.id);
-      }
-    ).subscribe(
-      (coachee: Coachee) => {
-        console.log('coach selected saved, redirect to meetings');
-        // redirect to a meeting page
-        // this.router.navigate(['/meetings']);
-        this.onUserObtained(coachee);
-      }
-    );
+    // // save in backend
+    // this.coachee.last().flatMap(
+    //   (coachee: Coachee) => {
+    //     console.log('onFinalCoachSelected, get coachee', coachee);
+    //     return this.authService.updateCoacheeSelectedCoach(coachee.id, selectedCoach.id);
+    //   }
+    // ).subscribe(
+    //   (coachee: Coachee) => {
+    //     console.log('coach selected saved, redirect to meetings');
+    //     // redirect to a meeting page
+    //     // this.router.navigate(['/meetings']);
+    //     this.onUserObtained(coachee);
+    //   }
+    // );
 
   }
 

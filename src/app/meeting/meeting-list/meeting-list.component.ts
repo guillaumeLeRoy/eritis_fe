@@ -406,10 +406,11 @@ export class MeetingListComponent implements OnInit, AfterViewInit, OnDestroy {
 
         let body = {
           "email": this.potentialCoacheeEmail,
-          "plan_id": this.selectedPlan.plan_id
+          "plan_id": this.selectedPlan.plan_id,
+          "rh_id": user.id
         };
 
-        this.coachCoacheeService.postPotentialCoachee(user.id, body).subscribe(
+        this.coachCoacheeService.postPotentialCoachee(body).subscribe(
           (res: PotentialCoachee) => {
             console.log('postPotentialCoachee, res', res);
             this.onRefreshRequested();

@@ -13,6 +13,8 @@ import {CoachSelectorComponent} from "./user/coach-selector/coach-selector.compo
 import {AdminComponent} from "./admin/admin.component";
 import {ProfileRhComponent} from "./user/profile/rh/profile-rh.component";
 import {SignupCoacheeComponent} from "./login/signup/signup-coachee.component";
+import {SignupCoachComponent} from "./login/signup/signup-coach.component";
+import {SignupRhComponent} from "./login/signup/signup-rh.component";
 import {AvailableMeetingsComponent} from "./meeting/meeting-list/coach/available-meetings.component";
 
 const APP_ROUTES: Routes = [
@@ -21,6 +23,8 @@ const APP_ROUTES: Routes = [
   {path: 'chat', component: ChatComponent},
   {path: 'signin', component: SigninComponent},
   {path: 'signup_coachee', component: SignupCoacheeComponent},
+  {path: 'signup_coach', component: SignupCoachComponent},
+  {path: 'signup_rh', component: SignupRhComponent},
   {path: 'profile_coach', component: ProfileCoachComponent},
   {path: 'profile_coachee', component: ProfileCoacheeComponent},
   {path: 'profile_rh', component: ProfileRhComponent},
