@@ -127,7 +127,7 @@ export class MeetingListComponent implements OnInit, AfterViewInit, OnDestroy {
         console.log('got coachees for rh', coachees);
 
         this.coachees = Observable.of(coachees);
-        if (coachees !== null) this.hasCollaborators = true;
+        if (coachees !== null && coachees.length > 0) this.hasCollaborators = true;
         this.cd.detectChanges();
       }
     );
@@ -139,7 +139,7 @@ export class MeetingListComponent implements OnInit, AfterViewInit, OnDestroy {
         console.log('got potentialCoachees for rh', coachees);
 
         this.potentialCoachees = Observable.of(coachees);
-        if (coachees !== null) this.hasPotentialCollaborators = true;
+        if (coachees !== null && coachees.length > 0) this.hasPotentialCollaborators = true;
         this.cd.detectChanges();
       }
     );

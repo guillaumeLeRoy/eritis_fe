@@ -1,12 +1,14 @@
-import {Injectable} from '@angular/core';
+import {Injectable} from "@angular/core";
 import {Observable} from "rxjs";
 import {Meeting} from "../model/meeting";
 import {AuthService} from "./auth.service";
 import {Response, URLSearchParams} from "@angular/http";
 import {MeetingDate} from "../model/MeetingDate";
 import {
-  MEETING_REVIEW_TYPE_SESSION_CONTEXT, MEETING_REVIEW_TYPE_SESSION_GOAL,
-  MEETING_REVIEW_TYPE_SESSION_NEXT_STEP, MEETING_REVIEW_TYPE_SESSION_VALUE,
+  MEETING_REVIEW_TYPE_SESSION_CONTEXT,
+  MEETING_REVIEW_TYPE_SESSION_GOAL,
+  MEETING_REVIEW_TYPE_SESSION_NEXT_STEP,
+  MEETING_REVIEW_TYPE_SESSION_VALUE,
   MeetingReview
 } from "../model/MeetingReview";
 
@@ -346,5 +348,34 @@ export class MeetingsService {
   //     return json;
   //   });
   // }
+
+
+  /**
+   * Fetch all meetings where no coach is associated
+   * @returns {Observable<R>}
+   */
+  getAvailablesMeetings(): Observable<Meeting[]> {
+    console.log("getAvailablesMeetings");
+    return this.apiService.get(AuthService.GET_AVAILABLE_MEETINGS, null).map((response: Response) => {
+      let meetings: Meeting[] = response.json();
+      console.log("getAvailablesMeetings");
+      return meetings;
+    });
+  }
+
+
+  /**
+   * Associated this coach with this meeting
+   * @returns {Observable<R>}
+   */
+  associateCoachToMeeting(meetingId: string, coachId: string): Observable<Meeting> {
+    console.log("associateCoachToMeeting");
+    let param = [meetingId, coachId];
+    return this.apiService.put(AuthService.PUT_COACH_TO_MEETING, param, null).map((response: Response) => {
+      let meeting: Meeting = response.json();
+      console.log("associateCoachToMeeting");
+      return meeting;
+    });
+  }
 
 }

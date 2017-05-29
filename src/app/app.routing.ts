@@ -15,6 +15,7 @@ import {ProfileRhComponent} from "./user/profile/rh/profile-rh.component";
 import {SignupCoacheeComponent} from "./login/signup/signup-coachee.component";
 import {SignupCoachComponent} from "./login/signup/signup-coach.component";
 import {SignupRhComponent} from "./login/signup/signup-rh.component";
+import {AvailableMeetingsComponent} from "./meeting/meeting-list/coach/available-meetings.component";
 
 const APP_ROUTES: Routes = [
   {path: '', redirectTo: '/welcome', pathMatch: 'full'},
@@ -32,6 +33,7 @@ const APP_ROUTES: Routes = [
   {path: 'coachees', component: CoachListComponent},
   {path: 'meetings', component: MeetingListComponent},
   {path: 'date/:meetingId', component: MeetingDateComponent},
+  {path: 'available_meetings', component: AvailableMeetingsComponent},
   {
     path: 'admin', component: AdminComponent,
     children: [
