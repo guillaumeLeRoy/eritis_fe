@@ -5,7 +5,7 @@ import {Router} from "@angular/router";
 import {Observable} from "rxjs";
 import {ContractPlan} from "../../model/ContractPlan";
 import {Response} from "@angular/http";
-import {User} from "../../user/user";
+import {AdminAPIService} from "../../service/adminAPI.service";
 
 
 declare var $: any;
@@ -45,35 +45,21 @@ export class SignupAdminComponent implements OnInit {
   /* ----- END Contract Plan ----*/
 
 
-  constructor(private formBuilder: FormBuilder, private authService: AuthService, private router: Router) {
+  constructor(private formBuilder: FormBuilder, private authService: AuthService, private adminAPIService: AdminAPIService, private router: Router) {
     console.log("constructor")
   }
 
   ngOnInit() {
     console.log("ngOnInit");
 
-    this.signUpTypes = [SignUpType.COACH, SignUpType.COACHEE, SignUpType.RH];
+    // this.signUpTypes = [SignUpType.COACH, SignUpType.COACHEE, SignUpType.RH];
+    this.signUpTypes = [SignUpType.COACH, SignUpType.RH];
 
     this.signUpForm = this.formBuilder.group({
       email: ['', Validators.compose([
         Validators.required,
         this.isEmail
-      ])],
-      password: ['', Validators.compose([Validators.required,
-        Validators.minLength(6)]
-      )
-      ],
-      confirmPassword: ['',
-        [Validators.required, this.isEqualPassword.bind(this)]
-      ],
-
-      // type: ['',
-      //   [Validators.required]
-      // ],
-      //
-      // coacheeTYpe: ['',
-      //   [Validators.required]
-      // ]
+      ])]
     });
 
     this.getListOfContractPlans();
@@ -82,7 +68,6 @@ export class SignupAdminComponent implements OnInit {
 
   onSelectPlan(plan: ContractPlan) {
     console.log("onSelectPlan, plan ", plan)
-
     this.mSelectedPlan = plan;
   }
 
@@ -96,57 +81,48 @@ export class SignupAdminComponent implements OnInit {
 
     if (this.signUpSelectedType == SignUpType.COACH) {
       console.log("onSignUp, coach");
-
-      this.authService.signUpCoach(this.signUpForm.value).subscribe(
-        data => {
-          console.log("onSignUp, data obtained", data)
-          this.router.navigate(['/profile_coach'])
-        },
-        error => {
-          console.log("onSignUp, error obtained", error)
-          this.error = true;
-          this.errorMessage = error
-        })
-    } else if (this.signUpSelectedType == SignUpType.COACHEE) {
-      console.log("onSignUp, coachee");
-
-      //contract Plan is mandatory
-      if (this.mSelectedPlan == null) {
-        this.error = true;
-        this.errorMessage = "Selectionnez un contract";
-        return;
-      }
-
-      let user: User = this.signUpForm.value;
-      user.contractPlanId = this.mSelectedPlan.plan_id;
-      this.authService.signUpCoachee(user).subscribe(
-        data => {
-          console.log("onSignUp, data obtained", data)
-          /*L'utilisateur est TOUJOURS redirigé vers ses meetings*/
-          this.router.navigate(['/meetings']);
-        },
-        error => {
-          console.log("onSignUp, error obtained", error)
-          this.error = true;
-          this.errorMessage = error
-        })
+      this.createPotentialCoach(this.signUpForm.value.email);
     } else if (this.signUpSelectedType == SignUpType.RH) {
-      this.authService.signUpRh(this.signUpForm.value).subscribe(
-        data => {
-          console.log("onSignUp, RH, data obtained", data)
-          /*L'utilisateur est TOUJOURS redirigé vers ses meetings*/
-          this.router.navigate(['/meetings']);//TODO change that
-        },
-        error => {
-          console.log("onSignUp, error obtained", error)
-          this.error = true;
-          this.errorMessage = error
-        })
+      this.createPotentialRh(this.signUpForm.value.email);
     } else {
       Materialize.toast('Vous devez sélectionner un type', 3000, 'rounded')
     }
   }
 
+  createPotentialRh(email: string) {
+    console.log('createPotentialRh');
+
+    let body = {
+      "email": email,
+    };
+
+    this.adminAPIService.createPotentialRh(body).subscribe(
+      (res: any) => {
+        console.log('createPotentialRh, res', res);
+        Materialize.toast('Collaborateur RH ajouté !', 3000, 'rounded');
+      }, (error) => {
+        console.log('createPotentialRh, error', error);
+        Materialize.toast("Impossible d'ajouter le RH", 3000, 'rounded');
+      }
+    );
+  }
+
+  createPotentialCoach(email: string) {
+    console.log('createPotentialCoach');
+    let body = {
+      "email": email,
+    };
+
+    this.adminAPIService.createPotentialCoach(body).subscribe(
+      (res: any) => {
+        console.log('createPotentialCoach, res', res);
+        Materialize.toast('Collaborateur Coach ajouté !', 3000, 'rounded');
+      }, (error) => {
+        console.log('createPotentialCoach, error', error);
+        Materialize.toast("Impossible d'ajouter le Coach", 3000, 'rounded');
+      }
+    );
+  }
 
   getListOfContractPlans() {
     this.authService.getNotAuth(AuthService.GET_CONTRACT_PLANS, null).subscribe(

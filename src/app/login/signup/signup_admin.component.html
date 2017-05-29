@@ -2,7 +2,7 @@
   <div class="row">
     <div class="col s12 m12 l6">
       <div class="card-panel">
-        <h4 class="header2">S'inscrire</h4>
+        <h4 class="header2">Envoyer une invitation</h4>
         <div class="row">
           <form class="col s12" [formGroup]="signUpForm" (ngSubmit)="onSignUpSubmitted()">
             <div class="row">
@@ -16,32 +16,6 @@
                 </small>
               </div>
             </div>
-            <div class="row">
-              <div class="input-field col s12">
-                <input id="password" type="password" formControlName="password">
-                <label for="password">Password</label>
-                <small class="text-danger"
-                       *ngIf="!signUpForm.controls['password'].pristine && !signUpForm.controls['password'].valid">
-                  Password must be at least 6 characters.
-                </small>
-              </div>
-            </div>
-
-            <div class="row">
-              <div class="input-field col s12">
-                <input id="confirm_password" type="password" formControlName="confirmPassword">
-                <label for="confirm_password">Confirm Password</label>
-                <small class="text-danger"
-                       *ngIf="!signUpForm.controls['confirmPassword'].pristine && signUpForm.controls['confirmPassword'].errors && signUpForm.controls['confirmPassword'].errors['passwordNoMatch']">
-                  Confirm Password is incorrect
-                </small>
-              </div>
-            </div>
-
-            <!--<p>-->
-              <!--<input type="checkbox" id="status" [(ngModel)]="checked" formControlName="status"/>-->
-              <!--<label for="status">Are you a coach ?</label>-->
-            <!--</p>-->
 
             <div class="input-field">
               <select [(ngModel)]="signUpSelectedType"
@@ -56,22 +30,44 @@
             </div>
 
             <div *ngIf="signUpSelectedType == 1">
-              <div *ngFor="let plan of plans | async" (click)="onSelectPlan(plan)"  [class.contract_selected]="plan == mSelectedPlan">
+              <h4>Choisir un plan pour ce coaché</h4>
+              <div *ngFor="let plan of plans | async" (click)="onSelectPlan(plan)"
+                   [class.contract_selected]="plan == mSelectedPlan">
                 Plan id : {{plan.plan_id}}
                 Plan Name : {{plan.plan_name}}
                 Plan Sessions count : {{plan.sessions_count}}
               </div>
             </div>
 
+            <br>
+            <br>
+
+            <h4>Conseils</h4>
+            <p>Un email sera envoyé à l'adresse mail entrée, assurez-vous de posséder cet email</p>
+            <p>Email possibles : </p>
+            <br>
+            <p>coach.1.eritis@gmail.com</p>
+            <p>pwd : passwordEritis</p>
+
+            <br>
+
+            <p>coachee.1.eritis@gmail.com</p>
+            <p>pwd : passwordEritis</p>
+
+            <br>
+
+            <p>rh.1.eritis@gmail.com</p>
+            <p>pwd : passwordEritis</p>
+
             <div class="row">
               <div class="input-field col s12">
                 <button class="btn-basic btn-blue right" type="submit" name="action"
-                        [disabled]="!signUpForm.valid  || signUpSelectedType==null || (signUpSelectedType == 1 && !mSelectedPlan)">Valider
+                        [disabled]="!signUpForm.valid  || signUpSelectedType==null || (signUpSelectedType == 1 && !mSelectedPlan)">
+                  Valider
                 </button>
 
               </div>
             </div>
-
 
             <!-- sign up error div-->
 

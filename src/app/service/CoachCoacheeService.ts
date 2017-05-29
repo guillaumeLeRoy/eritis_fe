@@ -7,6 +7,8 @@ import {AuthService} from "./auth.service";
 import {PotentialCoachee} from "../model/PotentialCoachee";
 import {Coachee} from "../model/coachee";
 import {RhUsageRate} from "../model/UsageRate";
+import {PotentialCoach} from "../model/PotentialCoach";
+import {PotentialRh} from "../model/PotentialRh";
 
 
 @Injectable()
@@ -54,6 +56,18 @@ export class CoachCoacheeService {
     return this.apiService.getPotentialCoachee(AuthService.GET_POTENTIAL_COACHEE_FOR_TOKEN, param);
   }
 
+  getPotentialCoach(token: string): Observable<PotentialCoach> {
+    console.log("getPotentialCoach, start request");
+    let param = [token];
+    return this.apiService.getPotentialCoachee(AuthService.GET_POTENTIAL_COACH_FOR_TOKEN, param);
+  }
+
+  getPotentialRh(token: string): Observable<PotentialRh> {
+    console.log("getPotentialRh, start request");
+    let param = [token];
+    return this.apiService.getPotentialCoachee(AuthService.GET_POTENTIAL_RH_FOR_TOKEN, param);
+  }
+
   getUsageRate(rhId: string): Observable<RhUsageRate> {
     console.log("getUsageRate, start request");
     let param = [rhId];
@@ -65,11 +79,9 @@ export class CoachCoacheeService {
       });
   }
 
-
-  postPotentialCoachee(rhId: string, body: any): Observable<PotentialCoachee> {
+  postPotentialCoachee(body: any): Observable<PotentialCoachee> {
     console.log("postPotentialCoachee, start request");
-    let param = [rhId];
-    return this.apiService.post(AuthService.POST_POTENTIAL_COACHEE, param, body).map(
+    return this.apiService.post(AuthService.POST_POTENTIAL_COACHEE, null, body).map(
       (response: Response) => {
         let json: PotentialCoachee = response.json();
         console.log("postPotentialCoachee, response json : ", json);

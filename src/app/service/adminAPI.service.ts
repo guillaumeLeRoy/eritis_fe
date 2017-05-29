@@ -5,12 +5,40 @@ import {environment} from "../../environments/environment";
 import {Coach} from "../model/Coach";
 import {Coachee} from "../model/coachee";
 import {AuthService} from "./auth.service";
+import {Admin} from "../model/Admin";
 
 @Injectable()
 export class AdminAPIService {
 
   constructor(private httpService: Http) {
     console.log("ctr done");
+  }
+
+  createPotentialCoach(body: any) {
+    return this.post(AuthService.POST_POTENTIAL_COACH, null, body).map(
+      (res: Response) => {
+        let potentialCoach: any = res.json();
+        return potentialCoach;
+      }
+    );
+  }
+
+  createPotentialRh(body: any) {
+    return this.post(AuthService.POST_POTENTIAL_RH, null, body).map(
+      (res: Response) => {
+        let potentialRh: any = res.json();
+        return potentialRh;
+      }
+    );
+  }
+
+  getAdmin(): Observable<Admin> {
+    return this.get(AuthService.GET_ADMIN, null).map(
+      (res: Response) => {
+        let admin: Admin = res.json();
+        return admin;
+      }
+    );
   }
 
   getCoachs(): Observable<Array<Coach>> {
@@ -30,25 +58,6 @@ export class AdminAPIService {
       }
     );
   }
-
-  /**
-   *
-   * @param coacheeId
-   * @param coachId
-   * @returns {Observable<Coachee>}
-   */
-  updateCoacheeSelectedCoach(coacheeId: string, coachId: string): Observable<Coachee> {
-    console.log("updateCoacheeSelectedCoach, coacheeId", coacheeId);
-    console.log("updateCoacheeSelectedCoach, coachId", coachId);
-
-    let params = [coacheeId, coachId];
-    return this.put(AuthService.UPDATE_COACHEE_SELECTED_COACH, params, null).map(
-      (response: Response) => {
-        //convert to coachee
-        return this.parseCoachee(response.json());
-      });
-  }
-
 
   private post(path: string, params: string[], body: any): Observable<Response> {
     return this.httpService.post(this.generatePath(path, params), body)
