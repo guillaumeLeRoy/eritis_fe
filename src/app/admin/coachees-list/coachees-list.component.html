@@ -1,0 +1,25 @@
+<div class="container">
+
+  <h4>Liste des coachés</h4>
+
+  <div class="row">
+    <div class="col-xs-12" *ngFor="let coachee of coachees| async">
+
+      <div class="row coach_card">
+
+        <div class="col s12" style="padding: 16px">
+
+          <span>{{coachee.display_name}}</span>
+          <img style="width: 30px;height: 30px" src="{{coachee.avatar_url}}" alt="">
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+
+</div>
+

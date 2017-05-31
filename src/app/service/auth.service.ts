@@ -29,7 +29,6 @@ export class AuthService {
   public static POST_POTENTIAL_COACH = "/v1/potentials/coachs";
   public static POST_POTENTIAL_RH = "/v1/potentials/rhs";
   public static LOGIN = "/login/:firebaseId";
-  public static GET_ADMIN = "/v1/admin";
   public static GET_POTENTIAL_COACHEE_FOR_TOKEN = "/v1/potentials/coachees/:token";
   public static GET_POTENTIAL_COACH_FOR_TOKEN = "/v1/potentials/coachs/:token";
   public static GET_POTENTIAL_RH_FOR_TOKEN = "/v1/potentials/rhs/:token";
@@ -42,6 +41,11 @@ export class AuthService {
   public static GET_RH_FOR_ID = "/rh/:id";
   public static GET_USAGE_RATE_FOR_RH = "/v1/rhs/:id/usage";
 
+  /* admin */
+  public static GET_ADMIN = "/v1/admins/user";
+  public static ADMIN_GET_COACHS = "v1/admins/coachs";
+  public static ADMIN_GET_COACHEES = "v1/admins/coachees";
+  public static ADMIN_GET_RHS = "v1/admins/rhs";
 
   /*Meeting*/
   public static POST_MEETING = "/meeting";

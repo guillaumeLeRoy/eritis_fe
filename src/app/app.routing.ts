@@ -9,13 +9,15 @@ import {MeetingListComponent} from "./meeting/meeting-list/meeting-list.componen
 import {ProfileCoachComponent} from "./user/profile/coach/profile-coach.component";
 import {ProfileCoacheeComponent} from "./user/profile/coachee/profile-coachee.component";
 import {MeetingDateComponent} from "./meeting/meeting-date/meeting-date.component";
-import {CoachSelectorComponent} from "./user/coach-selector/coach-selector.component";
+import {AdminCoachsListComponent} from "./admin/coachs-list/admin-coachs-list.component";
 import {AdminComponent} from "./admin/admin.component";
 import {ProfileRhComponent} from "./user/profile/rh/profile-rh.component";
 import {SignupCoacheeComponent} from "./login/signup/signup-coachee.component";
 import {SignupCoachComponent} from "./login/signup/signup-coach.component";
 import {SignupRhComponent} from "./login/signup/signup-rh.component";
 import {AvailableMeetingsComponent} from "./meeting/meeting-list/coach/available-meetings.component";
+import {CoacheesListComponent} from "./admin/coachees-list/coachees-list.component";
+import {RhsListComponent} from "./admin/rhs-list/rhs-list.component";
 
 const APP_ROUTES: Routes = [
   {path: '', redirectTo: '/welcome', pathMatch: 'full'},
@@ -38,7 +40,9 @@ const APP_ROUTES: Routes = [
     path: 'admin', component: AdminComponent,
     children: [
       {path: 'signup', component: SignupAdminComponent},
-      {path: 'coach-selector', component: CoachSelectorComponent}
+      {path: 'coachs-list', component: AdminCoachsListComponent},
+      {path: 'coachees-list', component: CoacheesListComponent},
+      {path: 'rhs-list', component: RhsListComponent}
     ]
   },
 
