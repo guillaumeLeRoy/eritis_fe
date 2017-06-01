@@ -200,7 +200,8 @@ export class MeetingListComponent implements OnInit, AfterViewInit, OnDestroy {
         ).subscribe(
           (meeting: Meeting) => {
             // TODO display a loader
-            console.log('goToDate, go to setup dates')
+            console.log('goToDate, go to setup dates');
+            window.scrollTo(0, 0);
             this.router.navigate(['/date', meeting.id]);
           }
         );

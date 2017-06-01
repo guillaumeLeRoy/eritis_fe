@@ -37,6 +37,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
     // );
     if (this.user == null) {
       // Un utilisateur non connecté est redirigé sur la page d'accueil
+      window.scrollTo(0, 0);
       this.router.navigate(['/']);
     }
 
@@ -72,16 +73,19 @@ export class HeaderComponent implements OnInit, OnDestroy {
   }
 
   onLogIn() {
+    window.scrollTo(0, 0);
     this.router.navigate(['/signin']);
   }
 
   onSignUp() {
+    window.scrollTo(0, 0);
     this.router.navigate(['/signup']);
   }
 
   goToMeetings() {
     let user = this.authService.getConnectedUser();
     if (user != null) {
+      window.scrollTo(0, 0);
       this.router.navigate(['/meetings']);
     }
   }
@@ -89,16 +93,20 @@ export class HeaderComponent implements OnInit, OnDestroy {
   goToAvailableSessions(){
     let user = this.authService.getConnectedUser();
     if (user != null) {
+      window.scrollTo(0, 0);
       this.router.navigate(['/available_meetings']);
     }
   }
 
   goToProfile() {
     if (this.mUser instanceof Coach) {
+      window.scrollTo(0, 0);
       this.router.navigate(['/profile_coach']);
     } else if (this.mUser instanceof Coachee) {
+      window.scrollTo(0, 0);
       this.router.navigate(['/profile_coachee']);
     } else if (this.mUser instanceof Rh) {
+      window.scrollTo(0, 0);
       this.router.navigate(['/profile_rh']);
     }
   }
@@ -108,6 +116,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   }
 
   goToCoachs() {
+    window.scrollTo(0, 0);
     this.router.navigate(['/coachs']);
   }
 

@@ -12,7 +12,7 @@
 
             <li *ngIf="(isAuthenticated | async) && isUserACoach()"><a (click)="goToAvailableSessions()">Séances disponibles</a></li>
 
-            <li *ngIf="(isAuthenticated | async) && isUserACoach()"><a (click)="goToMeetings()">Vos séances</a></li>
+            <li *ngIf="(isAuthenticated | async)"><a (click)="goToMeetings()">Vos séances</a></li>
 
             <li *ngIf="(isAuthenticated | async)"><a (click)="goToProfile()">Profil</a></li>
 
@@ -30,7 +30,7 @@
 
             <li *ngIf="(isAuthenticated | async) && isUserACoach()"><a (click)="goToAvailableSessions()">Séances disponibles</a></li>
 
-            <li *ngIf="(isAuthenticated | async) && isUserACoach()"><a (click)="goToMeetings()">Vos séances</a></li>
+            <li *ngIf="(isAuthenticated | async)"><a (click)="goToMeetings()">Vos séances</a></li>
 
 
             <li *ngIf="(isAuthenticated | async)"><a (click)="goToProfile()">Profil</a></li>

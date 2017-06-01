@@ -170,6 +170,7 @@ export class MeetingItemCoacheeComponent implements OnInit {
   }
 
   goToModifyDate(meetingId: number) {
+    window.scrollTo(0, 0);
     this.router.navigate(['/date', meetingId]);
   }
 
