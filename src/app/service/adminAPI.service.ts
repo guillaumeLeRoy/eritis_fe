@@ -3,7 +3,7 @@ import {Http, Response} from "@angular/http";
 import {Observable} from "rxjs/Observable";
 import {environment} from "../../environments/environment";
 import {Coach} from "../model/Coach";
-import {Coachee} from "../model/coachee";
+import {Coachee} from "../model/Coachee";
 import {AuthService} from "./auth.service";
 import {Admin} from "../model/Admin";
 

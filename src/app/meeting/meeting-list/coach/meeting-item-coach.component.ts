@@ -1,14 +1,14 @@
 import {AfterViewInit, ChangeDetectorRef, Component, EventEmitter, Input, OnInit, Output} from "@angular/core";
-import {Meeting} from "../../../model/meeting";
+import {Meeting} from "../../../model/Meeting";
 import {Observable} from "rxjs";
 import {MeetingReview} from "../../../model/MeetingReview";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
-import {Coachee} from "../../../model/coachee";
+import {Coachee} from "../../../model/Coachee";
 import {MeetingDate} from "../../../model/MeetingDate";
 import {MeetingsService} from "../../../service/meetings.service";
 import {Coach} from "../../../model/Coach";
 import {AuthService} from "../../../service/auth.service";
-import {ApiUser} from "../../../model/apiUser";
+import {ApiUser} from "../../../model/ApiUser";
 import {Subscription} from "rxjs/Subscription";
 
 declare var $: any;

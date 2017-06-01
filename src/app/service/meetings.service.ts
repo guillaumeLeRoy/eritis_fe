@@ -1,6 +1,6 @@
 import {Injectable} from "@angular/core";
 import {Observable} from "rxjs";
-import {Meeting} from "../model/meeting";
+import {Meeting} from "../model/Meeting";
 import {AuthService} from "./auth.service";
 import {Response, URLSearchParams} from "@angular/http";
 import {MeetingDate} from "../model/MeetingDate";

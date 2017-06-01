@@ -3,7 +3,7 @@ import {Coach} from '../../model/Coach';
 import {CoachCoacheeService} from '../../service/CoachCoacheeService';
 import {Observable, Subscription} from 'rxjs';
 import {AuthService} from '../../service/auth.service';
-import {Coachee} from '../../model/coachee';
+import {Coachee} from '../../model/Coachee';
 import {Router} from '@angular/router';
 
 @Component({

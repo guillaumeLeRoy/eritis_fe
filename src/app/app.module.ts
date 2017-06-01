@@ -46,6 +46,9 @@ import {AvailableMeetingsComponent} from "./meeting/meeting-list/coach/available
 import {AdminCoachsListComponent} from "./admin/coachs-list/admin-coachs-list.component";
 import { CoacheesListComponent } from './admin/coachees-list/coachees-list.component';
 import { RhsListComponent } from './admin/rhs-list/rhs-list.component';
+import { MeetingListCoachComponent } from './meeting/meeting-list/coach/meeting-list-coach/meeting-list-coach.component';
+import { MeetingListCoacheeComponent } from './meeting/meeting-list/coachee/meeting-list-coachee/meeting-list-coachee.component';
+import { MeetingListRhComponent } from './meeting/meeting-list/rh/meeting-list-rh/meeting-list-rh.component';
 
 @NgModule({
   declarations: [
@@ -77,7 +80,10 @@ import { RhsListComponent } from './admin/rhs-list/rhs-list.component';
     SignupRhComponent,
     AvailableMeetingsComponent,
     CoacheesListComponent,
-    RhsListComponent
+    RhsListComponent,
+    MeetingListCoachComponent,
+    MeetingListCoacheeComponent,
+    MeetingListRhComponent
   ],
   imports: [
     BrowserAnimationsModule,

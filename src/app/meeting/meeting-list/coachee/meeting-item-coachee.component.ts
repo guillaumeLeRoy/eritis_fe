@@ -1,5 +1,5 @@
 import {ChangeDetectorRef, Component, EventEmitter, Input, OnInit, Output} from "@angular/core";
-import {Meeting} from "../../../model/meeting";
+import {Meeting} from "../../../model/Meeting";
 import {Observable} from "rxjs";
 import {Coach} from "../../../model/Coach";
 import {MeetingReview} from "../../../model/MeetingReview";

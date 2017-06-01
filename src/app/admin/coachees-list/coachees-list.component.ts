@@ -1,6 +1,6 @@
 import {AfterViewInit, ChangeDetectorRef, Component, OnDestroy, OnInit} from '@angular/core';
 import {Observable} from "rxjs/Observable";
-import {Coachee} from "../../model/coachee";
+import {Coachee} from "../../model/Coachee";
 import {Subscription} from "rxjs/Subscription";
 import {AdminAPIService} from "../../service/adminAPI.service";
 

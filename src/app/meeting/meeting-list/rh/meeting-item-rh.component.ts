@@ -1,5 +1,5 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {Coachee} from "../../../model/coachee";
+import {Coachee} from "../../../model/Coachee";
 import {PotentialCoachee} from "../../../model/PotentialCoachee";
 import {Observable} from "rxjs/Observable";
 import {RhUsageRate} from "../../../model/UsageRate";

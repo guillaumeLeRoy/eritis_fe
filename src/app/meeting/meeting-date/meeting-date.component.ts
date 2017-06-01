@@ -1,6 +1,6 @@
 import {Component, OnInit, ChangeDetectorRef, OnDestroy} from '@angular/core';
 import {NgbDateStruct} from '@ng-bootstrap/ng-bootstrap';
-import {ApiUser} from '../../model/apiUser';
+import {ApiUser} from '../../model/ApiUser';
 import {CoachCoacheeService} from '../../service/CoachCoacheeService';
 import {AuthService} from '../../service/auth.service';
 import {Observable, Subscription} from 'rxjs';

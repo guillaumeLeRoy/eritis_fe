@@ -2,7 +2,7 @@ import {Component, OnInit, AfterViewInit, ChangeDetectorRef, OnDestroy} from '@a
 import {Observable, Subscription} from "rxjs";
 import {Coach} from "../../../model/Coach";
 import {AuthService} from "../../../service/auth.service";
-import {ApiUser} from "../../../model/apiUser";
+import {ApiUser} from "../../../model/ApiUser";
 import {FormGroup, FormBuilder, Validators} from "@angular/forms";
 
 @Component({
