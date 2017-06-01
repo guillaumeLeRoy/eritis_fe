@@ -494,6 +494,7 @@ export class AuthService {
     rh.email = json.email;
     rh.display_name = json.display_name;
     rh.start_date = json.start_date;
+    rh.avatar_url = json.avatar_url;
     return rh;
   }
 
