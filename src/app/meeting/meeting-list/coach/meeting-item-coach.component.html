@@ -87,7 +87,7 @@
                 <select [(ngModel)]="selectedHour" name="meeting-hour" class="browser-default"
                         materialize="material_select">
                   <option value="0" disabled selected>Heure</option>
-                  <option *ngFor="let h of potentialHours | async" [ngValue]="h" [selected]="true">
+                  <option *ngFor="let h of potentialHours | async" [ngValue]="h">
                     {{ printTimeNumber(h) }} - {{ printTimeNumber(h+0.5) }}
                   </option>
                 </select>
