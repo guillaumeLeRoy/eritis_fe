@@ -6,6 +6,7 @@ import {MeetingReview} from "../../../model/MeetingReview";
 import {MeetingDate} from "../../../model/MeetingDate";
 import {Router} from "@angular/router";
 import {MeetingsService} from "../../../service/meetings.service";
+import {ApiUser} from "app/model/apiUser";
 
 declare var $: any;
 declare var Materialize: any;
@@ -178,6 +179,11 @@ export class MeetingItemCoacheeComponent implements OnInit {
     this.cancelMeetingTimeEvent.emit(this.meeting);//TODO to improve
 
     // $('#deleteModal').openModal();
+  }
+
+  goToChatRoom() {
+    console.log('goToChatRoom');
+    let win = window.open(this.meeting.coach.chat_room_url, "_blank");
   }
 
   // cancelCancelMeeting() {
