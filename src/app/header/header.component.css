@@ -67,3 +67,11 @@ header{
 .header-user-img{
   height: 100px;
 }
+
+.notifs {
+  width: auto !important;
+}
+
+.notif-item {
+  padding: 16px;
+}

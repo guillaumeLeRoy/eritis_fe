@@ -53,8 +53,8 @@ export class MeetingItemCoachComponent implements OnInit, AfterViewInit {
   private potentialDatesArray: MeetingDate[];
   private potentialDates: Observable<MeetingDate[]>;
 
-  private selectedDate: string;
-  private selectedHour: number;
+  private selectedDate = '0';
+  private selectedHour = 0;
 
   private potentialDays: Observable<number[]>;
   private potentialHours: Observable<number[]>;
@@ -78,6 +78,9 @@ export class MeetingItemCoachComponent implements OnInit, AfterViewInit {
     });
 
     this.coachee = this.meeting.coachee;
+
+    $('select').material_select();
+
   }
 
   ngAfterViewInit(): void {
@@ -86,6 +89,8 @@ export class MeetingItemCoachComponent implements OnInit, AfterViewInit {
     this.getReviewValue();
     this.getReviewNextStep();
     this.loadMeetingPotentialTimes();
+    this.loadPotentialDays();
+    $('select').material_select();
   }
 
   onRefreshRequested() {
@@ -116,15 +121,20 @@ export class MeetingItemCoachComponent implements OnInit, AfterViewInit {
       (dates: MeetingDate[]) => {
         console.log("potential dates obtained, ", dates);
 
-        dates.sort(function (a, b) {
-          let d1 = new Date(a.start_date);
-          let d2 = new Date(b.start_date);
-          let res = d1.getUTCDate() - d2.getUTCDate();
-          if (res === 0) {
-            res = d1.getUTCHours() - d2.getUTCHours();
-          }
-          return res;
-        });
+        if (dates != null) {
+          dates.sort(function (a, b) {
+            let d1 = new Date(a.start_date);
+            let d2 = new Date(b.start_date);
+            let res = d1.getUTCFullYear() - d2.getUTCFullYear();
+            if (res === 0)
+              res = d1.getUTCMonth() - d2.getUTCMonth();
+            if (res === 0)
+              res = d1.getUTCDate() - d2.getUTCDate();
+            if (res === 0)
+              res = d1.getUTCHours() - d2.getUTCHours();
+            return res;
+          });
+        }
 
         this.potentialDatesArray = dates;
         this.potentialDates = Observable.of(dates);
@@ -259,17 +269,18 @@ export class MeetingItemCoachComponent implements OnInit, AfterViewInit {
     console.log("loadPotentialDays");
     let days = [];
 
-    for (let date of this.potentialDatesArray) {
-      let d = new Date(date.start_date);
-      d.setHours(0);
-      d.setMinutes(0);
-      if (days.indexOf(d.toString()) < 0)
-        days.push(d.toString());
+    if (this.potentialDatesArray != null) {
+      for (let date of this.potentialDatesArray) {
+        let d = new Date(date.start_date);
+        d.setHours(0);
+        d.setMinutes(0);
+        if (days.indexOf(d.toString()) < 0)
+          days.push(d.toString());
+      }
     }
 
     this.potentialDays = Observable.of(days);
     this.cd.detectChanges();
-    $('select').material_select();
     console.log("potentialDays", days);
   }
 
@@ -288,7 +299,6 @@ export class MeetingItemCoachComponent implements OnInit, AfterViewInit {
 
     this.potentialHours = Observable.of(hours);
     this.cd.detectChanges();
-    $('select').material_select();
     console.log("potentialHours", hours);
   }
 
@@ -344,34 +354,5 @@ export class MeetingItemCoachComponent implements OnInit, AfterViewInit {
       }
     );
   }
-
-  // cancelCancelMeeting() {
-  //   // $('#deleteModal').closeModal();
-  //
-  // }
-  //
-  // //remove MeetingTime
-  // validateCancelMeeting() {
-  //
-  //   console.log('validateCancelMeeting, agreed date : ', this.meeting.agreed_date);
-  //   console.log('validateCancelMeeting, meeting : ', this.meeting);
-  //
-  //   let meetingTimeId = this.meeting.agreed_date.id;
-  //
-  //   console.log('validateCancelMeeting, id : ', meetingTimeId);
-  //
-  //   //hide modal
-  //   $('#deleteModal').closeModal();
-  //   //
-  //   this.coachCoacheeService.removePotentialTime(meetingTimeId).subscribe(
-  //     (response: Response) => {
-  //       console.log('validateCancelMeeting, res ', response);
-  //       console.log('emit');
-  //       this.dateRemoved.emit(null);
-  //     }, (error) => {
-  //       console.log('unbookAdate, error', error);
-  //     }
-  //   );
-  // }
 
 }

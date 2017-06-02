@@ -36,11 +36,9 @@ export class MeetingListRhComponent implements OnInit, AfterViewInit, OnDestroy 
   private connectedUserSubscription: Subscription;
 
   private plans: Observable<ContractPlan[]>;
-  selectedPlan: ContractPlan;
+  selectedPlan = new ContractPlan('-1');
 
   potentialCoacheeEmail?;
-
-  private meetingToCancel: Meeting;
 
   private rhUsageRate: Observable<RhUsageRate>;
 

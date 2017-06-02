@@ -61,7 +61,7 @@
               [ngModelOptions]="{standalone: true}"
               name="plan_selector"
               class="browser-default">
-        <option value="" disabled selected>Sélectionnez un plan</option>
+        <option value="{{selectedPlan}}" disabled selected>Sélectionnez un plan</option>
         <option *ngFor="let plan of plans | async" [ngValue]="plan">
           {{ plan.sessions_count }} séances
         </option>

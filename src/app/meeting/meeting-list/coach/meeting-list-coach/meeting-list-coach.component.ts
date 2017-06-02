@@ -105,7 +105,7 @@ export class MeetingListCoachComponent implements OnInit, AfterViewInit, OnDestr
     if (this.meetingsArray != null) {
       let opened: Meeting[] = [];
       for (let meeting of this.meetingsArray) {
-        if (meeting.isOpen) {
+        if (meeting != null && meeting.isOpen) {
           opened.push(meeting);
           this.hasOpenedMeeting = true;
         }
@@ -119,7 +119,7 @@ export class MeetingListCoachComponent implements OnInit, AfterViewInit, OnDestr
     if (this.meetingsArray != null) {
       let closed: Meeting[] = [];
       for (let meeting of this.meetingsArray) {
-        if (!meeting.isOpen) {
+        if (meeting != null && !meeting.isOpen) {
           closed.push(meeting);
           this.hasClosedMeeting = true;
         }
@@ -133,7 +133,7 @@ export class MeetingListCoachComponent implements OnInit, AfterViewInit, OnDestr
     if (this.meetingsArray != null) {
       let opened: Meeting[] = [];
       for (let meeting of this.meetingsArray) {
-        if (meeting.isOpen && meeting.agreed_date) {
+        if (meeting != null && meeting.isOpen && meeting.agreed_date) {
           opened.push(meeting);
           this.hasOpenedMeeting = true;
         }
@@ -147,7 +147,7 @@ export class MeetingListCoachComponent implements OnInit, AfterViewInit, OnDestr
     if (this.meetingsArray != null) {
       let unbooked: Meeting[] = [];
       for (let meeting of this.meetingsArray) {
-        if (meeting.isOpen && !meeting.agreed_date) {
+        if (meeting != null && meeting.isOpen && !meeting.agreed_date) {
           unbooked.push(meeting);
           this.hasUnbookedMeeting = true;
         }

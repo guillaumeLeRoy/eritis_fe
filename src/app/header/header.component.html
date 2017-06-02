@@ -16,7 +16,7 @@
 
             <li *ngIf="(isAuthenticated | async)"><a (click)="goToProfile()">Profil</a></li>
 
-            <li><a><i class="material-icons">notifications</i></a></li>
+            <li><a class="dropdown-button" data-activates="notifs"><i class="material-icons">notifications</i></a></li>
 
             <li *ngIf="(isAuthenticated | async)"><a (click)="onLogout()">Déconnexion</a></li>
 
@@ -45,6 +45,10 @@
       </div>
     </nav>
   </div><!--end navbar-fixed-->
+
+  <ul id="notifs" class="dropdown-content notifs">
+    <li class="notif-item">Vous n'avez pas de notification</li>
+  </ul>
 
   <div class="header-user">
     <div class="container">
