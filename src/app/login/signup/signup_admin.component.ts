@@ -12,7 +12,7 @@ declare var $: any;
 declare var Materialize: any;
 
 enum SignUpType {
-  COACH, COACHEE, RH
+  COACH, COACHEE, RH, NULL
 }
 
 @Component({
@@ -22,7 +22,7 @@ enum SignUpType {
 })
 export class SignupAdminComponent implements OnInit {
 
-  private signUpSelectedType: SignUpType;
+  private signUpSelectedType = SignUpType.NULL;
   private signUpTypes: SignUpType[];
 
   private signUpForm: FormGroup;

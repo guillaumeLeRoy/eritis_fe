@@ -2,7 +2,7 @@
  * Created by guillaume on 31/03/2017.
  */
 export const environment = {
-  production: false,
+  production: true,
   BACKEND_BASE_URL: "https://eritis-be-glr.appspot.com/api",
   firebase_apiKey: "AIzaSyAAszel5d8YQuuGyZ65lX89zYb3V6oqoyA",
   firebase_authDomain: "eritis-be-glr.firebaseapp.com",

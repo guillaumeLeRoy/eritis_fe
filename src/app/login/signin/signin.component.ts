@@ -2,7 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {FormGroup, FormBuilder, Validators} from '@angular/forms';
 import {AuthService} from '../../service/auth.service';
 import {Router} from '@angular/router';
-import {Coachee} from '../../model/coachee';
+import {Coachee} from '../../model/Coachee';
 import {Coach} from '../../model/Coach';
 
 @Component({

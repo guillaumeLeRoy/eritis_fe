@@ -22,7 +22,7 @@
                       [ngModelOptions]="{standalone: true}"
                       name="signup_type_selector"
                       class="browser-default">
-                <option value="" disabled selected>Sélectionnez un Type</option>
+                <option value="{{signUpSelectedType}}" disabled selected>Sélectionnez un Type</option>
                 <option *ngFor="let type of signUpTypes" [ngValue]="type">
                   {{ getSignUpTypeName(type) }}
                 </option>

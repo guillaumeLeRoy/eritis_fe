@@ -3,7 +3,7 @@ import {Observable, Subscription} from "rxjs";
 import {Router} from "@angular/router";
 import {Coach} from "../../model/Coach";
 import {AuthService} from "../../service/auth.service";
-import {ApiUser} from "../../model/apiUser";
+import {ApiUser} from "../../model/ApiUser";
 import {MeetingsService} from "../../service/meetings.service";
 
 @Component({

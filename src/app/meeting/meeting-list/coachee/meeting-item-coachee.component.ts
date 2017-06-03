@@ -1,11 +1,12 @@
 import {ChangeDetectorRef, Component, EventEmitter, Input, OnInit, Output} from "@angular/core";
-import {Meeting} from "../../../model/meeting";
+import {Meeting} from "../../../model/Meeting";
 import {Observable} from "rxjs";
 import {Coach} from "../../../model/Coach";
 import {MeetingReview} from "../../../model/MeetingReview";
 import {MeetingDate} from "../../../model/MeetingDate";
 import {Router} from "@angular/router";
 import {MeetingsService} from "../../../service/meetings.service";
+import {ApiUser} from "app/model/apiUser";
 
 declare var $: any;
 declare var Materialize: any;
@@ -170,6 +171,7 @@ export class MeetingItemCoacheeComponent implements OnInit {
   }
 
   goToModifyDate(meetingId: number) {
+    window.scrollTo(0, 0);
     this.router.navigate(['/date', meetingId]);
   }
 
@@ -177,6 +179,11 @@ export class MeetingItemCoacheeComponent implements OnInit {
     this.cancelMeetingTimeEvent.emit(this.meeting);//TODO to improve
 
     // $('#deleteModal').openModal();
+  }
+
+  goToChatRoom() {
+    console.log('goToChatRoom');
+    let win = window.open(this.meeting.coach.chat_room_url, "_blank");
   }
 
   // cancelCancelMeeting() {

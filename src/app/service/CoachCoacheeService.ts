@@ -5,7 +5,7 @@ import {Coach} from "../model/Coach";
 import {Response} from "@angular/http";
 import {AuthService} from "./auth.service";
 import {PotentialCoachee} from "../model/PotentialCoachee";
-import {Coachee} from "../model/coachee";
+import {Coachee} from "../model/Coachee";
 import {RhUsageRate} from "../model/UsageRate";
 import {PotentialCoach} from "../model/PotentialCoach";
 import {PotentialRh} from "../model/PotentialRh";

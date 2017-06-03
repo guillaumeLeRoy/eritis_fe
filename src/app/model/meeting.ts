@@ -1,5 +1,5 @@
 import {Coach} from "./Coach";
-import {Coachee} from "./coachee";
+import {Coachee} from "./Coachee";
 import {MeetingDate} from "./MeetingDate";
 export class Meeting {
   id: string

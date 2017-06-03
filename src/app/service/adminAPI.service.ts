@@ -3,7 +3,7 @@ import {Http, Response} from "@angular/http";
 import {Observable} from "rxjs/Observable";
 import {environment} from "../../environments/environment";
 import {Coach} from "../model/Coach";
-import {Coachee} from "../model/coachee";
+import {Coachee} from "../model/Coachee";
 import {AuthService} from "./auth.service";
 import {Admin} from "../model/Admin";
 
@@ -42,7 +42,7 @@ export class AdminAPIService {
   }
 
   getCoachs(): Observable<Array<Coach>> {
-    return this.get(AuthService.GET_COACHS, null).map(
+    return this.get(AuthService.ADMIN_GET_COACHS, null).map(
       (res: Response) => {
         let coachs: Array<Coach> = res.json();
         return coachs;
@@ -51,7 +51,16 @@ export class AdminAPIService {
   }
 
   getCoachees(): Observable<Array<Coachee>> {
-    return this.get(AuthService.GET_COACHEES, null).map(
+    return this.get(AuthService.ADMIN_GET_COACHEES, null).map(
+      (res: Response) => {
+        let Coachees: Array<Coachee> = res.json();
+        return Coachees;
+      }
+    );
+  }
+
+  getRhs(): Observable<Array<Coachee>> {
+    return this.get(AuthService.ADMIN_GET_RHS, null).map(
       (res: Response) => {
         let Coachees: Array<Coachee> = res.json();
         return Coachees;

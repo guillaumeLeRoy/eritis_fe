@@ -35,15 +35,20 @@ import {MeetingDateComponent} from "./meeting/meeting-date/meeting-date.componen
 import {SliderModule} from "primeng/components/slider/slider";
 import {Ng2PageScrollModule} from "ng2-page-scroll";
 import {PostMeetingComponent} from "./meeting/review/post-meeting.component";
-import {CoachSelectorComponent} from "./user/coach-selector/coach-selector.component";
 import {AdminAPIService} from "./service/adminAPI.service";
 import {AdminComponent} from "./admin/admin.component";
 import {MeetingItemRhComponent} from "./meeting/meeting-list/rh/meeting-item-rh.component";
 import {ProfileRhComponent} from "./user/profile/rh/profile-rh.component";
-import { SignupCoacheeComponent } from './login/signup/signup-coachee.component';
-import { SignupCoachComponent } from './login/signup/signup-coach.component';
-import { SignupRhComponent } from './login/signup/signup-rh.component';
-import { AvailableMeetingsComponent } from './meeting/meeting-list/coach/available-meetings.component';
+import {SignupCoacheeComponent} from "./login/signup/signup-coachee.component";
+import {SignupCoachComponent} from "./login/signup/signup-coach.component";
+import {SignupRhComponent} from "./login/signup/signup-rh.component";
+import {AvailableMeetingsComponent} from "./meeting/meeting-list/coach/available-meetings.component";
+import {AdminCoachsListComponent} from "./admin/coachs-list/admin-coachs-list.component";
+import { CoacheesListComponent } from './admin/coachees-list/coachees-list.component';
+import { RhsListComponent } from './admin/rhs-list/rhs-list.component';
+import { MeetingListCoachComponent } from './meeting/meeting-list/coach/meeting-list-coach/meeting-list-coach.component';
+import { MeetingListCoacheeComponent } from './meeting/meeting-list/coachee/meeting-list-coachee/meeting-list-coachee.component';
+import { MeetingListRhComponent } from './meeting/meeting-list/rh/meeting-list-rh/meeting-list-rh.component';
 
 @NgModule({
   declarations: [
@@ -67,13 +72,18 @@ import { AvailableMeetingsComponent } from './meeting/meeting-list/coach/availab
     MeetingDateComponent,
     PreMeetingComponent,
     PostMeetingComponent,
-    CoachSelectorComponent,
+    AdminCoachsListComponent,
     AdminComponent,
     MeetingItemRhComponent,
     SignupCoacheeComponent,
-  SignupCoachComponent,
-  SignupRhComponent,
-    AvailableMeetingsComponent
+    SignupCoachComponent,
+    SignupRhComponent,
+    AvailableMeetingsComponent,
+    CoacheesListComponent,
+    RhsListComponent,
+    MeetingListCoachComponent,
+    MeetingListCoacheeComponent,
+    MeetingListRhComponent
   ],
   imports: [
     BrowserAnimationsModule,

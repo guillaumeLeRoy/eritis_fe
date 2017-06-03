@@ -1,6 +1,6 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
-import {Meeting} from "../../model/meeting";
+import {Meeting} from "../../model/Meeting";
 import {MeetingReview} from "../../model/MeetingReview";
 import {MeetingsService} from "../../service/meetings.service";
 

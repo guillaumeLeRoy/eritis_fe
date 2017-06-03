@@ -77,7 +77,7 @@
               <div class="input-field">
                 <select [(ngModel)]="selectedDate" name="meeting-date" class="browser-default"
                         (change)="loadPotentialHours(selectedDate)">
-                  <option value="" disabled selected>Date</option>
+                  <option value="0" disabled selected>Date</option>
                   <option *ngFor="let d of potentialDays | async" [ngValue]=" d ">
                     {{ getDate(d) }}
                   </option>
@@ -86,7 +86,7 @@
               <div class="input-field">
                 <select [(ngModel)]="selectedHour" name="meeting-hour" class="browser-default"
                         materialize="material_select">
-                  <option value="" disabled selected>Heure</option>
+                  <option value="0" disabled selected>Heure</option>
                   <option *ngFor="let h of potentialHours | async" [ngValue]="h">
                     {{ printTimeNumber(h) }} - {{ printTimeNumber(h+0.5) }}
                   </option>
@@ -104,7 +104,7 @@
       </div>
 
       <div class="meeting-item-body-buttons" *ngIf="meeting.isOpen">
-        <button class="btn-basic btn-plain btn-green btn-small" *ngIf="!meeting.agreed_date"
+        <button class="btn-basic btn-plain btn-blue btn-small" *ngIf="!meeting.agreed_date"
                 (click)="toggleShowDetails()">DETAIL
         </button>
         <button class="btn-basic btn-cancel"
@@ -119,18 +119,6 @@
 
 </div><!--end meeting-item-->
 
-<!--&lt;!&ndash; Modal Structure &ndash;&gt;-->
-<!--<div class="modal">-->
-  <!--<div class="delete-modal-content">-->
-    <!--<div class="delete-modal-message">-->
-      <!--<h4>Vous pourrez fixer un autre rendez-vous pour ce meeting.</h4>-->
-    <!--</div>-->
-    <!--<div class="delete-modal-footer">-->
-      <!--<button class="btn-basic btn-blue" (click)="cancelCancelMeeting()">Annuler</button>-->
-      <!--<button class="btn-basic btn-plain btn-red" (click)="validateCancelMeeting()">Supprimer</button>-->
-    <!--</div>-->
-  <!--</div>-->
-<!--</div>-->
 
 <!--
 <div class="card">

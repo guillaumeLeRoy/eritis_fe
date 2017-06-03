@@ -1,5 +1,5 @@
 import {Coach} from "./Coach";
-import {Coachee} from "./coachee";
+import {Coachee} from "./Coachee";
 import {Rh} from "./Rh";
 
 export class LoginResponse {

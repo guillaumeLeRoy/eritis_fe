@@ -1,8 +1,8 @@
 import {Component, OnInit, AfterViewInit, ChangeDetectorRef, OnDestroy} from '@angular/core';
 import {Observable, Subscription} from "rxjs";
-import {Coachee} from "../../../model/coachee";
+import {Coachee} from "../../../model/Coachee";
 import {AuthService} from "../../../service/auth.service";
-import {ApiUser} from "../../../model/apiUser";
+import {ApiUser} from "../../../model/ApiUser";
 import {FormGroup, FormBuilder} from "@angular/forms";
 
 @Component({

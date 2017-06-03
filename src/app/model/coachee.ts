@@ -1,4 +1,4 @@
-import {ApiUser} from "./apiUser";
+import {ApiUser} from "./ApiUser";
 import {Coach} from "./Coach";
 import {ContractPlan} from "./ContractPlan";
 import {Rh} from "./Rh";

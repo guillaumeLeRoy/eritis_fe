@@ -1,6 +1,6 @@
 import {Component, OnInit, ChangeDetectorRef, OnDestroy} from '@angular/core';
 import {NgbDateStruct} from '@ng-bootstrap/ng-bootstrap';
-import {ApiUser} from '../../model/apiUser';
+import {ApiUser} from '../../model/ApiUser';
 import {CoachCoacheeService} from '../../service/CoachCoacheeService';
 import {AuthService} from '../../service/auth.service';
 import {Observable, Subscription} from 'rxjs';
@@ -228,7 +228,9 @@ export class MeetingDateComponent implements OnInit, OnDestroy {
 
   isDisabled(date: NgbDateStruct, current: { month: number }) {
     let now = new Date();
-    return (date.month !== current.month || date.year < now.getFullYear() || date.month < now.getMonth()+1 || (date.month == now.getMonth()+1 && date.day < now.getDate()));
+    // TODO add this to block next month days
+    // TODO date.month !== current.month ||
+    return (date.year < now.getFullYear() || (date.month < now.getMonth()+1 && date.year <= now.getFullYear()) || (date.year <= now.getFullYear() && date.month == now.getMonth()+1 && date.day < now.getDate()));
   }
 
   /**
@@ -276,6 +278,7 @@ export class MeetingDateComponent implements OnInit, OnDestroy {
       (meetingReview: MeetingReview) => {
         let user = this.authService.getConnectedUser();
         if (user != null) {
+          window.scrollTo(0, 0)
           this.router.navigate(['/meetings']);
         }
       }

@@ -1,0 +1,16 @@
+.add-meeting-btn{
+  background-color: var(--main-electric-blue);
+  margin-left: 16px;
+}
+
+.collection-item{
+  padding: 0 16px;
+}
+
+.no-meeting {
+  padding: 16px 0;
+}
+
+.card.collection {
+  overflow: visible;
+}

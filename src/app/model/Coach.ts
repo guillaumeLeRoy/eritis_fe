@@ -1,4 +1,4 @@
-import {ApiUser} from "./apiUser";
+import {ApiUser} from "./ApiUser";
 /**
  * Created by guillaume on 01/02/2017.
  */
