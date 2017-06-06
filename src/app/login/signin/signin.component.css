@@ -45,3 +45,14 @@ button[type="submit"]:hover{
 button[type="submit"]:disabled{
   opacity: .5;
 }
+
+#main_container{
+  width: 30%;
+  margin: auto;
+}
+
+@media(max-width: 960px){
+  #main_container{
+    width: 80%;
+  }
+}

@@ -152,7 +152,6 @@ $(function() {
       belowOrigin: true // Displays dropdown below the button
     });
 
-
   //Main Left Sidebar Chat
   $('.chat-collapse').sideNav({
     menuWidth: 300,
