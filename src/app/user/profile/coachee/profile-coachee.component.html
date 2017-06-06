@@ -112,7 +112,7 @@
               <div class="row">
                 <div class="input-field col s10">
                   <input id="edit_username" type="text" formControlName="pseudo" class="validate"
-                         placeholder="{{ (coachee | async)?.display_name }}">
+                         value="{{ (coachee | async)?.display_name }}">
                   <label for="edit_username">Username</label>
                 </div>
               </div>
@@ -129,7 +129,7 @@
               <div class="row">
                 <div class="input-field col s10">
                   <input id="edit_avatar_url" type="text" formControlName="avatar"
-                         placeholder="{{ (coachee | async)?.avatar_url }}">
+                         value="{{ (coachee | async)?.avatar_url }}">
                   <label for="edit_avatar_url">Avatar url</label>
                 </div>
               </div>
