@@ -1,4 +1,4 @@
-<header id="header" class="page-topbar">
+<header id="header" class="page-topbar" *ngIf="(isAuthenticated | async)">
   <div class="navbar-fixed">
     <nav>
       <div class="navbar-color z-depth-2">
