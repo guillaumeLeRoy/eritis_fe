@@ -5,6 +5,9 @@ import {Observable, Subscription} from "rxjs";
 import {Coach} from "../model/Coach";
 import {Coachee} from "../model/Coachee";
 import {Rh} from "../model/Rh";
+import {ApiUser} from "../model/apiUser";
+import {Response} from "@angular/http";
+
 
 @Component({
   selector: 'rb-header',
@@ -59,6 +62,8 @@ export class HeaderComponent implements OnInit, OnDestroy {
     } else {
       this.mUser = user;
       this.isAuthenticated = Observable.of(true);
+
+      this.fetchNotificationsForUser(user);
     }
     this.user = Observable.of(user);
     this.cd.detectChanges();
@@ -90,7 +95,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
     }
   }
 
-  goToAvailableSessions(){
+  goToAvailableSessions() {
     let user = this.authService.getConnectedUser();
     if (user != null) {
       window.scrollTo(0, 0);
@@ -129,6 +134,19 @@ export class HeaderComponent implements OnInit, OnDestroy {
       return false;
     } else {
       return true;
+    }
+
+  }
+
+  fetchNotificationsForUser(user: ApiUser) {
+
+    if (user instanceof Coachee) {
+      let params = [user.id]
+      this.authService.get(AuthService.GET_COACHEE_NOTIFICATIONS, params).subscribe(
+        (res: Response) => {
+          console.log('fetchNotificationsForUser : ' + res);
+        }
+      );
     }
 
   }
