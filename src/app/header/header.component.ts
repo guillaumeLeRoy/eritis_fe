@@ -6,6 +6,8 @@ import {Coach} from "../model/Coach";
 import {Coachee} from "../model/Coachee";
 import {Rh} from "../model/Rh";
 
+declare var $: any;
+
 @Component({
   selector: 'rb-header',
   templateUrl: 'header.component.html',
@@ -13,8 +15,10 @@ import {Rh} from "../model/Rh";
 
 })
 export class HeaderComponent implements OnInit, OnDestroy {
+  private loginActivated = false;
 
   private isAuthenticated: Observable<boolean>;
+  private connectedUser = true;
   private subscription: Subscription;
 
   private mUser: Coach | Coachee | Rh;
@@ -43,7 +47,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
     // this.connectedUser = this.authService.getConnectedUserObservable();
     this.subscription = this.authService.getConnectedUserObservable().subscribe(
-      (user: Coach | Coachee) => {
+      (user: Coach | Coachee | Rh) => {
         console.log('getConnectedUser : ' + user);
         this.onUserObtained(user);
       }
@@ -56,12 +60,18 @@ export class HeaderComponent implements OnInit, OnDestroy {
     if (user == null) {
       this.mUser = user;
       this.isAuthenticated = Observable.of(false);
+      this.connectedUser = false;
     } else {
       this.mUser = user;
       this.isAuthenticated = Observable.of(true);
+      this.connectedUser = true;
     }
     this.user = Observable.of(user);
     this.cd.detectChanges();
+  }
+
+  activateLogin() {
+    this.loginActivated = true;
   }
 
   ngOnDestroy(): void {
@@ -113,6 +123,14 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
   isUserACoach(): boolean {
     return this.mUser instanceof Coach
+  }
+
+  isUserACoachee(): boolean {
+    return this.mUser instanceof Coachee
+  }
+
+  isUserARh(): boolean {
+    return this.mUser instanceof Rh
   }
 
   goToCoachs() {

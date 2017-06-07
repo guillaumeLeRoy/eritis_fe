@@ -4,7 +4,7 @@
       <div class="navbar-color" [class.z-depth-2]="(isAuthenticated | async)">
         <div class="col s12">
           <a (click)="goToMeetings()" class="logo-text"><img src="assets/img/logo-eritis-new.png" alt="Eritis"></a>
-          <a data-activates="side-nav" class="button-collapse right" *ngIf="(isAuthenticated | async)">
+          <a data-activates="side-nav" class="button-collapse right" [hidden]="!(isAuthenticated | async)">
             <i class="mdi-navigation-menu"></i>
           </a>
 
@@ -19,7 +19,7 @@
 
             <li *ngIf="(isAuthenticated | async)"><a (click)="goToProfile()">Profil</a></li>
 
-            <li *ngIf="(isAuthenticated | async)">
+            <li [hidden]="!(isAuthenticated | async)">
               <a class="dropdown-button" data-activates="notifs"><i class="material-icons">notifications</i></a>
               <div class="notif-count">0</div>
             </li>
@@ -42,8 +42,9 @@
 
             <li *ngIf="(isAuthenticated | async)"><a (click)="goToProfile()">Profil</a></li>
 
-            <li *ngIf="(isAuthenticated | async)">
-              <a><i class="material-icons">notifications</i></a>
+            <li [hidden]="!(isAuthenticated | async)">
+              <a class="dropdown-button" data-activates="notifs"><i class="material-icons">notifications</i></a>
+              <div class="notif-count">0</div>
             </li>
 
             <li *ngIf="(isAuthenticated | async)"><a (click)="onLogout()">Déconnexion</a></li>
