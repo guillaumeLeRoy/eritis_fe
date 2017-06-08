@@ -42,10 +42,10 @@
 
             <li *ngIf="(isAuthenticated | async)"><a (click)="goToProfile()">Profil</a></li>
 
-            <li [hidden]="!(isAuthenticated | async)">
-              <a class="dropdown-button" data-activates="notifs"><i class="material-icons">notifications</i></a>
-              <div class="notif-count">0</div>
-            </li>
+            <!--<li [hidden]="!(isAuthenticated | async)">-->
+              <!--<a class="dropdown-button" data-activates="notifs"><i class="material-icons">notifications</i></a>-->
+              <!--<div class="notif-count">0</div>-->
+            <!--</li>-->
 
             <li *ngIf="(isAuthenticated | async)"><a (click)="onLogout()">Déconnexion</a></li>
 

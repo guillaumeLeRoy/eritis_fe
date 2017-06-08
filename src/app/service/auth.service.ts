@@ -20,10 +20,8 @@ export class AuthService {
   public static GET_CONTRACT_PLANS = "v1/plans/";
 
   public static UPDATE_COACH = "/coachs/:id";
-  public static UPDATE_COACHEE = "/coachees/:id";
   // public static UPDATE_COACHEE_SELECTED_COACH = "/coachees/:coacheeId/coach/:coachId";
   public static POST_SIGN_UP_COACH = "/v1/coachs";
-  public static POST_SIGN_UP_COACHEE = "/v1/coachees";
   public static POST_SIGN_UP_RH = "/v1/rhs";
   public static POST_POTENTIAL_COACHEE = "/v1/potentials/coachees";
   public static POST_POTENTIAL_COACH = "/v1/potentials/coachs";
@@ -33,13 +31,18 @@ export class AuthService {
   public static GET_POTENTIAL_COACH_FOR_TOKEN = "/v1/potentials/coachs/:token";
   public static GET_POTENTIAL_RH_FOR_TOKEN = "/v1/potentials/rhs/:token";
   public static GET_COACHS = "/coachs";
-  public static GET_COACHEES = "/coachees";
   public static GET_COACHEES_FOR_RH = "/v1/rhs/:uid/coachees";
   public static GET_POTENTIAL_COACHEES_FOR_RH = "/v1/rhs/:uid/potentials";
   public static GET_COACH_FOR_ID = "/coachs/:id";
-  public static GET_COACHEE_FOR_ID = "/coachees/:id";
   public static GET_RH_FOR_ID = "/rh/:id";
   public static GET_USAGE_RATE_FOR_RH = "/v1/rhs/:id/usage";
+
+  /* coachee */
+  public static UPDATE_COACHEE = "/coachees/:id";
+  public static POST_SIGN_UP_COACHEE = "/v1/coachees";
+  public static GET_COACHEES = "v1/coachees";
+  public static GET_COACHEE_FOR_ID = "v1/coachees/:id";
+  public static GET_COACHEE_NOTIFICATIONS = "v1/coachees/:id/notifications";
 
   /* admin */
   public static GET_ADMIN = "/v1/admins/user";
