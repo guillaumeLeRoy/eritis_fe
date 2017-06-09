@@ -12,6 +12,7 @@ import {Coachee} from "../model/Coachee";
 import {LoginResponse} from "../model/LoginResponse";
 import {Rh} from "../model/Rh";
 import {PotentialCoachee} from "../model/PotentialCoachee";
+import {Notif} from "../model/Notif";
 
 @Injectable()
 export class AuthService {
@@ -507,6 +508,14 @@ export class AuthService {
     potentialCoachee.start_date = json.create_date;
     potentialCoachee.plan = json.plan;
     return potentialCoachee;
+  }
+
+  private parseNotification(json: any): Notif {
+    let notif: Notif = new Notif(json.id);
+    notif.id = json.id;
+    notif.message = json.message;
+    notif.is_read = json.message;
+    return notif;
   }
 
   signIn(user: User): Observable<Coach | Coachee | Rh> {

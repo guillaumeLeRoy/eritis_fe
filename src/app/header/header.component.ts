@@ -7,6 +7,8 @@ import {Coachee} from "../model/Coachee";
 import {Rh} from "../model/Rh";
 import {ApiUser} from "../model/apiUser";
 import {Response} from "@angular/http";
+import {Notif} from "../model/Notif";
+import {CoachCoacheeService} from "../service/CoachCoacheeService";
 
 
 declare var $: any;
@@ -26,7 +28,9 @@ export class HeaderComponent implements OnInit, OnDestroy {
   private mUser: Coach | Coachee | Rh;
   private user: Observable<Coach | Coachee | Rh>;
 
-  constructor(private router: Router, private authService: AuthService, private cd: ChangeDetectorRef) {
+  private notifications: Observable<Notif[]>;
+
+  constructor(private router: Router, private authService: AuthService, private coachCoacheeService: CoachCoacheeService, private cd: ChangeDetectorRef) {
   }
 
   ngOnInit(): void {
@@ -62,7 +66,6 @@ export class HeaderComponent implements OnInit, OnDestroy {
     if (user == null) {
       this.mUser = user;
       this.isAuthenticated = Observable.of(false);
-      this.connectedUser = false;
     } else {
       this.mUser = user;
       this.isAuthenticated = Observable.of(true);
@@ -156,10 +159,11 @@ export class HeaderComponent implements OnInit, OnDestroy {
   fetchNotificationsForUser(user: ApiUser) {
 
     if (user instanceof Coachee) {
-      let params = [user.id]
-      this.authService.get(AuthService.GET_COACHEE_NOTIFICATIONS, params).subscribe(
-        (res: Response) => {
-          console.log('fetchNotificationsForUser : ' + res);
+      let param = user.id
+      this.coachCoacheeService.getAllNotifications(param).subscribe(
+        (notifs: Notif[]) => {
+          console.log('fetchNotificationsForUser : ' + notifs);
+          this.notifications = Observable.of(notifs);
         }
       );
     }

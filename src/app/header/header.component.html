@@ -21,7 +21,9 @@
 
             <li [hidden]="!(isAuthenticated | async)">
               <a class="dropdown-button" data-activates="notifs"><i class="material-icons">notifications</i></a>
-              <div class="notif-count">0</div>
+              <div class="notif-count" *ngIf="(notifications | async) != null">
+                {{(notifications | async).length}}
+              </div>
             </li>
 
             <li *ngIf="(isAuthenticated | async)"><a (click)="onLogout()">Déconnexion</a></li>
@@ -84,9 +86,12 @@
   </div><!--end navbar-fixed-->
 
   <ul id="notifs" class="dropdown-content notifs collection">
-    <li class="notif-item collection-item">Vous n'avez pas de notification</li>
-    <li class="notif-item collection-item">Notif 1</li>
-    <li class="notif-item collection-item">Notif 2</li>
+    <li class="notif-item collection-item" *ngIf="(notifications | async) == null">Vous n'avez pas de notification</li>
+    <div *ngIf="(notifications | async) != null">
+      <li class="notif-item collection-item" *ngFor="let notif of (notifications | async)">
+        <b *ngIf="!notif.is_read">{{notif.message}}</b>
+      </li>
+    </div>
   </ul>
 
   <div class="header-user" *ngIf="(isAuthenticated | async)">

@@ -9,6 +9,7 @@ import {Coachee} from "../model/Coachee";
 import {RhUsageRate} from "../model/UsageRate";
 import {PotentialCoach} from "../model/PotentialCoach";
 import {PotentialRh} from "../model/PotentialRh";
+import {Notif} from "../model/Notif";
 
 
 @Injectable()
@@ -85,6 +86,17 @@ export class CoachCoacheeService {
       (response: Response) => {
         let json: PotentialCoachee = response.json();
         console.log("postPotentialCoachee, response json : ", json);
+        return json;
+      });
+  }
+
+  getAllNotifications(userId: string): Observable<Notif[]> {
+    console.log("getAllNotifications, start request");
+    let param = [userId];
+    return this.apiService.get(AuthService.GET_COACHEE_NOTIFICATIONS, param).map(
+      (response: Response) => {
+        let json: Notif[] = response.json();
+        console.log("getAllNotifications, response json : ", json);
         return json;
       });
   }
