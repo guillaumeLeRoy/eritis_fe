@@ -19,7 +19,7 @@
 
             <li *ngIf="(isAuthenticated | async)"><a (click)="goToProfile()">Profil</a></li>
 
-            <li [hidden]="!(isAuthenticated | async)">
+            <li [hidden]="!(isAuthenticated | async) || !isUserACoachee()">
               <a class="dropdown-button" data-activates="notifs"><i class="material-icons">notifications</i></a>
               <div class="notif-count" *ngIf="(notifications | async) != null">
                 {{(notifications | async).length}}
@@ -88,8 +88,10 @@
   <ul id="notifs" class="dropdown-content notifs collection">
     <li class="notif-item collection-item" *ngIf="(notifications | async) == null">Vous n'avez pas de notification</li>
     <div *ngIf="(notifications | async) != null">
+      <li class="notif-item collection-item notif-delete"><a>Marquer comme lues</a></li>
       <li class="notif-item collection-item" *ngFor="let notif of (notifications | async)">
-        <b *ngIf="!notif.is_read">{{notif.message}}</b>
+        <p class="notif-date">{{printDateString(notif.date)}}</p>
+        <p class="notif-messsage"><b *ngIf="!notif.is_read">{{notif.message}}</b></p>
       </li>
     </div>
   </ul>

@@ -510,14 +510,6 @@ export class AuthService {
     return potentialCoachee;
   }
 
-  private parseNotification(json: any): Notif {
-    let notif: Notif = new Notif(json.id);
-    notif.id = json.id;
-    notif.message = json.message;
-    notif.is_read = json.message;
-    return notif;
-  }
-
   signIn(user: User): Observable<Coach | Coachee | Rh> {
     console.log("1. user signIn : ", user);
     this.isSignInOrUp = true;

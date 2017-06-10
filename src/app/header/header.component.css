@@ -21,7 +21,7 @@ nav li a{
 
 nav li a:hover,
 nav li a:focus {
-  color: var(--main-dark-grey) !important;
+  color: var(--main-dark-grey);
 }
 
 .navbar-fixed,
@@ -154,4 +154,27 @@ rb-signin{
   rb-signin{
     width: 80%;
   }
+}
+
+.notif-date {
+  margin: 0;
+  color: var(--main-light-grey);
+}
+
+.notif-messsage {
+  margin: 0;
+}
+
+.notif-delete{
+  padding: 0;
+  text-align: center;
+  color: var(--main-light-grey);
+}
+
+.notif-delete:hover{
+  background-color: #fff;
+}
+
+.notif-delete>a:hover{
+  color: var(--main-electric-blue) !important;
 }

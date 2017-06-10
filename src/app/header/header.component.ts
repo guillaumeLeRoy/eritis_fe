@@ -22,6 +22,8 @@ declare var $: any;
 export class HeaderComponent implements OnInit, OnDestroy {
   private loginActivated = false;
 
+  months = ['Jan', 'Feb', 'Mar', 'Avr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+
   private isAuthenticated: Observable<boolean>;
   private subscription: Subscription;
 
@@ -163,10 +165,44 @@ export class HeaderComponent implements OnInit, OnDestroy {
       this.coachCoacheeService.getAllNotifications(param).subscribe(
         (notifs: Notif[]) => {
           console.log('fetchNotificationsForUser : ' + notifs);
+
+          if (notifs != null) {
+            notifs.sort(function (a, b) {
+              let d1 = new Date(a.date);
+              let d2 = new Date(b.date);
+              let res = d1.getUTCFullYear() - d2.getUTCFullYear();
+              if (res === 0)
+                res = d1.getUTCMonth() - d2.getUTCMonth();
+              if (res === 0)
+                res = d1.getUTCDate() - d2.getUTCDate();
+              if (res === 0)
+                res = d1.getUTCHours() - d2.getUTCHours();
+              return res;
+            });
+          }
+
           this.notifications = Observable.of(notifs);
         }
       );
     }
+  }
 
+  printDateString(date: string) {
+    return this.getDate(date) + ' - ' + this.getHours(date) + ':' + this.getMinutes(date);
+  }
+
+  getHours(date: string) {
+    return (new Date(date)).getHours();
+  }
+
+  getMinutes(date: string) {
+    let m = (new Date(date)).getMinutes();
+    if (m === 0)
+      return '00';
+    return m;
+  }
+
+  getDate(date: string): string {
+    return (new Date(date)).getDate() + ' ' + this.months[(new Date(date)).getMonth()];
   }
 }
