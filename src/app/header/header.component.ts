@@ -158,7 +158,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
   }
 
-  fetchNotificationsForUser(user: ApiUser) {
+  private fetchNotificationsForUser(user: ApiUser) {
 
     if (user instanceof Coachee) {
       let param = user.id
@@ -166,6 +166,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
         (notifs: Notif[]) => {
           console.log('fetchNotificationsForUser : ' + notifs);
 
+          //Sort notifs by date
           if (notifs != null) {
             notifs.sort(function (a, b) {
               let d1 = new Date(a.date);
@@ -204,5 +205,15 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
   getDate(date: string): string {
     return (new Date(date)).getDate() + ' ' + this.months[(new Date(date)).getMonth()];
+  }
+
+  readAllNotifications() {
+    this.coachCoacheeService.readAllNotifications(this.mUser.id).subscribe(
+      (response: Response) => {
+        console.log("getAllNotifications OK", response);
+        this.fetchNotificationsForUser(this.mUser);
+        this.cd.detectChanges();
+      }
+    );
   }
 }

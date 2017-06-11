@@ -44,6 +44,7 @@ export class AuthService {
   public static GET_COACHEES = "v1/coachees";
   public static GET_COACHEE_FOR_ID = "v1/coachees/:id";
   public static GET_COACHEE_NOTIFICATIONS = "v1/coachees/:id/notifications";
+  public static READ_COACHEE_NOTIFICATIONS = "v1/coachees/:id/notifications/read";
 
   /* admin */
   public static GET_ADMIN = "/v1/admins/user";

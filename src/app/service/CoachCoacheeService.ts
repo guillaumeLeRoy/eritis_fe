@@ -1,3 +1,4 @@
+///<reference path="auth.service.ts"/>
 import {Injectable} from "@angular/core";
 import {Observable} from "rxjs";
 import {Coach} from "../model/Coach";
@@ -98,6 +99,20 @@ export class CoachCoacheeService {
         let json: Notif[] = response.json();
         console.log("getAllNotifications, response json : ", json);
         return json;
+      });
+  }
+
+  readAllNotifications(userId: string): any {
+    console.log("readAllNotifications, start request");
+
+    let param = [userId];
+
+    return this.apiService.put(AuthService.READ_COACHEE_NOTIFICATIONS, param, null).map(
+      (response: Response) => {
+        console.log("readAllNotifications done");
+      },
+      (error) => {
+        console.log('readAllNotifications error', error);
       });
   }
 
