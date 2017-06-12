@@ -2,7 +2,6 @@
 import {Injectable} from "@angular/core";
 import {Observable} from "rxjs";
 import {Coach} from "../model/Coach";
-
 import {Response} from "@angular/http";
 import {AuthService} from "./auth.service";
 import {PotentialCoachee} from "../model/PotentialCoachee";
@@ -13,7 +12,7 @@ import {PotentialRh} from "../model/PotentialRh";
 import {Notif} from "../model/Notif";
 import {ApiUser} from "../model/ApiUser";
 import {Rh} from "../model/Rh";
-
+import {CoacheeObjective} from "../model/CoacheeObjective";
 
 @Injectable()
 export class CoachCoacheeService {
@@ -133,16 +132,25 @@ export class CoachCoacheeService {
       });
   }
 
+  /**
+   * Add a new objective to this coachee.
+   * @param coacheeId
+   * @param rhId
+   * @param objective
+   */
+  addObjectiveToCoachee(rhId: string, coacheeId: string, objective: string): Observable<CoacheeObjective> {
+    let param = [rhId, coacheeId];
 
-  // updateCoacheeSelectedCoach(coacheeId: string, coachId: string): Observable<Coach | Coachee> {
-  //   console.log("updateCoacheeSelectedCoach, coacheeId", coacheeId);
-  //   console.log("updateCoacheeSelectedCoach, coachId", coachId);
-  //
-  //   let params = [coacheeId, coachId];
-  //   return this.apiService.put(AuthService.UPDATE_COACHEE_SELECTED_COACH, params, null).map(
-  //     (response: Response) => {
-  //       return this.onUserResponse(response);
-  //     });
-  // }
+    let body = {
+      "objective": objective
+    }
+
+    return this.apiService.post(AuthService.POST_COACHEE_OBJECTIVE, param, body).map(
+      (response: Response) => {
+        let json: CoacheeObjective = response.json();
+        console.log("POST coachee new objective, response json : ", json);
+        return json;
+      });
+  }
 
 }

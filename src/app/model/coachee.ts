@@ -2,6 +2,7 @@ import {ApiUser} from "./ApiUser";
 import {Coach} from "./Coach";
 import {ContractPlan} from "./ContractPlan";
 import {Rh} from "./Rh";
+import {CoacheeObjective} from "./CoacheeObjective";
 export class Coachee implements ApiUser {
 
   id: string;
@@ -32,7 +33,12 @@ export class Coachee implements ApiUser {
   /**
    * Rh associated with this user.
    */
-  associatedRh : Rh
+  associatedRh: Rh;
+
+  /**
+   * Last objective defined by HR
+   */
+  last_objective: CoacheeObjective;
 
   constructor(id: string) {
     this.id = id;

@@ -1,8 +1,6 @@
 import {AfterViewInit, ChangeDetectorRef, Component, OnDestroy, OnInit} from "@angular/core";
-import {MeetingsService} from "../../../../service/meetings.service";
 import {CoachCoacheeService} from "../../../../service/CoachCoacheeService";
 import {AuthService} from "../../../../service/auth.service";
-import {Router} from "@angular/router";
 import {Observable} from "rxjs/Observable";
 import {Subscription} from "rxjs/Subscription";
 import {ContractPlan} from "../../../../model/ContractPlan";
@@ -41,7 +39,7 @@ export class MeetingListRhComponent implements OnInit, AfterViewInit, OnDestroy 
 
   private rhUsageRate: Observable<RhUsageRate>;
 
-  constructor(private router: Router, private meetingsService: MeetingsService, private coachCoacheeService: CoachCoacheeService, private authService: AuthService, private cd: ChangeDetectorRef) {
+  constructor(private coachCoacheeService: CoachCoacheeService, private authService: AuthService, private cd: ChangeDetectorRef) {
   }
 
   ngOnInit() {

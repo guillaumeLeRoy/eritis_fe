@@ -4,9 +4,10 @@
     <div class="spinner-layer spinner-blue-only">
       <div class="circle-clipper left">
         <div class="circle"></div>
-      </div><div class="gap-patch">
-      <div class="circle"></div>
-    </div>
+      </div>
+      <div class="gap-patch">
+        <div class="circle"></div>
+      </div>
       <div class="circle-clipper right">
         <div class="circle"></div>
       </div>
@@ -30,9 +31,9 @@
         </div>
 
         <!-- USAGE -->
-        <div class="meeting-item-date">
-          <span class="meeting-item-date-date">Usage: <span class="blue-text">{{ (coacheeUsageRate | async)?.usage_rate }}%</span></span>
-        </div>
+        <!--<div class="meeting-item-date">-->
+        <!--<span class="meeting-item-date-date">Usage: <span class="blue-text">{{ (coacheeUsageRate | async)?.usage_rate }}%</span></span>-->
+        <!--</div>-->
       </div>
 
       <!-- GOAL -->
@@ -40,8 +41,10 @@
         <div class="meeting-item-body-content">
           <p class="meeting-item-goal">
             <span class="black-text bold">Objectif: </span>
-            <span *ngIf="hasGoal">{{ goal }}</span>
-            <span *ngIf="!hasGoal">n/a.</span>
+            <span *ngIf="coachee.last_objective">{{ coachee.last_objective.objective }}</span>
+            <button class="btn-basic btn-blue" (click)="updateCoacheeObjectivePanelVisibility(true)">Ajouter ou modifier
+              les objectifs
+            </button>
           </p>
         </div>
       </div><!--end meeting-item-body-->
@@ -71,4 +74,22 @@
 
   </div><!--end row-->
 
-  </div><!--end meeting-item-->
+</div><!--end meeting-item-->
+
+
+<!-- Modal RH add new objective to Coachee -->
+<div id="add_potential_coachee_modal" class="modal">
+  <div class="delete-modal-content">
+    <div class="delete-modal-message">
+      <h5>Définissez un objectif</h5>
+      <input type="text" placeholder="Objectif" id="" [(ngModel)]="coacheeNewObjective">
+    </div>
+    <div class="delete-modal-footer">
+      <button class="btn-basic btn-plain" (click)="cancelAddNewObjectiveModal()">Annuler</button>
+      <button class="btn-basic btn-blue" (click)="validateAddNewObjectiveModal()"
+              [disabled]="!coacheeNewObjective">Ajouter
+      </button>
+    </div>
+  </div>
+</div>
+

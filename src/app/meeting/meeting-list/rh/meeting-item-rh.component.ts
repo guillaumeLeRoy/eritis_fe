@@ -1,17 +1,21 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {AfterViewInit, Component, Input, OnInit} from "@angular/core";
 import {Coachee} from "../../../model/Coachee";
 import {PotentialCoachee} from "../../../model/PotentialCoachee";
-import {Observable} from "rxjs/Observable";
-import {RhUsageRate} from "../../../model/UsageRate";
 import {CoachCoacheeService} from "../../../service/CoachCoacheeService";
-import {isNull} from "util";
+import {AuthService} from "../../../service/auth.service";
+import {ApiUser} from "../../../model/apiUser";
+import {Rh} from "../../../model/Rh";
+import {CoacheeObjective} from "../../../model/CoacheeObjective";
+
+
+declare var $: any;
 
 @Component({
   selector: 'rb-meeting-item-rh',
   templateUrl: './meeting-item-rh.component.html',
   styleUrls: ['./meeting-item-rh.component.css']
 })
-export class MeetingItemRhComponent implements OnInit {
+export class MeetingItemRhComponent implements OnInit, AfterViewInit {
 
   @Input()
   coachee: Coachee;
@@ -19,29 +23,90 @@ export class MeetingItemRhComponent implements OnInit {
   @Input()
   potentialCoachee: PotentialCoachee;
 
-  private goal: string;
-  private hasGoal: false;
   private loading: boolean;
 
-  private coacheeUsageRate: Observable<RhUsageRate>;
+  /**
+   * Used in Objective modal.
+   */
+  private coacheeNewObjective: string;
 
-  constructor(private coachCoacheeService: CoachCoacheeService) { }
+  // private coacheeUsageRate: Observable<RhUsageRate>;
+
+  constructor(private authService: AuthService, private coachCoacheeService: CoachCoacheeService) {
+  }
 
   ngOnInit(): void {
     console.log('ngOnInit');
 
-    if (this.coachee)
-      this.getUsageRate(this.coachee.id);
+    // if (this.coachee) {
+    //   this.getUsageRate(this.coachee.id);
+    // }
+  }
+
+  ngAfterViewInit(): void {
+    console.log('ngAfterViewInit');
+    // this.fetchConnectedUser();
+  }
+
+  updateCoacheeObjectivePanelVisibility(visible: boolean) {
+    if (visible) {
+      $('#add_potential_coachee_modal').openModal();
+    } else {
+      $('#add_potential_coachee_modal').closeModal();
+    }
+  }
+
+  cancelAddNewObjectiveModal() {
+    this.updateCoacheeObjectivePanelVisibility(false);
+  }
+
+  validateAddNewObjectiveModal() {
+    console.log('validateAddNewObjectiveModal');
+
+    // TODO start loader
+    let user = this.authService.getConnectedUser();
+    if (user == null) {
+      let userObs = this.authService.getConnectedUserObservable();
+      userObs.take(1).subscribe(
+        (user: ApiUser) => {
+          console.log('validateAddNewObjectiveModal, got connected user');
+          if (user instanceof Rh) {
+            this.makeAPICallToAddNewObjective(user);
+          }
+        }
+      );
+      return;
+    }
+
+    if (user instanceof Rh) {
+      this.makeAPICallToAddNewObjective(user);
+    }
 
   }
 
-  private getUsageRate(rhId: string) {
-    this.coachCoacheeService.getUsageRate(rhId).subscribe(
-      (rate: RhUsageRate) => {
-        console.log("getUsageRate, rate : ", rate);
-        this.coacheeUsageRate = Observable.of(rate);
+  private makeAPICallToAddNewObjective(user: ApiUser) {
+    this.updateCoacheeObjectivePanelVisibility(false);
+    //call API
+    this.coachCoacheeService.addObjectiveToCoachee(user.id, this.coachee.id, this.coacheeNewObjective).subscribe(
+      (obj: CoacheeObjective) => {
+        console.log('addObjectiveToCoachee, SUCCESS', obj);
+        // close modal
+        this.updateCoacheeObjectivePanelVisibility(false);
+        // TODO stop loader
+
+        // clean
+        this.coacheeNewObjective = null;
       }
     );
   }
+
+  // private getUsageRate(rhId: string) {
+  //   this.coachCoacheeService.getUsageRate(rhId).subscribe(
+  //     (rate: RhUsageRate) => {
+  //       console.log("getUsageRate, rate : ", rate);
+  //       this.coacheeUsageRate = Observable.of(rate);
+  //     }
+  //   );
+  // }
 
 }
