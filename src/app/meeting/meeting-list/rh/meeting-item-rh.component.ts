@@ -71,9 +71,9 @@ export class MeetingItemRhComponent implements OnInit, AfterViewInit {
 
   updateCoacheeObjectivePanelVisibility(visible: boolean) {
     if (visible) {
-      $('#add_potential_coachee_modal').openModal();
+      $('#add_new_objective_modal').openModal();
     } else {
-      $('#add_potential_coachee_modal').closeModal();
+      $('#add_new_objective_modal').closeModal();
     }
   }
 

@@ -82,22 +82,24 @@
 
   </div><!--end row-->
 
+  <!-- Modal RH add new objective to Coachee -->
+  <div id="add_new_objective_modal" class="modal">
+    <div class="delete-modal-content">
+      <div class="delete-modal-message">
+        <h5>Définissez un objectif</h5>
+        <input type="text" placeholder="Objectif" id="" [(ngModel)]="coacheeNewObjective">
+      </div>
+      <div class="delete-modal-footer">
+        <button class="btn-basic btn-plain btn-small" (click)="cancelAddNewObjectiveModal()">Annuler</button>
+        <button class="btn-basic btn-blue btn-plain btn-small" (click)="validateAddNewObjectiveModal()"
+                [disabled]="!coacheeNewObjective">Ajouter
+        </button>
+      </div>
+    </div>
+  </div>
+
 </div><!--end meeting-item-->
 
 
-<!-- Modal RH add new objective to Coachee -->
-<div id="add_potential_coachee_modal" class="modal">
-  <div class="delete-modal-content">
-    <div class="delete-modal-message">
-      <h5>Définissez un objectif</h5>
-      <input type="text" placeholder="Objectif" id="" [(ngModel)]="coacheeNewObjective">
-    </div>
-    <div class="delete-modal-footer">
-      <button class="btn-basic btn-plain btn-small" (click)="cancelAddNewObjectiveModal()">Annuler</button>
-      <button class="btn-basic btn-blue btn-plain btn-small" (click)="validateAddNewObjectiveModal()"
-              [disabled]="!coacheeNewObjective">Ajouter
-      </button>
-    </div>
-  </div>
-</div>
+
 
