@@ -1,4 +1,6 @@
-<header id="header" class="page-topbar" [class.user-connected]="(isAuthenticated | async)">
+<header id="header" class="page-topbar"
+        [class.user-connected]="(isAuthenticated | async)"
+        [hidden]="router.url === '/admin' || router.url === '/admin/signup' || router.url === '/admin/coachees-list' || router.url === '/admin/coachs-list' || router.url === '/admin/rhs-list' || router.url === '/signup_coachee' || router.url === '/signup_coach' || router.url === '/signup_rh'">
   <div class="navbar" [class.navbar-fixed]="(isAuthenticated | async)" [class.z-depth-2]="!(isAuthenticated | async)">
     <nav>
       <div class="navbar-color" [class.z-depth-2]="(isAuthenticated | async)">
