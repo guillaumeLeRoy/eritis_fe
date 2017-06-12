@@ -41,6 +41,51 @@ nav li a:focus {
   height: 50px;
 }
 
+.side-nav {
+  padding: 0;
+  background-color: rgba(255, 255, 255, 1);
+  color: var(--main-dark-grey);
+ }
+
+.side-nav-header {
+  background-image: url("../../assets/img/eritis-mountain-bg-2.jpg");
+  background-attachment: scroll;
+  background-position: center;
+  background-size: cover;
+  min-height: 96px;
+  box-shadow: none;
+}
+
+.side-nav-header-container {
+  padding: 64px 32px;
+  color: #FFF;
+  background-color: var(--main-blue-filter);
+  display: flex;
+  flex-direction: row;
+  flex-grow: 1;
+  align-items: center;
+  line-height: 1.5;
+}
+
+.side-nav-user-img {
+  width: 90px;
+  margin-right: 16px;
+}
+
+.side-nav-user-info h5 {
+  margin: 0;
+  margin-bottom: 4px;
+}
+
+.side-nav-user-info span {
+  font-weight: 200;
+  color: var(--main-ultra-light-grey);
+}
+
+.side-nav-items {
+  padding: 16px;
+}
+
 header{
   background-image: url("../../assets/img/eritis-mountain-bg-2.jpg");
   background-attachment: fixed;
@@ -133,8 +178,13 @@ rb-signin{
   padding: 0;
 }
 
-.notif-item {
+.notif-item,
+.profil-item {
   padding: 16px;
+}
+
+.profil-item:hover {
+  background-color: var(--main-ultra-light-grey);
 }
 
 .notif-count {
@@ -170,4 +220,9 @@ rb-signin{
 
 .notif-delete>a:hover{
   color: var(--main-electric-blue) !important;
+}
+
+.item-user-img{
+  height: 35px;
+  margin-right: 4px;
 }

@@ -16,7 +16,7 @@
 
             <li *ngIf="(isAuthenticated | async)"><a (click)="goToMeetings()">Tableau de bord</a></li>
 
-            <li *ngIf="(isAuthenticated | async) && isUserACoach()"><a (click)="goToProfile()">Profil</a></li>
+            <!--<li *ngIf="(isAuthenticated | async) && isUserACoach()"><a (click)="goToProfile()">Profil</a></li>-->
 
             <li [hidden]="!(isAuthenticated | async)">
               <a class="dropdown-button" data-activates="notifs"><i class="material-icons">notifications</i></a>
@@ -25,32 +25,52 @@
               </div>
             </li>
 
-            <li *ngIf="(isAuthenticated | async)"><a (click)="onLogout()">Déconnexion</a></li>
+            <!--<li *ngIf="(isAuthenticated | async)"><a (click)="onLogout()">Déconnexion</a></li>-->
 
-            <!--<li *ngIf="!(isAuthenticated | async)"><a [routerLink]="['/']">Connexion</a></li>-->
+            <li [hidden]="!(isAuthenticated | async)">
+              <a class="dropdown-button" data-activates="profil">
+                <img src="{{(user | async)?.avatar_url}}" alt="profile image" class="item-user-img circle responsive-img">
+                {{(user | async)?.display_name}}
+              </a>
+            </li>
+
           </ul>
 
           <ul class="side-nav" id="side-nav">
+
+            <div class="side-nav-header" *ngIf="(isAuthenticated | async)">
+              <div class="side-nav-header-container  z-depth-1">
+                <img src="{{(user | async)?.avatar_url}}" alt="profile image" class="side-nav-user-img circle responsive-img z-depth-2">
+                <div class="side-nav-user-info">
+                  <h5>{{(user | async)?.display_name}}</h5>
+                  <span>{{(user | async)?.email}}</span>
+                </div>
+              </div>
+            </div>
+
             <!--<li *ngIf="canDisplayListOfCoach()"><a (click)="goToCoachs()">Liste Des Coachs</a></li>-->
 
             <!--<li *ngIf="(isAuthenticated | async)"><a (click)="goToMeetings()">Vos meetings</a></li>-->
+            <div class="side-nav-items">
+              <li *ngIf="(isAuthenticated | async) && isUserACoach()"><a (click)="goToAvailableSessions()">Séances
+                disponibles</a></li>
 
-            <li *ngIf="(isAuthenticated | async) && isUserACoach()"><a (click)="goToAvailableSessions()">Séances
-              disponibles</a></li>
+              <li *ngIf="(isAuthenticated | async)"><a (click)="goToMeetings()">Tableau de bord</a></li>
 
-            <li *ngIf="(isAuthenticated | async)"><a (click)="goToMeetings()">Tableau de bord</a></li>
+              <li *ngIf="(isAuthenticated | async) && isUserACoachee()"><a (click)="goToProfile()">Profil</a></li>
 
-            <li *ngIf="(isAuthenticated | async) && isUserACoachee()"><a (click)="goToProfile()">Profil</a></li>
+              <!--<li [hidden]="!(isAuthenticated | async)">-->
+              <!--<a class="dropdown-button" data-activates="notifs"><i class="material-icons">notifications</i></a>-->
+              <!--<div class="notif-count">0</div>-->
+              <!--</li>-->
 
-            <!--<li [hidden]="!(isAuthenticated | async)">-->
-            <!--<a class="dropdown-button" data-activates="notifs"><i class="material-icons">notifications</i></a>-->
-            <!--<div class="notif-count">0</div>-->
-            <!--</li>-->
+              <li *ngIf="(isAuthenticated | async)"><a (click)="goToProfile()">Modifier mon profil</a></li>
 
-            <li *ngIf="(isAuthenticated | async)"><a (click)="onLogout()">Déconnexion</a></li>
+              <li *ngIf="(isAuthenticated | async)"><a (click)="onLogout()">Déconnexion</a></li>
+            </div>
 
-            <!--<li *ngIf="!(isAuthenticated | async)"><a [routerLink]="['/']">Connexion</a></li>-->
           </ul>
+
         </div>
       </div>
     </nav>
@@ -82,24 +102,30 @@
 
   </div><!--end navbar-fixed-->
 
-  <ul id="notifs" class="dropdown-content notifs collection">
-    <li class="notif-item collection-item" *ngIf="(notifications | async) == null">Vous n'avez pas de notification</li>
-    <div *ngIf="(notifications | async) != null">
-      <li class="notif-item collection-item notif-delete"><a (click)="readAllNotifications()">Marquer comme lues</a></li>
-      <li class="notif-item collection-item" *ngFor="let notif of (notifications | async)">
-        <p class="notif-date">{{printDateString(notif.date)}}</p>
-        <p class="notif-messsage">{{notif.message}}</p>
-      </li>
-    </div>
-  </ul>
+  <!--<div class="header-user" *ngIf="(isAuthenticated | async)">-->
+    <!--<div class="container">-->
+      <!--<img src="{{(user | async)?.avatar_url}}" alt="profile image" class="header-user-img circle responsive-img">-->
+      <!--<div class="header-user-info">-->
+        <!--<h5>{{(user | async)?.display_name}}</h5>-->
+        <!--<h6>{{(user | async)?.email}}</h6>-->
+      <!--</div>-->
+    <!--</div>-->
+  <!--</div>-->
 
-  <div class="header-user" *ngIf="(isAuthenticated | async)">
-    <div class="container">
-      <img src="{{(user | async)?.avatar_url}}" alt="profile image" class="header-user-img circle responsive-img">
-      <div class="header-user-info">
-        <h5>{{(user | async)?.display_name}}</h5>
-        <h6>{{(user | async)?.email}}</h6>
-      </div>
-    </div>
-  </div>
 </header>
+
+<ul id="notifs" class="dropdown-content notifs collection">
+  <li class="notif-item collection-item" *ngIf="(notifications | async) == null">Vous n'avez pas de notification</li>
+  <div *ngIf="(notifications | async) != null">
+    <li class="notif-item collection-item notif-delete"><a (click)="readAllNotifications()">Marquer comme lues</a></li>
+    <li class="notif-item collection-item" *ngFor="let notif of (notifications | async)">
+      <p class="notif-date">{{printDateString(notif.date)}}</p>
+      <p class="notif-messsage">{{notif.message}}</p>
+    </li>
+  </div>
+</ul>
+
+<ul id="profil" class="dropdown-content notifs collection">
+  <li class="profil-item collection-item text-right" (click)="goToProfile()">Modifier mon profil</li>
+  <li class="profil-item collection-item text-right" (click)="onLogout()">Déconnexion</li>
+</ul>

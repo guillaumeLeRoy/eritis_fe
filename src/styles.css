@@ -36,11 +36,6 @@ body .container {
   padding: 96px 0;
 }
 
-.side-nav{
-  background-color: rgba(255, 255, 255, .9);
-  color: var(--main-dark-grey);
-}
-
 .recipes_grid {
   height: 100%;
   width: 100%;

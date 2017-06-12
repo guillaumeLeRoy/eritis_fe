@@ -126,7 +126,12 @@ $(function() {
   });
 
   // Materialize sideNav
-  $('.button-collapse').sideNav();
+  $('.button-collapse').sideNav({
+    menuWidth: 400,
+    edge: 'left', // Choose the horizontal origin
+    closeOnClick: true,
+    draggable: true // Choose whether you can drag to open on touch screens
+  });
 
   //Main Left Sidebar Menu
   $('.sidebar-collapse').sideNav({
