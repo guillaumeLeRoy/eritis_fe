@@ -12,10 +12,10 @@
           <ul class="right hide-on-med-and-down">
             <!--<li *ngIf="canDisplayListOfCoach()"><a (click)="goToCoachs()">Liste Des Coachs</a></li>-->
 
-            <li *ngIf="(isAuthenticated | async) && isUserACoach()"><a (click)="goToAvailableSessions()">
+            <li *ngIf="(isAuthenticated | async) && isUserACoach()" [class.active]="router.url === '/available_meetings'"><a (click)="goToAvailableSessions()">
               Demandes en attente</a></li>
 
-            <li *ngIf="(isAuthenticated | async)"><a (click)="goToMeetings()">Tableau de bord</a></li>
+            <li *ngIf="(isAuthenticated | async)" [class.active]="router.url === '/meetings'"><a (click)="goToMeetings()">Tableau de bord</a></li>
 
             <!--<li *ngIf="(isAuthenticated | async) && isUserACoach()"><a (click)="goToProfile()">Profil</a></li>-->
 
@@ -28,7 +28,8 @@
 
             <!--<li *ngIf="(isAuthenticated | async)"><a (click)="onLogout()">Déconnexion</a></li>-->
 
-            <li [hidden]="!(isAuthenticated | async)">
+            <li [hidden]="!(isAuthenticated | async)"
+                [class.active]="router.url === '/profile_coach' || router.url === '/profile_coachee' || router.url === '/profile_rh'">
               <a class="dropdown-button-profile" data-activates="profil">
                 <img src="{{(user | async)?.avatar_url}}" alt="profile image" class="item-user-img circle responsive-img">
                 {{(user | async)?.display_name}}
@@ -55,19 +56,17 @@
 
             <!--<li *ngIf="(isAuthenticated | async)"><a (click)="goToMeetings()">Vos meetings</a></li>-->
             <div class="side-nav-items">
-              <li *ngIf="(isAuthenticated | async) && isUserACoach()"><a (click)="goToAvailableSessions()">Séances
+              <li *ngIf="(isAuthenticated | async) && isUserACoach()" [class.active]="router.url === '/available_meetings'"><a (click)="goToAvailableSessions()">Séances
                 disponibles</a></li>
 
-              <li *ngIf="(isAuthenticated | async)"><a (click)="goToMeetings()">Tableau de bord</a></li>
-
-              <li *ngIf="(isAuthenticated | async) && isUserACoachee()"><a (click)="goToProfile()">Profil</a></li>
+              <li *ngIf="(isAuthenticated | async)" [class.active]="router.url === '/meetings'"><a (click)="goToMeetings()">Tableau de bord</a></li>
 
               <!--<li [hidden]="!(isAuthenticated | async)">-->
               <!--<a class="dropdown-button" data-activates="notifs"><i class="material-icons">notifications</i></a>-->
               <!--<div class="notif-count">0</div>-->
               <!--</li>-->
 
-              <li *ngIf="(isAuthenticated | async) && isUserACoach()"><a (click)="goToProfile()">Modifier mon profil</a></li>
+              <li *ngIf="(isAuthenticated | async) && isUserACoach()" [class.active]="router.url === '/profile'"><a (click)="goToProfile()">Modifier mon profil</a></li>
 
               <li *ngIf="(isAuthenticated | async)"><a (click)="onLogout()">Déconnexion</a></li>
             </div>
