@@ -19,26 +19,28 @@
 
     <!-- COACHEE -->
     <div class="meeting-item-header col-md-12" [class.col-lg-3]="!meeting.agreed_date" [class.col-lg-5]="meeting.agreed_date">
-      <div class="meeting-item-coach">
-        <div>
-          <!-- image coach-->
-          <img *ngIf="meeting.coachee" class="meeting-item-coach-avatar circle img-responsive" alt="coachee"
-               [src]="meeting.coachee.avatar_url">
-          <img *ngIf="!meeting.coachee" class="meeting-item-coach-avatar circle img-responsive" alt="coachee"
-               src="https://s-media-cache-ak0.pinimg.com/originals/af/25/49/af25490494d3338afef00869c59fdd37.png">
-        </div>
+      <div>
+        <div class="meeting-item-coach">
+          <div>
+            <!-- image coach-->
+            <img *ngIf="meeting.coachee" class="meeting-item-coach-avatar circle img-responsive" alt="coachee"
+                 [src]="meeting.coachee.avatar_url">
+            <img *ngIf="!meeting.coachee" class="meeting-item-coach-avatar circle img-responsive" alt="coachee"
+                 src="https://s-media-cache-ak0.pinimg.com/originals/af/25/49/af25490494d3338afef00869c59fdd37.png">
+          </div>
 
-        <div>
-          <p class="meeting-item-coach black-text" *ngIf="meeting.coachee">{{ meeting.coachee.display_name }}</p>
-          <p class="italic">Company name</p>
-        </div>
-      </div><!--end meeting-item-coach-->
+          <div>
+            <p class="meeting-item-coach black-text" *ngIf="meeting.coachee">{{ meeting.coachee.display_name }}</p>
+            <p class="italic">Company name</p>
+          </div>
+        </div><!--end meeting-item-coach-->
 
-      <!-- DATE -->
-      <div class="meeting-item-date" *ngIf="meeting.agreed_date">
-        <div *ngIf="meeting.agreed_date">
-          <span class="meeting-item-date-date">{{ getDate(meeting.agreed_date.start_date) }}</span>
-          <span class="meeting-item-date-hour">{{ printTimeString(meeting.agreed_date.start_date) }}</span>
+        <!-- DATE -->
+        <div class="meeting-item-date" *ngIf="meeting.agreed_date">
+          <div *ngIf="meeting.agreed_date">
+            <span class="meeting-item-date-date">{{ getDate(meeting.agreed_date.start_date) }}</span>
+            <span class="meeting-item-date-hour">{{ printTimeString(meeting.agreed_date.start_date) }}</span>
+          </div>
         </div>
       </div>
     </div>
@@ -47,8 +49,8 @@
     <div class="meeting-item-body col-md-12" [class.col-lg-9]="!meeting.agreed_date" [class.col-lg-7]="meeting.agreed_date">
       <div class="meeting-item-body-content">
         <p class="meeting-item-goal">
-          <span class="black-text bold">Objectif: </span>
-          <span *ngIf="hasGoal">{{ goal }}</span>
+          <span class="black-text bold">Objectif de la séance: </span>
+          <span *ngIf="hasGoal">{{(goal | async) }}</span>
           <span *ngIf="!hasGoal" class="red-text">Pas encore défini...</span>
         </p>
 
@@ -59,6 +61,19 @@
             <p><span class="black-text bold">En quoi la séance a-t-elle été utile ? </span>{{ reviewValue }}</p>
             <br>
             <p><span class="black-text bold">Avec quoi êtes vous reparti ? </span>{{ reviewNextStep }}</p>
+          </div>
+        </div><!--end meeting-review-->
+
+
+        <div *ngIf="meeting.agreed_date && showDetails" class="meeting-review">
+          <div>
+            <br>
+            <p><span class="black-text bold">Context :</span> {{ (context | async) }}</p>
+            <br>
+            <p><span class="black-text bold">Objectif personnel :</span>
+              <span *ngIf="coachee.last_objective != null">{{ coachee.last_objective.objective }}</span>
+              <span *ngIf="coachee.last_objective == null">n/a</span>
+            </p>
           </div>
         </div><!--end meeting-review-->
 
@@ -104,7 +119,7 @@
       </div>
 
       <div class="meeting-item-body-buttons" *ngIf="meeting.isOpen">
-        <button class="btn-basic btn-plain btn-blue btn-small" *ngIf="!meeting.agreed_date"
+        <button class="btn-basic btn-plain btn-blue btn-small"
                 (click)="toggleShowDetails()">DETAIL
         </button>
         <!--<button class="btn-basic btn-cancel"-->
@@ -127,8 +142,8 @@
       <h5>Vous ne pourrez pas annuler ce meeting, êtes-vous sûr de vouloir valider ce créneau ?</h5>
     </div>
     <div class="delete-modal-footer">
-      <button class="btn-basic btn-plain" (click)="cancelCoachValidateMeeting()">Annuler</button>
-      <button class="btn-basic btn-blue" (click)="onSubmitValidateMeeting()">Valider</button>
+      <button class="btn-basic btn-plain btn-small" (click)="cancelCoachValidateMeeting()">Annuler</button>
+      <button class="btn-basic btn-blue btn-small" (click)="onSubmitValidateMeeting()">Valider</button>
     </div>
   </div>
 </div>

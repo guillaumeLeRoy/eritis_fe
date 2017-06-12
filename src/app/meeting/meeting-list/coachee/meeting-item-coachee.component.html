@@ -41,9 +41,13 @@
           <span class="meeting-item-date-hour">{{ printTimeString(meeting.agreed_date.start_date) }}</span>
         </div>
 
-        <button *ngIf="!meeting.agreed_date" class="btn-basic btn-blue btn-small" (click)="goToModifyDate(meeting.id)">
-          Modifier
-        </button>
+        <div *ngIf="!meeting.agreed_date">
+          <span class="meeting-item-date-date">N/A</span>
+        </div>
+
+        <!--<button *ngIf="!meeting.agreed_date" class="btn-basic btn-blue btn-small" (click)="goToModifyDate(meeting.id)">-->
+          <!--Modifier-->
+        <!--</button>-->
       </div>
     </div>
 
@@ -52,7 +56,7 @@
     <div class="meeting-item-body col-md-12 col-lg-8">
       <div class="meeting-item-body-content">
         <p class="meeting-item-goal">
-          <span class="black-text bold">Objectif: </span>
+          <span class="black-text bold">Objectif de la séance: </span>
           <span *ngIf="hasGoal">{{ goal }}</span>
           <span *ngIf="!hasGoal" class="red-text">Veuillez définir votre objectif.</span>
         </p>
@@ -70,8 +74,8 @@
       </div>
 
       <div class="meeting-item-buttons" *ngIf="meeting.isOpen">
-        <button class="btn-basic btn-plain btn-red btn-small" *ngIf="!hasGoal" (click)="goToModifyDate(meeting.id)">
-          OBJECTIF
+        <button class="btn-basic btn-plain btn-blue btn-small" *ngIf="!meeting.agreed_date" (click)="goToModifyDate(meeting.id)">
+          MODIFIER
         </button>
         <button class="btn-basic btn-plain btn-blue btn-small" *ngIf="hasGoal" (click)="goToChatRoom()"
                 [disabled]="!meeting.agreed_date">LANCER

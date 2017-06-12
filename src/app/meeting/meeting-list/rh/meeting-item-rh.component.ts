@@ -23,6 +23,8 @@ export class MeetingItemRhComponent implements OnInit, AfterViewInit {
   @Input()
   potentialCoachee: PotentialCoachee;
 
+  months = ['Janvier', 'Février', 'Mars', 'Avril', 'Mai', 'Juin', 'Juillet', 'Août', 'Septembre', 'Octobre', 'Novembre', 'Décembre'];
+
   private loading: boolean;
 
   /**
@@ -46,6 +48,25 @@ export class MeetingItemRhComponent implements OnInit, AfterViewInit {
   ngAfterViewInit(): void {
     console.log('ngAfterViewInit');
     // this.fetchConnectedUser();
+  }
+
+  printDateString(date: string) {
+    return this.getDate(date);
+  }
+
+  getHours(date: string) {
+    return (new Date(date)).getHours();
+  }
+
+  getMinutes(date: string) {
+    let m = (new Date(date)).getMinutes();
+    if (m === 0)
+      return '00';
+    return m;
+  }
+
+  getDate(date: string): string {
+    return (new Date(date)).getDate() + ' ' + this.months[(new Date(date)).getMonth()] + ' ' + (new Date(date)).getFullYear();
   }
 
   updateCoacheeObjectivePanelVisibility(visible: boolean) {

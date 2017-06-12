@@ -43,12 +43,21 @@ p {
   display: flex;
   flex-direction: row;
   flex-grow: 1;
-  align-items: center;
+  align-items: flex-start;
   padding: 0px;
 }
 
 .meeting-item-header {
   justify-content: space-between;
+  padding: 8px 0;
+}
+
+.meeting-item-header > div {
+  display: flex;
+  flex-direction: row;
+  flex-grow: 1;
+  align-items: center;
+  padding: 0px;
 }
 
 .meeting-item-coach {
@@ -61,6 +70,7 @@ p {
 .meeting-item-date{
   font-size: 22px;
   margin-left: 32px;
+  text-align: right;
 }
 
 .meeting-item-body{
@@ -70,17 +80,6 @@ p {
 
 .meeting-item-body-buttons {
   padding: 16px 0;
-}
-
-.meeting-item.closed .meeting-item-header,
-.meeting-item.closed .meeting-item-body,
-.meeting-item.unbooked .meeting-item-header,
-.meeting-item.unbooked .meeting-item-body {
-  align-items: flex-start;
-}
-
-.meeting-item.unbooked .meeting-item-header {
-  padding: 8px 0;
 }
 
 .meeting-item-body-content {

@@ -18,7 +18,7 @@
 
     <!-- COACHEE -->
     <div *ngIf="coachee != null" class="row">
-      <div class="meeting-item-header col-md-12 col-lg-4">
+      <div class="meeting-item-header col-md-12 col-lg-3">
         <div class="meeting-item-coach">
           <div>
             <!-- image coachee -->
@@ -26,7 +26,8 @@
           </div>
 
           <div>
-            <p class="meeting-item-coach">{{ coachee.display_name }}</p>
+            <p class="meeting-item-coach black-text">{{ coachee.display_name }}</p>
+            <p class="italic">Inscrit le {{ printDateString(coachee.start_date) }}</p>
           </div>
         </div>
 
@@ -37,15 +38,22 @@
       </div>
 
       <!-- GOAL -->
-      <div class="meeting-item-body col-md-12 col-lg-8">
+      <div class="meeting-item-body col-md-12 col-lg-9">
         <div class="meeting-item-body-content">
           <p class="meeting-item-goal">
-            <span class="black-text bold">Objectif: </span>
+            <span class="black-text bold">Objectif personnel: </span>
             <span *ngIf="coachee.last_objective">{{ coachee.last_objective.objective }}</span>
-            <button class="btn-basic btn-blue" (click)="updateCoacheeObjectivePanelVisibility(true)">Ajouter ou modifier
-              les objectifs
-            </button>
+            <span *ngIf="!coachee.last_objective">n/a</span>
           </p>
+        </div>
+
+        <div class="meeting-item-body-buttons">
+          <button class="btn-basic btn-blue btn-plain btn-small" (click)="updateCoacheeObjectivePanelVisibility(true)" *ngIf="!coachee.last_objective">
+            Ajouter un objectif
+          </button>
+          <button class="btn-basic btn-blue btn-plain btn-small" (click)="updateCoacheeObjectivePanelVisibility(true)" *ngIf="coachee.last_objective">
+            Modifier l'objectif
+          </button>
         </div>
       </div><!--end meeting-item-body-->
     </div><!--end coachee-->
@@ -85,8 +93,8 @@
       <input type="text" placeholder="Objectif" id="" [(ngModel)]="coacheeNewObjective">
     </div>
     <div class="delete-modal-footer">
-      <button class="btn-basic btn-plain" (click)="cancelAddNewObjectiveModal()">Annuler</button>
-      <button class="btn-basic btn-blue" (click)="validateAddNewObjectiveModal()"
+      <button class="btn-basic btn-plain btn-small" (click)="cancelAddNewObjectiveModal()">Annuler</button>
+      <button class="btn-basic btn-blue btn-plain btn-small" (click)="validateAddNewObjectiveModal()"
               [disabled]="!coacheeNewObjective">Ajouter
       </button>
     </div>

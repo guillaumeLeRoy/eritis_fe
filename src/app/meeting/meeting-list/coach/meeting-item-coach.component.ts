@@ -38,7 +38,8 @@ export class MeetingItemCoachComponent implements OnInit, AfterViewInit {
   private coachee: Coachee;
   private user: Observable<Coach>;
 
-  private goal: string;
+  private goal: Observable<string>;
+  private context: Observable<string>;
   private reviewValue: string;
   private reviewNextStep: string;
 
@@ -86,6 +87,7 @@ export class MeetingItemCoachComponent implements OnInit, AfterViewInit {
   ngAfterViewInit(): void {
     console.log("ngAfterViewInit");
     this.getGoal();
+    this.getContext();
     this.getReviewValue();
     this.getReviewNextStep();
     this.loadMeetingPotentialTimes();
@@ -203,7 +205,7 @@ export class MeetingItemCoachComponent implements OnInit, AfterViewInit {
       (reviews: MeetingReview[]) => {
         console.log("getMeetingGoal, got goal : ", reviews);
         if (reviews != null)
-          this.goal = reviews[0].comment;
+          this.goal = Observable.of(reviews[0].comment);
         else
           this.goal = null;
 
@@ -213,6 +215,26 @@ export class MeetingItemCoachComponent implements OnInit, AfterViewInit {
       },
       (error) => {
         console.log('getMeetingGoal error', error);
+        //this.displayErrorPostingReview = true;
+      });
+  }
+
+  private getContext() {
+    this.loading = true;
+
+    this.meetingService.getMeetingContext(this.meeting.id).subscribe(
+      (reviews: MeetingReview[]) => {
+        console.log("getMeetingContext, got context : ", reviews);
+        if (reviews != null)
+          this.context = Observable.of(reviews[0].comment);
+        else
+          this.context = Observable.of('n/a');
+
+        this.loading = false;
+        this.cd.detectChanges();
+      },
+      (error) => {
+        console.log('getMeetingContext error', error);
         //this.displayErrorPostingReview = true;
       });
   }
