@@ -66,7 +66,9 @@
               <!--<div class="notif-count">0</div>-->
               <!--</li>-->
 
-              <li *ngIf="(isAuthenticated | async) && isUserACoach()" [class.active]="router.url === '/profile'"><a (click)="goToProfile()">Modifier mon profil</a></li>
+              <li *ngIf="(isAuthenticated | async) && isUserACoach()"
+                  [class.active]="router.url === '/profile_coach' || router.url === '/profile_coachee' || router.url === '/profile_rh'">
+                <a (click)="goToProfile()">Modifier mon profil</a></li>
 
               <li *ngIf="(isAuthenticated | async)"><a (click)="onLogout()">Déconnexion</a></li>
             </div>

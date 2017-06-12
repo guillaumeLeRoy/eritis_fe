@@ -33,6 +33,12 @@ nav li.active a{
   color: #FFF !important;
 }
 
+.side-nav li a:hover,
+.side-nav li a:focus,
+.side-nav li.active a{
+  color: var(--main-electric-blue) !important;
+}
+
 .navbar-fixed,
 .navbar{
   min-height: 96px;
