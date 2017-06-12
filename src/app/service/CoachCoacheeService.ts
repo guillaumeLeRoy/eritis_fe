@@ -102,12 +102,12 @@ export class CoachCoacheeService {
       });
   }
 
-  readAllNotifications(userId: string): any {
+  readAllNotificationsForCoachee(userId: string): any {
     console.log("readAllNotifications, start request");
 
     let param = [userId];
 
-    return this.apiService.put(AuthService.READ_COACHEE_NOTIFICATIONS, param, null).map(
+    return this.apiService.put(AuthService.PUT_COACHEE_NOTIFICATIONS_READ, param, null).map(
       (response: Response) => {
         console.log("readAllNotifications done");
       },

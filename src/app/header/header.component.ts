@@ -6,9 +6,9 @@ import {Coach} from "../model/Coach";
 import {Coachee} from "../model/Coachee";
 import {Rh} from "../model/Rh";
 import {ApiUser} from "../model/apiUser";
-import {Response} from "@angular/http";
 import {Notif} from "../model/Notif";
 import {CoachCoacheeService} from "../service/CoachCoacheeService";
+import {Response} from "@angular/http";
 
 
 declare var $: any;
@@ -128,6 +128,28 @@ export class HeaderComponent implements OnInit, OnDestroy {
     }
   }
 
+  // call API to inform that notifications have been read
+  updateNotificationRead() {
+    let user = this.authService.getConnectedUser();
+    let obs: Observable<Response>;
+    if (user != null) {
+      if (user instanceof Coach) {
+        let params = [user.id];
+        obs = this.authService.put(AuthService.PUT_COACH_NOTIFICATIONS_READ, params, null);
+      } else if (user instanceof Coachee) {
+        let params = [user.id];
+        obs = this.authService.put(AuthService.PUT_COACHEE_NOTIFICATIONS_READ, params, null);
+      }
+
+      if (obs != null) {
+        obs.subscribe((response: Response) => {
+          console.log('updateNotificationRead response : ' + response);
+        });
+      }
+
+    }
+  }
+
   isUserACoach(): boolean {
     return this.mUser instanceof Coach
   }
@@ -208,7 +230,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   }
 
   readAllNotifications() {
-    this.coachCoacheeService.readAllNotifications(this.mUser.id).subscribe(
+    this.coachCoacheeService.readAllNotificationsForCoachee(this.mUser.id).subscribe(
       (response: Response) => {
         console.log("getAllNotifications OK", response);
         this.fetchNotificationsForUser(this.mUser);
