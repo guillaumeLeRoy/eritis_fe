@@ -65,6 +65,10 @@ export class AuthService {
   public static GET_AVAILABLE_MEETINGS = "v1/meetings";//get available meetings ( meetings with NO coach associated )
   public static PUT_COACH_TO_MEETING = "v1/meeting/:meetingId/coach/:coachId";//associate coach with meeting
 
+  /* HR */
+  public static POST_COACHEE_OBJECTIVE = "/v1/rhs/:uidRH/coachees/:uidCoachee/objective";//create new objective for this coachee
+
+
   private onAuthStateChangedCalled = false;
   // private user: User
   private isUserAuth = new BehaviorSubject<boolean>(false);//NOT auth by default
@@ -148,7 +152,7 @@ export class AuthService {
     return this.ApiUser;
   }
 
-  getConnectedUserObservable(): Observable<Coach | Coachee> {
+  getConnectedUserObservable(): Observable<Coach | Coachee | Rh> {
     return this.ApiUserSubject.asObservable();
   }
 
@@ -475,6 +479,7 @@ export class AuthService {
   }
 
   private parseCoachee(json: any): Coachee {
+    // TODO : don't really need to manually parse the received Json
     let coachee: Coachee = new Coachee(json.id);
     coachee.id = json.id;
     coachee.email = json.email;
@@ -486,6 +491,7 @@ export class AuthService {
     coachee.availableSessionsCount = json.available_sessions_count;
     coachee.updateAvailableSessionCountDate = json.update_sessions_count_date;
     coachee.associatedRh = json.associatedRh;
+    coachee.last_objective = json.last_objective;
     return coachee;
   }
 
