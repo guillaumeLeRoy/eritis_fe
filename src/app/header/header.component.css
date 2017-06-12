@@ -77,41 +77,13 @@ header.user-connected {
   height: 100px;
 }
 
-.notifs {
-  width: 250px !important;
-  padding: 0;
-}
-
-.notif-item {
-  padding: 16px;
-}
-
-.notif-item:hover {
-  background-color: var(--main-ultra-light-grey);
-}
-
-.notif-count {
-  background-color: var(--main-electric-blue);
-  height: 24px;
-  width: 24px;
-  padding: 0;
-  margin: 0;
-  font-size: 16px;
-  line-height: 24px;
-  text-align: center;
-  border-radius: 100%;
-  position: relative;
-  top: -55px;
-  right: -28px;
-}
-
 .welcome-header{
   display: flex;
   flex-direction: column;
   align-items: center;
   text-align: center;
   color: var(--main-white-color);
-  padding: 160px 0;
+  padding: 64px 0;
   background-color: var(--main-blue-filter);
 }
 
@@ -156,6 +128,30 @@ rb-signin{
   }
 }
 
+.notifs {
+  width: 250px !important;
+  padding: 0;
+}
+
+.notif-item {
+  padding: 16px;
+}
+
+.notif-count {
+  background-color: var(--main-electric-blue);
+  height: 24px;
+  width: 24px;
+  padding: 0;
+  margin: 0;
+  font-size: 16px;
+  line-height: 24px;
+  text-align: center;
+  border-radius: 100%;
+  position: relative;
+  top: -55px;
+  right: -28px;
+}
+
 .notif-date {
   margin: 0;
   color: var(--main-light-grey);
@@ -170,10 +166,6 @@ rb-signin{
   padding: 0;
   text-align: center;
   color: var(--main-light-grey);
-}
-
-.notif-delete:hover{
-  background-color: #fff;
 }
 
 .notif-delete>a:hover{

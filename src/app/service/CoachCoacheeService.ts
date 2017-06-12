@@ -11,6 +11,8 @@ import {RhUsageRate} from "../model/UsageRate";
 import {PotentialCoach} from "../model/PotentialCoach";
 import {PotentialRh} from "../model/PotentialRh";
 import {Notif} from "../model/Notif";
+import {ApiUser} from "../model/ApiUser";
+import {Rh} from "../model/Rh";
 
 
 @Injectable()
@@ -91,10 +93,18 @@ export class CoachCoacheeService {
       });
   }
 
-  getAllNotifications(userId: string): Observable<Notif[]> {
+  getAllNotificationsForUser(user: ApiUser): Observable<Notif[]> {
     console.log("getAllNotifications, start request");
-    let param = [userId];
-    return this.apiService.get(AuthService.GET_COACHEE_NOTIFICATIONS, param).map(
+    let param = [user.id];
+
+    let path = AuthService.GET_COACHEE_NOTIFICATIONS;
+    if (user instanceof Coach) {
+      path = AuthService.GET_COACH_NOTIFICATIONS;
+    } else if (user instanceof  Rh) {
+      path = AuthService.GET_RH_NOTIFICATIONS;
+    }
+
+    return this.apiService.get(path, param).map(
       (response: Response) => {
         let json: Notif[] = response.json();
         console.log("getAllNotifications, response json : ", json);
@@ -102,12 +112,19 @@ export class CoachCoacheeService {
       });
   }
 
-  readAllNotificationsForCoachee(userId: string): any {
+  readAllNotificationsForUser(user: ApiUser): any {
     console.log("readAllNotifications, start request");
 
-    let param = [userId];
+    let param = [user.id];
 
-    return this.apiService.put(AuthService.PUT_COACHEE_NOTIFICATIONS_READ, param, null).map(
+    let path = AuthService.PUT_COACHEE_NOTIFICATIONS_READ;
+    if (user instanceof Coach) {
+      path = AuthService.PUT_COACH_NOTIFICATIONS_READ;
+    } else if (user instanceof  Rh) {
+      path = AuthService.PUT_RH_NOTIFICATIONS_READ;
+    }
+
+    return this.apiService.put(path, param, null).map(
       (response: Response) => {
         console.log("readAllNotifications done");
       },

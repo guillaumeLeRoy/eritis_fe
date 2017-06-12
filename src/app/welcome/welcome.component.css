@@ -42,7 +42,7 @@ nav li:focus a{
 }
 
 .section{
-  padding: 128px 0;
+  padding: 32px 0;
 }
 
 header.section{
@@ -200,27 +200,6 @@ rb-signin{
 
 footer {
   background-color: var(--main-white-color);
-  padding: 128px 0;
-}
-
-label{
-  color: var(--main-dark-grey);
-  font-size: 24px;
-  font-weight: 500;
-}
-
-input[type="text"],
-input[type="text"]:focus:not([readonly]),
-input[type="email"],
-input[type="email"]:focus:not([readonly]),
-textarea,
-textarea:focus:not([readonly]){
-  border: none !important;
-  box-shadow: none !important;
-  box-sizing: border-box;
-  background-color: #E8E8E8;
-  border-radius: 8px;
-  padding: 16px !important;
 }
 
 textarea{

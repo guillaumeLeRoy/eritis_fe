@@ -18,7 +18,7 @@
   <div class="row" *ngIf="!loading">
 
     <!-- COACHEE -->
-    <div class="meeting-item-header col-md-12" [class.col-lg-3]="!meeting.agreed_date" [class.col-lg-4]="meeting.agreed_date">
+    <div class="meeting-item-header col-md-12" [class.col-lg-3]="!meeting.agreed_date" [class.col-lg-5]="meeting.agreed_date">
       <div class="meeting-item-coach">
         <div>
           <!-- image coach-->
@@ -29,8 +29,8 @@
         </div>
 
         <div>
-          <p class="meeting-item-coach" *ngIf="meeting.coachee">{{ meeting.coachee.display_name }}</p>
-          <p class="meeting-item-coach" *ngIf="!meeting.coachee">Un coach vous sera bientôt attribué</p>
+          <p class="meeting-item-coach black-text" *ngIf="meeting.coachee">{{ meeting.coachee.display_name }}</p>
+          <p class="italic">Company name</p>
         </div>
       </div><!--end meeting-item-coach-->
 
@@ -44,7 +44,7 @@
     </div>
 
     <!-- GOAL & REVIEW -->
-    <div class="meeting-item-body col-md-12" [class.col-lg-9]="!meeting.agreed_date" [class.col-lg-8]="meeting.agreed_date">
+    <div class="meeting-item-body col-md-12" [class.col-lg-9]="!meeting.agreed_date" [class.col-lg-7]="meeting.agreed_date">
       <div class="meeting-item-body-content">
         <p class="meeting-item-goal">
           <span class="black-text bold">Objectif: </span>
@@ -88,14 +88,14 @@
                         materialize="material_select">
                   <option value="0" disabled selected>Heure</option>
                   <option *ngFor="let h of potentialHours | async" [ngValue]="h">
-                    {{ printTimeNumber(h) }} - {{ printTimeNumber(h+0.5) }}
+                    {{ printTimeNumber(h) }} - {{ printTimeNumber(h+1) }}
                   </option>
                 </select>
               </div>
               <div>
                 <button type="submit" class="btn-basic btn-blue btn-small"
                         [disabled]="!selectedDate || !selectedHour"
-                        (click)="onSubmitValidateMeeting()">Valider
+                        (click)="openCoachValidateMeetingModal()">Valider
                 </button>
               </div>
             </form>
@@ -107,17 +107,31 @@
         <button class="btn-basic btn-plain btn-blue btn-small" *ngIf="!meeting.agreed_date"
                 (click)="toggleShowDetails()">DETAIL
         </button>
-        <button class="btn-basic btn-cancel"
-                *ngIf="meeting.agreed_date"
-                (click)="openModal()">
-          <i class="material-icons">clear</i>
-        </button>
+        <!--<button class="btn-basic btn-cancel"-->
+                <!--*ngIf="meeting.agreed_date"-->
+                <!--(click)="openModal()">-->
+          <!--<i class="material-icons">clear</i>-->
+        <!--</button>-->
       </div>
     </div><!--end meeting-item-body-->
 
   </div><!--end row-->
 
 </div><!--end meeting-item-->
+
+
+<!-- Modal Coach Validate Meeting -->
+<div id="coach_cancel_meeting" class="modal">
+  <div class="delete-modal-content">
+    <div class="delete-modal-message">
+      <h5>Vous ne pourrez pas annuler ce meeting, êtes-vous sûr de vouloir valider ce créneau ?</h5>
+    </div>
+    <div class="delete-modal-footer">
+      <button class="btn-basic btn-plain" (click)="cancelCoachValidateMeeting()">Annuler</button>
+      <button class="btn-basic btn-blue" (click)="onSubmitValidateMeeting()">Valider</button>
+    </div>
+  </div>
+</div>
 
 
 <!--

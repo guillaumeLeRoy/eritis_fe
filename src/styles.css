@@ -185,6 +185,32 @@ a:focus{
   font-weight: bold;
 }
 
+.italic {
+  font-style: italic;
+}
+
+label{
+  color: var(--main-dark-grey);
+  font-size: 24px;
+  font-weight: 500;
+}
+
+input[type="text"],
+input[type="text"]:focus:not([readonly]),
+input[type="password"],
+input[type="password"]:focus:not([readonly]),
+input[type="email"],
+input[type="email"]:focus:not([readonly]),
+textarea,
+textarea:focus:not([readonly]){
+  border: none !important;
+  box-shadow: none !important;
+  box-sizing: border-box !important;
+  background-color: var(--main-ultra-light-grey) !important;
+  border-radius: 8px !important;
+  padding: 16px !important;
+}
+
 /* Permet d'aligner les icon material avec le texte */
 .material-icons{
   display: inline-block !important;

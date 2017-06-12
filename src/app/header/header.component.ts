@@ -182,32 +182,30 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
   private fetchNotificationsForUser(user: ApiUser) {
 
-    if (user instanceof Coachee) {
-      let param = user.id
-      this.coachCoacheeService.getAllNotifications(param).subscribe(
-        (notifs: Notif[]) => {
-          console.log('fetchNotificationsForUser : ' + notifs);
+    let param = user
+    this.coachCoacheeService.getAllNotificationsForUser(param).subscribe(
+      (notifs: Notif[]) => {
+        console.log('fetchNotificationsForUser : ' + notifs);
 
-          //Sort notifs by date
-          if (notifs != null) {
-            notifs.sort(function (a, b) {
-              let d1 = new Date(a.date);
-              let d2 = new Date(b.date);
-              let res = d1.getUTCFullYear() - d2.getUTCFullYear();
-              if (res === 0)
-                res = d1.getUTCMonth() - d2.getUTCMonth();
-              if (res === 0)
-                res = d1.getUTCDate() - d2.getUTCDate();
-              if (res === 0)
-                res = d1.getUTCHours() - d2.getUTCHours();
-              return res;
-            });
-          }
-
-          this.notifications = Observable.of(notifs);
+        //Sort notifs by date
+        if (notifs != null) {
+          notifs.sort(function (a, b) {
+            let d1 = new Date(a.date);
+            let d2 = new Date(b.date);
+            let res = d1.getUTCFullYear() - d2.getUTCFullYear();
+            if (res === 0)
+              res = d1.getUTCMonth() - d2.getUTCMonth();
+            if (res === 0)
+              res = d1.getUTCDate() - d2.getUTCDate();
+            if (res === 0)
+              res = d1.getUTCHours() - d2.getUTCHours();
+            return res;
+          });
         }
-      );
-    }
+
+        this.notifications = Observable.of(notifs);
+      }
+    );
   }
 
   printDateString(date: string) {
@@ -230,7 +228,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   }
 
   readAllNotifications() {
-    this.coachCoacheeService.readAllNotificationsForCoachee(this.mUser.id).subscribe(
+    this.coachCoacheeService.readAllNotificationsForUser(this.mUser).subscribe(
       (response: Response) => {
         console.log("getAllNotifications OK", response);
         this.fetchNotificationsForUser(this.mUser);

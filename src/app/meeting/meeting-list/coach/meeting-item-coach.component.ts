@@ -151,13 +151,8 @@ export class MeetingItemCoachComponent implements OnInit, AfterViewInit {
     let minDate = new Date(this.selectedDate);
     minDate.setHours(this.selectedHour);
     let maxDate = new Date(this.selectedDate);
-    if (this.selectedHour === Math.round(this.selectedHour)) {
-      maxDate.setHours(this.selectedHour);
-      maxDate.setMinutes(30);
-    } else {
-      minDate.setMinutes(30);
-      maxDate.setHours(this.selectedHour + 1);
-    }
+    maxDate.setHours(this.selectedHour + 1);
+
     let timestampMin: number = +minDate.getTime().toFixed(0) / 1000;
     let timestampMax: number = +maxDate.getTime().toFixed(0) / 1000;
 
@@ -292,7 +287,6 @@ export class MeetingItemCoachComponent implements OnInit, AfterViewInit {
       if (this.getDate(date.start_date) === this.getDate(selected)) {
         for (let _i = this.getHours(date.start_date); _i < this.getHours(date.end_date); _i++) {
           hours.push(_i);
-          hours.push(_i + 0.5);
         }
       }
     }
@@ -303,10 +297,7 @@ export class MeetingItemCoachComponent implements OnInit, AfterViewInit {
   }
 
   printTimeNumber(hour: number) {
-    if (hour === Math.round(hour))
-      return hour + ':00'
-    else
-      return Math.round(hour) - 1 + ':30'
+    return hour + ':00'
   }
 
   printTimeString(date: string) {
@@ -353,6 +344,22 @@ export class MeetingItemCoachComponent implements OnInit, AfterViewInit {
         );
       }
     );
+  }
+
+  coachValidateModalVisibility(isVisible: boolean) {
+    if (isVisible) {
+      $('#coach_cancel_meeting').openModal();
+    } else {
+      $('#coach_cancel_meeting').closeModal();
+    }
+  }
+
+  openCoachValidateMeetingModal(meeting: Meeting) {
+    this.coachValidateModalVisibility(true);
+  }
+
+  cancelCoachValidateMeeting() {
+    this.coachValidateModalVisibility(false);
   }
 
 }

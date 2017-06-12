@@ -11,17 +11,14 @@
           <ul class="right hide-on-med-and-down">
             <!--<li *ngIf="canDisplayListOfCoach()"><a (click)="goToCoachs()">Liste Des Coachs</a></li>-->
 
-            <li *ngIf="(isAuthenticated | async) && isUserACoach()"><a (click)="goToAvailableSessions()">Séances
-              disponibles</a></li>
+            <li *ngIf="(isAuthenticated | async) && isUserACoach()"><a (click)="goToAvailableSessions()">
+              Demandes en attente</a></li>
 
-            <li *ngIf="(isAuthenticated | async) && (isUserACoach() || isUserACoachee())"><a (click)="goToMeetings()">Vos
-              séances</a></li>
+            <li *ngIf="(isAuthenticated | async)"><a (click)="goToMeetings()">Tableau de bord</a></li>
 
-            <li *ngIf="(isAuthenticated | async) && isUserARh()"><a (click)="goToMeetings()">Vos collaborateurs</a></li>
+            <li *ngIf="(isAuthenticated | async) && isUserACoach()"><a (click)="goToProfile()">Profil</a></li>
 
-            <li *ngIf="(isAuthenticated | async)"><a (click)="goToProfile()">Profil</a></li>
-
-            <li [hidden]="!(isAuthenticated | async) || !isUserACoachee()">
+            <li [hidden]="!(isAuthenticated | async)">
               <a class="dropdown-button" data-activates="notifs"><i class="material-icons">notifications</i></a>
               <div class="notif-count" *ngIf="(notifications | async) != null || (notifications | async)?.length > 0">
                 {{(notifications | async).length}}
@@ -41,12 +38,9 @@
             <li *ngIf="(isAuthenticated | async) && isUserACoach()"><a (click)="goToAvailableSessions()">Séances
               disponibles</a></li>
 
-            <li *ngIf="(isAuthenticated | async) && (isUserACoach() || isUserACoachee())"><a (click)="goToMeetings()">Vos
-              séances</a></li>
+            <li *ngIf="(isAuthenticated | async)"><a (click)="goToMeetings()">Tableau de bord</a></li>
 
-            <li *ngIf="(isAuthenticated | async) && isUserARh()"><a (click)="goToMeetings()">Vos collaborateurs</a></li>
-
-            <li *ngIf="(isAuthenticated | async)"><a (click)="goToProfile()">Profil</a></li>
+            <li *ngIf="(isAuthenticated | async) && isUserACoachee()"><a (click)="goToProfile()">Profil</a></li>
 
             <!--<li [hidden]="!(isAuthenticated | async)">-->
             <!--<a class="dropdown-button" data-activates="notifs"><i class="material-icons">notifications</i></a>-->

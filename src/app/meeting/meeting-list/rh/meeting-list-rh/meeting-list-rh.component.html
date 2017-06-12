@@ -1,7 +1,5 @@
-<h4 class="text-right">Vous avez souscrit à
-  <span class="blue-text"> {{(user | async)?.availableSessionsCount || 0}} séance
-          <span *ngIf="(user | async)?.availableSessionsCount > 1">s/mois </span>
-        </span>et votre taux d'utilisation est de <span class="blue-text">{{(rhUsageRate | async)?.usage_rate}}%</span>
+<h4 class="text-right welcome-message">Bonjour {{(user | async)?.display_name}},<br>
+    Le taux total d'utilisation de vos collaborateurs est de <span class="blue-text">{{(rhUsageRate | async)?.usage_rate}}%</span>
 </h4>
 <p class="text-right">
   <span class="blue-text">Cliquez</span> ici pour ajouter un collaborateur
@@ -33,7 +31,7 @@
 </div><!--end row-->
 
 <div class="row">
-  <h4 class="col-lg-12 black-text">Invitations en attente</h4>
+  <h4 class="col-lg-12 black-text">Collaborateurs invités en attente</h4>
   <div class="card collection col-lg-12">
 
     <div *ngIf="hasPotentialCollaborators">
@@ -45,7 +43,7 @@
     </div>
 
     <div *ngIf="!hasPotentialCollaborators" class="collection-item text-center">
-      <h5 class="no-meeting">Vos collaborateurs en attente d'inscription apparaîtront ici</h5>
+      <h5 class="no-meeting">Vos collaborateurs en attente de validation apparaîtront ici</h5>
     </div>
 
   </div><!--end card-->
