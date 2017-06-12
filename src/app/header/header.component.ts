@@ -9,6 +9,8 @@ import {ApiUser} from "../model/apiUser";
 import {Notif} from "../model/Notif";
 import {CoachCoacheeService} from "../service/CoachCoacheeService";
 import {Response} from "@angular/http";
+import {state, transition, trigger} from "@angular/animations";
+import {animate, style} from "@angular/core/src/animation/dsl";
 
 
 declare var $: any;
@@ -17,7 +19,6 @@ declare var $: any;
   selector: 'rb-header',
   templateUrl: 'header.component.html',
   styleUrls: ['header.component.css']
-
 })
 export class HeaderComponent implements OnInit, OnDestroy {
   private loginActivated = false;

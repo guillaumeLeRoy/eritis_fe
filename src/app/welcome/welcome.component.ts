@@ -8,6 +8,7 @@ import {Coach} from "../model/Coach";
 import {Router} from "@angular/router";
 
 declare var Materialize: any;
+declare var $: any;
 
 @Component({
   selector: 'rb-welcome',

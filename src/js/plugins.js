@@ -64,12 +64,22 @@ $(function() {
   });
 
   // Materialize Dropdown
-  $('.dropdown-button').dropdown({
+  $('.dropdown-button-notifs').dropdown({
     inDuration: 300,
     outDuration: 125,
     constrain_width: true, // Does not change width of dropdown to that of the activator
-    hover: false, // Activate on click
-    alignment: 'left', // Aligns dropdown to left or right edge (works with constrain_width)
+    hover: true, // Activate on click
+    alignment: 'right', // Aligns dropdown to left or right edge (works with constrain_width)
+    gutter: 0, // Spacing from edge
+    belowOrigin: true // Displays dropdown below the button
+  });
+
+  $('.dropdown-button-profile').dropdown({
+    inDuration: 300,
+    outDuration: 125,
+    constrain_width: true, // Does not change width of dropdown to that of the activator
+    hover: true, // Activate on click
+    alignment: 'right', // Aligns dropdown to left or right edge (works with constrain_width)
     gutter: 0, // Spacing from edge
     belowOrigin: true // Displays dropdown below the button
   });

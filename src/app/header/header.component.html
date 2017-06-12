@@ -3,8 +3,9 @@
     <nav>
       <div class="navbar-color" [class.z-depth-2]="(isAuthenticated | async)">
         <div class="col s12">
-          <a (click)="goToMeetings()" class="logo-text"><img src="assets/img/logo-eritis-new.png" alt="Eritis"></a>
-          <a data-activates="side-nav" class="button-collapse right" [hidden]="!(isAuthenticated | async)">
+          <a (click)="goToMeetings()" class="brand-logo left hide-on-med-and-down"><img src="assets/img/logo-eritis-new.png" alt="Eritis"></a>
+          <a (click)="goToMeetings()" class="brand-logo center hide-on-large-only"><img src="assets/img/logo-eritis-new.png" alt="Eritis"></a>
+          <a data-activates="side-nav" class="button-collapse left" [hidden]="!(isAuthenticated | async)">
             <i class="mdi-navigation-menu"></i>
           </a>
 
@@ -19,7 +20,7 @@
             <!--<li *ngIf="(isAuthenticated | async) && isUserACoach()"><a (click)="goToProfile()">Profil</a></li>-->
 
             <li [hidden]="!(isAuthenticated | async)">
-              <a class="dropdown-button" data-activates="notifs"><i class="material-icons">notifications</i></a>
+              <a class="dropdown-button-notifs" data-activates="notifs"><i class="material-icons">notifications</i></a>
               <div class="notif-count" *ngIf="(notifications | async) != null || (notifications | async)?.length > 0">
                 {{(notifications | async).length}}
               </div>
@@ -28,7 +29,7 @@
             <!--<li *ngIf="(isAuthenticated | async)"><a (click)="onLogout()">Déconnexion</a></li>-->
 
             <li [hidden]="!(isAuthenticated | async)">
-              <a class="dropdown-button" data-activates="profil">
+              <a class="dropdown-button-profile" data-activates="profil">
                 <img src="{{(user | async)?.avatar_url}}" alt="profile image" class="item-user-img circle responsive-img">
                 {{(user | async)?.display_name}}
               </a>
@@ -36,6 +37,8 @@
 
           </ul>
 
+
+          <!-- Side Nav -->
           <ul class="side-nav" id="side-nav">
 
             <div class="side-nav-header" *ngIf="(isAuthenticated | async)">
@@ -64,7 +67,7 @@
               <!--<div class="notif-count">0</div>-->
               <!--</li>-->
 
-              <li *ngIf="(isAuthenticated | async)"><a (click)="goToProfile()">Modifier mon profil</a></li>
+              <li *ngIf="(isAuthenticated | async) && isUserACoach()"><a (click)="goToProfile()">Modifier mon profil</a></li>
 
               <li *ngIf="(isAuthenticated | async)"><a (click)="onLogout()">Déconnexion</a></li>
             </div>
@@ -92,7 +95,7 @@
           </div>
         </div>
 
-        <rb-signin *ngIf="loginActivated"></rb-signin>
+         <rb-signin [hidden]="!loginActivated"></rb-signin>
 
         <a pageScroll href="#presentation" class="header-arrow-bottom"><i class="fa fa-angle-down"
                                                                           aria-hidden="true"></i></a>
@@ -114,7 +117,7 @@
 
 </header>
 
-<ul id="notifs" class="dropdown-content notifs collection">
+<ul id="notifs" class="dropdown-content dropdown-notifs collection">
   <li class="notif-item collection-item" *ngIf="(notifications | async) == null">Vous n'avez pas de notification</li>
   <div *ngIf="(notifications | async) != null">
     <li class="notif-item collection-item notif-delete"><a (click)="readAllNotifications()">Marquer comme lues</a></li>
@@ -125,7 +128,7 @@
   </div>
 </ul>
 
-<ul id="profil" class="dropdown-content notifs collection">
-  <li class="profil-item collection-item text-right" (click)="goToProfile()">Modifier mon profil</li>
+<ul id="profil" class="dropdown-content dropdown-profil collection">
+  <li class="profil-item collection-item text-right" (click)="goToProfile()" *ngIf="isUserACoach()">Modifier mon profil</li>
   <li class="profil-item collection-item text-right" (click)="onLogout()">Déconnexion</li>
 </ul>

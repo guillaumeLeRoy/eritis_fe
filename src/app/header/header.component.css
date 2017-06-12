@@ -37,6 +37,10 @@ nav li a:focus {
   padding: 16px;
 }
 
+.brand-logo {
+  padding: 0;
+}
+
 .logo-text img{
   height: 50px;
 }
@@ -173,8 +177,8 @@ rb-signin{
   }
 }
 
-.notifs {
-  width: 250px !important;
+.dropdown-notifs {
+  width: 350px !important;
   padding: 0;
 }
 
