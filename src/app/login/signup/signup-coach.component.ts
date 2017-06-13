@@ -2,7 +2,7 @@ import {Component, OnInit} from "@angular/core";
 import {Observable} from "rxjs/Observable";
 import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
 import {AuthService} from "../../service/auth.service";
-import {CoachCoacheeService} from "../../service/CoachCoacheeService";
+import {CoachCoacheeService} from "../../service/coach_coachee.service";
 import {ActivatedRoute, Router} from "@angular/router";
 import {PotentialCoach} from "../../model/PotentialCoach";
 import {User} from "../../user/user";

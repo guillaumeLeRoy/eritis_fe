@@ -7,7 +7,7 @@ import {Coachee} from "../model/Coachee";
 import {Rh} from "../model/Rh";
 import {ApiUser} from "../model/apiUser";
 import {Notif} from "../model/Notif";
-import {CoachCoacheeService} from "../service/CoachCoacheeService";
+import {CoachCoacheeService} from "../service/coach_coachee.service";
 import {Response} from "@angular/http";
 import {state, transition, trigger} from "@angular/animations";
 import {animate, style} from "@angular/core/src/animation/dsl";

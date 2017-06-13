@@ -1,6 +1,6 @@
 import {Component, OnInit, Input, Output, EventEmitter} from '@angular/core';
 
-import {CoachCoacheeService} from "../service/CoachCoacheeService";
+import {CoachCoacheeService} from "../service/coach_coachee.service";
 
 import {
 

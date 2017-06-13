@@ -5,7 +5,7 @@ import {Coach} from "../../model/Coach";
 import {AuthService} from "../../service/auth.service";
 import {ApiUser} from "../../model/ApiUser";
 import {MeetingsService} from "../../service/meetings.service";
-import {CoachCoacheeService} from "../../service/CoachCoacheeService";
+import {CoachCoacheeService} from "../../service/coach_coachee.service";
 
 @Component({
   selector: 'rb-coach-details',

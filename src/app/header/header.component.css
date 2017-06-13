@@ -205,7 +205,6 @@ rb-signin{
 }
 
 .profil-item:hover {
-  background-color: var(--main-ultra-light-grey);
   color: var(--main-electric-blue) !important;
 }
 

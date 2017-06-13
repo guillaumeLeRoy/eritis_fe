@@ -1,6 +1,6 @@
 import {AfterViewInit, ChangeDetectorRef, Component, Input, OnDestroy, OnInit} from '@angular/core';
 import {MeetingsService} from "../../../../service/meetings.service";
-import {CoachCoacheeService} from "../../../../service/CoachCoacheeService";
+import {CoachCoacheeService} from "../../../../service/coach_coachee.service";
 import {AuthService} from "../../../../service/auth.service";
 import {Router} from "@angular/router";
 import {Observable} from "rxjs/Observable";

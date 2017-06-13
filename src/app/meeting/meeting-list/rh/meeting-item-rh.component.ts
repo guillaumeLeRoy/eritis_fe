@@ -1,12 +1,12 @@
 import {AfterViewInit, ChangeDetectorRef, Component, EventEmitter, Input, OnInit, Output} from "@angular/core";
 import {Coachee} from "../../../model/Coachee";
 import {PotentialCoachee} from "../../../model/PotentialCoachee";
-import {CoachCoacheeService} from "../../../service/CoachCoacheeService";
+import {CoachCoacheeService} from "../../../service/coach_coachee.service";
 import {AuthService} from "../../../service/auth.service";
 import {ApiUser} from "../../../model/apiUser";
 import {Rh} from "../../../model/Rh";
 import {CoacheeObjective} from "../../../model/CoacheeObjective";
-import {Meeting} from "../../../model/meeting";
+import {Meeting} from "../../../model/Meeting";
 import {Observable} from "rxjs/Observable";
 import {MeetingsService} from "../../../service/meetings.service";
 import {RhUsageRate} from "app/model/UsageRate";

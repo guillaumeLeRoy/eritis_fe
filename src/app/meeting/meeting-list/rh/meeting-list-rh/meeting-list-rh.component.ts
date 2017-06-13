@@ -1,5 +1,5 @@
 import {AfterViewInit, ChangeDetectorRef, Component, OnDestroy, OnInit} from "@angular/core";
-import {CoachCoacheeService} from "../../../../service/CoachCoacheeService";
+import {CoachCoacheeService} from "../../../../service/coach_coachee.service";
 import {AuthService} from "../../../../service/auth.service";
 import {Observable} from "rxjs/Observable";
 import {Subscription} from "rxjs/Subscription";

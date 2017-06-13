@@ -18,7 +18,7 @@
   <div class="row" *ngIf="!loading">
 
     <!-- COACHEE -->
-    <div class="meeting-item-header col-md-12" [class.col-lg-3]="!meeting.agreed_date" [class.col-lg-5]="meeting.agreed_date">
+    <div class="meeting-item-header col-md-12 col-lg-5">
       <div>
         <div class="meeting-item-coach">
           <div>
@@ -37,16 +37,19 @@
 
         <!-- DATE -->
         <div class="meeting-item-date" *ngIf="meeting.agreed_date">
-          <div *ngIf="meeting.agreed_date">
-            <span class="meeting-item-date-date">{{ getDate(meeting.agreed_date.start_date) }}</span>
-            <span class="meeting-item-date-hour">{{ printTimeString(meeting.agreed_date.start_date) }}</span>
-          </div>
+          <span class="meeting-item-date-date">{{ getDate(meeting.agreed_date.start_date) }}</span>
+          <span class="meeting-item-date-hour">{{ printTimeString(meeting.agreed_date.start_date) }}</span>
+        </div>
+
+        <div class="meeting-item-date" *ngIf="!meeting.agreed_date">
+          <span class="meeting-item-date-date">{{ getDate(meeting.created_date) }}</span>
+          <span class="meeting-item-date-hour">{{ printTimeString(meeting.created_date) }}</span>
         </div>
       </div>
     </div>
 
     <!-- GOAL & REVIEW -->
-    <div class="meeting-item-body col-md-12" [class.col-lg-9]="!meeting.agreed_date" [class.col-lg-7]="meeting.agreed_date">
+    <div class="meeting-item-body col-md-12 col-lg-7">
       <div class="meeting-item-body-content">
         <p>
           <span class="black-text bold">Objectif personnel: </span>
@@ -120,7 +123,7 @@
         <button type="submit" class="btn-basic btn-blue btn-plain btn-small"
                 *ngIf="!meeting.agreed_date"
                 [disabled]="!selectedDate || !selectedHour"
-                (click)="openCoachValidateMeetingModal()">Devenir coach
+                (click)="openCoachValidateMeetingModal()">Coacher
         </button>
         <!--<button class="btn-basic btn-cancel"-->
                 <!--*ngIf="meeting.agreed_date"-->

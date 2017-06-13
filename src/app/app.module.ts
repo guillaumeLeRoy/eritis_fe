@@ -17,7 +17,7 @@ import {ChatComponent} from "./chat/chat.component";
 import {ChatItemComponent} from "./chat/chat-item.component";
 import {CoachListComponent} from "./user/coach-list/coach-list.component";
 import {CoachItemComponent} from "./user/coach-list/coach-item.component";
-import {CoachCoacheeService} from "./service/CoachCoacheeService";
+import {CoachCoacheeService} from "./service/coach_coachee.service";
 import {CoachDetailsComponent} from "./user/coach-details/coach-details.component";
 import {CalendarModule} from "angular-calendar"; // lib
 import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
