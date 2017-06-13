@@ -1,4 +1,72 @@
-.has-potential-date{
-  color: var(--main-electric-blue);
-  font-weight: 600;
+.header-user{
+  background-image: url("../../../assets/img/eritis-mountain-bg-2.jpg");
+  background-attachment: scroll;
+  background-position: center;
+  background-size: cover;
+  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.5);
+}
+
+.header-user-filter{
+  background-color: var(--main-blue-filter);
+  color: var(--main-white-color);
+}
+
+.header-user .container {
+  padding: 64px 0;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.header-stats {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+
+}
+
+.user {
+  display: flex;
+  align-items: center;
+  align-content: center;
+}
+
+.user-info{
+  margin-left: 16px;
+}
+
+.user-img{
+  height: 100px;
+  width: 100px;
+}
+
+.header-item {
+  text-align: center;
+}
+
+.header-item-number {
+  margin: 0;
+  margin-bottom: 8px;
+  font-size: 40px;
+  font-weight: 500;
+}
+
+.header-item-number span {
+  font-size: 18px;
+  font-weight: 400;
+}
+
+.header-item-title {
+  margin: 0;
+  color: var(--main-ultra-light-grey);
+}
+
+.gap {
+  height: 64px;
+}
+
+.message-field {
+  min-height: 200px;
 }

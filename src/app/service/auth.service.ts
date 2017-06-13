@@ -237,7 +237,15 @@ export class AuthService {
   }
 
   getNotAuth(path: string, params: string[]): Observable<Response> {
-    return this.httpService.get(this.generatePath(path, params))
+    console.log("getNotAuth, start request");
+    return this.httpService.get(this.generatePath(path, params)).map(
+      (res: Response) => {
+        console.log("getNotAuth, got user", res);
+        return res;
+      },(error) => {
+        console.log("getNotAuth, error", error);
+      }
+    );
   }
 
   getPotentialCoachee(path: string, params: string[]): Observable<PotentialCoachee> {

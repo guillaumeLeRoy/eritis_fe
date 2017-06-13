@@ -26,6 +26,7 @@ p {
 
 .meeting-item-coach-avatar{
   height: 52px;
+  width: 52px;
   margin-right: 16px;
 }
 
@@ -47,6 +48,14 @@ p {
   flex-direction: row;
   flex-grow: 1;
   align-items: center;
+}
+
+.meeting-item-coach.has-coach {
+  cursor: pointer;
+}
+
+.meeting-item-coach.has-coach:hover .meeting-item-coach-name {
+  color: var(--main-electric-blue);
 }
 
 .meeting-item-date{

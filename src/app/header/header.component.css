@@ -88,6 +88,7 @@ nav li.active a{
 
 .side-nav-user-img {
   width: 90px;
+  height: 90px;
   margin-right: 16px;
 }
 
@@ -123,10 +124,6 @@ header.user-connected {
 }
 
 .header-user-filter{
-
-}
-
-.header-user .container{
   display: flex;
   align-items: center;
   align-content: center;
@@ -139,6 +136,7 @@ header.user-connected {
 
 .header-user-img{
   height: 100px;
+  width: 100px;
 }
 
 .welcome-header{

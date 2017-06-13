@@ -1,10 +1,11 @@
 import {Component, OnInit, AfterViewInit, ChangeDetectorRef, OnDestroy, Input} from '@angular/core';
 import {Observable, Subscription} from "rxjs";
-import {Router} from "@angular/router";
+import {ActivatedRoute, Router} from "@angular/router";
 import {Coach} from "../../model/Coach";
 import {AuthService} from "../../service/auth.service";
 import {ApiUser} from "../../model/ApiUser";
 import {MeetingsService} from "../../service/meetings.service";
+import {CoachCoacheeService} from "../../service/CoachCoacheeService";
 
 @Component({
   selector: 'rb-coach-details',
@@ -14,72 +15,32 @@ import {MeetingsService} from "../../service/meetings.service";
 export class CoachDetailsComponent implements OnInit, AfterViewInit, OnDestroy {
 
   @Input()
-  coach: Coach;
+  iCoach: Coach;
 
-  private connectedUser: Observable<ApiUser>;
-  private subscriptionConnectUser: Subscription;
+  private coach: Observable<Coach>;
+  // private subscriptionGetCoach: Subscription;
 
-  constructor(private router: Router, private authService: AuthService, private cd: ChangeDetectorRef, private meetingService: MeetingsService) {
+  constructor(private router: Router, private cd: ChangeDetectorRef, private coachService: CoachCoacheeService, private route: ActivatedRoute) {
   }
 
   ngOnInit() {
-    let user = this.authService.getConnectedUser();
-    if (user) {
-      this.onConnectedUserReceived(user);
-    } else {
-      this.subscriptionConnectUser = this.authService.getConnectedUserObservable().subscribe(
-        (user: ApiUser) => {
-          console.log("ngOnInit, sub received user", user);
-          this.onConnectedUserReceived(user);
-        }
-      );
-    }
-  }
+    this.route.params.subscribe(
+      (params: any) => {
+        let coachId = params['id'];
+        this.coachService.getCoachForId(coachId).subscribe(
+          (coach: Coach) => {
+            console.log("ngAfterViewInit, post sub coach", coach);
 
-  private onConnectedUserReceived(user: ApiUser) {
-    this.connectedUser = Observable.of(user);
-    this.cd.detectChanges();
-  }
-
-
-  createAMeeting() {
-    this.connectedUser.take(1).subscribe(
-      (user: ApiUser) => {
-
-        if (user == null) {
-          console.log('no connected user')
-          return;
-        }
-
-        this.meetingService.createMeeting(user.id).subscribe(
-          (success) => {
-            console.log('addPotentialDateToMeeting success', success);
-            //redirect to meetings page
-            this.router.navigate(['/meetings']);
-          },
-          (error) => {
-            console.log('addPotentialDateToMeeting error', error);
-            // this.displayErrorBookingDate = true;
+            this.coach = Observable.of(coach);
+            this.cd.detectChanges();
           }
         );
       }
-    );
+    )
   }
 
   ngAfterViewInit(): void {
-    // this.route.params.subscribe(
-    //   (params: any) => {
-    //     this.coachId = params['id']
-    //     this.subscriptionGetCoach = this.coachService.getCoachForId(this.coachId).subscribe(
-    //       (coach: Coach) => {
-    //         console.log("ngAfterViewInit, post sub coach", coach);
-    //
-    //         this.coach = Observable.of(coach);
-    //         this.cd.detectChanges();
-    //       }
-    //     );
-    //   }
-    // )
+    console.log("afterViewInit");
   }
 
   ngOnDestroy(): void {
@@ -87,9 +48,9 @@ export class CoachDetailsComponent implements OnInit, AfterViewInit, OnDestroy {
     //   this.subscriptionGetCoach.unsubscribe();
     // }
 
-    if (this.subscriptionConnectUser) {
-      this.subscriptionConnectUser.unsubscribe();
-    }
+    // if (this.subscriptionConnectUser) {
+    //   this.subscriptionConnectUser.unsubscribe();
+    // }
   }
 
 }

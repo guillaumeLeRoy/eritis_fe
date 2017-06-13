@@ -186,6 +186,11 @@ export class MeetingItemCoacheeComponent implements OnInit {
     let win = window.open(this.meeting.coach.chat_room_url, "_blank");
   }
 
+  goToCoachProfile(coachId: String) {
+    window.scrollTo(0, 0);
+    this.router.navigate(['/coachs',coachId]);
+  }
+
   // cancelCancelMeeting() {
   //   $('#deleteModal').closeModal();
   //
