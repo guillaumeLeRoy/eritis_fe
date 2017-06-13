@@ -1,4 +1,4 @@
-<div class="meeting-item col-lg-12">
+<div class="meeting-item col-lg-12" (click)="toggleShowDetails()">
 
   <div class="preloader-wrapper active" *ngIf="loading">
     <div class="spinner-layer spinner-blue-only">
@@ -18,27 +18,32 @@
 
     <!-- COACHEE -->
     <div *ngIf="coachee != null" class="row">
-      <div class="meeting-item-header col-md-12 col-lg-3">
-        <div class="meeting-item-coach">
-          <div>
-            <!-- image coachee -->
-            <img class="meeting-item-coach-avatar circle img-responsive" alt="coachee" [src]="coachee.avatar_url">
+      <div class="meeting-item-header col-md-12 col-lg-5">
+        <div>
+          <div class="meeting-item-coach">
+            <div>
+              <!-- image coachee -->
+              <img class="meeting-item-coach-avatar circle img-responsive" alt="coachee" [src]="coachee.avatar_url">
+            </div>
+
+            <div>
+              <p class="meeting-item-coach black-text">{{ coachee.display_name }}</p>
+              <p class="italic">Inscrit le {{ printDateString(coachee.start_date) }}</p>
+            </div>
           </div>
 
-          <div>
-            <p class="meeting-item-coach black-text">{{ coachee.display_name }}</p>
-            <p class="italic">Inscrit le {{ printDateString(coachee.start_date) }}</p>
+          <!--USAGE-->
+          <div class="meeting-item-date">
+            <div class="meeting-item-date-date">
+              <span class="usage-title">Utilisation: </span>
+              <span class="blue-text">{{ (coacheeUsageRate | async)?.usage_rate}}%</span>
+            </div>
           </div>
         </div>
-
-        <!-- USAGE -->
-        <!--<div class="meeting-item-date">-->
-        <!--<span class="meeting-item-date-date">Usage: <span class="blue-text">{{ (coacheeUsageRate | async)?.usage_rate }}%</span></span>-->
-        <!--</div>-->
       </div>
 
       <!-- GOAL -->
-      <div class="meeting-item-body col-md-12 col-lg-9">
+      <div class="meeting-item-body col-md-12 col-lg-7">
         <div class="meeting-item-body-content">
           <p class="meeting-item-goal">
             <span class="black-text bold">Objectif personnel: </span>
@@ -56,6 +61,25 @@
           </button>
         </div>
       </div><!--end meeting-item-body-->
+
+      <div *ngIf="showDetails" class="meeting-review">
+        <div>
+          <h5><span class="blue-text">{{ coachee.plan.sessions_count }}</span> séances/mois</h5>
+          <br>
+          <div *ngIf="!hasBookedMeeting"><p>Pas encore de séance réalisée</p><br></div>
+          <div *ngIf="hasBookedMeeting">
+            <div *ngFor="let meeting of (meetings | async)">
+              <p>
+                <span class="meeting-list-date">{{ printDateString(meeting.agreed_date.start_date) }}</span>
+                <span class="black-text bold">Objectif de la séance: </span>
+                <span>{{ goals[meeting.id] }}</span>
+              </p>
+              <br>
+            </div>
+          </div>
+        </div>
+      </div><!--end meeting-review-->
+
     </div><!--end coachee-->
 
     <!-- POTENTIAL COACHEE -->
@@ -86,7 +110,7 @@
 
 
 <!-- Modal RH add new objective to Coachee -->
-<div id="add_potential_coachee_modal" class="modal">
+<div id="modify_coachee_objective_modal" class="modal">
   <div class="delete-modal-content">
     <div class="delete-modal-message">
       <h5>Définissez un objectif</h5>

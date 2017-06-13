@@ -77,8 +77,8 @@
         <button class="btn-basic btn-plain btn-blue btn-small" *ngIf="!meeting.agreed_date" (click)="goToModifyDate(meeting.id)">
           MODIFIER
         </button>
-        <button class="btn-basic btn-plain btn-blue btn-small" *ngIf="hasGoal" (click)="goToChatRoom()"
-                [disabled]="!meeting.agreed_date">LANCER
+        <button class="btn-basic btn-plain btn-blue btn-small" *ngIf="hasGoal && meeting.agreed_date" (click)="goToChatRoom()">
+          LANCER
         </button>
         <button class="btn-basic btn-cancel" (click)="openModal()"><i class="material-icons">clear</i></button>
       </div>

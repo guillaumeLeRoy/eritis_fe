@@ -37,7 +37,8 @@
     <div *ngIf="hasPotentialCollaborators">
       <div class="collection-item" *ngFor="let potentialCoachee of potentialCoachees | async">
         <rb-meeting-item-rh [potentialCoachee]="potentialCoachee"
-                            [coachee]="null">
+                            [coachee]="null"
+                            (objectiveChanged)="onRefreshRequested()">
         </rb-meeting-item-rh>
       </div>
     </div>
@@ -66,8 +67,8 @@
       </select>
     </div>
     <div class="delete-modal-footer">
-      <button class="btn-basic btn-plain" (click)="cancelAddPotentialCoachee()">Annuler</button>
-      <button class="btn-basic btn-blue" (click)="validateAddPotentialCoachee()"
+      <button class="btn-basic btn-plain btn-small" (click)="cancelAddPotentialCoachee()">Annuler</button>
+      <button class="btn-basic btn-blue btn-plain btn-small" (click)="validateAddPotentialCoachee()"
               [disabled]="!potentialCoacheeEmail">Ajouter
       </button>
     </div>

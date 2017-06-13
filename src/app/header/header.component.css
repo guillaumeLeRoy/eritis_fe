@@ -237,7 +237,7 @@ rb-signin{
   color: var(--main-light-grey);
 }
 
-.notif-delete>a:hover{
+nav .notif-delete:hover > a{
   color: var(--main-electric-blue) !important;
 }
 
