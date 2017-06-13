@@ -18,7 +18,7 @@
   <div class="row" *ngIf="!loading">
 
     <!-- COACH -->
-    <div class="meeting-item-header col-md-12 col-lg-4">
+    <div class="meeting-item-header col-md-12 col-lg-5">
       <div class="meeting-item-coach has-coach" *ngIf="meeting.coach"
            (click)="goToCoachProfile(meeting.coach.id)">
         <div>
@@ -28,7 +28,7 @@
         </div>
 
         <div>
-          <p class="meeting-item-coach-name">{{ meeting.coach.display_name }}</p>
+          <p class="meeting-item-coach-name black-text bold">{{ meeting.coach.display_name }}</p>
         </div>
       </div>
 
@@ -63,7 +63,7 @@
 
 
     <!-- GOAL & REVIEW -->
-    <div class="meeting-item-body col-md-12 col-lg-8">
+    <div class="meeting-item-body col-md-12 col-lg-7">
       <div class="meeting-item-body-content">
         <p class="meeting-item-goal">
           <span class="black-text bold">Objectif de la séance: </span>

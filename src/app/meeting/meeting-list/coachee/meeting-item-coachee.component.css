@@ -55,7 +55,7 @@ p {
 }
 
 .meeting-item-coach.has-coach:hover .meeting-item-coach-name {
-  color: var(--main-electric-blue);
+  color: var(--main-electric-blue) !important;
 }
 
 .meeting-item-date{

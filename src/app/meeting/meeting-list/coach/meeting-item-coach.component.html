@@ -30,7 +30,7 @@
           </div>
 
           <div>
-            <p class="meeting-item-coach black-text" *ngIf="meeting.coachee">{{ meeting.coachee.display_name }}</p>
+            <p class="meeting-item-coach black-text bold" *ngIf="meeting.coachee">{{ meeting.coachee.display_name }}</p>
             <p class="italic">Company name</p>
           </div>
         </div><!--end meeting-item-coach-->
@@ -48,11 +48,19 @@
     <!-- GOAL & REVIEW -->
     <div class="meeting-item-body col-md-12" [class.col-lg-9]="!meeting.agreed_date" [class.col-lg-7]="meeting.agreed_date">
       <div class="meeting-item-body-content">
+        <p>
+          <span class="black-text bold">Objectif personnel: </span>
+          <span *ngIf="meeting.coachee.last_objective != null">{{ meeting.coachee.last_objective.objective }}</span>
+          <span *ngIf="meeting.coachee.last_objective == null">n/a</span>
+        </p>
+        <br>
         <p class="meeting-item-goal">
           <span class="black-text bold">Objectif de la séance: </span>
-          <span *ngIf="hasGoal">{{(goal | async) }}</span>
+          <span *ngIf="hasGoal">{{(goal | async)}}</span>
           <span *ngIf="!hasGoal" class="red-text">Pas encore défini...</span>
         </p>
+        <br>
+        <p><span class="black-text bold">Context :</span> {{ (context | async) }}</p>
 
         <!--Complétées-->
         <div *ngIf="!meeting.isOpen" class="meeting-review">
@@ -64,24 +72,9 @@
           </div>
         </div><!--end meeting-review-->
 
-
-        <div *ngIf="meeting.agreed_date && showDetails" class="meeting-review">
-          <div>
-            <br>
-            <p><span class="black-text bold">Context :</span> {{ (context | async) }}</p>
-            <br>
-            <p><span class="black-text bold">Objectif personnel :</span>
-              <span *ngIf="coachee.last_objective != null">{{ coachee.last_objective.objective }}</span>
-              <span *ngIf="coachee.last_objective == null">n/a</span>
-            </p>
-          </div>
-        </div><!--end meeting-review-->
-
         <!--Demandes disponibles-->
-        <div *ngIf="!meeting.agreed_date && showDetails" class="meeting-review">
+        <div *ngIf="!meeting.agreed_date" class="meeting-review">
           <div>
-            <br>
-            <p><span class="black-text bold">Context :</span> {{ (context | async) }}</p>
             <br>
             <p><span class="black-text bold">Disponibilités :</span></p>
             <div class="meeting-potential" *ngFor="let potential of potentialDates | async">
@@ -109,20 +102,25 @@
                   </option>
                 </select>
               </div>
-              <div>
-                <button type="submit" class="btn-basic btn-blue btn-small"
-                        [disabled]="!selectedDate || !selectedHour"
-                        (click)="openCoachValidateMeetingModal()">Valider
-                </button>
-              </div>
+              <!--<div>-->
+                <!--<button type="submit" class="btn-basic btn-blue btn-small"-->
+                        <!--[disabled]="!selectedDate || !selectedHour"-->
+                        <!--(click)="openCoachValidateMeetingModal()">Devenir coach-->
+                <!--</button>-->
+              <!--</div>-->
             </form>
           </div>
         </div><!--end meeting-review-->
       </div>
 
       <div class="meeting-item-body-buttons" *ngIf="meeting.isOpen">
-        <button class="btn-basic btn-plain btn-blue btn-small"
-                (click)="toggleShowDetails()">DETAIL
+        <!--<button class="btn-basic btn-plain btn-blue btn-small"-->
+                <!--(click)="toggleShowDetails()">DETAIL-->
+        <!--</button>-->
+        <button type="submit" class="btn-basic btn-blue btn-plain btn-small"
+                *ngIf="!meeting.agreed_date"
+                [disabled]="!selectedDate || !selectedHour"
+                (click)="openCoachValidateMeetingModal()">Devenir coach
         </button>
         <!--<button class="btn-basic btn-cancel"-->
                 <!--*ngIf="meeting.agreed_date"-->
