@@ -108,24 +108,24 @@
             <!-- update display name -->
             <form [formGroup]="formCoach" (ngSubmit)="submitCoachProfilUpdate()">
               <div class="row">
-                <div class="input-field col s10">
-                  <input id="edit_username" type="text" formControlName="displayName" class="validate">
+                <div class="col s10">
                   <label for="edit_username">Username</label>
+                  <input id="edit_username" type="text" formControlName="displayName" class="validate">
                 </div>
               </div>
 
               <div class="row">
-                <div class="input-field col s10">
+                <div class="col s10">
+                  <label for="edit_description">Description</label>
                   <textarea id="edit_description" class="materialize-textarea validate"
                             formControlName="description"></textarea>
-                  <label for="edit_description">Description</label>
                 </div>
               </div>
 
               <div class="row">
-                <div class="input-field col s10">
-                  <input id="edit_avatar_url" type="text" formControlName="avatar" class="validate">
+                <div class="col s10">
                   <label for="edit_avatar_url">Avatar url</label>
+                  <input id="edit_avatar_url" type="text" formControlName="avatar" class="validate">
                 </div>
               </div>
 

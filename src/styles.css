@@ -165,15 +165,23 @@ a:focus{
 }
 
 .black-text{
-  color: black;
+  color: var(--main-dark-grey) !important;
 }
 
 .red-text{
-  color: var(--main-red-color);
+  color: var(--main-red-color) !important;
 }
 
 .blue-text{
   color: var(--main-electric-blue) !important;
+}
+
+.light-grey-text{
+  color: var(--main-light-grey) !important;
+}
+
+.ultra-light-grey-text{
+  color: var(--main-ultra-light-grey) !important;
 }
 
 .bold{
@@ -184,9 +192,10 @@ a:focus{
   font-style: italic;
 }
 
-label{
+label,
+label.active{
   color: var(--main-dark-grey);
-  font-size: 24px;
+  font-size: 18px;
   font-weight: 500;
 }
 
@@ -294,11 +303,11 @@ ngb-datepicker .btn-link:hover{
 /* Delete Meeting Modal */
 .modal {
   height: 350px;
-  max-width: 800px;
+  max-width: 90%;
 }
 
-.delete-modal-content {
-  padding: 32px 64px;
+.action-modal-content {
+  padding: 32px;
   height: 100%;
   text-align: center;
   display: flex;
@@ -306,12 +315,13 @@ ngb-datepicker .btn-link:hover{
   justify-content: space-between;
   align-content: space-between;
 }
-.delete-modal-message {
+.action-modal-message {
   text-align: left;
 }
 
-.delete-modal-footer button {
+.action-modal-footer button {
   margin: 0 8px !important;
+  margin-top: 16px !important;
 }
 
 .dropdown-content li > a,

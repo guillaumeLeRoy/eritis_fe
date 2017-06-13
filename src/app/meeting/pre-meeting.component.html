@@ -1,16 +1,16 @@
-<h4 class="card-title">Veuillez renseigner les éléments de votre demande</h4>
+<h4>Veuillez renseigner les éléments de votre demande</h4>
 
 <div class="row">
-  <div class="input-field col s12">
-    <input id="objectif" type="text" [ngModel]="uiMeetingGoal" (change)="onGoalValueChanged($event)">
+  <div class="col s12">
     <label for="objectif">Quel est votre objectif ?</label>
+    <input id="objectif" type="text" [ngModel]="uiMeetingGoal" (change)="onGoalValueChanged($event)" placeholder="Objectif...">
   </div>
 </div>
 
 
 <div class="row">
-  <div class="input-field col s12">
-    <input id="context" type="text" [ngModel]="uiMeetingContext" (change)="onContextValueChanged($event)">
+  <div class="col s12">
     <label for="context">Quel est le context ?</label>
+    <input id="context" type="text" [ngModel]="uiMeetingContext" (change)="onContextValueChanged($event)" placeholder="Context...">
   </div>
 </div>

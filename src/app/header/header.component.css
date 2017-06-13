@@ -163,11 +163,15 @@ header.user-connected {
   font-weight: 300;
   letter-spacing: 2.3px;
   margin: 64px 0;
-  opacity: 0.6;
+}
+
+.header-btn {
+  text-align: center;
 }
 
 .header-btn .btn-basic{
   min-width: 200px;
+  margin: 8px;
 }
 
 .header-arrow-bottom{

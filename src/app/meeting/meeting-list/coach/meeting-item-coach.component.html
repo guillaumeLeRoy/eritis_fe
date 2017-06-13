@@ -81,6 +81,8 @@
         <div *ngIf="!meeting.agreed_date && showDetails" class="meeting-review">
           <div>
             <br>
+            <p><span class="black-text bold">Context :</span> {{ (context | async) }}</p>
+            <br>
             <p><span class="black-text bold">Disponibilités :</span></p>
             <div class="meeting-potential" *ngFor="let potential of potentialDates | async">
               <span class="meeting-potential-date">{{ getDate(potential.start_date) }}</span>
@@ -137,11 +139,11 @@
 
 <!-- Modal Coach Validate Meeting -->
 <div id="coach_cancel_meeting" class="modal">
-  <div class="delete-modal-content">
-    <div class="delete-modal-message">
-      <h5>Vous ne pourrez pas annuler ce meeting, êtes-vous sûr de vouloir valider ce créneau ?</h5>
+  <div class="action-modal-content">
+    <div class="daction-modal-message">
+      <h5 class="black-text center">Vous ne pourrez pas annuler ce meeting, êtes-vous sûr de vouloir valider ce créneau ?</h5>
     </div>
-    <div class="delete-modal-footer">
+    <div class="action-modal-footer">
       <button class="btn-basic btn-plain btn-small" (click)="cancelCoachValidateMeeting()">Annuler</button>
       <button class="btn-basic btn-blue btn-small" (click)="onSubmitValidateMeeting()">Valider</button>
     </div>

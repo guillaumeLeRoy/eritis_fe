@@ -108,12 +108,12 @@
 
   <!-- Modal RH add new objective to Coachee -->
   <div id="add_new_objective_modal" class="modal">
-    <div class="delete-modal-content">
-      <div class="delete-modal-message">
-        <h5>Définissez un objectif</h5>
+    <div class="action-modal-content">
+      <div class="action-modal-message">
+        <label>Définissez un objectif</label>
         <input type="text" placeholder="Objectif" id="" [(ngModel)]="coacheeNewObjective">
       </div>
-      <div class="delete-modal-footer">
+      <div class="action-modal-footer">
         <button class="btn-basic btn-plain btn-small" (click)="cancelAddNewObjectiveModal()">Annuler</button>
         <button class="btn-basic btn-blue btn-plain btn-small" (click)="validateAddNewObjectiveModal()"
                 [disabled]="!coacheeNewObjective">Ajouter

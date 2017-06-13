@@ -52,9 +52,9 @@
 
 <!-- Modal RH add Coachee -->
 <div id="add_potential_coachee_modal" class="modal">
-  <div class="delete-modal-content">
-    <div class="delete-modal-message">
-      <h5>Veuillez saisir l'adresse mail du collaborateur. Un mail lui sera envoyé pour finaliser son inscription.</h5>
+  <div class="action-modal-content">
+    <div class="action-modal-message">
+      <label>Veuillez saisir l'adresse mail du collaborateur. Un mail lui sera envoyé pour finaliser son inscription.</label>
       <input type="email" placeholder="Email" id="potential_mail" [(ngModel)]="potentialCoacheeEmail">
       <select [(ngModel)]="selectedPlan"
               [ngModelOptions]="{standalone: true}"
@@ -66,7 +66,7 @@
         </option>
       </select>
     </div>
-    <div class="delete-modal-footer">
+    <div class="action-modal-footer">
       <button class="btn-basic btn-plain btn-small" (click)="cancelAddPotentialCoachee()">Annuler</button>
       <button class="btn-basic btn-blue btn-plain btn-small" (click)="validateAddPotentialCoachee()"
               [disabled]="!potentialCoacheeEmail">Ajouter

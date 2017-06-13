@@ -37,11 +37,12 @@
   <h4 class="text-right italic">"{{ (coach | async)?.description }}"</h4>
   <br>
   <div>
-    <h5 class="black-text">Envoyer un message à {{(coach | async)?.display_name}}</h5>
-
     <form>
-      <div class="input-field">
-        <textarea name="message" id="message" class="message-field"></textarea>
+      <div class="row">
+        <div class="col s12">
+          <label for="message">Envoyer un message à {{(coach | async)?.display_name}}</label>
+          <textarea name="message" id="message" class="message-field"></textarea>
+        </div>
       </div>
       <div class="input-field">
         <button class="btn-basic btn-plain btn-blue right">Envoyer</button>
