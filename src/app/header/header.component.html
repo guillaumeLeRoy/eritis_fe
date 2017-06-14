@@ -18,7 +18,8 @@
             <li *ngIf="(isAuthenticated | async) && isUserACoach()" [class.active]="router.url === '/available_meetings'"><a (click)="goToAvailableSessions()">
               Demandes en attente</a></li>
 
-            <li *ngIf="(isAuthenticated | async)" [class.active]="router.url === '/meetings'"><a (click)="goToMeetings()">Tableau de bord</a></li>
+            <li *ngIf="(isAuthenticated | async)" [class.active]="router.url === '/meetings'"><a (click)="goToMeetings()">
+              Tableau de bord</a></li>
 
             <!--<li *ngIf="(isAuthenticated | async) && isUserACoach()"><a (click)="goToProfile()">Profil</a></li>-->
 

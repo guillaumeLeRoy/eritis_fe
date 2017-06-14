@@ -36,19 +36,67 @@
 <div class="container">
   <h4 class="text-right italic">"{{ (coach | async)?.description }}"</h4>
   <br>
-  <div>
-    <form>
-      <div class="row">
-        <div class="col s12">
-          <label for="message">Envoyer un message à {{(coach | async)?.display_name}}</label>
-          <textarea name="message" id="message" class="message-field"></textarea>
-        </div>
+
+  <!--<div>-->
+    <!--<form>-->
+      <!--<div class="row">-->
+        <!--<div class="col s12">-->
+          <!--<label for="message">Envoyer un message à {{(coach | async)?.display_name}}</label>-->
+          <!--<textarea name="message" id="message" class="message-field"></textarea>-->
+        <!--</div>-->
+      <!--</div>-->
+      <!--<div class="input-field">-->
+        <!--<button class="btn-basic btn-plain btn-blue right">Envoyer</button>-->
+      <!--</div>-->
+    <!--</form>-->
+  <!--</div>-->
+
+  <h4 class="black-text">Mettre à jour votre profil</h4>
+
+  <form [formGroup]="formCoach" (ngSubmit)="submitCoachProfilUpdate()">
+    <div class="row">
+      <div class="col-xs-12 col-sm-6">
+        <label for="edit_name">Prénom</label>
+        <input id="edit_name" type="text" class="validate"
+               formControlName="name"
+               placeholder="Prénom">
       </div>
-      <div class="input-field">
-        <button class="btn-basic btn-plain btn-blue right">Envoyer</button>
+
+      <div class="col-xs-12 col-sm-6">
+        <label for="edit_surname">Prénom</label>
+        <input id="edit_surname" type="text" class="validate"
+               formControlName="surname"
+               placeholder="Nom">
       </div>
-    </form>
-  </div>
+    </div>
+
+    <div class="row">
+      <div class="col-sm-12">
+        <label for="edit_avatar_url">Photo de profil</label>
+        <input id="edit_avatar_url" type="text" class="validate"
+               formControlName="avatar"
+               placeholder="http://...">
+      </div>
+
+      <div class="col-sm-12 center">
+        <img src="{{formCoach.get('avatar').value}}" alt="profile image" class="user-img circle responsive-img z-depth-2">
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col s12">
+        <label for="edit_description">Description</label>
+        <textarea id="edit_description" class="description-field validate"
+                  formControlName="description"
+                  placeholder="Description...">
+        </textarea>
+      </div>
+    </div>
+
+    <button type="submit" class="btn-basic btn-plain btn-blue btn-small right" [disabled]="!formCoach.valid">Enregistrer</button>
+
+  </form>
+
 </div>
 
 

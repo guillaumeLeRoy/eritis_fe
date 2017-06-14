@@ -70,3 +70,7 @@
 .message-field {
   min-height: 200px;
 }
+
+.description-field {
+  min-height: 100px;
+}
