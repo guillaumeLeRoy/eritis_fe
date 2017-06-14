@@ -123,7 +123,7 @@
         <button type="submit" class="btn-basic btn-blue btn-plain btn-small"
                 *ngIf="!meeting.agreed_date"
                 [disabled]="!selectedDate || !selectedHour"
-                (click)="openCoachValidateMeetingModal()">Coacher
+                (click)="onValidateDateClick()">Coacher
         </button>
         <!--<button class="btn-basic btn-cancel"-->
                 <!--*ngIf="meeting.agreed_date"-->
@@ -136,20 +136,6 @@
   </div><!--end row-->
 
 </div><!--end meeting-item-->
-
-
-<!-- Modal Coach Validate Meeting -->
-<div id="coach_cancel_meeting" class="modal">
-  <div class="action-modal-content">
-    <div class="daction-modal-message">
-      <h5 class="black-text center">Vous ne pourrez pas annuler ce meeting, êtes-vous sûr de vouloir valider ce créneau ?</h5>
-    </div>
-    <div class="action-modal-footer">
-      <button class="btn-basic btn-plain btn-small" (click)="cancelCoachValidateMeeting()">Annuler</button>
-      <button class="btn-basic btn-blue btn-small" (click)="onSubmitValidateMeeting()">Valider</button>
-    </div>
-  </div>
-</div>
 
 
 <!--

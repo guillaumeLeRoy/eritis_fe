@@ -7,6 +7,10 @@ import {Subscription} from "rxjs/Subscription";
 import {Coach} from "../../../model/Coach";
 import {ApiUser} from "../../../model/ApiUser";
 import {Router} from "@angular/router";
+import {MeetingDate} from "../../../model/MeetingDate";
+
+declare var $: any;
+declare var Materialize: any;
 
 @Component({
   selector: 'er-available-meetings',
@@ -21,6 +25,10 @@ export class AvailableMeetingsComponent implements OnInit {
 
   private connectedUserSubscription: Subscription;
   private user: Observable<Coach>;
+
+  private selectedDate: string;
+  private selectedHour: number;
+  private selectedMeeting: Meeting;
 
   constructor(private authService: AuthService, private meetingService: MeetingsService, private cd: ChangeDetectorRef, private router: Router) {
   }
@@ -83,5 +91,72 @@ export class AvailableMeetingsComponent implements OnInit {
         );
       }
     );
+  }
+
+  confirmPotentialDate(meetingId: string) {
+
+    let minDate = new Date(this.selectedDate);
+    minDate.setHours(this.selectedHour);
+    let maxDate = new Date(this.selectedDate);
+    maxDate.setHours(this.selectedHour + 1);
+
+    let timestampMin: number = +minDate.getTime().toFixed(0) / 1000;
+    let timestampMax: number = +maxDate.getTime().toFixed(0) / 1000;
+
+    // create new date
+    this.meetingService.addPotentialDateToMeeting(meetingId, timestampMin, timestampMax).subscribe(
+      (meetingDate: MeetingDate) => {
+        console.log('addPotentialDateToMeeting, meetingDate : ', meetingDate);
+
+        // validate date
+        this.meetingService.setFinalDateToMeeting(meetingId, meetingDate.id).subscribe(
+          (meeting: Meeting) => {
+            console.log("confirmPotentialDate, response", meeting);
+            this.onRefreshRequested();
+            Materialize.toast('Meeting validé !', 3000, 'rounded')
+          }, (error) => {
+            console.log('get potentials dates error', error);
+            Materialize.toast('Erreur lors de la validation du meeting', 3000, 'rounded')
+          }
+        );
+      },
+      (error) => {
+        console.log('addPotentialDateToMeeting error', error);
+      }
+    );
+  }
+
+  onSubmitValidateMeeting() {
+    this.user.take(1).subscribe(
+      (user: Coach) => {
+        this.meetingService.associateCoachToMeeting(this.selectedMeeting.id, user.id).subscribe(
+          (meeting: Meeting) => {
+            console.log('on meeting associated : ', meeting);
+            //navigate to dashboard
+            this.confirmPotentialDate(meeting.id);
+            this.coachValidateModalVisibility(false);
+          }
+        );
+      }
+    );
+  }
+
+  coachValidateModalVisibility(isVisible: boolean) {
+    if (isVisible) {
+      $('#coach_cancel_meeting').openModal();
+    } else {
+      $('#coach_cancel_meeting').closeModal();
+    }
+  }
+
+  openCoachValidateMeetingModal($event) {
+    this.selectedMeeting = $event.meeting;
+    this.selectedDate = $event.selectedDate;
+    this.selectedHour = $event.selectedHour;
+    this.coachValidateModalVisibility(true);
+  }
+
+  cancelCoachValidateMeeting() {
+    this.coachValidateModalVisibility(false);
   }
 }

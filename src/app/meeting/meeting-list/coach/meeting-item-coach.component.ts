@@ -25,7 +25,7 @@ export class MeetingItemCoachComponent implements OnInit, AfterViewInit {
   meeting: Meeting;
 
   @Output()
-  dateAgreed = new EventEmitter();
+  onValidateDateBtnClick = new EventEmitter();
 
   // @Output()
   // dateRemoved = new EventEmitter();
@@ -144,39 +144,6 @@ export class MeetingItemCoachComponent implements OnInit, AfterViewInit {
         this.loadPotentialDays();
       }, (error) => {
         console.log('get potentials dates error', error);
-      }
-    );
-  }
-
-  confirmPotentialDate() {
-
-    let minDate = new Date(this.selectedDate);
-    minDate.setHours(this.selectedHour);
-    let maxDate = new Date(this.selectedDate);
-    maxDate.setHours(this.selectedHour + 1);
-
-    let timestampMin: number = +minDate.getTime().toFixed(0) / 1000;
-    let timestampMax: number = +maxDate.getTime().toFixed(0) / 1000;
-
-    // create new date
-    this.meetingService.addPotentialDateToMeeting(this.meeting.id, timestampMin, timestampMax).subscribe(
-      (meetingDate: MeetingDate) => {
-        console.log('addPotentialDateToMeeting, meetingDate : ', meetingDate);
-
-        // validate date
-        this.meetingService.setFinalDateToMeeting(this.meeting.id, meetingDate.id).subscribe(
-          (meeting: Meeting) => {
-            console.log("confirmPotentialDate, response", meeting);
-            this.dateAgreed.emit();
-            Materialize.toast('Meeting validé !', 3000, 'rounded')
-          }, (error) => {
-            console.log('get potentials dates error', error);
-            Materialize.toast('Erreur lors de la validation du meeting', 3000, 'rounded')
-          }
-        );
-      },
-      (error) => {
-        console.log('addPotentialDateToMeeting error', error);
       }
     );
   }
@@ -341,47 +308,8 @@ export class MeetingItemCoachComponent implements OnInit, AfterViewInit {
     return (new Date(date)).getDate() + ' ' + this.months[(new Date(date)).getMonth()];
   }
 
-  toggleShowDetails() {
-    this.showDetails = this.showDetails ? false : true;
+
+  onValidateDateClick() {
+    this.onValidateDateBtnClick.emit({selectedDate: this.selectedDate, selectedHour: this.selectedHour, meeting: this.meeting});
   }
-
-  openModal() {
-    console.log('openModal, agreed date : ', this.meeting.agreed_date);
-    console.log('openModal, meeting : ', this.meeting);
-    // $('#deleteModal').openModal();
-
-    this.cancelMeetingTimeEvent.emit(this.meeting);//TODO to improve
-  }
-
-  onSubmitValidateMeeting(meeting: Meeting) {
-    this.user.take(1).subscribe(
-      (user: Coach) => {
-        this.meetingService.associateCoachToMeeting(this.meeting.id, user.id).subscribe(
-          (meeting: Meeting) => {
-            console.log('on meeting associated : ', meeting);
-            //navigate to dashboard
-            this.confirmPotentialDate();
-            this.cd.detectChanges();
-          }
-        );
-      }
-    );
-  }
-
-  coachValidateModalVisibility(isVisible: boolean) {
-    if (isVisible) {
-      $('#coach_cancel_meeting').openModal();
-    } else {
-      $('#coach_cancel_meeting').closeModal();
-    }
-  }
-
-  openCoachValidateMeetingModal(meeting: Meeting) {
-    this.coachValidateModalVisibility(true);
-  }
-
-  cancelCoachValidateMeeting() {
-    this.coachValidateModalVisibility(false);
-  }
-
 }
