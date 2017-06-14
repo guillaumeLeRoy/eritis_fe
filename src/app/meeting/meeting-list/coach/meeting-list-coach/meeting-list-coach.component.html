@@ -36,7 +36,8 @@
       <div class="collection-item" *ngFor="let meeting of meetingsOpened | async">
         <rb-meeting-item-coach [meeting]="meeting"
                                (dateAgreed)="onRefreshRequested($event)"
-                               (cancelMeetingTimeEvent)="openCoachCancelMeetingModal($event)">
+                               (cancelMeetingTimeEvent)="openCoachCancelMeetingModal($event)"
+                               (onCloseMeetingBtnClickEmitter)="starCloseSessionFlow($event)">
         </rb-meeting-item-coach>
       </div>
     </div>
@@ -67,3 +68,20 @@
 
   </div><!--end card-->
 </div><!--end row-->
+
+
+<!-- Modal Coach to complete a session -->
+<div id="complete_session_modal" class="modal">
+  <div class="action-modal-content">
+    <div class="action-modal-message">
+      <label>Rédigez le compte rendu de la séance</label>
+      <textarea type="text" placeholder="Compte rendu" id="" [(ngModel)]="sessionReport"></textarea>
+    </div>
+    <div class="action-modal-footer">
+      <button class="btn-basic btn-plain btn-small" (click)="cancelCloseSessionModal()">Annuler</button>
+      <button class="btn-basic btn-blue btn-plain btn-small" (click)="validateCloseSessionModal()"
+              [disabled]="!sessionReport">Conclure la séance
+      </button>
+    </div>
+  </div>
+</div>

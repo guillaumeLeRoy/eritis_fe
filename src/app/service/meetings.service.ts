@@ -102,21 +102,16 @@ export class MeetingsService {
   }
 
   /**
-   * Close the given meeting with a comment and a rate.
+   * Close the given meeting with a comment
    * Only a Coach can close a meeting.
    * @param meetingId
    * @param comment
-   * @param rate
    * @returns {Observable<R>}
    */
-  closeMeeting(meetingId: string, comment: string, rate: string): Observable<Meeting> {
-    //convert rating into Integer
-    let rating = +rate;
-
+  closeMeeting(meetingId: string, comment: string): Observable<Meeting> {
     console.log("closeMeeting, meetingId %s, comment : %s", meetingId, comment);
     let body = {
       comment: comment,
-      score: rating
     };
     let param = [meetingId];
     return this.apiService.put(AuthService.CLOSE_MEETING, param, body).map((response: Response) => {

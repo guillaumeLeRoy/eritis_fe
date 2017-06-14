@@ -2,7 +2,6 @@ import {AfterViewInit, ChangeDetectorRef, Component, EventEmitter, Input, OnInit
 import {Meeting} from "../../../model/Meeting";
 import {Observable} from "rxjs";
 import {MeetingReview} from "../../../model/MeetingReview";
-import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {Coachee} from "../../../model/Coachee";
 import {MeetingDate} from "../../../model/MeetingDate";
 import {MeetingsService} from "../../../service/meetings.service";
@@ -33,6 +32,9 @@ export class MeetingItemCoachComponent implements OnInit, AfterViewInit {
   @Output()
   cancelMeetingTimeEvent = new EventEmitter<Meeting>();
 
+  @Output()
+  onCloseMeetingBtnClickEmitter = new EventEmitter();
+
   months = ['Jan', 'Feb', 'Mar', 'Avr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 
   private coachee: Coachee;
@@ -60,11 +62,9 @@ export class MeetingItemCoachComponent implements OnInit, AfterViewInit {
   private potentialDays: Observable<number[]>;
   private potentialHours: Observable<number[]>;
 
-  private closeMeetingForm: FormGroup;
-
   private connectedUserSubscription: Subscription;
 
-  constructor(private authService: AuthService, private formBuilder: FormBuilder, private meetingService: MeetingsService, private cd: ChangeDetectorRef) {
+  constructor(private authService: AuthService, private meetingService: MeetingsService, private cd: ChangeDetectorRef) {
     $('select').material_select();
   }
 
@@ -72,11 +72,6 @@ export class MeetingItemCoachComponent implements OnInit, AfterViewInit {
     console.log("ngOnInit, meeting : ", this.meeting);
 
     this.onRefreshRequested();
-
-    this.closeMeetingForm = this.formBuilder.group({
-      recap: ["", Validators.required],
-      score: ["", Validators.required]
-    });
 
     this.coachee = this.meeting.coachee;
 
@@ -148,21 +143,8 @@ export class MeetingItemCoachComponent implements OnInit, AfterViewInit {
     );
   }
 
-  submitCloseMeetingForm() {
-    console.log("submitCloseMeetingForm form : ", this.closeMeetingForm.value)
-
-    //TODO use score value
-    this.meetingService.closeMeeting(this.meeting.id, this.closeMeetingForm.value.recap, "5").subscribe(
-      (meeting: Meeting) => {
-        console.log("submitCloseMeetingForm, got meeting : ", meeting);
-        //refresh list of meetings
-        this.meeting = meeting;
-        this.cd.detectChanges();
-      }, (error) => {
-        console.log('closeMeeting error', error);
-        //TODO display error
-      }
-    );
+  onCloseMeetingBtnClick() {
+    this.onCloseMeetingBtnClickEmitter.emit(this.meeting.id);
   }
 
   private getGoal() {
@@ -310,6 +292,10 @@ export class MeetingItemCoachComponent implements OnInit, AfterViewInit {
 
 
   onValidateDateClick() {
-    this.onValidateDateBtnClick.emit({selectedDate: this.selectedDate, selectedHour: this.selectedHour, meeting: this.meeting});
+    this.onValidateDateBtnClick.emit({
+      selectedDate: this.selectedDate,
+      selectedHour: this.selectedHour,
+      meeting: this.meeting
+    });
   }
 }

@@ -66,7 +66,7 @@ export class AuthService {
   public static POST_MEETING_REVIEW = "/meeting/:meetingId/review";
   public static PUT_MEETING_REVIEW = "/meeting/reviews/:reviewId";//update review
   public static DELETE_MEETING_REVIEW = "/meeting/reviews/:reviewId";//delete review
-  public static CLOSE_MEETING = "/meeting/:meetingId/close";
+  public static CLOSE_MEETING = "v1/meetings/:meetingId/close";// close meeting
   public static GET_MEETINGS_FOR_COACHEE_ID = "/meetings/coachee/:coacheeId";
   public static GET_MEETINGS_FOR_COACH_ID = "/meetings/coach/:coachId";
   public static POST_MEETING_POTENTIAL_DATE = "/meeting/:meetingId/potential";

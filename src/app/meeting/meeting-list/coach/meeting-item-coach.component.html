@@ -125,6 +125,11 @@
                 [disabled]="!selectedDate || !selectedHour"
                 (click)="onValidateDateClick()">Coacher
         </button>
+
+        <button type="submit" class="btn-basic btn-blue btn-plain btn-small"
+                *ngIf="meeting.agreed_date"
+                (click)="onCloseMeetingBtnClick()">Clore
+        </button>
         <!--<button class="btn-basic btn-cancel"-->
                 <!--*ngIf="meeting.agreed_date"-->
                 <!--(click)="openModal()">-->
