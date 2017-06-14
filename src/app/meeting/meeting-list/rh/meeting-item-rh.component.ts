@@ -2,10 +2,6 @@ import {AfterViewInit, ChangeDetectorRef, Component, EventEmitter, Input, OnInit
 import {Coachee} from "../../../model/Coachee";
 import {PotentialCoachee} from "../../../model/PotentialCoachee";
 import {CoachCoacheeService} from "../../../service/coach_coachee.service";
-import {AuthService} from "../../../service/auth.service";
-import {ApiUser} from "../../../model/apiUser";
-import {Rh} from "../../../model/Rh";
-import {CoacheeObjective} from "../../../model/CoacheeObjective";
 import {Meeting} from "../../../model/Meeting";
 import {Observable} from "rxjs/Observable";
 import {MeetingsService} from "../../../service/meetings.service";
@@ -29,8 +25,12 @@ export class MeetingItemRhComponent implements OnInit, AfterViewInit {
   @Input()
   potentialCoachee: PotentialCoachee;
 
+  /**
+   * Event emitted when user clicks on the "Objective" btn.
+   * @type {EventEmitter<string>} the coacheeId
+   */
   @Output()
-  objectiveChanged = new EventEmitter<string>();
+  onUpdateObjectiveBtnClick = new EventEmitter<string>();
 
   months = ['Janvier', 'Février', 'Mars', 'Avril', 'Mai', 'Juin', 'Juillet', 'Août', 'Septembre', 'Octobre', 'Novembre', 'Décembre'];
 
@@ -43,14 +43,9 @@ export class MeetingItemRhComponent implements OnInit, AfterViewInit {
 
   private coacheeUsageRate: Observable<RhUsageRate>;
 
-  /**
-   * Used in Objective modal.
-   */
-  private coacheeNewObjective: string;
-
   // private coacheeUsageRate: Observable<RhUsageRate>;
 
-  constructor(private authService: AuthService, private meetingsService: MeetingsService, private coachCoacheeService: CoachCoacheeService, private cd: ChangeDetectorRef) {
+  constructor(private meetingsService: MeetingsService, private coachCoacheeService: CoachCoacheeService, private cd: ChangeDetectorRef) {
   }
 
   ngOnInit(): void {
@@ -136,63 +131,8 @@ export class MeetingItemRhComponent implements OnInit, AfterViewInit {
     );
   }
 
-
-
-  updateCoacheeObjectivePanelVisibility(visible: boolean) {
-    if (visible) {
-      $('#add_new_objective_modal').openModal();
-    } else {
-      $('#add_new_objective_modal').closeModal();
-    }
-  }
-
-  cancelAddNewObjectiveModal() {
-    this.updateCoacheeObjectivePanelVisibility(false);
-  }
-
-  validateAddNewObjectiveModal() {
-    console.log('validateAddNewObjectiveModal');
-
-    // TODO start loader
-    let user = this.authService.getConnectedUser();
-    if (user == null) {
-      let userObs = this.authService.getConnectedUserObservable();
-      userObs.take(1).subscribe(
-        (user: ApiUser) => {
-          console.log('validateAddNewObjectiveModal, got connected user');
-          if (user instanceof Rh) {
-            this.makeAPICallToAddNewObjective(user);
-          }
-        }
-      );
-      return;
-    }
-
-    if (user instanceof Rh) {
-      this.makeAPICallToAddNewObjective(user);
-    }
-
-  }
-
-  private makeAPICallToAddNewObjective(user: ApiUser) {
-    this.updateCoacheeObjectivePanelVisibility(false);
-    //call API
-    this.coachCoacheeService.addObjectiveToCoachee(user.id, this.coachee.id, this.coacheeNewObjective).subscribe(
-      (obj: CoacheeObjective) => {
-        console.log('addObjectiveToCoachee, SUCCESS', obj);
-        // close modal
-        this.updateCoacheeObjectivePanelVisibility(false);
-        this.objectiveChanged.emit(this.coacheeNewObjective);
-        Materialize.toast("L'objectif a été modifié !", 3000, 'rounded')
-        // TODO stop loader
-        // clean
-        this.coacheeNewObjective = null;
-      }, (error) => {
-        console.log('addObjectiveToCoachee, error', error);
-
-        Materialize.toast("Imposible de modifier l'objectif", 3000, 'rounded')
-      }
-    );
+  onClickAddObjectiveBtn() {
+    this.onUpdateObjectiveBtnClick.emit(this.coachee.id);
   }
 
   // private getUsageRate(rhId: string) {

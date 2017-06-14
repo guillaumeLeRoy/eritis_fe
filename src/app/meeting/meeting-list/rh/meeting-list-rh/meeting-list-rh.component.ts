@@ -10,6 +10,7 @@ import {RhUsageRate} from "../../../../model/UsageRate";
 import {Rh} from "../../../../model/Rh";
 import {PotentialCoachee} from "../../../../model/PotentialCoachee";
 import {ApiUser} from "../../../../model/ApiUser";
+import {CoacheeObjective} from "../../../../model/CoacheeObjective";
 
 declare var $: any;
 declare var Materialize: any;
@@ -38,6 +39,19 @@ export class MeetingListRhComponent implements OnInit, AfterViewInit, OnDestroy 
   potentialCoacheeEmail?;
 
   private rhUsageRate: Observable<RhUsageRate>;
+
+  /**
+   * Used in Objective modal.
+   * Describe new objective
+   */
+  private coacheeNewObjective: string;
+
+  /**
+   * Used in Objective modal.
+   * Coachee id
+   */
+  private addNewObjectiveCoacheeId: string;
+
 
   constructor(private coachCoacheeService: CoachCoacheeService, private authService: AuthService, private cd: ChangeDetectorRef) {
   }
@@ -145,7 +159,7 @@ export class MeetingListRhComponent implements OnInit, AfterViewInit, OnDestroy 
 
 
   /*************************************
-   ----------- Modal control ------------
+   ----------- Modal control for Potential Coachee ------------
    *************************************/
 
   addPotentialCoacheeModalVisibility(isVisible: boolean) {
@@ -189,5 +203,75 @@ export class MeetingListRhComponent implements OnInit, AfterViewInit, OnDestroy 
     );
 
   }
+
+  /*************************************
+   ----------- Modal control for new coachee's objective ------------
+   *************************************/
+
+  private updateCoacheeObjectivePanelVisibility(visible: boolean) {
+    if (visible) {
+      $('#add_new_objective_modal').openModal();
+    } else {
+      $('#add_new_objective_modal').closeModal();
+    }
+  }
+
+
+  private makeAPICallToAddNewObjective(user: ApiUser) {
+    this.updateCoacheeObjectivePanelVisibility(false);
+    //call API
+    this.coachCoacheeService.addObjectiveToCoachee(user.id, this.addNewObjectiveCoacheeId, this.coacheeNewObjective).subscribe(
+      (obj: CoacheeObjective) => {
+        console.log('addObjectiveToCoachee, SUCCESS', obj);
+        // close modal
+        this.updateCoacheeObjectivePanelVisibility(false);
+        this.onRefreshRequested();
+        Materialize.toast("L'objectif a été modifié !", 3000, 'rounded')
+        // TODO stop loader
+        // clean
+        this.coacheeNewObjective = null;
+      }, (error) => {
+        console.log('addObjectiveToCoachee, error', error);
+
+        Materialize.toast("Imposible de modifier l'objectif", 3000, 'rounded')
+      }
+    );
+  }
+
+  startAddNewObjectiveFlow(coacheeId: string) {
+    console.log('startAddNewObjectiveFlow, coacheeId : ', coacheeId);
+
+    this.updateCoacheeObjectivePanelVisibility(true);
+    this.addNewObjectiveCoacheeId = coacheeId;
+  }
+
+  cancelAddNewObjectiveModal() {
+    this.updateCoacheeObjectivePanelVisibility(false);
+  }
+
+  validateAddNewObjectiveModal() {
+    console.log('validateAddNewObjectiveModal');
+
+    // TODO start loader
+    let user = this.authService.getConnectedUser();
+    if (user == null) {
+      let userObs = this.authService.getConnectedUserObservable();
+      userObs.take(1).subscribe(
+        (user: ApiUser) => {
+          console.log('validateAddNewObjectiveModal, got connected user');
+          if (user instanceof Rh) {
+            this.makeAPICallToAddNewObjective(user);
+          }
+        }
+      );
+      return;
+    }
+
+    if (user instanceof Rh) {
+      this.makeAPICallToAddNewObjective(user);
+    }
+
+  }
+
 
 }
