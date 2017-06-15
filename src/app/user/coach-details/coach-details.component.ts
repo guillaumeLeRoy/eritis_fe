@@ -26,7 +26,7 @@ export class CoachDetailsComponent implements OnInit, AfterViewInit, OnDestroy {
 
   private user: Observable<Coach | Coachee | Rh>;
   private coach: Observable<Coach>;
-  private isOwner: Observable<Boolean> = Observable.of(false);
+  private status = 'visiter';
   // private subscriptionGetCoach: Subscription;
 
   private formCoach: FormGroup;
@@ -50,15 +50,15 @@ export class CoachDetailsComponent implements OnInit, AfterViewInit, OnDestroy {
     this.route.params.subscribe(
       (params: any) => {
         let coachId = params['id'];
+        this.status = params['status'];
 
         this.coachService.getCoachForId(coachId).subscribe(
           (coach: Coach) => {
-            console.log("ngAfterViewInit, post sub coach", coach);
+            console.log("gotCoach", coach);
 
             this.setFormValues(coach);
             this.coach = Observable.of(coach);
             this.cd.detectChanges();
-
           }
         );
       }

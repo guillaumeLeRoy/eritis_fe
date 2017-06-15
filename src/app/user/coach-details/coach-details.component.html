@@ -37,7 +37,7 @@
   <h4 class="text-right italic">"{{ (coach | async)?.description }}"</h4>
   <br>
 
-  <div *ngIf="(user | async)?.email !== (coach | async)?.email">
+  <div *ngIf="status === 'visiter'">
     <div class="center">
       <button class="btn-basic btn-plain btn-blue btn-small center" (click)="goToMeetings()">Retourner au tableau de bord</button>
     </div>
@@ -56,7 +56,7 @@
     <!--</form>-->
   </div>
 
-  <div *ngIf="(user | async)?.email === (coach | async)?.email">
+  <div *ngIf="status === 'owner'">
     <h4 class="black-text">Mettre à jour votre profil</h4>
 
     <form [formGroup]="formCoach" (ngSubmit)="submitCoachProfilUpdate()">
