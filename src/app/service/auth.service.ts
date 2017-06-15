@@ -592,7 +592,8 @@ export class AuthService {
     return this.put(AuthService.UPDATE_COACH, params, body).map(
       (response: Response) => {
         //convert to coach
-        return this.onUserResponse(response);
+        // return this.onUserResponse(response);
+        return null;
       });
   }
 

@@ -188,7 +188,7 @@ export class MeetingItemCoacheeComponent implements OnInit {
 
   goToCoachProfile(coachId: String) {
     window.scrollTo(0, 0);
-    this.router.navigate(['/coachs',coachId]);
+    this.router.navigate(['/profile_coach',coachId]);
   }
 
   // cancelCancelMeeting() {

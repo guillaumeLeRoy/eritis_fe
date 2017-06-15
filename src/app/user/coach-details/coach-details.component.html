@@ -14,17 +14,17 @@
 
       <div class="header-stats col-lg-7">
         <div class="header-item">
-          <h4 class="header-item-number">10<span>mois</span></h4>
+          <div class="header-item-number"><span>10</span><span class="indice">mois</span></div>
           <p class="header-item-title">Expérience</p>
         </div>
 
         <div class="header-item">
-          <h4 class="header-item-number">6</h4>
+          <div class="header-item-number"><span>6</span></div>
           <p class="header-item-title">Séances réalisées</p>
         </div>
 
         <div class="header-item">
-          <h4 class="header-item-number">3</h4>
+          <div class="header-item-number"><span>3</span></div>
           <p class="header-item-title">Personnes coachées</p>
         </div>
       </div>
@@ -37,7 +37,12 @@
   <h4 class="text-right italic">"{{ (coach | async)?.description }}"</h4>
   <br>
 
-  <!--<div>-->
+  <div *ngIf="(user | async)?.email !== (coach | async)?.email">
+    <div class="center">
+      <button class="btn-basic btn-plain btn-blue btn-small center" (click)="goToMeetings()">Retourner au tableau de bord</button>
+    </div>
+    <br>
+
     <!--<form>-->
       <!--<div class="row">-->
         <!--<div class="col s12">-->
@@ -49,53 +54,54 @@
         <!--<button class="btn-basic btn-plain btn-blue right">Envoyer</button>-->
       <!--</div>-->
     <!--</form>-->
-  <!--</div>-->
+  </div>
 
-  <h4 class="black-text">Mettre à jour votre profil</h4>
+  <div *ngIf="(user | async)?.email === (coach | async)?.email">
+    <h4 class="black-text">Mettre à jour votre profil</h4>
 
-  <form [formGroup]="formCoach" (ngSubmit)="submitCoachProfilUpdate()">
-    <div class="row">
-      <div class="col-xs-12 col-sm-6">
-        <label for="edit_name">Prénom</label>
-        <input id="edit_name" type="text" class="validate"
-               formControlName="name"
-               placeholder="Prénom">
+    <form [formGroup]="formCoach" (ngSubmit)="submitCoachProfilUpdate()">
+      <div class="row">
+        <div class="col-xs-12 col-sm-6">
+          <label for="edit_name">Prénom</label>
+          <input id="edit_name" type="text" class="validate"
+                 formControlName="name"
+                 placeholder="Prénom">
+        </div>
+
+        <div class="col-xs-12 col-sm-6">
+          <label for="edit_surname">Nom</label>
+          <input id="edit_surname" type="text" class="validate"
+                 formControlName="surname"
+                 placeholder="Nom">
+        </div>
       </div>
 
-      <div class="col-xs-12 col-sm-6">
-        <label for="edit_surname">Prénom</label>
-        <input id="edit_surname" type="text" class="validate"
-               formControlName="surname"
-               placeholder="Nom">
-      </div>
-    </div>
+      <div class="row">
+        <div class="col-sm-12">
+          <label for="edit_avatar_url">Photo de profil</label>
+          <input id="edit_avatar_url" type="text" class="validate"
+                 formControlName="avatar"
+                 placeholder="http://...">
+        </div>
 
-    <div class="row">
-      <div class="col-sm-12">
-        <label for="edit_avatar_url">Photo de profil</label>
-        <input id="edit_avatar_url" type="text" class="validate"
-               formControlName="avatar"
-               placeholder="http://...">
+        <div class="col-sm-12 center">
+          <img src="{{formCoach.get('avatar').value}}" alt="profile image" class="user-img circle responsive-img z-depth-2">
+        </div>
       </div>
 
-      <div class="col-sm-12 center">
-        <img src="{{formCoach.get('avatar').value}}" alt="profile image" class="user-img circle responsive-img z-depth-2">
+      <div class="row">
+        <div class="col s12">
+          <label for="edit_description">Description</label>
+          <textarea id="edit_description" class="description-field validate"
+                    formControlName="description"
+                    placeholder="Description...">
+          </textarea>
+        </div>
       </div>
-    </div>
 
-    <div class="row">
-      <div class="col s12">
-        <label for="edit_description">Description</label>
-        <textarea id="edit_description" class="description-field validate"
-                  formControlName="description"
-                  placeholder="Description...">
-        </textarea>
-      </div>
-    </div>
-
-    <button type="submit" class="btn-basic btn-plain btn-blue btn-small right" [disabled]="!formCoach.valid">Enregistrer</button>
-
-  </form>
+      <button type="submit" class="btn-basic btn-plain btn-blue btn-small right" [disabled]="!formCoach.valid">Enregistrer</button>
+    </form>
+  </div>
 
 </div>
 

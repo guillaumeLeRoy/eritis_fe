@@ -7,6 +7,8 @@ import {ApiUser} from "../../model/ApiUser";
 import {MeetingsService} from "../../service/meetings.service";
 import {CoachCoacheeService} from "../../service/coach_coachee.service";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
+import {Coachee} from "../../model/coachee";
+import {Rh} from "app/model/Rh";
 
 declare var $: any;
 declare var Materialize: any;
@@ -22,7 +24,9 @@ export class CoachDetailsComponent implements OnInit, AfterViewInit, OnDestroy {
   @Input()
   iCoach: Coach;
 
+  private user: Observable<Coach | Coachee | Rh>;
   private coach: Observable<Coach>;
+  private isOwner: Observable<Boolean> = Observable.of(false);
   // private subscriptionGetCoach: Subscription;
 
   private formCoach: FormGroup;
@@ -39,29 +43,46 @@ export class CoachDetailsComponent implements OnInit, AfterViewInit, OnDestroy {
     });
 
     this.getCoach();
+    this.getUser();
   }
 
   getCoach() {
     this.route.params.subscribe(
       (params: any) => {
         let coachId = params['id'];
+
         this.coachService.getCoachForId(coachId).subscribe(
           (coach: Coach) => {
             console.log("ngAfterViewInit, post sub coach", coach);
 
-            this.formCoach.setValue({
-              name: coach.display_name,
-              surname: coach.display_name,
-              avatar: coach.avatar_url,
-              description: coach.description
-            });
-
+            this.setFormValues(coach);
             this.coach = Observable.of(coach);
             this.cd.detectChanges();
+
           }
         );
       }
     )
+  }
+
+  getUser() {
+    this.authService.getConnectedUserObservable().subscribe(
+      (user: Coach | Coachee | Rh) => {
+        console.log('getConnectedUser : ' + user);
+
+        this.user = Observable.of(user);
+        this.cd.detectChanges()
+      }
+    );
+  }
+
+  setFormValues(coach: Coach) {
+    this.formCoach.setValue({
+      name: coach.display_name,
+      surname: coach.display_name,
+      avatar: coach.avatar_url,
+      description: coach.description
+    });
   }
 
   submitCoachProfilUpdate() {
@@ -85,6 +106,11 @@ export class CoachDetailsComponent implements OnInit, AfterViewInit, OnDestroy {
         //TODO display error
         Materialize.toast('Impossible de modifier votre profil', 3000, 'rounded');
       });
+  }
+
+  goToMeetings() {
+    window.scrollTo(0, 0);
+    this.router.navigate(['/meetings']);
   }
 
   ngAfterViewInit(): void {
