@@ -90,7 +90,8 @@ export class CoachDetailsComponent implements OnInit, AfterViewInit, OnDestroy {
     this.coach.last().flatMap(
       (coach: Coach) => {
         console.log("submitCoachProfilUpdate, coach obtained");
-        return this.authService.updateCoachForId(coach.id, this.formCoach.value.name,
+        return this.authService.updateCoachForId(coach.id,
+          this.formCoach.value.name,
           this.formCoach.value.description,
           this.formCoach.value.avatar);
       }

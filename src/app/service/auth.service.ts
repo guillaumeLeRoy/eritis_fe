@@ -575,7 +575,8 @@ export class AuthService {
     let params = [id];
     return this.put(AuthService.UPDATE_COACHEE, params, body).map(
       (response: Response) => {
-        return this.onUserResponse(response);
+        //return this.onUserResponse(response);
+        return null;
       });
   }
 
