@@ -10,6 +10,7 @@ import {Coach} from "../../../model/Coach";
 import {AuthService} from "../../../service/auth.service";
 import {ApiUser} from "../../../model/ApiUser";
 import {Subscription} from "rxjs/Subscription";
+import {Router} from "@angular/router";
 
 declare var $: any;
 declare var Materialize: any;
@@ -64,7 +65,7 @@ export class MeetingItemCoachComponent implements OnInit, AfterViewInit {
 
   private connectedUserSubscription: Subscription;
 
-  constructor(private authService: AuthService, private formBuilder: FormBuilder, private meetingService: MeetingsService, private cd: ChangeDetectorRef) {
+  constructor(private router: Router, private authService: AuthService, private formBuilder: FormBuilder, private meetingService: MeetingsService, private cd: ChangeDetectorRef) {
     $('select').material_select();
   }
 
@@ -308,6 +309,10 @@ export class MeetingItemCoachComponent implements OnInit, AfterViewInit {
     return (new Date(date)).getDate() + ' ' + this.months[(new Date(date)).getMonth()];
   }
 
+  goToCoacheeProfile(coacheeId: String) {
+    window.scrollTo(0, 0);
+    this.router.navigate(['/profile_coachee', 'visiter', coacheeId]);
+  }
 
   onValidateDateClick() {
     this.onValidateDateBtnClick.emit({selectedDate: this.selectedDate, selectedHour: this.selectedHour, meeting: this.meeting});

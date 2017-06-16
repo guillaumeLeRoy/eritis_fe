@@ -20,20 +20,33 @@
     <!-- COACHEE -->
     <div class="meeting-item-header col-md-12 col-lg-5">
       <div>
-        <div class="meeting-item-coach">
+        <!--<div class="meeting-item-coach">-->
+          <!--<div>-->
+            <!--&lt;!&ndash; image coach&ndash;&gt;-->
+            <!--<img *ngIf="meeting.coachee" class="meeting-item-coach-avatar circle img-responsive" alt="coachee"-->
+                 <!--[src]="meeting.coachee.avatar_url">-->
+            <!--<img *ngIf="!meeting.coachee" class="meeting-item-coach-avatar circle img-responsive" alt="coachee"-->
+                 <!--src="https://s-media-cache-ak0.pinimg.com/originals/af/25/49/af25490494d3338afef00869c59fdd37.png">-->
+          <!--</div>-->
+
+          <!--<div>-->
+            <!--<p class="meeting-item-coach-name black-text bold" *ngIf="meeting.coachee">{{ meeting.coachee.display_name }}</p>-->
+            <!--<p class="italic">Company name</p>-->
+          <!--</div>-->
+        <!--</div>&lt;!&ndash;end meeting-item-coach&ndash;&gt;-->
+
+        <div class="meeting-item-coach" (click)="goToCoacheeProfile(meeting.coachee.id)">
           <div>
-            <!-- image coach-->
-            <img *ngIf="meeting.coachee" class="meeting-item-coach-avatar circle img-responsive" alt="coachee"
+            <!-- image coachee-->
+            <img class="meeting-item-coach-avatar circle img-responsive" alt="coach"
                  [src]="meeting.coachee.avatar_url">
-            <img *ngIf="!meeting.coachee" class="meeting-item-coach-avatar circle img-responsive" alt="coachee"
-                 src="https://s-media-cache-ak0.pinimg.com/originals/af/25/49/af25490494d3338afef00869c59fdd37.png">
           </div>
 
           <div>
-            <p class="meeting-item-coach black-text bold" *ngIf="meeting.coachee">{{ meeting.coachee.display_name }}</p>
+            <p class="meeting-item-coach-name black-text bold">{{ meeting.coachee.display_name }}</p>
             <p class="italic">Company name</p>
           </div>
-        </div><!--end meeting-item-coach-->
+        </div>
 
         <!-- DATE -->
         <div class="meeting-item-date" *ngIf="meeting.agreed_date">

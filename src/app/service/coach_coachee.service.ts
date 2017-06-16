@@ -45,6 +45,20 @@ export class CoachCoacheeService {
       });
   }
 
+  getCoacheeForId(coacheeId: string): Observable<Coachee> {
+    console.log("getCoacheeForId, start request");
+
+    let params = [coacheeId]
+    return this.apiService.get(AuthService.GET_COACHEE_FOR_ID, params).map(
+      (response: Response) => {
+        console.log("getCoacheeForId, got coachee", response);
+        let coachee: Coachee = response.json();
+        return coachee;
+      },(error) => {
+        console.log("getCoacheeForId, error", error);
+      });
+  }
+
   getAllCoacheesForRh(rhId: string): Observable<Coachee[]> {
     console.log("getAllCoacheesForRh, start request");
     let param = [rhId];
