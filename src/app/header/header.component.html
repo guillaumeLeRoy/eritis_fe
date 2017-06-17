@@ -1,62 +1,150 @@
-<header id="header" class="page-topbar">
-  <div class="navbar-fixed">
+<header id="header" class="page-topbar"
+        [class.user-connected]="(isAuthenticated | async)"
+        [hidden]="router.url === '/admin' || router.url === '/admin/signup' || router.url === '/admin/coachees-list' || router.url === '/admin/coachs-list' || router.url === '/admin/rhs-list' || router.url === '/signup_coachee' || router.url === '/signup_coach' || router.url === '/signup_rh'">
+  <div class="navbar" [class.navbar-fixed]="(isAuthenticated | async)" [class.z-depth-2]="!(isAuthenticated | async)">
     <nav>
-      <div class="navbar-color z-depth-2">
+      <div class="navbar-color" [class.z-depth-2]="(isAuthenticated | async)">
         <div class="col s12">
-          <a (click)="goToMeetings()" class="logo-text"><img src="assets/img/logo-eritis-new.png" alt="Eritis"></a>
-          <a data-activates="side-nav" class="button-collapse right"><i
-            class="mdi-navigation-menu"></i></a>
+          <a (click)="goToMeetings()" class="brand-logo left hide-on-med-and-down" *ngIf="(isAuthenticated | async)"><img src="assets/img/logo-eritis-new.png" alt="Eritis"></a>
+          <a (click)="goToMeetings()" class="brand-logo center hide-on-med-and-down" *ngIf="!(isAuthenticated | async)"><img src="assets/img/logo-eritis-new.png" alt="Eritis"></a>
+          <a (click)="goToMeetings()" class="brand-logo center hide-on-large-only"><img src="assets/img/logo-eritis-new.png" alt="Eritis"></a>
+          <a data-activates="side-nav" class="button-collapse left" [hidden]="!(isAuthenticated | async)">
+            <i class="mdi-navigation-menu"></i>
+          </a>
 
           <ul class="right hide-on-med-and-down">
             <!--<li *ngIf="canDisplayListOfCoach()"><a (click)="goToCoachs()">Liste Des Coachs</a></li>-->
 
-            <li *ngIf="(isAuthenticated | async) && isUserACoach()"><a (click)="goToAvailableSessions()">Séances disponibles</a></li>
+            <li *ngIf="(isAuthenticated | async) && isUserACoach()" [class.active]="router.url === '/available_meetings'"><a (click)="goToAvailableSessions()">
+              Demandes en attente</a></li>
 
-            <li *ngIf="(isAuthenticated | async)"><a (click)="goToMeetings()">Vos séances</a></li>
+            <li *ngIf="(isAuthenticated | async)" [class.active]="router.url === '/meetings'"><a (click)="goToMeetings()">
+              Tableau de bord</a></li>
 
-            <li *ngIf="(isAuthenticated | async)"><a (click)="goToProfile()">Profil</a></li>
+            <!--<li *ngIf="(isAuthenticated | async) && isUserACoach()"><a (click)="goToProfile()">Profil</a></li>-->
 
-            <li><a class="dropdown-button" data-activates="notifs"><i class="material-icons">notifications</i></a></li>
+            <li [hidden]="!(isAuthenticated | async)">
+              <a class="dropdown-button-notifs" data-activates="notifs"><i class="material-icons">notifications</i></a>
+              <div class="notif-count" *ngIf="(notifications | async) != null || (notifications | async)?.length > 0">
+                {{(notifications | async).length}}
+              </div>
+            </li>
 
-            <li *ngIf="(isAuthenticated | async)"><a (click)="onLogout()">Déconnexion</a></li>
+            <!--<li *ngIf="(isAuthenticated | async)"><a (click)="onLogout()">Déconnexion</a></li>-->
 
-            <li *ngIf="!(isAuthenticated | async)"><a [routerLink]="['/']">Connexion</a></li>
+            <li [hidden]="!(isAuthenticated | async)"
+                [class.active]="router.url === '/profile_coach' || router.url === '/profile_coachee' || router.url === '/profile_rh'">
+              <a class="dropdown-button-profile" data-activates="profil">
+                <img src="{{(user | async)?.avatar_url}}" alt="profile image" class="item-user-img circle responsive-img">
+                {{(user | async)?.display_name}}
+              </a>
+            </li>
+
           </ul>
 
+
+          <!-- Side Nav -->
           <ul class="side-nav" id="side-nav">
+
+            <div class="side-nav-header" *ngIf="(isAuthenticated | async)">
+              <div class="side-nav-header-container  z-depth-1">
+                <img src="{{(user | async)?.avatar_url}}" alt="profile image" class="side-nav-user-img circle responsive-img z-depth-2">
+                <div class="side-nav-user-info">
+                  <h5>{{(user | async)?.display_name}}</h5>
+                  <span>{{(user | async)?.email}}</span>
+                </div>
+              </div>
+            </div>
+
             <!--<li *ngIf="canDisplayListOfCoach()"><a (click)="goToCoachs()">Liste Des Coachs</a></li>-->
 
             <!--<li *ngIf="(isAuthenticated | async)"><a (click)="goToMeetings()">Vos meetings</a></li>-->
+            <div class="side-nav-items">
+              <li *ngIf="(isAuthenticated | async) && isUserACoach()" [class.active]="router.url === '/available_meetings'"><a (click)="goToAvailableSessions()">Séances
+                disponibles</a></li>
 
-            <li *ngIf="(isAuthenticated | async) && isUserACoach()"><a (click)="goToAvailableSessions()">Séances disponibles</a></li>
+              <li *ngIf="(isAuthenticated | async)" [class.active]="router.url === '/meetings'"><a (click)="goToMeetings()">Tableau de bord</a></li>
 
-            <li *ngIf="(isAuthenticated | async)"><a (click)="goToMeetings()">Vos séances</a></li>
+              <!--<li [hidden]="!(isAuthenticated | async)">-->
+              <!--<a class="dropdown-button" data-activates="notifs"><i class="material-icons">notifications</i></a>-->
+              <!--<div class="notif-count">0</div>-->
+              <!--</li>-->
 
+              <li *ngIf="(isAuthenticated | async) && (isUserACoach() || isUserACoachee())"
+                  [class.active]="router.url === '/profile_coach' || router.url === '/profile_coachee' || router.url === '/profile_rh'">
+                <a (click)="goToProfile()">Modifier mon profil</a></li>
 
-            <li *ngIf="(isAuthenticated | async)"><a (click)="goToProfile()">Profil</a></li>
+              <li *ngIf="(isAuthenticated | async)"><a (click)="onLogout()">Déconnexion</a></li>
+            </div>
 
-            <li><a><i class="material-icons">notifications</i></a></li>
-
-            <li *ngIf="(isAuthenticated | async)"><a (click)="onLogout()">Déconnexion</a></li>
-
-            <li *ngIf="!(isAuthenticated | async)"><a [routerLink]="['/']">Connexion</a></li>
           </ul>
+
         </div>
       </div>
     </nav>
-  </div><!--end navbar-fixed-->
 
-  <ul id="notifs" class="dropdown-content notifs">
-    <li class="notif-item">Vous n'avez pas de notification</li>
-  </ul>
 
-  <div class="header-user">
-    <div class="container">
-      <img src="{{(user | async)?.avatar_url}}" alt="profile image" class="header-user-img circle responsive-img">
-      <div class="header-user-info">
-        <h5>{{(user | async)?.display_name}}</h5>
-        <h6>{{(user | async)?.email}}</h6>
+    <div class="welcome-header" *ngIf="!(isAuthenticated | async)">
+      <div class="container">
+        <h1 class="header-title">Atteignez vos objectifs</h1>
+        <h3 class="header-subtitle ultra-light-grey-text">Séances de coaching individuel avec un coach certifié</h3>
+
+        <div class="row hide-on-small-and-down">
+          <div class="header-btn col-xs-12 col-sm-6">
+            <a pageScroll href="#coach_section" class="btn-basic right">En savoir plus</a>
+          </div>
+          <div class="header-btn col-xs-12 col-sm-6">
+            <button class="btn-basic btn-plain btn-connexion left" (click)="activateLogin()"><i class="material-icons">perm_identity</i>
+              Connexion
+            </button>
+          </div>
+        </div>
+
+        <div class="row hide-on-med-and-up">
+          <div class="header-btn col-xs-12 col-sm-6">
+            <a pageScroll href="#coach_section" class="btn-basic">En savoir plus</a>
+          </div>
+          <div class="header-btn col-xs-12 col-sm-6">
+            <button class="btn-basic btn-plain btn-connexion" (click)="activateLogin()"><i class="material-icons">perm_identity</i>
+              Connexion
+            </button>
+          </div>
+        </div>
+
+         <rb-signin [hidden]="!loginActivated"></rb-signin>
+
+        <a pageScroll href="#presentation" class="header-arrow-bottom"><i class="fa fa-angle-down"
+                                                                          aria-hidden="true"></i></a>
       </div>
     </div>
-  </div>
+
+
+  </div><!--end navbar-fixed-->
+
+  <!--<div class="header-user" *ngIf="(isAuthenticated | async)">-->
+    <!--<div class="container header-user-filter">-->
+      <!--<img src="{{(user | async)?.avatar_url}}" alt="profile image" class="header-user-img circle responsive-img">-->
+      <!--<div class="header-user-info">-->
+        <!--<h5>{{(user | async)?.display_name}}</h5>-->
+        <!--<h6>{{(user | async)?.email}}</h6>-->
+      <!--</div>-->
+    <!--</div>-->
+  <!--</div>-->
+
 </header>
+
+<ul id="notifs" class="dropdown-content dropdown-notifs collection">
+  <li class="notif-item collection-item" *ngIf="(notifications | async) == null">Vous n'avez pas de notification</li>
+  <div *ngIf="(notifications | async) != null">
+    <li class="notif-item collection-item notif-delete"><a (click)="readAllNotifications()">Marquer comme lues</a></li>
+    <li class="notif-item collection-item" *ngFor="let notif of (notifications | async)">
+      <p class="notif-date">{{printDateString(notif.date)}}</p>
+      <p class="notif-messsage">{{notif.message}}</p>
+    </li>
+  </div>
+</ul>
+
+<ul id="profil" class="dropdown-content dropdown-profil collection">
+  <li class="profil-item collection-item text-right" (click)="goToProfile()" *ngIf="isUserACoach() || isUserACoachee()">Modifier mon profil</li>
+  <li class="profil-item collection-item text-right" (click)="onLogout()">Déconnexion</li>
+</ul>

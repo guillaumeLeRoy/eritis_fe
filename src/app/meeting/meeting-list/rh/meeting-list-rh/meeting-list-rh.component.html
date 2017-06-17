@@ -1,7 +1,5 @@
-<h4 class="text-right">Vous avez souscrit à
-  <span class="blue-text"> {{(user | async)?.availableSessionsCount || 0}} séance
-          <span *ngIf="(user | async)?.availableSessionsCount > 1">s/mois </span>
-        </span>et votre taux d'utilisation est de <span class="blue-text">{{(rhUsageRate | async)?.usage_rate}}%</span>
+<h4 class="text-right welcome-message">Bonjour {{(user | async)?.display_name}},<br>
+  Le taux total d'utilisation de vos collaborateurs est de <span class="blue-text">{{(rhUsageRate | async)?.usage_rate}}%</span>
 </h4>
 <p class="text-right">
   <span class="blue-text">Cliquez</span> ici pour ajouter un collaborateur
@@ -12,7 +10,6 @@
 </p>
 
 
-
 <div class="row">
   <h4 class="col-lg-12 black-text">Collaborateurs</h4>
   <div class="card collection col-lg-12">
@@ -20,7 +17,8 @@
     <div *ngIf="hasCollaborators">
       <div class="collection-item" *ngFor="let coachee of coachees | async">
         <rb-meeting-item-rh [coachee]="coachee"
-                            [potentialCoachee]="null">
+                            [potentialCoachee]="null"
+                            (onUpdateObjectiveBtnClick)="startAddNewObjectiveFlow($event)">
         </rb-meeting-item-rh>
       </div>
     </div>
@@ -33,7 +31,7 @@
 </div><!--end row-->
 
 <div class="row">
-  <h4 class="col-lg-12 black-text">Invitations en attente</h4>
+  <h4 class="col-lg-12 black-text">Collaborateurs invités en attente</h4>
   <div class="card collection col-lg-12">
 
     <div *ngIf="hasPotentialCollaborators">
@@ -45,7 +43,7 @@
     </div>
 
     <div *ngIf="!hasPotentialCollaborators" class="collection-item text-center">
-      <h5 class="no-meeting">Vos collaborateurs en attente d'inscription apparaîtront ici</h5>
+      <h5 class="no-meeting">Vos collaborateurs en attente de validation apparaîtront ici</h5>
     </div>
 
   </div><!--end card-->
@@ -53,9 +51,10 @@
 
 <!-- Modal RH add Coachee -->
 <div id="add_potential_coachee_modal" class="modal">
-  <div class="delete-modal-content">
-    <div class="delete-modal-message">
-      <h5>Veuillez saisir l'adresse mail du collaborateur. Un mail lui sera envoyé pour finaliser son inscription.</h5>
+  <div class="action-modal-content">
+    <div class="action-modal-message">
+      <label>Veuillez saisir l'adresse mail du collaborateur. Un mail lui sera envoyé pour finaliser son
+        inscription.</label>
       <input type="email" placeholder="Email" id="potential_mail" [(ngModel)]="potentialCoacheeEmail">
       <select [(ngModel)]="selectedPlan"
               [ngModelOptions]="{standalone: true}"
@@ -67,10 +66,26 @@
         </option>
       </select>
     </div>
-    <div class="delete-modal-footer">
-      <button class="btn-basic btn-plain" (click)="cancelAddPotentialCoachee()">Annuler</button>
-      <button class="btn-basic btn-blue" (click)="validateAddPotentialCoachee()"
+    <div class="action-modal-footer">
+      <button class="btn-basic btn-plain btn-small" (click)="cancelAddPotentialCoachee()">Annuler</button>
+      <button class="btn-basic btn-blue btn-plain btn-small" (click)="validateAddPotentialCoachee()"
               [disabled]="!potentialCoacheeEmail">Ajouter
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- Modal RH add new objective to Coachee -->
+<div id="add_new_objective_modal" class="modal">
+  <div class="action-modal-content">
+    <div class="action-modal-message">
+      <label>Définissez un objectif</label>
+      <input type="text" placeholder="Objectif" id="" [(ngModel)]="coacheeNewObjective">
+    </div>
+    <div class="action-modal-footer">
+      <button class="btn-basic btn-plain btn-small" (click)="cancelAddNewObjectiveModal()">Annuler</button>
+      <button class="btn-basic btn-blue btn-plain btn-small" (click)="validateAddNewObjectiveModal()"
+              [disabled]="!coacheeNewObjective">Ajouter
       </button>
     </div>
   </div>

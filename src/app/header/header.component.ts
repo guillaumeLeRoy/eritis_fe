@@ -5,14 +5,25 @@ import {Observable, Subscription} from "rxjs";
 import {Coach} from "../model/Coach";
 import {Coachee} from "../model/Coachee";
 import {Rh} from "../model/Rh";
+import {ApiUser} from "../model/apiUser";
+import {Notif} from "../model/Notif";
+import {CoachCoacheeService} from "../service/coach_coachee.service";
+import {Response} from "@angular/http";
+import {state, transition, trigger} from "@angular/animations";
+import {animate, style} from "@angular/core/src/animation/dsl";
+
+
+declare var $: any;
 
 @Component({
   selector: 'rb-header',
   templateUrl: 'header.component.html',
   styleUrls: ['header.component.css']
-
 })
 export class HeaderComponent implements OnInit, OnDestroy {
+  private loginActivated = false;
+
+  months = ['Jan', 'Feb', 'Mar', 'Avr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 
   private isAuthenticated: Observable<boolean>;
   private subscription: Subscription;
@@ -20,7 +31,9 @@ export class HeaderComponent implements OnInit, OnDestroy {
   private mUser: Coach | Coachee | Rh;
   private user: Observable<Coach | Coachee | Rh>;
 
-  constructor(private router: Router, private authService: AuthService, private cd: ChangeDetectorRef) {
+  private notifications: Observable<Notif[]>;
+
+  constructor(private router: Router, private authService: AuthService, private coachCoacheeService: CoachCoacheeService, private cd: ChangeDetectorRef) {
   }
 
   ngOnInit(): void {
@@ -43,7 +56,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
     // this.connectedUser = this.authService.getConnectedUserObservable();
     this.subscription = this.authService.getConnectedUserObservable().subscribe(
-      (user: Coach | Coachee) => {
+      (user: Coach | Coachee | Rh) => {
         console.log('getConnectedUser : ' + user);
         this.onUserObtained(user);
       }
@@ -59,9 +72,14 @@ export class HeaderComponent implements OnInit, OnDestroy {
     } else {
       this.mUser = user;
       this.isAuthenticated = Observable.of(true);
+      this.fetchNotificationsForUser(user);
     }
     this.user = Observable.of(user);
     this.cd.detectChanges();
+  }
+
+  activateLogin() {
+    this.loginActivated = true;
   }
 
   ngOnDestroy(): void {
@@ -69,6 +87,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   }
 
   onLogout() {
+    window.scrollTo(0, 0);
     this.authService.loginOut();
   }
 
@@ -90,7 +109,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
     }
   }
 
-  goToAvailableSessions(){
+  goToAvailableSessions() {
     let user = this.authService.getConnectedUser();
     if (user != null) {
       window.scrollTo(0, 0);
@@ -99,20 +118,48 @@ export class HeaderComponent implements OnInit, OnDestroy {
   }
 
   goToProfile() {
+    window.scrollTo(0, 0);
     if (this.mUser instanceof Coach) {
-      window.scrollTo(0, 0);
-      this.router.navigate(['/profile_coach']);
+      this.router.navigate(['/profile_coach', 'owner', this.mUser.id]);
     } else if (this.mUser instanceof Coachee) {
-      window.scrollTo(0, 0);
-      this.router.navigate(['/profile_coachee']);
+      this.router.navigate(['/profile_coachee', 'owner', this.mUser.id]);
     } else if (this.mUser instanceof Rh) {
-      window.scrollTo(0, 0);
       this.router.navigate(['/profile_rh']);
+    }
+  }
+
+  // call API to inform that notifications have been read
+  updateNotificationRead() {
+    let user = this.authService.getConnectedUser();
+    let obs: Observable<Response>;
+    if (user != null) {
+      if (user instanceof Coach) {
+        let params = [user.id];
+        obs = this.authService.put(AuthService.PUT_COACH_NOTIFICATIONS_READ, params, null);
+      } else if (user instanceof Coachee) {
+        let params = [user.id];
+        obs = this.authService.put(AuthService.PUT_COACHEE_NOTIFICATIONS_READ, params, null);
+      }
+
+      if (obs != null) {
+        obs.subscribe((response: Response) => {
+          console.log('updateNotificationRead response : ' + response);
+        });
+      }
+
     }
   }
 
   isUserACoach(): boolean {
     return this.mUser instanceof Coach
+  }
+
+  isUserACoachee(): boolean {
+    return this.mUser instanceof Coachee
+  }
+
+  isUserARh(): boolean {
+    return this.mUser instanceof Rh
   }
 
   goToCoachs() {
@@ -131,5 +178,62 @@ export class HeaderComponent implements OnInit, OnDestroy {
       return true;
     }
 
+  }
+
+  private fetchNotificationsForUser(user: ApiUser) {
+
+    let param = user
+    this.coachCoacheeService.getAllNotificationsForUser(param).subscribe(
+      (notifs: Notif[]) => {
+        console.log('fetchNotificationsForUser : ' + notifs);
+
+        //Sort notifs by date
+        if (notifs != null) {
+          notifs.sort(function (a, b) {
+            let d1 = new Date(a.date);
+            let d2 = new Date(b.date);
+            let res = d1.getUTCFullYear() - d2.getUTCFullYear();
+            if (res === 0)
+              res = d1.getUTCMonth() - d2.getUTCMonth();
+            if (res === 0)
+              res = d1.getUTCDate() - d2.getUTCDate();
+            if (res === 0)
+              res = d1.getUTCHours() - d2.getUTCHours();
+            return res;
+          });
+        }
+
+        this.notifications = Observable.of(notifs);
+      }
+    );
+  }
+
+  printDateString(date: string) {
+    return this.getDate(date) + ' - ' + this.getHours(date) + ':' + this.getMinutes(date);
+  }
+
+  getHours(date: string) {
+    return (new Date(date)).getHours();
+  }
+
+  getMinutes(date: string) {
+    let m = (new Date(date)).getMinutes();
+    if (m === 0)
+      return '00';
+    return m;
+  }
+
+  getDate(date: string): string {
+    return (new Date(date)).getDate() + ' ' + this.months[(new Date(date)).getMonth()];
+  }
+
+  readAllNotifications() {
+    this.coachCoacheeService.readAllNotificationsForUser(this.mUser).subscribe(
+      (response: Response) => {
+        console.log("getAllNotifications OK", response);
+        this.fetchNotificationsForUser(this.mUser);
+        this.cd.detectChanges();
+      }
+    );
   }
 }

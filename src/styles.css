@@ -13,6 +13,7 @@
   --main-dark-grey: #3E3E3E;
   --main-font-grey: #7D7D7D;
   --main-light-grey: #C7C7C7;
+  --main-ultra-light-grey: #e5e5e5;
   --main-electric-blue: #46b0ff;
   --main-dark-blue: #235880;
   --main-blue-filter: rgba(35, 88, 128, 0.6);
@@ -33,11 +34,6 @@ body{
 /* make sure containers are below the navbar */
 body .container {
   padding: 96px 0;
-}
-
-.side-nav{
-  background-color: rgba(255, 255, 255, .9);
-  color: var(--main-dark-grey);
 }
 
 .recipes_grid {
@@ -77,7 +73,7 @@ a:focus{
   color: var(--main-white-color);
   font-size: 25px;
   padding: 16px 16px;
-  margin-top: 32px;
+  /*margin-top: 32px;*/
   text-align: center;
   vertical-align: baseline;
   transition: .3s;
@@ -145,10 +141,10 @@ a:focus{
 }
 
 .btn-small{
-  padding: 0 16px;
+  padding: 4px 16px;
   font-size: 16px;
   min-width: 120px;
-  height: 40px;
+  min-height: 40px;
 }
 
 .btn-cancel {
@@ -169,19 +165,54 @@ a:focus{
 }
 
 .black-text{
-  color: black;
+  color: var(--main-dark-grey) !important;
 }
 
 .red-text{
-  color: var(--main-red-color);
+  color: var(--main-red-color) !important;
 }
 
 .blue-text{
   color: var(--main-electric-blue) !important;
 }
 
+.light-grey-text{
+  color: var(--main-light-grey) !important;
+}
+
+.ultra-light-grey-text{
+  color: var(--main-ultra-light-grey) !important;
+}
+
 .bold{
   font-weight: bold;
+}
+
+.italic {
+  font-style: italic;
+}
+
+label,
+label.active{
+  color: var(--main-dark-grey);
+  font-size: 18px;
+  font-weight: 500;
+}
+
+input[type="text"],
+input[type="text"]:focus:not([readonly]),
+input[type="password"],
+input[type="password"]:focus:not([readonly]),
+input[type="email"],
+input[type="email"]:focus:not([readonly]),
+textarea,
+textarea:focus:not([readonly]){
+  border: none !important;
+  box-shadow: none !important;
+  box-sizing: border-box !important;
+  background-color: var(--main-ultra-light-grey) !important;
+  border-radius: 8px !important;
+  padding: 16px !important;
 }
 
 /* Permet d'aligner les icon material avec le texte */
@@ -272,11 +303,11 @@ ngb-datepicker .btn-link:hover{
 /* Delete Meeting Modal */
 .modal {
   height: 350px;
-  max-width: 800px;
+  max-width: 90%;
 }
 
-.delete-modal-content {
-  padding: 32px 64px;
+.action-modal-content {
+  padding: 32px;
   height: 100%;
   text-align: center;
   display: flex;
@@ -284,12 +315,13 @@ ngb-datepicker .btn-link:hover{
   justify-content: space-between;
   align-content: space-between;
 }
-.delete-modal-message {
+.action-modal-message {
   text-align: left;
 }
 
-.delete-modal-footer button {
+.action-modal-footer button {
   margin: 0 8px !important;
+  margin-top: 16px !important;
 }
 
 .dropdown-content li > a,

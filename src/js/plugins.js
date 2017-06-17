@@ -64,12 +64,22 @@ $(function() {
   });
 
   // Materialize Dropdown
-  $('.dropdown-button').dropdown({
+  $('.dropdown-button-notifs').dropdown({
     inDuration: 300,
     outDuration: 125,
-    constrain_width: true, // Does not change width of dropdown to that of the activator
-    hover: false, // Activate on click
-    alignment: 'left', // Aligns dropdown to left or right edge (works with constrain_width)
+    constrain_width: false, // Does not change width of dropdown to that of the activator
+    hover: true, // Activate on click
+    alignment: 'right', // Aligns dropdown to left or right edge (works with constrain_width)
+    gutter: 0, // Spacing from edge
+    belowOrigin: true // Displays dropdown below the button
+  });
+
+  $('.dropdown-button-profile').dropdown({
+    inDuration: 300,
+    outDuration: 125,
+    constrain_width: false, // Does not change width of dropdown to that of the activator
+    hover: true, // Activate on click
+    alignment: 'right', // Aligns dropdown to left or right edge (works with constrain_width)
     gutter: 0, // Spacing from edge
     belowOrigin: true // Displays dropdown below the button
   });
@@ -126,7 +136,12 @@ $(function() {
   });
 
   // Materialize sideNav
-  $('.button-collapse').sideNav();
+  $('.button-collapse').sideNav({
+    menuWidth: 400,
+    edge: 'left', // Choose the horizontal origin
+    closeOnClick: true,
+    draggable: true // Choose whether you can drag to open on touch screens
+  });
 
   //Main Left Sidebar Menu
   $('.sidebar-collapse').sideNav({
@@ -151,7 +166,6 @@ $(function() {
       gutter: 0, // Spacing from edge
       belowOrigin: true // Displays dropdown below the button
     });
-
 
   //Main Left Sidebar Chat
   $('.chat-collapse').sideNav({

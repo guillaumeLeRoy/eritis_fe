@@ -1,6 +1,12 @@
 <h4 class="text-right">Il vous reste <span
-  class="blue-text">{{(user | async)?.availableSessionsCount || 0}}</span> séance<span
-  *ngIf="(user | async)?.availableSessionsCount > 1">s</span></h4>
+  class="blue-text">{{(user | async)?.availableSessionsCount || 0}}</span>
+  séance<span *ngIf="(user | async)?.availableSessionsCount > 1">s</span>
+  pour ce mois
+  <h5 class="italic" *ngIf="(user | async)?.last_objective != null">
+    Objectif de votre RH: "{{(user | async).last_objective.objective}}"</h5>
+  <h5 class="italic" *ngIf="(user | async)?.last_objective == null">
+    Vous n'avez pas encore d'objectif personnel</h5>
+</h4>
 <p class="text-right" *ngIf="(user | async)?.availableSessionsCount > 0">
   <span class="blue-text">Cliquez</span> ici pour planifier une nouvelle séance
   <a class="btn-floating btn-large waves-effect waves-light add-meeting-btn" (click)="goToDate()">
@@ -52,13 +58,13 @@
 
 <!-- Modal Coachee Delete Meeting -->
 <div id="coachee_delete_meeting_modal" class="modal">
-  <div class="delete-modal-content">
-    <div class="delete-modal-message">
-      <h5>Ce meeting sera supprimé définitivement.</h5>
+  <div class="action-modal-content">
+    <div class="action-modal-message">
+      <h5 class="black-text center">Ce meeting sera supprimé définitivement.</h5>
     </div>
-    <div class="delete-modal-footer">
-      <button class="btn-basic btn-plain" (click)="cancelCoacheeDeleteMeeting()">Annuler</button>
-      <button class="btn-basic btn-red" (click)="validateCoacheeDeleteMeeting()">Supprimer</button>
+    <div class="action-modal-footer">
+      <button class="btn-basic btn-plain btn-small" (click)="cancelCoacheeDeleteMeeting()">Annuler</button>
+      <button class="btn-basic btn-red btn-plain btn-small" (click)="validateCoacheeDeleteMeeting()">Supprimer</button>
     </div>
   </div>
 </div>

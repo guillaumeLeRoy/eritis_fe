@@ -14,9 +14,6 @@ nav li:focus a{
   transition: .3s;
 }
 
-.logo-text img{
-  height: 50px;
-}
 
 .bg-top-image {
   position: fixed;
@@ -42,7 +39,7 @@ nav li:focus a{
 }
 
 .section{
-  padding: 128px 0;
+  padding: 0;
 }
 
 header.section{
@@ -113,7 +110,7 @@ rb-signin{
   color: #000;
   font-size: 5vmin;
   font-weight: 600;
-  margin-bottom: 128px;
+  margin-bottom: 32px;
   margin-top: 0;
 }
 
@@ -130,15 +127,15 @@ rb-signin{
 }
 
 .presentation_item_title{
-  /*font-size: 32px;*/
-  font-size: 4vmin;
+  font-size: 32px;
+  /*font-size: 4vmin;*/
   height: 64px;
   color: #1D1D1D;
 }
 
 .presentation_item_text{
-  /*font-size: 22px;*/
-  font-size: 3vmin;
+  font-size: 22px;
+  /*font-size: 3vmin;*/
   color: var(--main-light-grey);
 }
 
@@ -169,14 +166,16 @@ rb-signin{
 }
 
 .coach_description h4{
-  /*font-size: 36px;*/
-  font-size: 4vmin;
+  font-size: 32px;
+  /*font-size: 4vmin;*/
   height: 72px;
 }
 
 .coach_description p{
-  font-size: 2.5vmin;
-  opacity: 0.8;
+  font-size: 22px;
+  /*font-size: 2.5vmin;*/
+  font-weight: 300;
+  color: var(--main-ultra-light-grey);
 }
 
 .coach_img {
@@ -200,27 +199,6 @@ rb-signin{
 
 footer {
   background-color: var(--main-white-color);
-  padding: 128px 0;
-}
-
-label{
-  color: var(--main-dark-grey);
-  font-size: 24px;
-  font-weight: 500;
-}
-
-input[type="text"],
-input[type="text"]:focus:not([readonly]),
-input[type="email"],
-input[type="email"]:focus:not([readonly]),
-textarea,
-textarea:focus:not([readonly]){
-  border: none !important;
-  box-shadow: none !important;
-  box-sizing: border-box;
-  background-color: #E8E8E8;
-  border-radius: 8px;
-  padding: 16px !important;
 }
 
 textarea{

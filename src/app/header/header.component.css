@@ -1,11 +1,14 @@
 nav{
   background-color: transparent;
-  background-image: url("../../assets/img/eritis-mountain-bg-2.jpg");
   background-attachment: scroll;
   background-position: top;
   background-size: cover;
-  height: 96px;
+  min-height: 96px;
   box-shadow: none;
+}
+
+.user-connected nav {
+  background-image: url("../../assets/img/eritis-mountain-bg-2.jpg");
 }
 
 nav li{
@@ -14,15 +17,32 @@ nav li{
 
 nav li a{
   cursor: pointer;
+  color: var(--main-light-grey);
+}
+
+nav li.active a{
+  font-weight: bold;
+  font-size: 110%;
+  padding: 0;
+  margin: 0 16px;
 }
 
 nav li a:hover,
-nav li a:focus {
-  color: var(--main-dark-grey) !important;
+nav li a:focus,
+nav li.active a{
+  color: #FFF !important;
 }
 
-.navbar-fixed{
-  height: 96px;
+.side-nav li a:hover,
+.side-nav li a:focus,
+.side-nav li.active a{
+  color: var(--main-electric-blue) !important;
+}
+
+.navbar-fixed,
+.navbar{
+  min-height: 96px;
+  padding: 0;
 }
 
 .navbar-color {
@@ -32,15 +52,69 @@ nav li a:focus {
   padding: 16px;
 }
 
+.brand-logo {
+  padding: 0;
+}
+
 .logo-text img{
   height: 50px;
 }
 
-header{
+.side-nav {
+  padding: 0;
+  background-color: rgba(255, 255, 255, 1);
+  color: var(--main-dark-grey);
+ }
+
+.side-nav-header {
   background-image: url("../../assets/img/eritis-mountain-bg-2.jpg");
   background-attachment: scroll;
   background-position: center;
   background-size: cover;
+  min-height: 96px;
+  box-shadow: none;
+}
+
+.side-nav-header-container {
+  padding: 64px 32px;
+  color: #FFF;
+  background-color: var(--main-blue-filter);
+  display: flex;
+  flex-direction: row;
+  flex-grow: 1;
+  align-items: center;
+  line-height: 1.5;
+}
+
+.side-nav-user-img {
+  width: 90px;
+  height: 90px;
+  margin-right: 16px;
+}
+
+.side-nav-user-info h5 {
+  margin: 0;
+  margin-bottom: 4px;
+}
+
+.side-nav-user-info span {
+  font-weight: 200;
+  color: var(--main-ultra-light-grey);
+}
+
+.side-nav-items {
+  padding: 16px;
+}
+
+header{
+  background-image: url("../../assets/img/eritis-mountain-bg-2.jpg");
+  background-attachment: fixed;
+  background-position: center;
+  background-size: cover;
+}
+
+header.user-connected {
+  background-attachment: scroll;
 }
 
 .header-user{
@@ -50,10 +124,6 @@ header{
 }
 
 .header-user-filter{
-
-}
-
-.header-user .container{
   display: flex;
   align-items: center;
   align-content: center;
@@ -66,12 +136,114 @@ header{
 
 .header-user-img{
   height: 100px;
+  width: 100px;
 }
 
-.notifs {
-  width: auto !important;
+.welcome-header{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  color: var(--main-white-color);
+  padding: 64px 0;
+  background-color: var(--main-blue-filter);
 }
 
-.notif-item {
+.header-title{
+  /*font-size: 66px*/
+  font-size: 8vmin; /*Test taille adaptative relative à la taille minimale de l'écran*/
+  font-weight: 500;
+  letter-spacing: 1.1px;
+  margin: 0;
+}
+
+.header-subtitle{
+  /*font-size: 36px;*/
+  font-size: 4vmin;
+  font-weight: 300;
+  letter-spacing: 2.3px;
+  margin: 64px 0;
+}
+
+.header-btn {
+  text-align: center;
+}
+
+.header-btn .btn-basic{
+  min-width: 200px;
+  margin: 8px;
+}
+
+.header-arrow-bottom{
+  font-size: 66px;
+  color: var(--main-white-color);
+  opacity: 0.6;
+}
+
+.header-arrow-bottom:hover{
+  opacity: 1;
+}
+
+rb-signin{
+  width: 30%;
+}
+
+@media(max-width: 960px){
+  rb-signin{
+    width: 80%;
+  }
+}
+
+.dropdown-notifs {
+  width: 350px !important;
+  padding: 0;
+}
+
+.notif-item,
+.profil-item {
   padding: 16px;
+}
+
+.profil-item:hover {
+  color: var(--main-electric-blue) !important;
+}
+
+.notif-count {
+  background-color: var(--main-electric-blue);
+  height: 24px;
+  width: 24px;
+  padding: 0;
+  margin: 0;
+  font-size: 16px;
+  line-height: 24px;
+  text-align: center;
+  border-radius: 100%;
+  position: relative;
+  top: -55px;
+  right: -28px;
+}
+
+.notif-date {
+  margin: 0;
+  color: var(--main-light-grey);
+}
+
+.notif-messsage {
+  margin: 0;
+  font-weight: bold;
+}
+
+.notif-delete{
+  padding: 0;
+  text-align: center;
+  color: var(--main-light-grey);
+}
+
+nav .notif-delete:hover > a{
+  color: var(--main-electric-blue) !important;
+}
+
+.item-user-img{
+  height: 35px;
+  margin-right: 4px;
 }

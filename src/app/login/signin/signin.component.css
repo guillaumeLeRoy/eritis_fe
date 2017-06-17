@@ -20,12 +20,7 @@ input[type="email"],
 input[type="email"]:focus:not([readonly]),
 textarea,
 textarea:focus:not([readonly]){
-  border: none !important;
-  box-shadow: none !important;
-  box-sizing: border-box;
-  background-color: rgba(255, 255, 255, .6);
-  border-radius: 8px;
-  padding: 16px !important;
+  background-color: rgba(255, 255, 255, .6) !important;
 }
 
 button[type="submit"]{
@@ -44,4 +39,15 @@ button[type="submit"]:hover{
 
 button[type="submit"]:disabled{
   opacity: .5;
+}
+
+#main_container{
+  width: 30%;
+  margin: auto;
+}
+
+@media(max-width: 960px){
+  #main_container{
+    width: 80%;
+  }
 }

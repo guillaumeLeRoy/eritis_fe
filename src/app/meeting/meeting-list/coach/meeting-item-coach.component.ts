@@ -10,6 +10,7 @@ import {Coach} from "../../../model/Coach";
 import {AuthService} from "../../../service/auth.service";
 import {ApiUser} from "../../../model/ApiUser";
 import {Subscription} from "rxjs/Subscription";
+import {Router} from "@angular/router";
 
 declare var $: any;
 declare var Materialize: any;
@@ -25,7 +26,7 @@ export class MeetingItemCoachComponent implements OnInit, AfterViewInit {
   meeting: Meeting;
 
   @Output()
-  dateAgreed = new EventEmitter();
+  onValidateDateBtnClick = new EventEmitter();
 
   // @Output()
   // dateRemoved = new EventEmitter();
@@ -38,7 +39,8 @@ export class MeetingItemCoachComponent implements OnInit, AfterViewInit {
   private coachee: Coachee;
   private user: Observable<Coach>;
 
-  private goal: string;
+  private goal: Observable<string>;
+  private context: Observable<string>;
   private reviewValue: string;
   private reviewNextStep: string;
 
@@ -63,7 +65,7 @@ export class MeetingItemCoachComponent implements OnInit, AfterViewInit {
 
   private connectedUserSubscription: Subscription;
 
-  constructor(private authService: AuthService, private formBuilder: FormBuilder, private meetingService: MeetingsService, private cd: ChangeDetectorRef) {
+  constructor(private router: Router, private authService: AuthService, private formBuilder: FormBuilder, private meetingService: MeetingsService, private cd: ChangeDetectorRef) {
     $('select').material_select();
   }
 
@@ -86,6 +88,7 @@ export class MeetingItemCoachComponent implements OnInit, AfterViewInit {
   ngAfterViewInit(): void {
     console.log("ngAfterViewInit");
     this.getGoal();
+    this.getContext();
     this.getReviewValue();
     this.getReviewNextStep();
     this.loadMeetingPotentialTimes();
@@ -146,44 +149,6 @@ export class MeetingItemCoachComponent implements OnInit, AfterViewInit {
     );
   }
 
-  confirmPotentialDate() {
-
-    let minDate = new Date(this.selectedDate);
-    minDate.setHours(this.selectedHour);
-    let maxDate = new Date(this.selectedDate);
-    if (this.selectedHour === Math.round(this.selectedHour)) {
-      maxDate.setHours(this.selectedHour);
-      maxDate.setMinutes(30);
-    } else {
-      minDate.setMinutes(30);
-      maxDate.setHours(this.selectedHour + 1);
-    }
-    let timestampMin: number = +minDate.getTime().toFixed(0) / 1000;
-    let timestampMax: number = +maxDate.getTime().toFixed(0) / 1000;
-
-    // create new date
-    this.meetingService.addPotentialDateToMeeting(this.meeting.id, timestampMin, timestampMax).subscribe(
-      (meetingDate: MeetingDate) => {
-        console.log('addPotentialDateToMeeting, meetingDate : ', meetingDate);
-
-        // validate date
-        this.meetingService.setFinalDateToMeeting(this.meeting.id, meetingDate.id).subscribe(
-          (meeting: Meeting) => {
-            console.log("confirmPotentialDate, response", meeting);
-            this.dateAgreed.emit();
-            Materialize.toast('Meeting validé !', 3000, 'rounded')
-          }, (error) => {
-            console.log('get potentials dates error', error);
-            Materialize.toast('Erreur lors de la validation du meeting', 3000, 'rounded')
-          }
-        );
-      },
-      (error) => {
-        console.log('addPotentialDateToMeeting error', error);
-      }
-    );
-  }
-
   submitCloseMeetingForm() {
     console.log("submitCloseMeetingForm form : ", this.closeMeetingForm.value)
 
@@ -208,7 +173,7 @@ export class MeetingItemCoachComponent implements OnInit, AfterViewInit {
       (reviews: MeetingReview[]) => {
         console.log("getMeetingGoal, got goal : ", reviews);
         if (reviews != null)
-          this.goal = reviews[0].comment;
+          this.goal = Observable.of(reviews[0].comment);
         else
           this.goal = null;
 
@@ -218,6 +183,26 @@ export class MeetingItemCoachComponent implements OnInit, AfterViewInit {
       },
       (error) => {
         console.log('getMeetingGoal error', error);
+        //this.displayErrorPostingReview = true;
+      });
+  }
+
+  private getContext() {
+    this.loading = true;
+
+    this.meetingService.getMeetingContext(this.meeting.id).subscribe(
+      (reviews: MeetingReview[]) => {
+        console.log("getMeetingContext, got context : ", reviews);
+        if (reviews != null)
+          this.context = Observable.of(reviews[0].comment);
+        else
+          this.context = Observable.of('n/a');
+
+        this.loading = false;
+        this.cd.detectChanges();
+      },
+      (error) => {
+        console.log('getMeetingContext error', error);
         //this.displayErrorPostingReview = true;
       });
   }
@@ -292,7 +277,6 @@ export class MeetingItemCoachComponent implements OnInit, AfterViewInit {
       if (this.getDate(date.start_date) === this.getDate(selected)) {
         for (let _i = this.getHours(date.start_date); _i < this.getHours(date.end_date); _i++) {
           hours.push(_i);
-          hours.push(_i + 0.5);
         }
       }
     }
@@ -303,10 +287,7 @@ export class MeetingItemCoachComponent implements OnInit, AfterViewInit {
   }
 
   printTimeNumber(hour: number) {
-    if (hour === Math.round(hour))
-      return hour + ':00'
-    else
-      return Math.round(hour) - 1 + ':30'
+    return hour + ':00'
   }
 
   printTimeString(date: string) {
@@ -328,31 +309,12 @@ export class MeetingItemCoachComponent implements OnInit, AfterViewInit {
     return (new Date(date)).getDate() + ' ' + this.months[(new Date(date)).getMonth()];
   }
 
-  toggleShowDetails() {
-    this.showDetails = this.showDetails ? false : true;
+  goToCoacheeProfile(coacheeId: String) {
+    window.scrollTo(0, 0);
+    this.router.navigate(['/profile_coachee', 'visiter', coacheeId]);
   }
 
-  openModal() {
-    console.log('openModal, agreed date : ', this.meeting.agreed_date);
-    console.log('openModal, meeting : ', this.meeting);
-    // $('#deleteModal').openModal();
-
-    this.cancelMeetingTimeEvent.emit(this.meeting);//TODO to improve
+  onValidateDateClick() {
+    this.onValidateDateBtnClick.emit({selectedDate: this.selectedDate, selectedHour: this.selectedHour, meeting: this.meeting});
   }
-
-  onSubmitValidateMeeting(meeting: Meeting) {
-    this.user.take(1).subscribe(
-      (user: Coach) => {
-        this.meetingService.associateCoachToMeeting(this.meeting.id, user.id).subscribe(
-          (meeting: Meeting) => {
-            console.log('on meeting associated : ', meeting);
-            //navigate to dashboard
-            this.confirmPotentialDate();
-            this.cd.detectChanges();
-          }
-        );
-      }
-    );
-  }
-
 }

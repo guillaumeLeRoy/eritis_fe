@@ -1,4 +1,4 @@
-<rb-header></rb-header>
+<!--<rb-header></rb-header>-->
 <div class="container">
 
   <div *ngIf="(coachee | async)?.selectedCoach">
@@ -8,7 +8,7 @@
 
     <p>{{(coachee | async)?.selectedCoach.display_name}}</p>
 
-    <rb-coach-details class="col s4" [coach]="(coachee | async)?.selectedCoach"></rb-coach-details>
+    <rb-coach-details class="col s4" [iCoach]="(coachee | async)?.selectedCoach"></rb-coach-details>
 
   </div>
 

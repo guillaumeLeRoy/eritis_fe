@@ -21,7 +21,6 @@ export class AdminComponent implements OnInit {
     this.getAdmin();
   }
 
-
   getAdmin() {
 
     if (environment.production) {

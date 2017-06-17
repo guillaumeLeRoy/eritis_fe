@@ -1,7 +1,7 @@
+///<reference path="auth.service.ts"/>
 import {Injectable} from "@angular/core";
 import {Observable} from "rxjs";
 import {Coach} from "../model/Coach";
-
 import {Response} from "@angular/http";
 import {AuthService} from "./auth.service";
 import {PotentialCoachee} from "../model/PotentialCoachee";
@@ -9,7 +9,10 @@ import {Coachee} from "../model/Coachee";
 import {RhUsageRate} from "../model/UsageRate";
 import {PotentialCoach} from "../model/PotentialCoach";
 import {PotentialRh} from "../model/PotentialRh";
-
+import {Notif} from "../model/Notif";
+import {ApiUser} from "../model/ApiUser";
+import {Rh} from "../model/Rh";
+import {CoacheeObjective} from "../model/CoacheeObjective";
 
 @Injectable()
 export class CoachCoacheeService {
@@ -25,6 +28,34 @@ export class CoachCoacheeService {
         let json = response.json();
         console.log("getAllCoachs, response json : ", json);
         return json;
+      });
+  }
+
+  getCoachForId(coachId: string): Observable<Coach> {
+    console.log("getCoachForId, start request");
+
+    let params = [coachId]
+    return this.apiService.get(AuthService.GET_COACH_FOR_ID, params).map(
+      (response: Response) => {
+        console.log("getCoachForId, got coach", response);
+        let coach: Coach = response.json();
+        return coach;
+      },(error) => {
+        console.log("getCoachForId, error", error);
+      });
+  }
+
+  getCoacheeForId(coacheeId: string): Observable<Coachee> {
+    console.log("getCoacheeForId, start request");
+
+    let params = [coacheeId]
+    return this.apiService.get(AuthService.GET_COACHEE_FOR_ID, params).map(
+      (response: Response) => {
+        console.log("getCoacheeForId, got coachee", response);
+        let coachee: Coachee = response.json();
+        return coachee;
+      },(error) => {
+        console.log("getCoacheeForId, error", error);
       });
   }
 
@@ -89,16 +120,65 @@ export class CoachCoacheeService {
       });
   }
 
+  getAllNotificationsForUser(user: ApiUser): Observable<Notif[]> {
+    console.log("getAllNotifications, start request");
+    let param = [user.id];
 
-  // updateCoacheeSelectedCoach(coacheeId: string, coachId: string): Observable<Coach | Coachee> {
-  //   console.log("updateCoacheeSelectedCoach, coacheeId", coacheeId);
-  //   console.log("updateCoacheeSelectedCoach, coachId", coachId);
-  //
-  //   let params = [coacheeId, coachId];
-  //   return this.apiService.put(AuthService.UPDATE_COACHEE_SELECTED_COACH, params, null).map(
-  //     (response: Response) => {
-  //       return this.onUserResponse(response);
-  //     });
-  // }
+    let path = AuthService.GET_COACHEE_NOTIFICATIONS;
+    if (user instanceof Coach) {
+      path = AuthService.GET_COACH_NOTIFICATIONS;
+    } else if (user instanceof  Rh) {
+      path = AuthService.GET_RH_NOTIFICATIONS;
+    }
+
+    return this.apiService.get(path, param).map(
+      (response: Response) => {
+        let json: Notif[] = response.json();
+        console.log("getAllNotifications, response json : ", json);
+        return json;
+      });
+  }
+
+  readAllNotificationsForUser(user: ApiUser): any {
+    console.log("readAllNotifications, start request");
+
+    let param = [user.id];
+
+    let path = AuthService.PUT_COACHEE_NOTIFICATIONS_READ;
+    if (user instanceof Coach) {
+      path = AuthService.PUT_COACH_NOTIFICATIONS_READ;
+    } else if (user instanceof  Rh) {
+      path = AuthService.PUT_RH_NOTIFICATIONS_READ;
+    }
+
+    return this.apiService.put(path, param, null).map(
+      (response: Response) => {
+        console.log("readAllNotifications done");
+      },
+      (error) => {
+        console.log('readAllNotifications error', error);
+      });
+  }
+
+  /**
+   * Add a new objective to this coachee.
+   * @param coacheeId
+   * @param rhId
+   * @param objective
+   */
+  addObjectiveToCoachee(rhId: string, coacheeId: string, objective: string): Observable<CoacheeObjective> {
+    let param = [rhId, coacheeId];
+
+    let body = {
+      "objective": objective
+    }
+
+    return this.apiService.post(AuthService.POST_COACHEE_OBJECTIVE, param, body).map(
+      (response: Response) => {
+        let json: CoacheeObjective = response.json();
+        console.log("POST coachee new objective, response json : ", json);
+        return json;
+      });
+  }
 
 }

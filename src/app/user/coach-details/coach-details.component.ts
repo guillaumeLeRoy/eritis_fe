@@ -1,85 +1,121 @@
 import {Component, OnInit, AfterViewInit, ChangeDetectorRef, OnDestroy, Input} from '@angular/core';
 import {Observable, Subscription} from "rxjs";
-import {Router} from "@angular/router";
+import {ActivatedRoute, Router} from "@angular/router";
 import {Coach} from "../../model/Coach";
 import {AuthService} from "../../service/auth.service";
 import {ApiUser} from "../../model/ApiUser";
 import {MeetingsService} from "../../service/meetings.service";
+import {CoachCoacheeService} from "../../service/coach_coachee.service";
+import {FormBuilder, FormGroup, Validators} from "@angular/forms";
+import {Coachee} from "../../model/coachee";
+import {Rh} from "app/model/Rh";
+
+declare var $: any;
+declare var Materialize: any;
 
 @Component({
   selector: 'rb-coach-details',
   templateUrl: './coach-details.component.html',
   styleUrls: ['./coach-details.component.css']
 })
+
 export class CoachDetailsComponent implements OnInit, AfterViewInit, OnDestroy {
 
   @Input()
-  coach: Coach;
+  iCoach: Coach;
 
-  private connectedUser: Observable<ApiUser>;
-  private subscriptionConnectUser: Subscription;
+  private user: Observable<Coach | Coachee | Rh>;
+  private coach: Observable<Coach>;
+  private status = 'visiter';
+  // private subscriptionGetCoach: Subscription;
 
-  constructor(private router: Router, private authService: AuthService, private cd: ChangeDetectorRef, private meetingService: MeetingsService) {
+  private formCoach: FormGroup;
+
+  constructor(private authService: AuthService, private router: Router, private cd: ChangeDetectorRef, private formBuilder: FormBuilder,  private coachService: CoachCoacheeService, private route: ActivatedRoute) {
   }
 
   ngOnInit() {
-    let user = this.authService.getConnectedUser();
-    if (user) {
-      this.onConnectedUserReceived(user);
-    } else {
-      this.subscriptionConnectUser = this.authService.getConnectedUserObservable().subscribe(
-        (user: ApiUser) => {
-          console.log("ngOnInit, sub received user", user);
-          this.onConnectedUserReceived(user);
-        }
-      );
-    }
+    this.formCoach = this.formBuilder.group({
+      name: ['', Validators.required],
+      surname: ['', Validators.required],
+      avatar: ['', Validators.required],
+      description: ['', Validators.required],
+    });
+
+    this.getCoach();
+    this.getUser();
   }
 
-  private onConnectedUserReceived(user: ApiUser) {
-    this.connectedUser = Observable.of(user);
-    this.cd.detectChanges();
-  }
+  getCoach() {
+    this.route.params.subscribe(
+      (params: any) => {
+        let coachId = params['id'];
+        this.status = params['status'];
 
+        this.coachService.getCoachForId(coachId).subscribe(
+          (coach: Coach) => {
+            console.log("gotCoach", coach);
 
-  createAMeeting() {
-    this.connectedUser.take(1).subscribe(
-      (user: ApiUser) => {
-
-        if (user == null) {
-          console.log('no connected user')
-          return;
-        }
-
-        this.meetingService.createMeeting(user.id).subscribe(
-          (success) => {
-            console.log('addPotentialDateToMeeting success', success);
-            //redirect to meetings page
-            this.router.navigate(['/meetings']);
-          },
-          (error) => {
-            console.log('addPotentialDateToMeeting error', error);
-            // this.displayErrorBookingDate = true;
+            this.setFormValues(coach);
+            this.coach = Observable.of(coach);
+            this.cd.detectChanges();
           }
         );
+      }
+    )
+  }
+
+  getUser() {
+    this.authService.getConnectedUserObservable().subscribe(
+      (user: Coach | Coachee | Rh) => {
+        console.log('getConnectedUser : ' + user);
+
+        this.user = Observable.of(user);
+        this.cd.detectChanges()
       }
     );
   }
 
+  setFormValues(coach: Coach) {
+    this.formCoach.setValue({
+      name: coach.display_name,
+      surname: coach.display_name,
+      avatar: coach.avatar_url,
+      description: coach.description
+    });
+  }
+
+  submitCoachProfilUpdate() {
+    console.log("submitCoachProfilUpdate");
+    this.coach.last().flatMap(
+      (coach: Coach) => {
+        console.log("submitCoachProfilUpdate, coach obtained");
+        return this.authService.updateCoachForId(coach.id,
+          this.formCoach.value.name,
+          this.formCoach.value.description,
+          this.formCoach.value.avatar);
+      }
+    ).subscribe(
+      (user: ApiUser) => {
+        console.log("coach updated : ", user);
+        //refresh page
+        Materialize.toast('Votre profil a été modifié !', 3000, 'rounded');
+        this.getCoach();
+      },
+      (error) => {
+        console.log('coach update, error', error);
+        //TODO display error
+        Materialize.toast('Impossible de modifier votre profil', 3000, 'rounded');
+      });
+  }
+
+  goToMeetings() {
+    window.scrollTo(0, 0);
+    this.router.navigate(['/meetings']);
+  }
+
   ngAfterViewInit(): void {
-    // this.route.params.subscribe(
-    //   (params: any) => {
-    //     this.coachId = params['id']
-    //     this.subscriptionGetCoach = this.coachService.getCoachForId(this.coachId).subscribe(
-    //       (coach: Coach) => {
-    //         console.log("ngAfterViewInit, post sub coach", coach);
-    //
-    //         this.coach = Observable.of(coach);
-    //         this.cd.detectChanges();
-    //       }
-    //     );
-    //   }
-    // )
+    console.log("afterViewInit");
   }
 
   ngOnDestroy(): void {
@@ -87,9 +123,9 @@ export class CoachDetailsComponent implements OnInit, AfterViewInit, OnDestroy {
     //   this.subscriptionGetCoach.unsubscribe();
     // }
 
-    if (this.subscriptionConnectUser) {
-      this.subscriptionConnectUser.unsubscribe();
-    }
+    // if (this.subscriptionConnectUser) {
+    //   this.subscriptionConnectUser.unsubscribe();
+    // }
   }
 
 }

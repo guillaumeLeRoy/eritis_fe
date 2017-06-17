@@ -35,6 +35,7 @@ p {
 
 .meeting-item-coach-avatar{
   height: 52px;
+  width: 52px;
   margin-right: 16px;
 }
 
@@ -43,44 +44,49 @@ p {
   display: flex;
   flex-direction: row;
   flex-grow: 1;
-  align-items: center;
+  align-items: flex-start;
   padding: 0px;
 }
 
 .meeting-item-header {
   justify-content: space-between;
+  padding: 8px 0;
 }
 
-.meeting-item-coach {
+.meeting-item-header > div {
   display: flex;
   flex-direction: row;
   flex-grow: 1;
   align-items: center;
+  padding: 0px;
+}
+
+.meeting-item-coach{
+  display: flex;
+  flex-direction: row;
+  flex-grow: 1;
+  align-items: center;
+  cursor: pointer;
+}
+
+.meeting-item-coach:hover,
+.meeting-item-coach:hover .meeting-item-coach-name {
+  color: var(--main-electric-blue) !important;
 }
 
 .meeting-item-date{
   font-size: 22px;
   margin-left: 32px;
+  text-align: right;
 }
 
 .meeting-item-body{
   justify-content: space-between;
-  padding-left: 112px;
+  padding-left: 64px;
 }
 
 .meeting-item-body-buttons {
   padding: 16px 0;
-}
-
-.meeting-item.closed .meeting-item-header,
-.meeting-item.closed .meeting-item-body,
-.meeting-item.unbooked .meeting-item-header,
-.meeting-item.unbooked .meeting-item-body {
-  align-items: flex-start;
-}
-
-.meeting-item.unbooked .meeting-item-header {
-  padding: 8px 0;
 }
 
 .meeting-item-body-content {

@@ -2,8 +2,13 @@ import {Component, OnInit} from '@angular/core';
 import {AuthService} from "../service/auth.service";
 import {Response} from "@angular/http";
 import {FormGroup, FormBuilder, Validators} from "@angular/forms";
+import {Rh} from "../model/Rh";
+import {Coachee} from "app/model/Coachee";
+import {Coach} from "../model/Coach";
+import {Router} from "@angular/router";
 
 declare var Materialize: any;
+declare var $: any;
 
 @Component({
   selector: 'rb-welcome',
@@ -17,7 +22,7 @@ export class WelcomeComponent implements OnInit {
   private error = false;
   private errorMessage: '';
 
-  constructor(private authService: AuthService, private formBuilder: FormBuilder) {
+  constructor(private router: Router, private authService: AuthService, private formBuilder: FormBuilder) {
   }
 
   ngOnInit() {
@@ -26,6 +31,20 @@ export class WelcomeComponent implements OnInit {
       mail: ['', Validators.compose([Validators.required])],
       message: ['', [Validators.required]],
     });
+
+    // this.connectedUser = this.authService.getConnectedUserObservable();
+    this.authService.getConnectedUserObservable().subscribe(
+      (user: Coach | Coachee | Rh) => {
+        console.log('getConnectedUser : ' + user);
+        this.onUserObtained(user);
+      }
+    );
+  }
+
+  private onUserObtained(user: Coach | Coachee | Rh) {
+    console.log('onUserObtained : ' + user);
+    if (user != null)
+      this.router.navigate(['/meetings']);
   }
 
   activateLogin() {

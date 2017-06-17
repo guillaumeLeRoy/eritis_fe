@@ -19,27 +19,39 @@ export class AuthService {
   /* contract plan*/
   public static GET_CONTRACT_PLANS = "v1/plans/";
 
-  public static UPDATE_COACH = "/coachs/:id";
-  public static UPDATE_COACHEE = "/coachees/:id";
-  // public static UPDATE_COACHEE_SELECTED_COACH = "/coachees/:coacheeId/coach/:coachId";
-  public static POST_SIGN_UP_COACH = "/v1/coachs";
-  public static POST_SIGN_UP_COACHEE = "/v1/coachees";
-  public static POST_SIGN_UP_RH = "/v1/rhs";
   public static POST_POTENTIAL_COACHEE = "/v1/potentials/coachees";
   public static POST_POTENTIAL_COACH = "/v1/potentials/coachs";
   public static POST_POTENTIAL_RH = "/v1/potentials/rhs";
+
   public static LOGIN = "/login/:firebaseId";
   public static GET_POTENTIAL_COACHEE_FOR_TOKEN = "/v1/potentials/coachees/:token";
   public static GET_POTENTIAL_COACH_FOR_TOKEN = "/v1/potentials/coachs/:token";
   public static GET_POTENTIAL_RH_FOR_TOKEN = "/v1/potentials/rhs/:token";
+
+  /* coachee */
+  public static UPDATE_COACHEE = "/coachees/:id";
+  public static POST_SIGN_UP_COACHEE = "/v1/coachees";
+  public static GET_COACHEES = "v1/coachees";
+  public static GET_COACHEE_FOR_ID = "v1/coachees/:id";
+  public static GET_COACHEE_NOTIFICATIONS = "v1/coachees/:id/notifications";
+  public static PUT_COACHEE_NOTIFICATIONS_READ = "v1/coachees/:id/notifications/read";
+
+  /* coach */
+  public static UPDATE_COACH = "/coachs/:id";
+  public static POST_SIGN_UP_COACH = "/v1/coachs";
   public static GET_COACHS = "/coachs";
-  public static GET_COACHEES = "/coachees";
+  public static GET_COACH_FOR_ID = "/coachs/:id";
+  public static GET_COACH_NOTIFICATIONS = "v1/coachs/:id/notifications";
+  public static PUT_COACH_NOTIFICATIONS_READ = "v1/coachs/:id/notifications/read";
+
+  /* rh */
+  public static POST_SIGN_UP_RH = "/v1/rhs";
   public static GET_COACHEES_FOR_RH = "/v1/rhs/:uid/coachees";
   public static GET_POTENTIAL_COACHEES_FOR_RH = "/v1/rhs/:uid/potentials";
-  public static GET_COACH_FOR_ID = "/coachs/:id";
-  public static GET_COACHEE_FOR_ID = "/coachees/:id";
   public static GET_RH_FOR_ID = "/rh/:id";
   public static GET_USAGE_RATE_FOR_RH = "/v1/rhs/:id/usage";
+  public static GET_RH_NOTIFICATIONS = "v1/rhs/:id/notifications";
+  public static PUT_RH_NOTIFICATIONS_READ = "v1/rhs/:id/notifications/read";
 
   /* admin */
   public static GET_ADMIN = "/v1/admins/user";
@@ -64,6 +76,10 @@ export class AuthService {
   public static PUT_FINAL_DATE_TO_MEETING = "/meeting/:meetingId/date/:potentialId";//set the potential date as the meeting selected date
   public static GET_AVAILABLE_MEETINGS = "v1/meetings";//get available meetings ( meetings with NO coach associated )
   public static PUT_COACH_TO_MEETING = "v1/meeting/:meetingId/coach/:coachId";//associate coach with meeting
+
+  /* HR */
+  public static POST_COACHEE_OBJECTIVE = "/v1/rhs/:uidRH/coachees/:uidCoachee/objective";//create new objective for this coachee
+
 
   private onAuthStateChangedCalled = false;
   // private user: User
@@ -148,7 +164,7 @@ export class AuthService {
     return this.ApiUser;
   }
 
-  getConnectedUserObservable(): Observable<Coach | Coachee> {
+  getConnectedUserObservable(): Observable<Coach | Coachee | Rh> {
     return this.ApiUserSubject.asObservable();
   }
 
@@ -221,7 +237,15 @@ export class AuthService {
   }
 
   getNotAuth(path: string, params: string[]): Observable<Response> {
-    return this.httpService.get(this.generatePath(path, params))
+    console.log("getNotAuth, start request");
+    return this.httpService.get(this.generatePath(path, params)).map(
+      (res: Response) => {
+        console.log("getNotAuth, got user", res);
+        return res;
+      },(error) => {
+        console.log("getNotAuth, error", error);
+      }
+    );
   }
 
   getPotentialCoachee(path: string, params: string[]): Observable<PotentialCoachee> {
@@ -475,6 +499,7 @@ export class AuthService {
   }
 
   private parseCoachee(json: any): Coachee {
+    // TODO : don't really need to manually parse the received Json
     let coachee: Coachee = new Coachee(json.id);
     coachee.id = json.id;
     coachee.email = json.email;
@@ -486,6 +511,7 @@ export class AuthService {
     coachee.availableSessionsCount = json.available_sessions_count;
     coachee.updateAvailableSessionCountDate = json.update_sessions_count_date;
     coachee.associatedRh = json.associatedRh;
+    coachee.last_objective = json.last_objective;
     return coachee;
   }
 
@@ -549,7 +575,8 @@ export class AuthService {
     let params = [id];
     return this.put(AuthService.UPDATE_COACHEE, params, body).map(
       (response: Response) => {
-        return this.onUserResponse(response);
+        //return this.onUserResponse(response);
+        return null;
       });
   }
 
@@ -566,7 +593,8 @@ export class AuthService {
     return this.put(AuthService.UPDATE_COACH, params, body).map(
       (response: Response) => {
         //convert to coach
-        return this.onUserResponse(response);
+        // return this.onUserResponse(response);
+        return null;
       });
   }
 

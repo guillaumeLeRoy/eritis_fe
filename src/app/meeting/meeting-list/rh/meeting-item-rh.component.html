@@ -1,12 +1,13 @@
-<div class="meeting-item col-lg-12">
+<div class="meeting-item col-lg-12" (click)="toggleShowDetails()">
 
   <div class="preloader-wrapper active" *ngIf="loading">
     <div class="spinner-layer spinner-blue-only">
       <div class="circle-clipper left">
         <div class="circle"></div>
-      </div><div class="gap-patch">
-      <div class="circle"></div>
-    </div>
+      </div>
+      <div class="gap-patch">
+        <div class="circle"></div>
+      </div>
       <div class="circle-clipper right">
         <div class="circle"></div>
       </div>
@@ -17,34 +18,74 @@
 
     <!-- COACHEE -->
     <div *ngIf="coachee != null" class="row">
-      <div class="meeting-item-header col-md-12 col-lg-4">
-        <div class="meeting-item-coach">
-          <div>
-            <!-- image coachee -->
-            <img class="meeting-item-coach-avatar circle img-responsive" alt="coachee" [src]="coachee.avatar_url">
+      <div class="meeting-item-header col-md-12 col-lg-5">
+        <div>
+          <div class="meeting-item-coach">
+            <div>
+              <!-- image coachee -->
+              <img class="meeting-item-coach-avatar circle img-responsive" alt="coachee" [src]="coachee.avatar_url">
+            </div>
+
+            <div>
+              <p class="meeting-item-coach black-text bold">{{ coachee.display_name }}</p>
+              <p class="italic">Inscrit le {{ printDateString(coachee.start_date) }}</p>
+            </div>
           </div>
 
-          <div>
-            <p class="meeting-item-coach">{{ coachee.display_name }}</p>
+          <!--USAGE-->
+          <div class="meeting-item-date">
+            <div class="meeting-item-date-date">
+              <span class="usage-title">Utilisation: </span>
+              <span class="blue-text">{{ (coacheeUsageRate | async)?.usage_rate}}%</span>
+            </div>
           </div>
-        </div>
-
-        <!-- USAGE -->
-        <div class="meeting-item-date">
-          <span class="meeting-item-date-date">Usage: <span class="blue-text">{{ (coacheeUsageRate | async)?.usage_rate }}%</span></span>
         </div>
       </div>
 
       <!-- GOAL -->
-      <div class="meeting-item-body col-md-12 col-lg-8">
+      <div class="meeting-item-body col-md-12 col-lg-7">
         <div class="meeting-item-body-content">
           <p class="meeting-item-goal">
-            <span class="black-text bold">Objectif: </span>
-            <span *ngIf="hasGoal">{{ goal }}</span>
-            <span *ngIf="!hasGoal">n/a.</span>
+            <span class="black-text bold">Objectif personnel: </span>
+            <span *ngIf="coachee.last_objective">{{ coachee.last_objective.objective }}</span>
+            <span *ngIf="!coachee.last_objective">n/a</span>
           </p>
         </div>
+
+        <div class="meeting-item-body-buttons">
+          <button class="btn-basic btn-blue btn-plain btn-small" (click)="onClickAddObjectiveBtn()"
+                  *ngIf="!coachee.last_objective">
+            Ajouter un objectif
+          </button>
+          <button class="btn-basic btn-blue btn-plain btn-small" (click)="onClickAddObjectiveBtn()"
+                  *ngIf="coachee.last_objective">
+            Modifier l'objectif
+          </button>
+        </div>
       </div><!--end meeting-item-body-->
+
+      <div *ngIf="showDetails" class="meeting-review">
+        <div>
+          <h5><span class="blue-text">{{ coachee.plan.sessions_count }}</span> séances/mois</h5>
+          <br>
+          <div *ngIf="!hasBookedMeeting"><p>Pas encore de séance réalisée</p><br></div>
+          <div *ngIf="hasBookedMeeting">
+            <div *ngFor="let meeting of (meetings | async)">
+              <div class="row">
+                <div class=" col-md-3">
+                  <span class="meeting-list-date">{{ printDateString(meeting.agreed_date.start_date) }}</span>
+                </div>
+                <div class="col-md-9">
+                  <span class="black-text bold">Objectif de la séance: </span>
+                  <span>{{ goals[meeting.id] }}</span>
+                </div>
+              </div>
+              <br>
+            </div>
+          </div>
+        </div>
+      </div><!--end meeting-review-->
+
     </div><!--end coachee-->
 
     <!-- POTENTIAL COACHEE -->
@@ -71,4 +112,4 @@
 
   </div><!--end row-->
 
-  </div><!--end meeting-item-->
+</div><!--end meeting-item-->
