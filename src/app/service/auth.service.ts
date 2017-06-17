@@ -63,8 +63,7 @@ export class AuthService {
   public static POST_MEETING = "/meeting";
   public static DELETE_MEETING = "/meeting/:meetingId";
   public static GET_MEETING_REVIEWS = "/meeting/:meetingId/reviews";
-  public static POST_MEETING_REVIEW = "/meeting/:meetingId/review";
-  public static PUT_MEETING_REVIEW = "/meeting/reviews/:reviewId";//update review
+  public static PUT_MEETING_REVIEW = "v1/meetings/:meetingId/reviews";//add or replace meeting review
   public static DELETE_MEETING_REVIEW = "/meeting/reviews/:reviewId";//delete review
   public static CLOSE_MEETING = "v1/meetings/:meetingId/close";// close meeting
   public static GET_MEETINGS_FOR_COACHEE_ID = "/meetings/coachee/:coacheeId";
@@ -242,7 +241,7 @@ export class AuthService {
       (res: Response) => {
         console.log("getNotAuth, got user", res);
         return res;
-      },(error) => {
+      }, (error) => {
         console.log("getNotAuth, error", error);
       }
     );
@@ -575,7 +574,8 @@ export class AuthService {
     let params = [id];
     return this.put(AuthService.UPDATE_COACHEE, params, body).map(
       (response: Response) => {
-        return this.onUserResponse(response);
+        //return this.onUserResponse(response);
+        return null;
       });
   }
 
@@ -592,7 +592,8 @@ export class AuthService {
     return this.put(AuthService.UPDATE_COACH, params, body).map(
       (response: Response) => {
         //convert to coach
-        return this.onUserResponse(response);
+        // return this.onUserResponse(response);
+        return null;
       });
   }
 

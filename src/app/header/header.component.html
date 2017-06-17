@@ -18,7 +18,8 @@
             <li *ngIf="(isAuthenticated | async) && isUserACoach()" [class.active]="router.url === '/available_meetings'"><a (click)="goToAvailableSessions()">
               Demandes en attente</a></li>
 
-            <li *ngIf="(isAuthenticated | async)" [class.active]="router.url === '/meetings'"><a (click)="goToMeetings()">Tableau de bord</a></li>
+            <li *ngIf="(isAuthenticated | async)" [class.active]="router.url === '/meetings'"><a (click)="goToMeetings()">
+              Tableau de bord</a></li>
 
             <!--<li *ngIf="(isAuthenticated | async) && isUserACoach()"><a (click)="goToProfile()">Profil</a></li>-->
 
@@ -69,7 +70,7 @@
               <!--<div class="notif-count">0</div>-->
               <!--</li>-->
 
-              <li *ngIf="(isAuthenticated | async) && isUserACoach()"
+              <li *ngIf="(isAuthenticated | async) && (isUserACoach() || isUserACoachee())"
                   [class.active]="router.url === '/profile_coach' || router.url === '/profile_coachee' || router.url === '/profile_rh'">
                 <a (click)="goToProfile()">Modifier mon profil</a></li>
 
@@ -144,6 +145,6 @@
 </ul>
 
 <ul id="profil" class="dropdown-content dropdown-profil collection">
-  <li class="profil-item collection-item text-right" (click)="goToProfile()" *ngIf="isUserACoach()">Modifier mon profil</li>
+  <li class="profil-item collection-item text-right" (click)="goToProfile()" *ngIf="isUserACoach() || isUserACoachee()">Modifier mon profil</li>
   <li class="profil-item collection-item text-right" (click)="onLogout()">Déconnexion</li>
 </ul>

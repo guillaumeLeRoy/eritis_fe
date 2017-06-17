@@ -10,7 +10,7 @@ import {FormGroup, FormBuilder, Validators} from "@angular/forms";
   templateUrl: 'profile-coach.component.html',
   styleUrls: ['profile-coach.component.css']
 })
-export class ProfileCoachComponent implements OnInit, AfterViewInit,OnDestroy {
+export class ProfileCoachComponent implements OnInit, AfterViewInit, OnDestroy {
 
   private coach: Observable<Coach>;
   private connectedUser: Observable<ApiUser>;

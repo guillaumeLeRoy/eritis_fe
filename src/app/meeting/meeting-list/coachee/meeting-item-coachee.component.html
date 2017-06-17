@@ -56,11 +56,10 @@
         </div>
 
         <!--<button *ngIf="!meeting.agreed_date" class="btn-basic btn-blue btn-small" (click)="goToModifyDate(meeting.id)">-->
-          <!--Modifier-->
+        <!--Modifier-->
         <!--</button>-->
       </div>
     </div>
-
 
     <!-- GOAL & REVIEW -->
     <div class="meeting-item-body col-md-12 col-lg-7">
@@ -72,25 +71,28 @@
         </p>
 
         <div *ngIf="!meeting.isOpen" class="meeting-review">
-          <er-post-meeting *ngIf="!hasValue || !hasNextStep" [meeting]="meeting"></er-post-meeting>
-
-          <div *ngIf="hasValue && hasNextStep">
+          <div *ngIf="hasSessionResult && hasSessionUtility">
             <br>
-            <p><span class="black-text bold">En quoi la séance a-t-elle été utile ? </span>{{ reviewValue }}</p>
+            <p><span class="black-text bold">En quoi la séance a-t-elle été utile ? </span>{{ sessionUtility }}</p>
             <br>
-            <p><span class="black-text bold">Avec quoi êtes vous reparti ? </span>{{ reviewNextStep }}</p>
+            <p><span class="black-text bold">Avec quoi êtes vous reparti ? </span>{{ sessionResult }}</p>
           </div>
         </div><!--end meeting-review-->
       </div>
 
       <div class="meeting-item-buttons" *ngIf="meeting.isOpen">
-        <button class="btn-basic btn-plain btn-blue btn-small" *ngIf="!meeting.agreed_date" (click)="goToModifyDate(meeting.id)">
+        <button class="btn-basic btn-plain btn-blue btn-small" *ngIf="!meeting.agreed_date"
+                (click)="goToModifyDate(meeting.id)">
           MODIFIER
         </button>
-        <button class="btn-basic btn-plain btn-blue btn-small" *ngIf="hasGoal && meeting.agreed_date" (click)="goToChatRoom()">
+        <button class="btn-basic btn-plain btn-blue btn-small" *ngIf="hasGoal && meeting.agreed_date"
+                (click)="goToChatRoom()">
           LANCER
         </button>
         <button class="btn-basic btn-cancel" (click)="openModal()"><i class="material-icons">clear</i></button>
+      </div>
+      <div class="meeting-item-buttons" *ngIf="!meeting.isOpen && !hasRate">
+        <button class="btn-basic btn-plain btn-blue btn-small" (click)="rateSession()">NOTER</button>
       </div>
     </div><!--end meeting-item-body-->
 

@@ -48,12 +48,11 @@
 
 .header-item-number {
   margin: 0;
-  margin-bottom: 8px;
   font-size: 40px;
   font-weight: 500;
 }
 
-.header-item-number span {
+.header-item-number .indice {
   font-size: 18px;
   font-weight: 400;
 }
@@ -69,4 +68,8 @@
 
 .message-field {
   min-height: 200px;
+}
+
+.description-field {
+  min-height: 100px;
 }

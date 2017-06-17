@@ -112,7 +112,7 @@ export class MeetingItemRhComponent implements OnInit, AfterViewInit {
       (reviews: MeetingReview[]) => {
         console.log("getMeetingGoal, got goal : ", reviews);
         if (reviews != null)
-          this.goals[meetingId] = reviews[0].comment;
+          this.goals[meetingId] = reviews[0].value;
         else
           this.goals[meetingId] = 'n/a';
       },

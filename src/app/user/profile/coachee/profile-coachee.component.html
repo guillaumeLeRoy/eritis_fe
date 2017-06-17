@@ -1,149 +1,250 @@
-<!--<rb-header></rb-header>-->
-<!--start container-->
-<div class="container">
+<div class="header-user">
+  <div class="header-user-filter">
+    <div class="container row">
 
-  <div id="profile-page" class="section">
-    <!-- profile-page-header -->
-    <div id="profile-page-header" class="card">
-      <div class="card-image waves-effect waves-block waves-light">
-        <img class="activator" src="images/user-profile-bg.jpg" alt="user background">
-      </div>
-      <figure class="card-profile-image">
-        <img src="{{ ( coachee | async)?.avatar_url}}" alt="profile image"
-             class="circle z-depth-2 responsive-img activator">
-      </figure>
-      <div class="card-content">
-        <div class="row">
-          <div class="col s3 offset-s2">
-            <h4 class="card-title grey-text text-darken-4">{{ (coachee | async)?.display_name }}</h4>
-            <p class="medium-small grey-text">Coachee</p>
-          </div>
-          <div class="col s2 center-align">
-            <h4 class="card-title grey-text text-darken-4">10+</h4>
-            <p class="medium-small grey-text">Work Experience</p>
-          </div>
-          <div class="col s2 center-align">
-            <h4 class="card-title grey-text text-darken-4">6</h4>
-            <p class="medium-small grey-text">Completed Sessions</p>
-          </div>
-          <div class="col s2 center-align">
-            <h4 class="card-title grey-text text-darken-4">$ 1,253,000</h4>
-            <p class="medium-small grey-text">Business Profit</p>
-          </div>
-          <div class="col s1 right-align">
-            <a class="btn-floating activator waves-effect waves-light darken-2 right">
-              <i class="mdi-action-perm-identity"></i>
-            </a>
-          </div>
+      <div class="user col-lg-5">
+        <img src="{{(coachee | async)?.avatar_url}}" alt="profile image" class="user-img circle responsive-img z-depth-2">
+        <div class="user-info">
+          <h5>{{(coachee | async)?.display_name}}</h5>
+          <h6>{{(coachee | async)?.email}}</h6>
         </div>
       </div>
-      <div class="card-reveal">
-        <p>
-            <span class="card-title grey-text text-darken-4">{{ (coachee | async)?.display_name }} <i
-              class="mdi-navigation-close right"></i></span>
-          <span><i class="mdi-action-perm-identity cyan-text text-darken-2"></i>Coach</span>
-        </p>
 
-        <p>Coachee description</p>
+      <div class="col-sm-12 hide-on-large-only gap"></div>
 
-        <p><i class="mdi-action-perm-phone-msg cyan-text text-darken-2"></i> +1 (612) 222 8989</p>
-        <p><i class="mdi-communication-email cyan-text text-darken-2"></i> {{ (coachee | async)?.email }}</p>
-        <p><i class="mdi-social-cake cyan-text text-darken-2"></i> Start Date : {{ (coachee | async)?.start_date }}
-        </p>
-        <p><i class="mdi-device-airplanemode-on cyan-text text-darken-2"></i> BAR - AUS</p>
-        <p><i class="mdi-social-cake cyan-text text-darken-2"></i> eritis id : {{ (coachee | async)?.id }}</p>
-
-      </div>
-    </div>
-    <!--/ profile-page-header -->
-
-    <!-- profile-page-content -->
-    <div id="profile-page-content" class="row">
-      <!-- profile-page-sidebar-->
-      <div id="profile-page-sidebar" class="col s12 m4">
-        <!-- Profile About  -->
-        <div class="card light-blue">
-          <div class="card-content white-text">
-            <span class="card-title">About Me!</span>
-            <p>Coachee description</p>
-
-          </div>
+      <div class="header-stats col-lg-7">
+        <div class="header-item">
+          <div class="header-item-number"><span>10</span><span class="indice">mois</span></div>
+          <p class="header-item-title">Expérience</p>
         </div>
-        <!-- Profile About  -->
 
-        <!-- Profile About Details  -->
-        <ul id="profile-page-about-details" class="collection z-depth-1">
-          <li class="collection-item">
-            <div class="row">
-              <div class="col s5 grey-text darken-1"><i class="mdi-action-wallet-travel"></i> Project</div>
-              <div class="col s7 grey-text text-darken-4 right-align">ABC Name</div>
-            </div>
-          </li>
-          <li class="collection-item">
-            <div class="row">
-              <div class="col s5 grey-text darken-1"><i class="mdi-social-poll"></i> Skills</div>
-              <div class="col s7 grey-text text-darken-4 right-align">HTML, CSS</div>
-            </div>
-          </li>
-          <li class="collection-item">
-            <div class="row">
-              <div class="col s5 grey-text darken-1"><i class="mdi-social-domain"></i> Lives in</div>
-              <div class="col s7 grey-text text-darken-4 right-align">NY, USA</div>
-            </div>
-          </li>
-          <li class="collection-item">
-            <div class="row">
-              <div class="col s5 grey-text darken-1"><i class="mdi-social-cake"></i> Birth date</div>
-              <div class="col s7 grey-text text-darken-4 right-align">18th June, 1991</div>
-            </div>
-          </li>
-        </ul>
-        <!--/ Profile About Details  -->
-
-        <!-- Profile About  -->
-
-        <!-- Profile Edit  -->
-        <div class="card">
-          <div class="card-content">
-            <span class="card-title">Modifier votre profile</span>
-
-            <form [formGroup]="formCoachee" (ngSubmit)="submitCoacheeProfileUpdate()">
-
-              <div class="row">
-                <div class="input-field col s10">
-                  <input id="edit_username" type="text" formControlName="pseudo" class="validate"
-                         placeholder="{{ (coachee | async)?.display_name }}">
-                  <label for="edit_username">Username</label>
-                </div>
-              </div>
-
-
-              <div class="row">
-                <div class="input-field col s10">
-                    <textarea id="edit_description" row="2" class="materialize-textarea"
-                              placeholder="Décrivez-vous"></textarea>
-                  <label for="edit_description">Description</label>
-                </div>
-              </div>
-
-              <div class="row">
-                <div class="input-field col s10">
-                  <input id="edit_avatar_url" type="text" formControlName="avatar"
-                         placeholder="{{ (coachee | async)?.avatar_url }}">
-                  <label for="edit_avatar_url">Avatar url</label>
-                </div>
-              </div>
-
-              <button type="submit" class="btn btn-success" [disabled]="!formCoachee.valid">Mettre à jour</button>
-
-            </form>
-
-          </div>
+        <div class="header-item">
+          <div class="header-item-number"><span>6</span></div>
+          <p class="header-item-title">Séances réalisées</p>
         </div>
-        <!-- / Profile Edit  -->
+
+        <div class="header-item">
+          <div class="header-item-number"><span>3</span></div>
+          <p class="header-item-title">Personnes coachées</p>
+        </div>
       </div>
+
     </div>
   </div>
 </div>
+
+<div class="container">
+  <h4 class="text-right"><span class="blue-text">{{(coachee | async)?.plan.sessions_count}}</span> séances par mois</h4>
+  <h4 class="text-right italic" *ngIf="(coachee | async)?.last_objective == null">Aucun objectif personnel défini</h4>
+  <h4 class="text-right italic" *ngIf="(coachee | async)?.last_objective != null">"{{ (coachee | async)?.last_objective.objective }}"</h4>
+  <br>
+
+  <div *ngIf="status === 'visiter'">
+    <div class="center">
+      <button class="btn-basic btn-plain btn-blue btn-small center" (click)="goToMeetings()">Retourner au tableau de bord</button>
+    </div>
+    <br>
+
+    <!--<form>-->
+    <!--<div class="row">-->
+    <!--<div class="col s12">-->
+    <!--<label for="message">Envoyer un message à {{(coach | async)?.display_name}}</label>-->
+    <!--<textarea name="message" id="message" class="message-field"></textarea>-->
+    <!--</div>-->
+    <!--</div>-->
+    <!--<div class="input-field">-->
+    <!--<button class="btn-basic btn-plain btn-blue right">Envoyer</button>-->
+    <!--</div>-->
+    <!--</form>-->
+  </div>
+
+  <div *ngIf="status === 'owner'">
+    <h4 class="black-text">Mettre à jour votre profil</h4>
+
+    <form [formGroup]="formCoachee" (ngSubmit)="submitCoacheeProfilUpdate()">
+      <div class="row">
+        <div class="col-xs-12 col-sm-6">
+          <label for="edit_name">Prénom</label>
+          <input id="edit_name" type="text" class="validate"
+                 formControlName="name"
+                 placeholder="Prénom">
+        </div>
+
+        <div class="col-xs-12 col-sm-6">
+          <label for="edit_surname">Nom</label>
+          <input id="edit_surname" type="text" class="validate"
+                 formControlName="surname"
+                 placeholder="Nom">
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-sm-12">
+          <label for="edit_avatar_url">Photo de profil</label>
+          <input id="edit_avatar_url" type="text" class="validate"
+                 formControlName="avatar"
+                 placeholder="http://...">
+        </div>
+
+        <div class="col-sm-12 center">
+          <img src="{{formCoachee.get('avatar').value}}" alt="profile image" class="user-img circle responsive-img z-depth-2">
+        </div>
+      </div>
+
+      <button type="submit" class="btn-basic btn-plain btn-blue btn-small right" [disabled]="!formCoachee.valid">Enregistrer</button>
+    </form>
+  </div>
+
+</div>
+
+
+
+<!--&lt;!&ndash;<rb-header></rb-header>&ndash;&gt;-->
+<!--&lt;!&ndash;start container&ndash;&gt;-->
+<!--<div class="container">-->
+
+  <!--<div id="profile-page" class="section">-->
+    <!--&lt;!&ndash; profile-page-header &ndash;&gt;-->
+    <!--<div id="profile-page-header" class="card">-->
+      <!--<div class="card-image waves-effect waves-block waves-light">-->
+        <!--<img class="activator" src="images/user-profile-bg.jpg" alt="user background">-->
+      <!--</div>-->
+      <!--<figure class="card-profile-image">-->
+        <!--<img src="{{ ( coachee | async)?.avatar_url}}" alt="profile image"-->
+             <!--class="circle z-depth-2 responsive-img activator">-->
+      <!--</figure>-->
+      <!--<div class="card-content">-->
+        <!--<div class="row">-->
+          <!--<div class="col s3 offset-s2">-->
+            <!--<h4 class="card-title grey-text text-darken-4">{{ (coachee | async)?.display_name }}</h4>-->
+            <!--<p class="medium-small grey-text">Coachee</p>-->
+          <!--</div>-->
+          <!--<div class="col s2 center-align">-->
+            <!--<h4 class="card-title grey-text text-darken-4">10+</h4>-->
+            <!--<p class="medium-small grey-text">Work Experience</p>-->
+          <!--</div>-->
+          <!--<div class="col s2 center-align">-->
+            <!--<h4 class="card-title grey-text text-darken-4">6</h4>-->
+            <!--<p class="medium-small grey-text">Completed Sessions</p>-->
+          <!--</div>-->
+          <!--<div class="col s2 center-align">-->
+            <!--<h4 class="card-title grey-text text-darken-4">$ 1,253,000</h4>-->
+            <!--<p class="medium-small grey-text">Business Profit</p>-->
+          <!--</div>-->
+          <!--<div class="col s1 right-align">-->
+            <!--<a class="btn-floating activator waves-effect waves-light darken-2 right">-->
+              <!--<i class="mdi-action-perm-identity"></i>-->
+            <!--</a>-->
+          <!--</div>-->
+        <!--</div>-->
+      <!--</div>-->
+      <!--<div class="card-reveal">-->
+        <!--<p>-->
+            <!--<span class="card-title grey-text text-darken-4">{{ (coachee | async)?.display_name }} <i-->
+              <!--class="mdi-navigation-close right"></i></span>-->
+          <!--<span><i class="mdi-action-perm-identity cyan-text text-darken-2"></i>Coach</span>-->
+        <!--</p>-->
+
+        <!--<p>Coachee description</p>-->
+
+        <!--<p><i class="mdi-action-perm-phone-msg cyan-text text-darken-2"></i> +1 (612) 222 8989</p>-->
+        <!--<p><i class="mdi-communication-email cyan-text text-darken-2"></i> {{ (coachee | async)?.email }}</p>-->
+        <!--<p><i class="mdi-social-cake cyan-text text-darken-2"></i> Start Date : {{ (coachee | async)?.start_date }}-->
+        <!--</p>-->
+        <!--<p><i class="mdi-device-airplanemode-on cyan-text text-darken-2"></i> BAR - AUS</p>-->
+        <!--<p><i class="mdi-social-cake cyan-text text-darken-2"></i> eritis id : {{ (coachee | async)?.id }}</p>-->
+
+      <!--</div>-->
+    <!--</div>-->
+    <!--&lt;!&ndash;/ profile-page-header &ndash;&gt;-->
+
+    <!--&lt;!&ndash; profile-page-content &ndash;&gt;-->
+    <!--<div id="profile-page-content" class="row">-->
+      <!--&lt;!&ndash; profile-page-sidebar&ndash;&gt;-->
+      <!--<div id="profile-page-sidebar" class="col s12 m4">-->
+        <!--&lt;!&ndash; Profile About  &ndash;&gt;-->
+        <!--<div class="card light-blue">-->
+          <!--<div class="card-content white-text">-->
+            <!--<span class="card-title">About Me!</span>-->
+            <!--<p>Coachee description</p>-->
+
+          <!--</div>-->
+        <!--</div>-->
+        <!--&lt;!&ndash; Profile About  &ndash;&gt;-->
+
+        <!--&lt;!&ndash; Profile About Details  &ndash;&gt;-->
+        <!--<ul id="profile-page-about-details" class="collection z-depth-1">-->
+          <!--<li class="collection-item">-->
+            <!--<div class="row">-->
+              <!--<div class="col s5 grey-text darken-1"><i class="mdi-action-wallet-travel"></i> Project</div>-->
+              <!--<div class="col s7 grey-text text-darken-4 right-align">ABC Name</div>-->
+            <!--</div>-->
+          <!--</li>-->
+          <!--<li class="collection-item">-->
+            <!--<div class="row">-->
+              <!--<div class="col s5 grey-text darken-1"><i class="mdi-social-poll"></i> Skills</div>-->
+              <!--<div class="col s7 grey-text text-darken-4 right-align">HTML, CSS</div>-->
+            <!--</div>-->
+          <!--</li>-->
+          <!--<li class="collection-item">-->
+            <!--<div class="row">-->
+              <!--<div class="col s5 grey-text darken-1"><i class="mdi-social-domain"></i> Lives in</div>-->
+              <!--<div class="col s7 grey-text text-darken-4 right-align">NY, USA</div>-->
+            <!--</div>-->
+          <!--</li>-->
+          <!--<li class="collection-item">-->
+            <!--<div class="row">-->
+              <!--<div class="col s5 grey-text darken-1"><i class="mdi-social-cake"></i> Birth date</div>-->
+              <!--<div class="col s7 grey-text text-darken-4 right-align">18th June, 1991</div>-->
+            <!--</div>-->
+          <!--</li>-->
+        <!--</ul>-->
+        <!--&lt;!&ndash;/ Profile About Details  &ndash;&gt;-->
+
+        <!--&lt;!&ndash; Profile About  &ndash;&gt;-->
+
+        <!--&lt;!&ndash; Profile Edit  &ndash;&gt;-->
+        <!--<div class="card">-->
+          <!--<div class="card-content">-->
+            <!--<span class="card-title">Modifier votre profile</span>-->
+
+            <!--<form [formGroup]="formCoachee" (ngSubmit)="submitCoacheeProfileUpdate()">-->
+
+              <!--<div class="row">-->
+                <!--<div class="input-field col s10">-->
+                  <!--<input id="edit_username" type="text" formControlName="pseudo" class="validate"-->
+                         <!--placeholder="{{ (coachee | async)?.display_name }}">-->
+                  <!--<label for="edit_username">Username</label>-->
+                <!--</div>-->
+              <!--</div>-->
+
+
+              <!--<div class="row">-->
+                <!--<div class="input-field col s10">-->
+                    <!--<textarea id="edit_description" row="2" class="materialize-textarea"-->
+                              <!--placeholder="Décrivez-vous"></textarea>-->
+                  <!--<label for="edit_description">Description</label>-->
+                <!--</div>-->
+              <!--</div>-->
+
+              <!--<div class="row">-->
+                <!--<div class="input-field col s10">-->
+                  <!--<input id="edit_avatar_url" type="text" formControlName="avatar"-->
+                         <!--placeholder="{{ (coachee | async)?.avatar_url }}">-->
+                  <!--<label for="edit_avatar_url">Avatar url</label>-->
+                <!--</div>-->
+              <!--</div>-->
+
+              <!--<button type="submit" class="btn btn-success" [disabled]="!formCoachee.valid">Mettre à jour</button>-->
+
+            <!--</form>-->
+
+          <!--</div>-->
+        <!--</div>-->
+        <!--&lt;!&ndash; / Profile Edit  &ndash;&gt;-->
+      <!--</div>-->
+    <!--</div>-->
+  <!--</div>-->
+<!--</div>-->
 
 

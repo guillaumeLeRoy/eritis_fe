@@ -71,11 +71,15 @@
           <div *ngIf="!hasBookedMeeting"><p>Pas encore de séance réalisée</p><br></div>
           <div *ngIf="hasBookedMeeting">
             <div *ngFor="let meeting of (meetings | async)">
-              <p>
-                <span class="meeting-list-date">{{ printDateString(meeting.agreed_date.start_date) }}</span>
-                <span class="black-text bold">Objectif de la séance: </span>
-                <span>{{ goals[meeting.id] }}</span>
-              </p>
+              <div class="row">
+                <div class=" col-md-3">
+                  <span class="meeting-list-date">{{ printDateString(meeting.agreed_date.start_date) }}</span>
+                </div>
+                <div class="col-md-9">
+                  <span class="black-text bold">Objectif de la séance: </span>
+                  <span>{{ goals[meeting.id] }}</span>
+                </div>
+              </div>
               <br>
             </div>
           </div>

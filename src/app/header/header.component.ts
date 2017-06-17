@@ -87,6 +87,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   }
 
   onLogout() {
+    window.scrollTo(0, 0);
     this.authService.loginOut();
   }
 
@@ -117,14 +118,12 @@ export class HeaderComponent implements OnInit, OnDestroy {
   }
 
   goToProfile() {
+    window.scrollTo(0, 0);
     if (this.mUser instanceof Coach) {
-      window.scrollTo(0, 0);
-      this.router.navigate(['/profile_coach']);
+      this.router.navigate(['/profile_coach', 'owner', this.mUser.id]);
     } else if (this.mUser instanceof Coachee) {
-      window.scrollTo(0, 0);
-      this.router.navigate(['/profile_coachee']);
+      this.router.navigate(['/profile_coachee', 'owner', this.mUser.id]);
     } else if (this.mUser instanceof Rh) {
-      window.scrollTo(0, 0);
       this.router.navigate(['/profile_rh']);
     }
   }

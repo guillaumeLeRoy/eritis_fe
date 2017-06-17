@@ -44,7 +44,12 @@ export class MeetingListCoachComponent implements OnInit, AfterViewInit, OnDestr
    * Used in the modal to close a session.
    * This is the report written by the coach to close a session.
    */
-  private sessionReport: string;
+  private sessionResult: string;
+  /**
+   * Used in the modal to close a session.
+   * This is the report written by the coach to close a session.
+   */
+  private sessionUtility: string;
 
   /**
    * Used in the modal to close a session.
@@ -284,7 +289,7 @@ export class MeetingListCoachComponent implements OnInit, AfterViewInit, OnDestr
     console.log('validateCloseSessionModal');
 
     //TODO start loader
-    this.meetingsService.closeMeeting(this.meetingToReportId, this.sessionReport).subscribe(
+    this.meetingsService.closeMeeting(this.meetingToReportId, this.sessionResult, this.sessionUtility).subscribe(
       (meeting: Meeting) => {
         console.log("submitCloseMeetingForm, got meeting : ", meeting);
         // TODO stop loader

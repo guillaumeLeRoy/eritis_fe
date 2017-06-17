@@ -3,80 +3,160 @@ import {Observable, Subscription} from "rxjs";
 import {Coachee} from "../../../model/Coachee";
 import {AuthService} from "../../../service/auth.service";
 import {ApiUser} from "../../../model/ApiUser";
-import {FormGroup, FormBuilder} from "@angular/forms";
+import {FormGroup, FormBuilder, Validators} from "@angular/forms";
+import {Coach} from "../../../model/Coach";
+import {ActivatedRoute, Router} from "@angular/router";
+import {CoachCoacheeService} from "../../../service/coach_coachee.service";
+import {Rh} from "../../../model/Rh";
+
+declare var $: any;
+declare var Materialize: any;
 
 @Component({
   selector: 'rb-profile-coachee',
   templateUrl: 'profile-coachee.component.html',
   styleUrls: ['profile-coachee.component.css']
 })
-export class ProfileCoacheeComponent implements OnInit, AfterViewInit,OnDestroy {
+export class ProfileCoacheeComponent implements OnInit, AfterViewInit, OnDestroy {
 
+  // private connectedUser: Observable<ApiUser>;
+  // private connectedUserSubscription: Subscription;
+
+  private user: Observable<Coach | Coachee | Rh>;
   private coachee: Observable<Coachee>;
-
-  private connectedUser: Observable<ApiUser>;
-  private connectedUserSubscription: Subscription;
+  private status = 'visiter';
+  // private subscriptionGetCoach: Subscription;
 
   private formCoachee: FormGroup;
 
-  constructor(private authService: AuthService, private formBuilder: FormBuilder, private cd: ChangeDetectorRef) {
+  constructor(private authService: AuthService, private router: Router, private cd: ChangeDetectorRef, private formBuilder: FormBuilder,  private coachService: CoachCoacheeService, private route: ActivatedRoute) {
   }
 
   ngOnInit() {
     this.formCoachee = this.formBuilder.group({
-      pseudo: [''],
-      avatar: ['']
+      name: ['', Validators.required],
+      surname: ['', Validators.required],
+      avatar: ['', Validators.required]
     });
+
+    this.getCoachee();
+    this.getUser();
   }
 
-  ngAfterViewInit(): void {
-    var user: ApiUser = this.authService.getConnectedUser();
-    console.log("ngAfterViewInit, user : ", user);
-    this.onUserObtained(user);
+  getCoachee() {
+    this.route.params.subscribe(
+      (params: any) => {
+        let coacheeId = params['id'];
+        this.status = params['status'];
 
-    this.connectedUserSubscription = this.authService.getConnectedUserObservable().subscribe(
-      (user: ApiUser) => {
-        console.log("getConnectedUser");
-        this.onUserObtained(user);
+        this.coachService.getCoacheeForId(coacheeId).subscribe(
+          (coachee: Coachee) => {
+            console.log("gotCoachee", coachee);
+
+            this.setFormValues(coachee);
+            this.coachee = Observable.of(coachee);
+            this.cd.detectChanges();
+          }
+        );
+      }
+    )
+  }
+
+  getUser() {
+    this.authService.getConnectedUserObservable().subscribe(
+      (user: Coach | Coachee | Rh) => {
+        console.log('getConnectedUser : ' + user);
+
+        this.user = Observable.of(user);
+        this.cd.detectChanges()
       }
     );
   }
 
-  ngOnDestroy(): void {
-    if (this.connectedUserSubscription) {
-      this.connectedUserSubscription.unsubscribe();
-    }
+  setFormValues(coachee: Coachee) {
+    this.formCoachee.setValue({
+      name: coachee.display_name,
+      surname: coachee.display_name,
+      avatar: coachee.avatar_url
+    });
   }
 
-  submitCoacheeProfileUpdate() {
-    console.log("submitProfileUpdate");
-
+  submitCoacheeProfilUpdate() {
+    console.log("submitCoacheeProfilUpdate");
     this.coachee.last().flatMap(
       (coachee: Coachee) => {
-        console.log("submitProfileUpdate, coache obtained");
-        return this.authService.updateCoacheeForId(coachee.id, this.formCoachee.value.pseudo, this.formCoachee.value.avatar);
+        console.log("submitCoacheeProfilUpdate, coachee obtained");
+        return this.authService.updateCoacheeForId(coachee.id,
+          this.formCoachee.value.name,
+          this.formCoachee.value.avatar);
       }
     ).subscribe(
       (user: ApiUser) => {
         console.log("coachee updated : ", user);
         //refresh page
-        this.onUserObtained(user);
+        Materialize.toast('Votre profil a été modifié !', 3000, 'rounded');
+        this.getCoachee();
       },
       (error) => {
         console.log('coachee update, error', error);
         //TODO display error
+        Materialize.toast('Impossible de modifier votre profil', 3000, 'rounded');
       });
   }
 
-
-  private onUserObtained(user: ApiUser) {
-    console.log("onUserObtained, user : ", user);
-
-    this.connectedUser = Observable.of(user);
-    if (user instanceof Coachee) {
-      this.coachee = Observable.of(user);
-    }
-
-    this.cd.detectChanges();
+  goToMeetings() {
+    window.scrollTo(0, 0);
+    this.router.navigate(['/meetings']);
   }
+
+  ngAfterViewInit(): void {
+    // let user: ApiUser = this.authService.getConnectedUser();
+    // console.log("ngAfterViewInit, user : ", user);
+    // this.onUserObtained(user);
+    //
+    // this.connectedUserSubscription = this.authService.getConnectedUserObservable().subscribe(
+    //   (user: ApiUser) => {
+    //     console.log("getConnectedUser");
+    //     this.onUserObtained(user);
+    //   }
+    // );
+  }
+
+  ngOnDestroy(): void {
+    // if (this.connectedUserSubscription) {
+    //   this.connectedUserSubscription.unsubscribe();
+    // }
+  }
+
+  // submitCoacheeProfileUpdate() {
+  //   console.log("submitProfileUpdate");
+  //
+  //   this.coachee.last().flatMap(
+  //     (coachee: Coachee) => {
+  //       console.log("submitProfileUpdate, coache obtained");
+  //       return this.authService.updateCoacheeForId(coachee.id, this.formCoachee.value.pseudo, this.formCoachee.value.avatar);
+  //     }
+  //   ).subscribe(
+  //     (user: ApiUser) => {
+  //       console.log("coachee updated : ", user);
+  //       //refresh page
+  //       this.onUserObtained(user);
+  //     },
+  //     (error) => {
+  //       console.log('coachee update, error', error);
+  //       //TODO display error
+  //     });
+  // }
+
+
+  // private onUserObtained(user: ApiUser) {
+  //   console.log("onUserObtained, user : ", user);
+  //
+  //   this.connectedUser = Observable.of(user);
+  //   if (user instanceof Coachee) {
+  //     this.coachee = Observable.of(user);
+  //   }
+  //
+  //   this.cd.detectChanges();
+  // }
 }

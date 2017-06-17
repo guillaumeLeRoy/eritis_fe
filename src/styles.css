@@ -141,10 +141,10 @@ a:focus{
 }
 
 .btn-small{
-  padding: 0 16px;
+  padding: 4px 16px;
   font-size: 16px;
   min-width: 120px;
-  height: 40px;
+  min-height: 40px;
 }
 
 .btn-cancel {

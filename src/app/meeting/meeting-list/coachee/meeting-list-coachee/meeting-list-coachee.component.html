@@ -15,7 +15,6 @@
 </p>
 
 
-
 <div class="row">
   <h4 class="col-lg-12 black-text">A venir</h4>
   <div class="card collection col-lg-12">
@@ -42,7 +41,8 @@
     <div *ngIf="hasClosedMeeting">
       <div class="collection-item" *ngFor="let meeting of meetingsClosed | async">
         <rb-meeting-item-coachee [meeting]="meeting"
-                                 (cancelMeetingTimeEvent)="openCoacheeDeleteMeetingModal($event)">
+                                 (cancelMeetingTimeEvent)="openCoacheeDeleteMeetingModal($event)"
+                                 (onRateSessionBtnClickedEmitter)="openRateSessionModal($event)">
         </rb-meeting-item-coachee>
       </div>
     </div>
@@ -55,7 +55,6 @@
 </div><!--end row-->
 
 
-
 <!-- Modal Coachee Delete Meeting -->
 <div id="coachee_delete_meeting_modal" class="modal">
   <div class="action-modal-content">
@@ -65,6 +64,25 @@
     <div class="action-modal-footer">
       <button class="btn-basic btn-plain btn-small" (click)="cancelCoacheeDeleteMeeting()">Annuler</button>
       <button class="btn-basic btn-red btn-plain btn-small" (click)="validateCoacheeDeleteMeeting()">Supprimer</button>
+    </div>
+  </div>
+</div>
+
+<!-- Modal Coachee Delete Meeting -->
+<div id="rate_session_modal" class="modal">
+  <div class="action-modal-content">
+    <div class="action-modal-message">
+      <h5 class="black-text center">Noter votre séance.</h5>
+    </div>
+
+    <div class="action-modal-message">
+      <input type="text" placeholder="Note" [(ngModel)]="sessionRate">
+    </div>
+
+
+    <div class="action-modal-footer">
+      <button class="btn-basic btn-plain btn-small" (click)="cancelRateSessionModal()">Annuler</button>
+      <button class="btn-basic btn-blue btn-plain btn-small" (click)="validateRateSessionModal()">Noter</button>
     </div>
   </div>
 </div>

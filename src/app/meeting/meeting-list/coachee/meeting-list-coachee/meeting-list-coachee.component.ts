@@ -1,4 +1,4 @@
-import {AfterViewInit, ChangeDetectorRef, Component, Input, OnDestroy, OnInit} from '@angular/core';
+import {AfterViewInit, ChangeDetectorRef, Component, OnDestroy, OnInit} from "@angular/core";
 import {MeetingsService} from "../../../../service/meetings.service";
 import {CoachCoacheeService} from "../../../../service/coach_coachee.service";
 import {AuthService} from "../../../../service/auth.service";
@@ -6,12 +6,10 @@ import {Router} from "@angular/router";
 import {Observable} from "rxjs/Observable";
 import {Meeting} from "../../../../model/Meeting";
 import {Subscription} from "rxjs/Subscription";
-import {ContractPlan} from "../../../../model/ContractPlan";
 import {Coachee} from "../../../../model/Coachee";
 import {Coach} from "../../../../model/Coach";
 import {RhUsageRate} from "../../../../model/UsageRate";
 import {Rh} from "../../../../model/Rh";
-import {PotentialCoachee} from "../../../../model/PotentialCoachee";
 import {ApiUser} from "../../../../model/ApiUser";
 
 declare var $: any;
@@ -29,27 +27,24 @@ export class MeetingListCoacheeComponent implements OnInit, AfterViewInit, OnDes
   private meetings: Observable<Meeting[]>;
   private meetingsOpened: Observable<Meeting[]>;
   private meetingsClosed: Observable<Meeting[]>;
-  private meetingsUnbooked: Observable<Meeting[]>;
   private meetingsArray: Meeting[];
 
   private hasOpenedMeeting = false;
   private hasClosedMeeting = false;
-  private hasUnbookedMeeting = false;
 
   private subscription: Subscription;
   private connectedUserSubscription: Subscription;
-
-  private plans: Observable<ContractPlan[]>;
 
   private meetingToCancel: Meeting;
 
   private rhUsageRate: Observable<RhUsageRate>;
 
-  constructor(private router: Router, private meetingsService: MeetingsService, private coachCoacheeService: CoachCoacheeService, private authService: AuthService, private cd: ChangeDetectorRef) { }
+  constructor(private router: Router, private meetingsService: MeetingsService, private coachCoacheeService: CoachCoacheeService, private authService: AuthService, private cd: ChangeDetectorRef) {
+  }
 
   ngOnInit() {
     console.log('ngOnInit');
-}
+  }
 
   ngAfterViewInit(): void {
     console.log('ngAfterViewInit');
@@ -166,34 +161,6 @@ export class MeetingListCoacheeComponent implements OnInit, AfterViewInit, OnDes
     }
   }
 
-  private getBookedMeetings() {
-    console.log('getOpenedMeetings');
-    if (this.meetingsArray != null) {
-      let opened: Meeting[] = [];
-      for (let meeting of this.meetingsArray) {
-        if (meeting.isOpen && meeting.agreed_date) {
-          opened.push(meeting);
-          this.hasOpenedMeeting = true;
-        }
-      }
-      this.meetingsOpened = Observable.of(opened);
-    }
-  }
-
-  private getUnbookedMeetings() {
-    console.log('getAskedMeetings');
-    if (this.meetingsArray != null) {
-      let unbooked: Meeting[] = [];
-      for (let meeting of this.meetingsArray) {
-        if (meeting.isOpen && !meeting.agreed_date) {
-          unbooked.push(meeting);
-          this.hasUnbookedMeeting = true;
-        }
-      }
-      this.meetingsUnbooked = Observable.of(unbooked);
-    }
-  }
-
   private getUsageRate(rhId: string) {
     this.coachCoacheeService.getUsageRate(rhId).subscribe(
       (rate: RhUsageRate) => {
@@ -201,10 +168,6 @@ export class MeetingListCoacheeComponent implements OnInit, AfterViewInit, OnDes
         this.rhUsageRate = Observable.of(rate);
       }
     );
-  }
-
-  refreshDashboard() {
-    location.reload();
   }
 
   ngOnDestroy(): void {
@@ -257,6 +220,49 @@ export class MeetingListCoacheeComponent implements OnInit, AfterViewInit, OnDes
       }, (error) => {
         console.log('confirmCancelMeeting, error', error);
         Materialize.toast('Impossible de supprimer le meeting', 3000, 'rounded');
+      }
+    );
+  }
+
+  /*************************************
+   ----------- Modal control - rate session ------------
+   *************************************/
+
+  updateRateSessionModalVisibility(isVisible: boolean) {
+    if (isVisible) {
+      $('#rate_session_modal').openModal();
+    } else {
+      $('#rate_session_modal').closeModal();
+    }
+  }
+
+  private rateSessionMeetingId: string
+  private sessionRate: string
+
+  openRateSessionModal(meetingId: string) {
+    this.rateSessionMeetingId = meetingId;
+    this.updateRateSessionModalVisibility(true);
+  }
+
+  cancelRateSessionModal() {
+    this.updateRateSessionModalVisibility(false);
+    this.rateSessionMeetingId = null;
+    this.sessionRate = null;
+  }
+
+  validateRateSessionModal() {
+    console.log('validateRateSessionModal');
+
+    this.meetingsService.addSessionRateToMeeting(this.rateSessionMeetingId, this.sessionRate).subscribe(
+      (response) => {
+        console.log('validateRateSessionModal, res', response);
+        this.onRefreshRequested();
+        this.updateRateSessionModalVisibility(false);
+        Materialize.toast('Votre coach vient d\'être noté.', 3000, 'rounded');
+      }, (error) => {
+        console.log('validateRateSessionModal, error', error);
+        this.updateRateSessionModalVisibility(false);
+        Materialize.toast('Une erreur est survenue', 3000, 'rounded');
       }
     );
   }

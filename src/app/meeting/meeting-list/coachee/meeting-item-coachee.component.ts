@@ -6,7 +6,6 @@ import {MeetingReview} from "../../../model/MeetingReview";
 import {MeetingDate} from "../../../model/MeetingDate";
 import {Router} from "@angular/router";
 import {MeetingsService} from "../../../service/meetings.service";
-import {ApiUser} from "app/model/apiUser";
 
 declare var $: any;
 declare var Materialize: any;
@@ -27,17 +26,36 @@ export class MeetingItemCoacheeComponent implements OnInit {
   @Output()
   cancelMeetingTimeEvent = new EventEmitter<Meeting>();
 
+  @Output()
+  onRateSessionBtnClickedEmitter = new EventEmitter<any>();
+
   months = ['Jan', 'Feb', 'Mar', 'Avr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 
   private coach: Coach;
 
+  /**
+   * Session objective given by the coachee
+   */
   private goal: string;
-  private reviewValue: string;
-  private reviewNextStep: string;
-
-  private hasValue: boolean;
-  private hasNextStep: boolean;
   private hasGoal: boolean;
+
+  /**
+   * Session review given by the coach
+   */
+  private sessionResult: string;
+  private hasSessionResult: boolean;
+
+  /**
+   * Session review given by the coach
+   */
+  private sessionUtility: string;
+  private hasSessionUtility: boolean;
+
+  /**
+   * Coach rate given by coache
+   */
+  private sessionRate: string;
+  private hasRate: boolean;
 
   private loading: boolean;
 
@@ -54,7 +72,7 @@ export class MeetingItemCoacheeComponent implements OnInit {
 
     this.loadMeetingPotentialTimes();
     this.getGoal();
-    this.getReview();
+    this.getSessionCoachReview();
   }
 
   // onPreMeetingReviewPosted(meeting: Meeting) {
@@ -102,6 +120,12 @@ export class MeetingItemCoacheeComponent implements OnInit {
     return (new Date(date)).getDate() + ' ' + this.months[(new Date(date)).getMonth()];
   }
 
+  private getSessionCoachReview() {
+    this.getSessionReviewTypeResult();
+    this.getSessionReviewTypeUtility();
+    this.getSessionReviewTypeRate();
+  }
+
   private getGoal() {
     this.loading = true;
 
@@ -109,7 +133,7 @@ export class MeetingItemCoacheeComponent implements OnInit {
       (reviews: MeetingReview[]) => {
         console.log("getMeetingGoal, got goal : ", reviews);
         if (reviews != null)
-          this.goal = reviews[0].comment;
+          this.goal = reviews[0].value;
         else
           this.goal = null;
 
@@ -123,51 +147,67 @@ export class MeetingItemCoacheeComponent implements OnInit {
       });
   }
 
-  private getReviewValue() {
+  private getSessionReviewTypeResult() {
     this.loading = true;
 
-    this.meetingService.getMeetingValue(this.meeting.id).subscribe(
+    this.meetingService.getSessionReviewResult(this.meeting.id).subscribe(
       (reviews: MeetingReview[]) => {
-        console.log("getMeetingValue, got goal : ", reviews);
+        console.log("getSessionReviewTypeResult, got result : ", reviews);
         if (reviews != null)
-          this.reviewValue = reviews[0].comment;
+          this.sessionResult = reviews[0].value;
         else
-          this.reviewValue = null;
+          this.sessionResult = null;
 
         this.cd.detectChanges();
-        this.hasValue = (this.reviewValue != null);
+        this.hasSessionResult = (this.sessionResult != null);
         this.loading = false;
       },
       (error) => {
-        console.log('getMeetingValue error', error);
+        console.log('getReviewResult error', error);
         //this.displayErrorPostingReview = true;
       });
   }
 
-  private getReviewNextStep() {
+  private getSessionReviewTypeUtility() {
     this.loading = true;
 
-    this.meetingService.getMeetingNextStep(this.meeting.id).subscribe(
+    this.meetingService.getSessionReviewUtility(this.meeting.id).subscribe(
       (reviews: MeetingReview[]) => {
-        console.log("getMeetingNextStep, got goal : ", reviews);
+        console.log("getSessionReviewTypeUtility, got goal : ", reviews);
         if (reviews != null)
-          this.reviewNextStep = reviews[0].comment;
+          this.sessionUtility = reviews[0].value;
         else
-          this.reviewNextStep = null;
+          this.sessionUtility = null;
 
         this.cd.detectChanges();
-        this.hasNextStep = (this.reviewNextStep != null);
+        this.hasSessionUtility = (this.sessionUtility != null);
         this.loading = false;
       },
       (error) => {
-        console.log('getMeetingNextStep error', error);
+        console.log('getSessionReviewTypeUtility error', error);
         //this.displayErrorPostingReview = true;
       });
   }
 
-  private getReview() {
-    this.getReviewValue();
-    this.getReviewNextStep();
+  private getSessionReviewTypeRate() {
+    this.loading = true;
+
+    this.meetingService.getSessionReviewRate(this.meeting.id).subscribe(
+      (reviews: MeetingReview[]) => {
+        console.log("getSessionReviewTypeRate, got rate : ", reviews);
+        if (reviews != null)
+          this.sessionRate = reviews[0].value;
+        else
+          this.sessionRate = null;
+
+        this.cd.detectChanges();
+        this.hasRate = (this.sessionRate != null);
+        this.loading = false;
+      },
+      (error) => {
+        console.log('getSessionReviewTypeRate error', error);
+        //this.displayErrorPostingReview = true;
+      });
   }
 
   goToModifyDate(meetingId: number) {
@@ -177,7 +217,6 @@ export class MeetingItemCoacheeComponent implements OnInit {
 
   openModal() {
     this.cancelMeetingTimeEvent.emit(this.meeting);//TODO to improve
-
     // $('#deleteModal').openModal();
   }
 
@@ -188,7 +227,12 @@ export class MeetingItemCoacheeComponent implements OnInit {
 
   goToCoachProfile(coachId: String) {
     window.scrollTo(0, 0);
-    this.router.navigate(['/coachs',coachId]);
+    this.router.navigate(['/profile_coach', 'visiter', coachId]);
+  }
+
+  rateSession() {
+    console.log('rateSession');
+    this.onRateSessionBtnClickedEmitter.emit(this.meeting.id);
   }
 
   // cancelCancelMeeting() {

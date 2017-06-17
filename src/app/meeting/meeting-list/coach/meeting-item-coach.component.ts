@@ -9,6 +9,7 @@ import {Coach} from "../../../model/Coach";
 import {AuthService} from "../../../service/auth.service";
 import {ApiUser} from "../../../model/ApiUser";
 import {Subscription} from "rxjs/Subscription";
+import {Router} from "@angular/router";
 
 declare var $: any;
 declare var Materialize: any;
@@ -64,7 +65,7 @@ export class MeetingItemCoachComponent implements OnInit, AfterViewInit {
 
   private connectedUserSubscription: Subscription;
 
-  constructor(private authService: AuthService, private meetingService: MeetingsService, private cd: ChangeDetectorRef) {
+  constructor(private authService: AuthService, private meetingService: MeetingsService, private cd: ChangeDetectorRef, private router: Router) {
     $('select').material_select();
   }
 
@@ -154,7 +155,7 @@ export class MeetingItemCoachComponent implements OnInit, AfterViewInit {
       (reviews: MeetingReview[]) => {
         console.log("getMeetingGoal, got goal : ", reviews);
         if (reviews != null)
-          this.goal = Observable.of(reviews[0].comment);
+          this.goal = Observable.of(reviews[0].value);
         else
           this.goal = null;
 
@@ -175,7 +176,7 @@ export class MeetingItemCoachComponent implements OnInit, AfterViewInit {
       (reviews: MeetingReview[]) => {
         console.log("getMeetingContext, got context : ", reviews);
         if (reviews != null)
-          this.context = Observable.of(reviews[0].comment);
+          this.context = Observable.of(reviews[0].value);
         else
           this.context = Observable.of('n/a');
 
@@ -191,11 +192,11 @@ export class MeetingItemCoachComponent implements OnInit, AfterViewInit {
   private getReviewValue() {
     this.loading = true;
 
-    this.meetingService.getMeetingValue(this.meeting.id).subscribe(
+    this.meetingService.getSessionReviewUtility(this.meeting.id).subscribe(
       (reviews: MeetingReview[]) => {
         console.log("getMeetingValue, got goal : ", reviews);
         if (reviews != null)
-          this.reviewValue = reviews[0].comment;
+          this.reviewValue = reviews[0].value;
         else
           this.reviewValue = null;
 
@@ -212,11 +213,11 @@ export class MeetingItemCoachComponent implements OnInit, AfterViewInit {
   private getReviewNextStep() {
     this.loading = true;
 
-    this.meetingService.getMeetingNextStep(this.meeting.id).subscribe(
+    this.meetingService.getSessionReviewResult(this.meeting.id).subscribe(
       (reviews: MeetingReview[]) => {
-        console.log("getMeetingNextStep, got goal : ", reviews);
+        console.log("getMeetingNextStep, : ", reviews);
         if (reviews != null)
-          this.reviewNextStep = reviews[0].comment;
+          this.reviewNextStep = reviews[0].value;
         else
           this.reviewNextStep = null;
 
@@ -290,6 +291,10 @@ export class MeetingItemCoachComponent implements OnInit, AfterViewInit {
     return (new Date(date)).getDate() + ' ' + this.months[(new Date(date)).getMonth()];
   }
 
+  goToCoacheeProfile(coacheeId: String) {
+    window.scrollTo(0, 0);
+    this.router.navigate(['/profile_coachee', 'visiter', coacheeId]);
+  }
 
   onValidateDateClick() {
     this.onValidateDateBtnClick.emit({
