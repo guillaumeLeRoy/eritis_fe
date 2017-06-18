@@ -1,14 +1,13 @@
-import {Component, OnInit, AfterViewInit, ChangeDetectorRef, OnDestroy, Input} from '@angular/core';
-import {Observable, Subscription} from "rxjs";
+import {AfterViewInit, ChangeDetectorRef, Component, Input, OnDestroy, OnInit} from "@angular/core";
+import {Observable} from "rxjs";
 import {ActivatedRoute, Router} from "@angular/router";
 import {Coach} from "../../model/Coach";
 import {AuthService} from "../../service/auth.service";
 import {ApiUser} from "../../model/ApiUser";
-import {MeetingsService} from "../../service/meetings.service";
 import {CoachCoacheeService} from "../../service/coach_coachee.service";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {Coachee} from "../../model/coachee";
-import {Rh} from "app/model/Rh";
+import {HR} from "app/model/HR";
 
 declare var $: any;
 declare var Materialize: any;
@@ -24,20 +23,20 @@ export class CoachDetailsComponent implements OnInit, AfterViewInit, OnDestroy {
   @Input()
   iCoach: Coach;
 
-  private user: Observable<Coach | Coachee | Rh>;
+  private user: Observable<Coach | Coachee | HR>;
   private coach: Observable<Coach>;
   private status = 'visiter';
   // private subscriptionGetCoach: Subscription;
 
   private formCoach: FormGroup;
 
-  constructor(private authService: AuthService, private router: Router, private cd: ChangeDetectorRef, private formBuilder: FormBuilder,  private coachService: CoachCoacheeService, private route: ActivatedRoute) {
+  constructor(private authService: AuthService, private router: Router, private cd: ChangeDetectorRef, private formBuilder: FormBuilder, private coachService: CoachCoacheeService, private route: ActivatedRoute) {
   }
 
   ngOnInit() {
     this.formCoach = this.formBuilder.group({
-      name: ['', Validators.required],
-      surname: ['', Validators.required],
+      firstName: ['', Validators.required],
+      lastName: ['', Validators.required],
       avatar: ['', Validators.required],
       description: ['', Validators.required],
     });
@@ -67,7 +66,7 @@ export class CoachDetailsComponent implements OnInit, AfterViewInit, OnDestroy {
 
   getUser() {
     this.authService.getConnectedUserObservable().subscribe(
-      (user: Coach | Coachee | Rh) => {
+      (user: Coach | Coachee | HR) => {
         console.log('getConnectedUser : ' + user);
 
         this.user = Observable.of(user);
@@ -78,8 +77,8 @@ export class CoachDetailsComponent implements OnInit, AfterViewInit, OnDestroy {
 
   setFormValues(coach: Coach) {
     this.formCoach.setValue({
-      name: coach.display_name,
-      surname: coach.display_name,
+      firstName: coach.firstName,
+      lastName: coach.lastName,
       avatar: coach.avatar_url,
       description: coach.description
     });
@@ -91,7 +90,8 @@ export class CoachDetailsComponent implements OnInit, AfterViewInit, OnDestroy {
       (coach: Coach) => {
         console.log("submitCoachProfilUpdate, coach obtained");
         return this.authService.updateCoachForId(coach.id,
-          this.formCoach.value.name,
+          this.formCoach.value.firstName,
+          this.formCoach.value.lastName,
           this.formCoach.value.description,
           this.formCoach.value.avatar);
       }

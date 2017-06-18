@@ -1,10 +1,13 @@
 import {ApiUser} from "./ApiUser";
 import {Coach} from "./Coach";
 import {ContractPlan} from "./ContractPlan";
-import {Rh} from "./Rh";
+import {HR} from "./HR";
 import {CoacheeObjective} from "./CoacheeObjective";
 export class Coachee implements ApiUser {
 
+  /**
+   * Eritis database id
+   */
   id: string;
   firebaseToken: string;
 
@@ -12,7 +15,9 @@ export class Coachee implements ApiUser {
 
   avatar_url: string;
 
-  display_name: string;
+  firstName: string;
+
+  lastName: string;
 
   start_date: string;
 
@@ -31,14 +36,15 @@ export class Coachee implements ApiUser {
   updateAvailableSessionCountDate: string;
 
   /**
-   * Rh associated with this user.
+   * HR associated with this user.
    */
-  associatedRh: Rh;
+  associatedRh: HR;
 
   /**
    * Last objective defined by HR
    */
   last_objective: CoacheeObjective;
+
 
   constructor(id: string) {
     this.id = id;

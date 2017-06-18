@@ -1,9 +1,9 @@
-import {AfterViewInit, ChangeDetectorRef, Component, OnDestroy, OnInit} from '@angular/core';
+import {AfterViewInit, ChangeDetectorRef, Component, OnDestroy, OnInit} from "@angular/core";
 import {FormBuilder, FormGroup} from "@angular/forms";
 import {Observable} from "rxjs/Observable";
 import {Subscription} from "rxjs/Subscription";
 import {ApiUser} from "../../../model/ApiUser";
-import {Rh} from "../../../model/Rh";
+import {HR} from "../../../model/HR";
 import {AuthService} from "../../../service/auth.service";
 
 @Component({
@@ -11,21 +11,23 @@ import {AuthService} from "../../../service/auth.service";
   templateUrl: './profile-rh.component.html',
   styleUrls: ['./profile-rh.component.css']
 })
-export class ProfileRhComponent implements OnInit, AfterViewInit,OnDestroy {
+export class ProfileRhComponent implements OnInit, AfterViewInit, OnDestroy {
 
-  private rh: Observable<Rh>;
+  private rh: Observable<HR>;
 
   private connectedUser: Observable<ApiUser>;
   private connectedUserSubscription: Subscription;
 
   private formRh: FormGroup;
 
-  constructor(private authService: AuthService, private formBuilder: FormBuilder, private cd: ChangeDetectorRef) { }
+  constructor(private authService: AuthService, private formBuilder: FormBuilder, private cd: ChangeDetectorRef) {
+  }
 
 
   ngOnInit() {
     this.formRh = this.formBuilder.group({
-      pseudo: [''],
+      firstName: [''],
+      lastName: [''],
       avatar: ['']
     });
   }
@@ -53,9 +55,10 @@ export class ProfileRhComponent implements OnInit, AfterViewInit,OnDestroy {
     console.log("submitProfileUpdate");
 
     this.rh.last().flatMap(
-      (rh: Rh) => {
+      (rh: HR) => {
         console.log("submitProfileUpdate, rh obtained");
-        return this.authService.updateCoacheeForId(rh.id, this.formRh.value.pseudo, this.formRh.value.avatar);
+        return this.authService.updateCoacheeForId(rh.id, this.formRh.value.firstName,
+          this.formRh.value.lastName, this.formRh.value.avatar);
       }
     ).subscribe(
       (user: ApiUser) => {
@@ -74,7 +77,7 @@ export class ProfileRhComponent implements OnInit, AfterViewInit,OnDestroy {
     console.log("onUserObtained, user : ", user);
 
     this.connectedUser = Observable.of(user);
-    if (user instanceof Rh) {
+    if (user instanceof HR) {
       this.rh = Observable.of(user);
     }
 

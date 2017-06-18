@@ -4,13 +4,11 @@ import {AuthService} from "../service/auth.service";
 import {Observable, Subscription} from "rxjs";
 import {Coach} from "../model/Coach";
 import {Coachee} from "../model/Coachee";
-import {Rh} from "../model/Rh";
+import {HR} from "../model/HR";
 import {ApiUser} from "../model/apiUser";
 import {Notif} from "../model/Notif";
 import {CoachCoacheeService} from "../service/coach_coachee.service";
 import {Response} from "@angular/http";
-import {state, transition, trigger} from "@angular/animations";
-import {animate, style} from "@angular/core/src/animation/dsl";
 
 
 declare var $: any;
@@ -28,8 +26,8 @@ export class HeaderComponent implements OnInit, OnDestroy {
   private isAuthenticated: Observable<boolean>;
   private subscription: Subscription;
 
-  private mUser: Coach | Coachee | Rh;
-  private user: Observable<Coach | Coachee | Rh>;
+  private mUser: Coach | Coachee | HR;
+  private user: Observable<Coach | Coachee | HR>;
 
   private notifications: Observable<Notif[]>;
 
@@ -56,14 +54,14 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
     // this.connectedUser = this.authService.getConnectedUserObservable();
     this.subscription = this.authService.getConnectedUserObservable().subscribe(
-      (user: Coach | Coachee | Rh) => {
+      (user: Coach | Coachee | HR) => {
         console.log('getConnectedUser : ' + user);
         this.onUserObtained(user);
       }
     );
   }
 
-  private onUserObtained(user: Coach | Coachee | Rh) {
+  private onUserObtained(user: Coach | Coachee | HR) {
     console.log('onUserObtained : ' + user);
 
     if (user == null) {
@@ -123,7 +121,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
       this.router.navigate(['/profile_coach', 'owner', this.mUser.id]);
     } else if (this.mUser instanceof Coachee) {
       this.router.navigate(['/profile_coachee', 'owner', this.mUser.id]);
-    } else if (this.mUser instanceof Rh) {
+    } else if (this.mUser instanceof HR) {
       this.router.navigate(['/profile_rh']);
     }
   }
@@ -159,7 +157,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   }
 
   isUserARh(): boolean {
-    return this.mUser instanceof Rh
+    return this.mUser instanceof HR
   }
 
   goToCoachs() {

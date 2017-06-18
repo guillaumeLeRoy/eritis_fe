@@ -1,13 +1,13 @@
-import {Component, OnInit, AfterViewInit, ChangeDetectorRef, OnDestroy} from '@angular/core';
-import {Observable, Subscription} from "rxjs";
+import {AfterViewInit, ChangeDetectorRef, Component, OnDestroy, OnInit} from "@angular/core";
+import {Observable} from "rxjs";
 import {Coachee} from "../../../model/Coachee";
 import {AuthService} from "../../../service/auth.service";
 import {ApiUser} from "../../../model/ApiUser";
-import {FormGroup, FormBuilder, Validators} from "@angular/forms";
+import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {Coach} from "../../../model/Coach";
 import {ActivatedRoute, Router} from "@angular/router";
 import {CoachCoacheeService} from "../../../service/coach_coachee.service";
-import {Rh} from "../../../model/Rh";
+import {HR} from "../../../model/HR";
 
 declare var $: any;
 declare var Materialize: any;
@@ -22,20 +22,20 @@ export class ProfileCoacheeComponent implements OnInit, AfterViewInit, OnDestroy
   // private connectedUser: Observable<ApiUser>;
   // private connectedUserSubscription: Subscription;
 
-  private user: Observable<Coach | Coachee | Rh>;
+  private user: Observable<Coach | Coachee | HR>;
   private coachee: Observable<Coachee>;
   private status = 'visiter';
   // private subscriptionGetCoach: Subscription;
 
   private formCoachee: FormGroup;
 
-  constructor(private authService: AuthService, private router: Router, private cd: ChangeDetectorRef, private formBuilder: FormBuilder,  private coachService: CoachCoacheeService, private route: ActivatedRoute) {
+  constructor(private authService: AuthService, private router: Router, private cd: ChangeDetectorRef, private formBuilder: FormBuilder, private coachService: CoachCoacheeService, private route: ActivatedRoute) {
   }
 
   ngOnInit() {
     this.formCoachee = this.formBuilder.group({
-      name: ['', Validators.required],
-      surname: ['', Validators.required],
+      firstName: ['', Validators.required],
+      lastName: ['', Validators.required],
       avatar: ['', Validators.required]
     });
 
@@ -64,7 +64,7 @@ export class ProfileCoacheeComponent implements OnInit, AfterViewInit, OnDestroy
 
   getUser() {
     this.authService.getConnectedUserObservable().subscribe(
-      (user: Coach | Coachee | Rh) => {
+      (user: Coach | Coachee | HR) => {
         console.log('getConnectedUser : ' + user);
 
         this.user = Observable.of(user);
@@ -75,8 +75,8 @@ export class ProfileCoacheeComponent implements OnInit, AfterViewInit, OnDestroy
 
   setFormValues(coachee: Coachee) {
     this.formCoachee.setValue({
-      name: coachee.display_name,
-      surname: coachee.display_name,
+      firstName: coachee.firstName,
+      lastName: coachee.lastName,
       avatar: coachee.avatar_url
     });
   }
@@ -87,7 +87,8 @@ export class ProfileCoacheeComponent implements OnInit, AfterViewInit, OnDestroy
       (coachee: Coachee) => {
         console.log("submitCoacheeProfilUpdate, coachee obtained");
         return this.authService.updateCoacheeForId(coachee.id,
-          this.formCoachee.value.name,
+          this.formCoachee.value.firstName,
+          this.formCoachee.value.lastName,
           this.formCoachee.value.avatar);
       }
     ).subscribe(

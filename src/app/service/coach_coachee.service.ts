@@ -11,7 +11,7 @@ import {PotentialCoach} from "../model/PotentialCoach";
 import {PotentialRh} from "../model/PotentialRh";
 import {Notif} from "../model/Notif";
 import {ApiUser} from "../model/ApiUser";
-import {Rh} from "../model/Rh";
+import {HR} from "../model/HR";
 import {CoacheeObjective} from "../model/CoacheeObjective";
 
 @Injectable()
@@ -127,7 +127,7 @@ export class CoachCoacheeService {
     let path = AuthService.GET_COACHEE_NOTIFICATIONS;
     if (user instanceof Coach) {
       path = AuthService.GET_COACH_NOTIFICATIONS;
-    } else if (user instanceof  Rh) {
+    } else if (user instanceof  HR) {
       path = AuthService.GET_RH_NOTIFICATIONS;
     }
 
@@ -147,7 +147,7 @@ export class CoachCoacheeService {
     let path = AuthService.PUT_COACHEE_NOTIFICATIONS_READ;
     if (user instanceof Coach) {
       path = AuthService.PUT_COACH_NOTIFICATIONS_READ;
-    } else if (user instanceof  Rh) {
+    } else if (user instanceof  HR) {
       path = AuthService.PUT_RH_NOTIFICATIONS_READ;
     }
 

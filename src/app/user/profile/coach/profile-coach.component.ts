@@ -1,9 +1,9 @@
-import {Component, OnInit, AfterViewInit, ChangeDetectorRef, OnDestroy} from '@angular/core';
+import {AfterViewInit, ChangeDetectorRef, Component, OnDestroy, OnInit} from "@angular/core";
 import {Observable, Subscription} from "rxjs";
 import {Coach} from "../../../model/Coach";
 import {AuthService} from "../../../service/auth.service";
 import {ApiUser} from "../../../model/ApiUser";
-import {FormGroup, FormBuilder, Validators} from "@angular/forms";
+import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 
 @Component({
   selector: 'rb-profile-coach',
@@ -23,7 +23,8 @@ export class ProfileCoachComponent implements OnInit, AfterViewInit, OnDestroy {
 
   ngOnInit() {
     this.formCoach = this.formBuilder.group({
-      displayName: ['', Validators.required],
+      firstName: ['', Validators.required],
+      lastName: ['', Validators.required],
       avatar: ['', Validators.required],
       description: ['', Validators.required],
     });
@@ -54,7 +55,9 @@ export class ProfileCoachComponent implements OnInit, AfterViewInit, OnDestroy {
     this.coach.last().flatMap(
       (coach: Coach) => {
         console.log("submitCoachProfilUpdate, coach obtained");
-        return this.authService.updateCoachForId(coach.id, this.formCoach.value.displayName,
+        return this.authService.updateCoachForId(coach.id,
+          this.formCoach.value.firstName,
+          this.formCoach.value.lastName,
           this.formCoach.value.description,
           this.formCoach.value.avatar);
       }
@@ -78,7 +81,8 @@ export class ProfileCoachComponent implements OnInit, AfterViewInit, OnDestroy {
     if (user instanceof Coach) {
       //update form
       this.formCoach.setValue({
-        displayName: user.display_name,
+        firstName: user.firstName,
+        lastName: user.lastName,
         description: user.description,
         avatar: user.avatar_url,
       });

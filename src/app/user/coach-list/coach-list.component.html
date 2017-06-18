@@ -6,7 +6,7 @@
 
     <h4>Vous avez sélectionné un coach </h4>
 
-    <p>{{(coachee | async)?.selectedCoach.display_name}}</p>
+    <p>{{ (coachee | async)?.selectedCoach.firstName}} {{ (coachee | async)?.selectedCoach.lastName}}</p>
 
     <rb-coach-details class="col s4" [iCoach]="(coachee | async)?.selectedCoach"></rb-coach-details>
 

@@ -6,6 +6,7 @@ import {Coach} from "../model/Coach";
 import {Coachee} from "../model/Coachee";
 import {AuthService} from "./auth.service";
 import {Admin} from "../model/Admin";
+import {HR} from "../model/HR";
 
 @Injectable()
 export class AdminAPIService {
@@ -59,11 +60,11 @@ export class AdminAPIService {
     );
   }
 
-  getRhs(): Observable<Array<Coachee>> {
+  getRhs(): Observable<Array<HR>> {
     return this.get(AuthService.ADMIN_GET_RHS, null).map(
       (res: Response) => {
-        let Coachees: Array<Coachee> = res.json();
-        return Coachees;
+        let HRs: Array<HR> = res.json();
+        return HRs;
       }
     );
   }
@@ -119,32 +120,6 @@ export class AdminAPIService {
     return finalUrl;
   }
 
-
-  /* ----------- PARSER ------------- */
-
-  private parseCoach(json: any): Coach {
-    let coach: Coach = new Coach(json.id);
-    coach.email = json.email;
-    coach.display_name = json.display_name;
-    coach.avatar_url = json.avatar_url;
-    coach.start_date = json.start_date;
-    coach.description = json.description;
-    return coach;
-  }
-
-  private parseCoachee(json: any): Coachee {
-    let coachee: Coachee = new Coachee(json.id);
-    coachee.id = json.id;
-    coachee.email = json.email;
-    coachee.display_name = json.display_name;
-    coachee.avatar_url = json.avatar_url;
-    coachee.start_date = json.start_date;
-    coachee.selectedCoach = json.selectedCoach;
-    coachee.contractPlan = json.plan;
-    coachee.availableSessionsCount = json.available_sessions_count;
-    coachee.updateAvailableSessionCountDate = json.update_sessions_count_date;
-    return coachee;
-  }
 }
 
 

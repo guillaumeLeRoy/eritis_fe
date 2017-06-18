@@ -10,14 +10,14 @@ import {FirebaseService} from "./firebase.service";
 import {Coach} from "../model/Coach";
 import {Coachee} from "../model/Coachee";
 import {LoginResponse} from "../model/LoginResponse";
-import {Rh} from "../model/Rh";
+import {HR} from "../model/HR";
 import {PotentialCoachee} from "../model/PotentialCoachee";
 
 @Injectable()
 export class AuthService {
 
   /* contract plan*/
-  public static GET_CONTRACT_PLANS = "v1/plans/";
+  public static GET_CONTRACT_PLANS = "/v1/plans/";
 
   public static POST_POTENTIAL_COACHEE = "/v1/potentials/coachees";
   public static POST_POTENTIAL_COACH = "/v1/potentials/coachs";
@@ -29,43 +29,45 @@ export class AuthService {
   public static GET_POTENTIAL_RH_FOR_TOKEN = "/v1/potentials/rhs/:token";
 
   /* coachee */
-  public static UPDATE_COACHEE = "/coachees/:id";
+  public static UPDATE_COACHEE = "v1/coachees/:id";
   public static POST_SIGN_UP_COACHEE = "/v1/coachees";
-  public static GET_COACHEES = "v1/coachees";
-  public static GET_COACHEE_FOR_ID = "v1/coachees/:id";
-  public static GET_COACHEE_NOTIFICATIONS = "v1/coachees/:id/notifications";
-  public static PUT_COACHEE_NOTIFICATIONS_READ = "v1/coachees/:id/notifications/read";
+  public static GET_COACHEES = "/v1/coachees";
+  public static GET_COACHEE_FOR_ID = "/v1/coachees/:id";
+  public static GET_COACHEE_NOTIFICATIONS = "/v1/coachees/:id/notifications";
+  public static PUT_COACHEE_NOTIFICATIONS_READ = "/v1/coachees/:id/notifications/read";
 
   /* coach */
-  public static UPDATE_COACH = "/coachs/:id";
+  public static UPDATE_COACH = "/v1/coachs/:id";
   public static POST_SIGN_UP_COACH = "/v1/coachs";
-  public static GET_COACHS = "/coachs";
-  public static GET_COACH_FOR_ID = "/coachs/:id";
-  public static GET_COACH_NOTIFICATIONS = "v1/coachs/:id/notifications";
-  public static PUT_COACH_NOTIFICATIONS_READ = "v1/coachs/:id/notifications/read";
+  public static GET_COACHS = "/v1/coachs";
+  public static GET_COACH_FOR_ID = "/v1/coachs/:id";
+  public static GET_COACH_NOTIFICATIONS = "/v1/coachs/:id/notifications";
+  public static PUT_COACH_NOTIFICATIONS_READ = "/v1/coachs/:id/notifications/read";
 
-  /* rh */
+  /* HR */
   public static POST_SIGN_UP_RH = "/v1/rhs";
   public static GET_COACHEES_FOR_RH = "/v1/rhs/:uid/coachees";
   public static GET_POTENTIAL_COACHEES_FOR_RH = "/v1/rhs/:uid/potentials";
-  public static GET_RH_FOR_ID = "/rh/:id";
+  public static GET_RH_FOR_ID = "/v1/rhs/:id";
   public static GET_USAGE_RATE_FOR_RH = "/v1/rhs/:id/usage";
-  public static GET_RH_NOTIFICATIONS = "v1/rhs/:id/notifications";
-  public static PUT_RH_NOTIFICATIONS_READ = "v1/rhs/:id/notifications/read";
+  public static GET_RH_NOTIFICATIONS = "/v1/rhs/:id/notifications";
+  public static PUT_RH_NOTIFICATIONS_READ = "/v1/rhs/:id/notifications/read";
+  public static POST_COACHEE_OBJECTIVE = "/v1/rhs/:uidRH/coachees/:uidCoachee/objective";//create new objective for this coachee
+
 
   /* admin */
   public static GET_ADMIN = "/v1/admins/user";
-  public static ADMIN_GET_COACHS = "v1/admins/coachs";
-  public static ADMIN_GET_COACHEES = "v1/admins/coachees";
-  public static ADMIN_GET_RHS = "v1/admins/rhs";
+  public static ADMIN_GET_COACHS = "/v1/admins/coachs";
+  public static ADMIN_GET_COACHEES = "/v1/admins/coachees";
+  public static ADMIN_GET_RHS = "/v1/admins/rhs";
 
   /*Meeting*/
   public static POST_MEETING = "/meeting";
   public static DELETE_MEETING = "/meeting/:meetingId";
   public static GET_MEETING_REVIEWS = "/meeting/:meetingId/reviews";
-  public static PUT_MEETING_REVIEW = "v1/meetings/:meetingId/reviews";//add or replace meeting review
+  public static PUT_MEETING_REVIEW = "/v1/meetings/:meetingId/reviews";//add or replace meeting review
   public static DELETE_MEETING_REVIEW = "/meeting/reviews/:reviewId";//delete review
-  public static CLOSE_MEETING = "v1/meetings/:meetingId/close";// close meeting
+  public static CLOSE_MEETING = "/v1/meetings/:meetingId/close";// close meeting
   public static GET_MEETINGS_FOR_COACHEE_ID = "/meetings/coachee/:coacheeId";
   public static GET_MEETINGS_FOR_COACH_ID = "/meetings/coach/:coachId";
   public static POST_MEETING_POTENTIAL_DATE = "/meeting/:meetingId/potential";
@@ -73,12 +75,8 @@ export class AuthService {
   public static PUT_POTENTIAL_DATE_TO_MEETING = "/meeting/potential/:potentialId";//update potential date
   public static DELETE_POTENTIAL_DATE = "/meeting/potentials/:potentialId";//delete potential date
   public static PUT_FINAL_DATE_TO_MEETING = "/meeting/:meetingId/date/:potentialId";//set the potential date as the meeting selected date
-  public static GET_AVAILABLE_MEETINGS = "v1/meetings";//get available meetings ( meetings with NO coach associated )
-  public static PUT_COACH_TO_MEETING = "v1/meeting/:meetingId/coach/:coachId";//associate coach with meeting
-
-  /* HR */
-  public static POST_COACHEE_OBJECTIVE = "/v1/rhs/:uidRH/coachees/:uidCoachee/objective";//create new objective for this coachee
-
+  public static GET_AVAILABLE_MEETINGS = "/v1/meetings";//get available meetings ( meetings with NO coach associated )
+  public static PUT_COACH_TO_MEETING = "/v1/meeting/:meetingId/coach/:coachId";//associate coach with meeting
 
   private onAuthStateChangedCalled = false;
   // private user: User
@@ -88,7 +86,7 @@ export class AuthService {
   /* flag to know if we are in the sign in or sign up process. Block updateAuthStatus(FBuser) is true */
   private isSignInOrUp = false;
 
-  private ApiUser?: Coach | Coachee | Rh = null;
+  private ApiUser?: Coach | Coachee | HR = null;
 
   constructor(private firebase: FirebaseService, private router: Router, private httpService: Http) {
     firebase.auth().onAuthStateChanged(function (user) {
@@ -103,7 +101,7 @@ export class AuthService {
   /*
    * Get connected user from backend
    */
-  refreshConnectedUser(): Observable<Coach | Coachee | Rh> {
+  refreshConnectedUser(): Observable<Coach | Coachee | HR> {
     console.log("refreshConnectedUser");
 
     if (this.ApiUser != null) {
@@ -111,7 +109,7 @@ export class AuthService {
         return this.fetchCoach(this.ApiUser.id);
       } else if (this.ApiUser instanceof Coachee) {
         return this.fetchCoachee(this.ApiUser.id);
-      } else if (this.ApiUser instanceof Rh) {
+      } else if (this.ApiUser instanceof HR) {
         return this.fetchRh(this.ApiUser.id);
       }
     } else {
@@ -146,7 +144,7 @@ export class AuthService {
     );
   }
 
-  private fetchRh(userId: string): Observable<Rh> {
+  private fetchRh(userId: string): Observable<HR> {
     let param = [userId];
     let obs = this.get(AuthService.GET_RH_FOR_ID, param);
     return obs.map(
@@ -159,11 +157,11 @@ export class AuthService {
     );
   }
 
-  getConnectedUser(): Coach | Coachee | Rh {
+  getConnectedUser(): Coach | Coachee | HR {
     return this.ApiUser;
   }
 
-  getConnectedUserObservable(): Observable<Coach | Coachee | Rh> {
+  getConnectedUserObservable(): Observable<Coach | Coachee | HR> {
     return this.ApiUserSubject.asObservable();
   }
 
@@ -375,7 +373,7 @@ export class AuthService {
   }
 
   /* when we obtained a User from the API ( coach or coachee ) */
-  private onAPIuserObtained(user: Coach | Coachee | Rh, firebaseToken: string): Coach | Coachee | Rh {
+  private onAPIuserObtained(user: Coach | Coachee | HR, firebaseToken: string): Coach | Coachee | HR {
     console.log("onAPIuserObtained, user : ", user);
     if (user) {
       //keep current user
@@ -392,7 +390,7 @@ export class AuthService {
     return user;
   }
 
-  private getUserForFirebaseId(firebaseId: string, token: string): Observable<Coach | Coachee | Rh> {
+  private getUserForFirebaseId(firebaseId: string, token: string): Observable<Coach | Coachee | HR> {
     console.log("getUserForFirebaseId : ", firebaseId);
     let params = [firebaseId];
 
@@ -468,7 +466,7 @@ export class AuthService {
     );
   }
 
-  private parseAPIuser(response: LoginResponse): Coach | Coachee | Rh {
+  private parseAPIuser(response: LoginResponse): Coach | Coachee | HR {
     console.log("parseAPIuser, response :", response);
 
     if (response.coach) {
@@ -489,7 +487,8 @@ export class AuthService {
   private parseCoach(json: any): Coach {
     let coach: Coach = new Coach(json.id);
     coach.email = json.email;
-    coach.display_name = json.display_name;
+    coach.firstName = json.firstName;
+    coach.lastName = json.lastName;
     coach.avatar_url = json.avatar_url;
     coach.start_date = json.start_date;
     coach.description = json.description;
@@ -502,7 +501,8 @@ export class AuthService {
     let coachee: Coachee = new Coachee(json.id);
     coachee.id = json.id;
     coachee.email = json.email;
-    coachee.display_name = json.display_name;
+    coachee.firstName = json.firstName;
+    coachee.lastName = json.lastName;
     coachee.avatar_url = json.avatar_url;
     coachee.start_date = json.start_date;
     coachee.selectedCoach = json.selectedCoach;
@@ -514,10 +514,11 @@ export class AuthService {
     return coachee;
   }
 
-  private parseRh(json: any): Rh {
-    let rh: Rh = new Rh(json.id);
+  private parseRh(json: any): HR {
+    let rh: HR = new HR(json.id);
     rh.email = json.email;
-    rh.display_name = json.display_name;
+    rh.firstName = json.firstName;
+    rh.lastName = json.lastName;
     rh.start_date = json.start_date;
     rh.avatar_url = json.avatar_url;
     return rh;
@@ -531,7 +532,7 @@ export class AuthService {
     return potentialCoachee;
   }
 
-  signIn(user: User): Observable<Coach | Coachee | Rh> {
+  signIn(user: User): Observable<Coach | Coachee | HR> {
     console.log("1. user signIn : ", user);
     this.isSignInOrUp = true;
 
@@ -563,11 +564,12 @@ export class AuthService {
   }
 
 
-  updateCoacheeForId(id: string, displayName: string, avatarUrl: string): Observable<ApiUser> {
+  updateCoacheeForId(id: string, firstName: string, lastName: string, avatarUrl: string): Observable<ApiUser> {
     console.log("updateCoacheeForId, id", id);
 
     let body = {
-      display_name: displayName,
+      first_name: firstName,
+      last_name: lastName,
       avatar_url: avatarUrl,
     };
 
@@ -579,11 +581,12 @@ export class AuthService {
       });
   }
 
-  updateCoachForId(id: string, displayName: string, description: string, avatarUrl: string): Observable<ApiUser> {
+  updateCoachForId(id: string, firstName: string, lastName: string, description: string, avatarUrl: string): Observable<ApiUser> {
     console.log("updateCoachDisplayNameForId, id", id);
 
     let body = {
-      display_name: displayName,
+      first_name: firstName,
+      last_name: lastName,
       description: description,
       avatar_url: avatarUrl,
     };
@@ -620,7 +623,7 @@ export class AuthService {
    * @param response
    * @returns {Coach|Coachee}
    */
-  private onUserResponse(response: Response): Coach | Coachee | Rh {
+  private onUserResponse(response: Response): Coach | Coachee | HR {
     let json: LoginResponse = response.json();
     console.log("onUserResponse, response json : ", json);
     let res = this.parseAPIuser(json);

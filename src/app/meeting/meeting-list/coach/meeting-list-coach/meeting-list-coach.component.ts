@@ -8,7 +8,7 @@ import {Subscription} from "rxjs/Subscription";
 import {Coachee} from "../../../../model/Coachee";
 import {Coach} from "../../../../model/Coach";
 import {RhUsageRate} from "../../../../model/UsageRate";
-import {Rh} from "../../../../model/Rh";
+import {HR} from "../../../../model/HR";
 import {ApiUser} from "../../../../model/ApiUser";
 
 declare var $: any;
@@ -21,7 +21,7 @@ declare var Materialize: any;
 })
 export class MeetingListCoachComponent implements OnInit, AfterViewInit, OnDestroy {
 
-  private user: Observable<Coach | Coachee | Rh>;
+  private user: Observable<Coach | Coachee | HR>;
 
   private meetings: Observable<Meeting[]>;
   private meetingsOpened: Observable<Meeting[]>;

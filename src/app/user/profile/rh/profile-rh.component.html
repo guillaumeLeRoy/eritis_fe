@@ -15,7 +15,7 @@
       <div class="card-content">
         <div class="row">
           <div class="col s3 offset-s2">
-            <h4 class="card-title grey-text text-darken-4">{{ (rh | async)?.display_name }}</h4>
+            <h4 class="card-title grey-text text-darken-4">{{ (rh | async)?.firstName}} {{ (rh | async)?.lastName}}</h4>
             <p class="medium-small grey-text">Coachee</p>
           </div>
           <div class="col s2 center-align">
@@ -39,7 +39,7 @@
       </div>
       <div class="card-reveal">
         <p>
-            <span class="card-title grey-text text-darken-4">{{ (rh | async)?.display_name }} <i
+            <span class="card-title grey-text text-darken-4">{{ (rh | async)?.firstName}} {{ (rh | async)?.lastName}} <i
               class="mdi-navigation-close right"></i></span>
           <span><i class="mdi-action-perm-identity cyan-text text-darken-2"></i>Coach</span>
         </p>
@@ -111,9 +111,17 @@
 
               <div class="row">
                 <div class="input-field col s10">
-                  <input id="edit_username" type="text" formControlName="pseudo" class="validate"
+                  <input id="edit_firstName" type="text" formControlName="firstName" class="validate"
                          placeholder="{{ (rh | async)?.display_name }}">
-                  <label for="edit_username">Username</label>
+                  <label for="edit_firstName">Prénom</label>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="input-field col s10">
+                  <input id="edit_lastName" type="text" formControlName="lastName" class="validate"
+                         placeholder="{{ (rh | async)?.display_name }}">
+                  <label for="edit_lastName">Nom</label>
                 </div>
               </div>
 
