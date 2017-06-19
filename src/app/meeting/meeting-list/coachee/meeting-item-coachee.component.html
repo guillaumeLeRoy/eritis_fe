@@ -19,45 +19,47 @@
 
     <!-- COACH -->
     <div class="meeting-item-header col-md-12 col-lg-5">
-      <div class="meeting-item-coach has-coach" *ngIf="meeting.coach"
-           (click)="goToCoachProfile(meeting.coach.id)">
-        <div>
-          <!-- image coach-->
-          <img class="meeting-item-coach-avatar circle img-responsive" alt="coach"
-               [src]="meeting.coach.avatar_url">
+      <div>
+        <div class="meeting-item-coach has-coach" *ngIf="meeting.coach"
+             (click)="goToCoachProfile(meeting.coach.id)">
+          <div>
+            <!-- image coach-->
+            <img class="meeting-item-coach-avatar circle img-responsive" alt="coach"
+                 [src]="meeting.coach.avatar_url">
+          </div>
+
+          <div>
+            <p class="meeting-item-coach-name black-text bold">{{ meeting.coach.firstName}} {{ meeting.coach.lastName}}</p>
+          </div>
         </div>
 
-        <div>
-          <p class="meeting-item-coach-name black-text bold">{{ meeting.coach.firstName}} {{ meeting.coach.lastName}}</p>
-        </div>
-      </div>
+        <div class="meeting-item-coach" *ngIf="!meeting.coach">
+          <div>
+            <!-- image coach-->
+            <img class="meeting-item-coach-avatar circle img-responsive" alt="coach"
+                 src="https://s-media-cache-ak0.pinimg.com/originals/af/25/49/af25490494d3338afef00869c59fdd37.png">
+          </div>
 
-      <div class="meeting-item-coach" *ngIf="!meeting.coach">
-        <div>
-          <!-- image coach-->
-          <img class="meeting-item-coach-avatar circle img-responsive" alt="coach"
-               src="https://s-media-cache-ak0.pinimg.com/originals/af/25/49/af25490494d3338afef00869c59fdd37.png">
-        </div>
-
-        <div>
-          <p class="meeting-item-coach-name">Un coach vous sera bientôt attribué</p>
-        </div>
-      </div>
-
-      <!-- DATE -->
-      <div class="meeting-item-date">
-        <div *ngIf="meeting.agreed_date">
-          <span class="meeting-item-date-date">{{ getDate(meeting.agreed_date.start_date) }}</span>
-          <span class="meeting-item-date-hour">{{ printTimeString(meeting.agreed_date.start_date) }}</span>
+          <div>
+            <p class="meeting-item-coach-name">Un coach vous sera bientôt attribué</p>
+          </div>
         </div>
 
-        <div *ngIf="!meeting.agreed_date">
-          <span class="meeting-item-date-date">N/A</span>
-        </div>
+        <!-- DATE -->
+        <div class="meeting-item-date">
+          <div *ngIf="meeting.agreed_date">
+            <span class="meeting-item-date-date">{{ getDate(meeting.agreed_date.start_date) }}</span>
+            <span class="meeting-item-date-hour">{{ printTimeString(meeting.agreed_date.start_date) }}</span>
+          </div>
 
-        <!--<button *ngIf="!meeting.agreed_date" class="btn-basic btn-blue btn-small" (click)="goToModifyDate(meeting.id)">-->
-        <!--Modifier-->
-        <!--</button>-->
+          <div *ngIf="!meeting.agreed_date">
+            <span class="meeting-item-date-date">N/A</span>
+          </div>
+
+          <!--<button *ngIf="!meeting.agreed_date" class="btn-basic btn-blue btn-small" (click)="goToModifyDate(meeting.id)">-->
+          <!--Modifier-->
+          <!--</button>-->
+        </div>
       </div>
     </div>
 
@@ -73,14 +75,14 @@
         <div *ngIf="!meeting.isOpen" class="meeting-review">
           <div *ngIf="hasSessionResult && hasSessionUtility">
             <br>
-            <p><span class="black-text bold">En quoi la séance a-t-elle été utile ? </span>{{ sessionUtility }}</p>
-            <br>
             <p><span class="black-text bold">Avec quoi êtes vous reparti ? </span>{{ sessionResult }}</p>
+            <br>
+            <p><span class="black-text bold">En quoi la séance a-t-elle été utile ? </span>{{ sessionUtility }}</p>
           </div>
         </div><!--end meeting-review-->
       </div>
 
-      <div class="meeting-item-buttons" *ngIf="meeting.isOpen">
+      <div class="meeting-item-body-buttons" *ngIf="meeting.isOpen">
         <button class="btn-basic btn-plain btn-blue btn-small" *ngIf="!meeting.agreed_date"
                 (click)="goToModifyDate(meeting.id)">
           MODIFIER
@@ -91,7 +93,7 @@
         </button>
         <button class="btn-basic btn-cancel" (click)="openModal()"><i class="material-icons">clear</i></button>
       </div>
-      <div class="meeting-item-buttons" *ngIf="!meeting.isOpen && !hasRate">
+      <div class="meeting-item-body-buttons" *ngIf="!meeting.isOpen && !hasRate">
         <button class="btn-basic btn-plain btn-blue btn-small" (click)="rateSession()">NOTER</button>
       </div>
     </div><!--end meeting-item-body-->

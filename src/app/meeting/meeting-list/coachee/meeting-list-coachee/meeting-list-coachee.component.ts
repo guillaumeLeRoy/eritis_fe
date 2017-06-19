@@ -39,6 +39,10 @@ export class MeetingListCoacheeComponent implements OnInit, AfterViewInit, OnDes
 
   private rhUsageRate: Observable<RhUsageRate>;
 
+  private rateSessionMeetingId: string
+  private sessionRate ='0';
+  private sessionPreRate = '0';
+
   constructor(private router: Router, private meetingsService: MeetingsService, private coachCoacheeService: CoachCoacheeService, private authService: AuthService, private cd: ChangeDetectorRef) {
   }
 
@@ -228,6 +232,14 @@ export class MeetingListCoacheeComponent implements OnInit, AfterViewInit, OnDes
    ----------- Modal control - rate session ------------
    *************************************/
 
+  setSessionRate(value: number) {
+    this.sessionRate = value.toString();
+  }
+
+  setSessionPreRate(value: number) {
+    this.sessionPreRate = value.toString();
+  }
+
   updateRateSessionModalVisibility(isVisible: boolean) {
     if (isVisible) {
       $('#rate_session_modal').openModal();
@@ -235,9 +247,6 @@ export class MeetingListCoacheeComponent implements OnInit, AfterViewInit, OnDes
       $('#rate_session_modal').closeModal();
     }
   }
-
-  private rateSessionMeetingId: string
-  private sessionRate: string
 
   openRateSessionModal(meetingId: string) {
     this.rateSessionMeetingId = meetingId;

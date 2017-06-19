@@ -14,19 +14,21 @@
       <div class="col-sm-12 hide-on-large-only gap"></div>
 
       <div class="header-stats col-lg-7">
-        <div class="header-item">
-          <div class="header-item-number"><span>10</span><span class="indice">mois</span></div>
-          <p class="header-item-title">Expérience</p>
-        </div>
+        <div class="row">
+          <div class="header-item col-sm-4">
+            <div class="header-item-number"><span>10</span><span class="indice">mois</span></div>
+            <p class="header-item-title">Expérience</p>
+          </div>
 
-        <div class="header-item">
-          <div class="header-item-number"><span>6</span></div>
-          <p class="header-item-title">Séances réalisées</p>
-        </div>
+          <div class="header-item col-sm-4">
+            <div class="header-item-number"><span>6</span></div>
+            <p class="header-item-title">Séances réalisées</p>
+          </div>
 
-        <div class="header-item">
-          <div class="header-item-number"><span>3</span></div>
-          <p class="header-item-title">Personnes coachées</p>
+          <div class="header-item col-sm-4">
+            <div class="header-item-number"><span>3</span></div>
+            <p class="header-item-title">Personnes coachées</p>
+          </div>
         </div>
       </div>
 
@@ -36,9 +38,10 @@
 
 <div class="container">
   <h4 class="text-right"><span class="blue-text">{{(coachee | async)?.plan.sessions_count}}</span> séances par mois</h4>
-  <h4 class="text-right italic" *ngIf="(coachee | async)?.last_objective == null">Aucun objectif personnel défini</h4>
-  <h4 class="text-right italic" *ngIf="(coachee | async)?.last_objective != null">"{{ (coachee |
-    async)?.last_objective.objective }}"</h4>
+  <h5 class="text-right italic" *ngIf="(coachee | async)?.last_objective == null">Aucun objectif personnel défini</h5>
+  <h5 class="text-right italic" *ngIf="(coachee | async)?.last_objective != null">
+    "{{ (coachee | async)?.last_objective.objective }}"
+  </h5>
   <br>
 
   <div *ngIf="status === 'visiter'">

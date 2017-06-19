@@ -1,5 +1,5 @@
-<h4 class="text-right">Il vous reste <span
-  class="blue-text">{{(user | async)?.availableSessionsCount || 0}}</span>
+<h4 class="text-right">Bonjour {{ (user | async)?.firstName}},
+  il vous reste <span class="blue-text">{{(user | async)?.availableSessionsCount || 0}}</span>
   séance<span *ngIf="(user | async)?.availableSessionsCount > 1">s</span>
   pour ce mois
   <h5 class="italic" *ngIf="(user | async)?.last_objective != null">
@@ -72,11 +72,27 @@
 <div id="rate_session_modal" class="modal">
   <div class="action-modal-content">
     <div class="action-modal-message">
-      <h5 class="black-text center">Noter votre séance.</h5>
+      <h5 class="black-text center">Notez votre séance</h5>
     </div>
 
     <div class="action-modal-message">
-      <input type="text" placeholder="Note" [(ngModel)]="sessionRate">
+      <div class="ratebar center">
+        <div class="rate-star" [class.selected]="sessionRate > 0" [class.pre-selected]="sessionPreRate > 0" (click)="setSessionRate(1)" (mouseenter)="setSessionPreRate(1)" (mouseleave)="setSessionPreRate(sessionRate)">
+          <i class="material-icons star">star</i>
+        </div>
+        <div class="rate-star" [class.selected]="sessionRate > 1" [class.pre-selected]="sessionPreRate > 1" (click)="setSessionRate(2)" (mouseenter)="setSessionPreRate(2)" (mouseleave)="setSessionPreRate(sessionRate)">
+          <i class="material-icons star">star</i>
+        </div>
+        <div class="rate-star" [class.selected]="sessionRate > 2" [class.pre-selected]="sessionPreRate > 2" (click)="setSessionRate(3)" (mouseenter)="setSessionPreRate(3)" (mouseleave)="setSessionPreRate(sessionRate)">
+          <i class="material-icons star">star</i>
+        </div>
+        <div class="rate-star" [class.selected]="sessionRate > 3" [class.pre-selected]="sessionPreRate > 3" (click)="setSessionRate(4)" (mouseenter)="setSessionPreRate(4)" (mouseleave)="setSessionPreRate(sessionRate)">
+          <i class="material-icons star">star</i>
+        </div>
+        <div class="rate-star" [class.selected]="sessionRate > 4" [class.pre-selected]="sessionPreRate > 4" (click)="setSessionRate(5)" (mouseenter)="setSessionPreRate(5)" (mouseleave)="setSessionPreRate(sessionRate)">
+          <i class="material-icons star">star</i>
+        </div>
+      </div>
     </div>
 
 
