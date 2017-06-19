@@ -1,24 +1,36 @@
-import {AfterViewInit, ChangeDetectorRef, Component, OnDestroy, OnInit} from "@angular/core";
-import {Observable, Subscription} from "rxjs";
+import {AfterViewInit, ChangeDetectorRef, Component, Input, OnDestroy, OnInit} from "@angular/core";
+import {Observable} from "rxjs";
+import {ActivatedRoute, Router} from "@angular/router";
 import {Coach} from "../../../model/Coach";
 import {AuthService} from "../../../service/auth.service";
 import {ApiUser} from "../../../model/ApiUser";
+import {CoachCoacheeService} from "../../../service/coach_coachee.service";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
+import {Coachee} from "../../../model/coachee";
+import {HR} from "app/model/HR";
+
+declare var $: any;
+declare var Materialize: any;
 
 @Component({
   selector: 'rb-profile-coach',
-  templateUrl: 'profile-coach.component.html',
-  styleUrls: ['profile-coach.component.css']
+  templateUrl: './profile-coach.component.html',
+  styleUrls: ['./profile-coach.component.css']
 })
+
 export class ProfileCoachComponent implements OnInit, AfterViewInit, OnDestroy {
 
+  @Input()
+  iCoach: Coach;
+
+  private user: Observable<Coach | Coachee | HR>;
   private coach: Observable<Coach>;
-  private connectedUser: Observable<ApiUser>;
-  private connectedUserSubscription: Subscription
+  private status = 'visiter';
+  // private subscriptionGetCoach: Subscription;
 
   private formCoach: FormGroup;
 
-  constructor(private authService: AuthService, private formBuilder: FormBuilder, private cd: ChangeDetectorRef) {
+  constructor(private authService: AuthService, private router: Router, private cd: ChangeDetectorRef, private formBuilder: FormBuilder, private coachService: CoachCoacheeService, private route: ActivatedRoute) {
   }
 
   ngOnInit() {
@@ -28,27 +40,49 @@ export class ProfileCoachComponent implements OnInit, AfterViewInit, OnDestroy {
       avatar: ['', Validators.required],
       description: ['', Validators.required],
     });
+
+    this.getCoach();
+    this.getUser();
   }
 
-  ngAfterViewInit(): void {
-    var user = this.authService.getConnectedUser();
-    console.log("ngAfterViewInit, user : ", user);
-    this.onUserObtained(user);
+  getCoach() {
+    this.route.params.subscribe(
+      (params: any) => {
+        let coachId = params['id'];
+        this.status = params['status'];
 
-    this.connectedUserSubscription = this.authService.getConnectedUserObservable().subscribe(
-      (user: ApiUser) => {
-        console.log("getConnectedUser");
-        this.onUserObtained(user);
+        this.coachService.getCoachForId(coachId).subscribe(
+          (coach: Coach) => {
+            console.log("gotCoach", coach);
+
+            this.setFormValues(coach);
+            this.coach = Observable.of(coach);
+            this.cd.detectChanges();
+          }
+        );
+      }
+    )
+  }
+
+  getUser() {
+    this.authService.getConnectedUserObservable().subscribe(
+      (user: Coach | Coachee | HR) => {
+        console.log('getConnectedUser : ' + user);
+
+        this.user = Observable.of(user);
+        this.cd.detectChanges()
       }
     );
   }
 
-  ngOnDestroy(): void {
-    if (this.connectedUserSubscription) {
-      this.connectedUserSubscription.unsubscribe();
-    }
+  setFormValues(coach: Coach) {
+    this.formCoach.setValue({
+      firstName: coach.firstName,
+      lastName: coach.lastName,
+      avatar: coach.avatar_url,
+      description: coach.description
+    });
   }
-
 
   submitCoachProfilUpdate() {
     console.log("submitCoachProfilUpdate");
@@ -65,33 +99,33 @@ export class ProfileCoachComponent implements OnInit, AfterViewInit, OnDestroy {
       (user: ApiUser) => {
         console.log("coach updated : ", user);
         //refresh page
-        this.onUserObtained(user);
+        Materialize.toast('Votre profil a été modifié !', 3000, 'rounded');
+        this.getCoach();
       },
       (error) => {
         console.log('coach update, error', error);
         //TODO display error
+        Materialize.toast('Impossible de modifier votre profil', 3000, 'rounded');
       });
   }
 
-  private onUserObtained(user: ApiUser) {
-    console.log("onUserObtained, user : ", user);
-
-    this.connectedUser = Observable.of(user);
-
-    if (user instanceof Coach) {
-      //update form
-      this.formCoach.setValue({
-        firstName: user.firstName,
-        lastName: user.lastName,
-        description: user.description,
-        avatar: user.avatar_url,
-      });
-      console.log("onUserObtained, update form : ", this.formCoach.value);
-
-      this.coach = Observable.of(user);
-
-    }
-
-    this.cd.detectChanges();
+  goToMeetings() {
+    window.scrollTo(0, 0);
+    this.router.navigate(['/meetings']);
   }
+
+  ngAfterViewInit(): void {
+    console.log("afterViewInit");
+  }
+
+  ngOnDestroy(): void {
+    // if (this.subscriptionGetCoach) {
+    //   this.subscriptionGetCoach.unsubscribe();
+    // }
+
+    // if (this.subscriptionConnectUser) {
+    //   this.subscriptionConnectUser.unsubscribe();
+    // }
+  }
+
 }

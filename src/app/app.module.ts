@@ -18,7 +18,6 @@ import {ChatItemComponent} from "./chat/chat-item.component";
 import {CoachListComponent} from "./user/coach-list/coach-list.component";
 import {CoachItemComponent} from "./user/coach-list/coach-item.component";
 import {CoachCoacheeService} from "./service/coach_coachee.service";
-import {CoachDetailsComponent} from "./user/coach-details/coach-details.component";
 import {CalendarModule} from "angular-calendar"; // lib
 import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 import {NgbModule} from "@ng-bootstrap/ng-bootstrap";
@@ -64,7 +63,6 @@ import { MeetingListRhComponent } from './meeting/meeting-list/rh/meeting-list-r
     ChatItemComponent,
     CoachListComponent,
     CoachItemComponent,
-    CoachDetailsComponent,
     MeetingListComponent,
     MeetingItemCoacheeComponent,
     MeetingItemCoachComponent,
