@@ -4,7 +4,6 @@ import {SignupAdminComponent} from "./login/signup/signup_admin.component";
 import {WelcomeComponent} from "./welcome/welcome.component";
 import {ChatComponent} from "./chat/chat.component";
 import {CoachListComponent} from "./user/coach-list/coach-list.component";
-import {CoachDetailsComponent} from "./user/coach-details/coach-details.component";
 import {MeetingListComponent} from "./meeting/meeting-list/meeting-list.component";
 import {ProfileCoachComponent} from "./user/profile/coach/profile-coach.component";
 import {ProfileCoacheeComponent} from "./user/profile/coachee/profile-coachee.component";
