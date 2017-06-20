@@ -160,6 +160,14 @@ export class HeaderComponent implements OnInit, OnDestroy {
     return this.mUser instanceof HR
   }
 
+  isAdmin(): boolean {
+    return this.router.url === '/admin' || this.router.url === '/admin/signup' || this.router.url === '/admin/coachees-list' || this.router.url === '/admin/coachs-list' || this.router.url === '/admin/rhs-list';
+  }
+
+  isSigningUp(): boolean {
+    return this.router.url === '/signup_coachee' || this.router.url === '/signup_coach' || this.router.url === '/signup_rh';
+  }
+
   goToCoachs() {
     window.scrollTo(0, 0);
     this.router.navigate(['/coachs']);
@@ -233,5 +241,38 @@ export class HeaderComponent implements OnInit, OnDestroy {
         this.cd.detectChanges();
       }
     );
+  }
+
+
+
+  /******* Admin page *****/
+  navigateAdminHome() {
+    console.log("navigateAdminHome")
+    window.scrollTo(0, 0);
+    this.router.navigate(['/admin']);
+  }
+
+  navigateToSignup() {
+    console.log("navigateToSignup")
+    window.scrollTo(0, 0);
+    this.router.navigate(['admin/signup']);
+  }
+
+  navigateToCoachsList() {
+    console.log("navigateToCoachsList")
+
+    window.scrollTo(0, 0);this.router.navigate(['admin/coachs-list']);
+  }
+
+  navigateToCoacheesList() {
+    console.log("navigateToCoacheesList")
+    window.scrollTo(0, 0);
+    this.router.navigate(['admin/coachees-list']);
+  }
+
+  navigateToRhsList() {
+    console.log("navigateToRhsList")
+    window.scrollTo(0, 0);
+    this.router.navigate(['admin/rhs-list']);
   }
 }

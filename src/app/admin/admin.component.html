@@ -1,15 +1,22 @@
 <div class="container">
 
-  <h4 (click)="navigateAdminHome()">Admin page</h4>
+  <h4 class="text-right" (click)="navigateAdminHome()">Espace admin
+    <span class="text-right italic blue-text admin-name" *ngIf="(admin | async)?.email != null">{{ (admin | async)?.email }}</span>
+    <span class="text-right italic blue-text admin-name" *ngIf="(admin | async)?.email == null">non identifié</span>
+  </h4>
+  <p class="text-right">
+    <span class="blue-text">Cliquez</span> ici pour ajouter un utilisateur
+    <a class="btn-floating btn-large waves-effect waves-light add-meeting-btn"
+       (click)="navigateToSignup()">
+      <i class="material-icons">add</i>
+    </a>
+  </p>
 
 
-  <p *ngIf="(admin | async)?.email !=null">Connecté comme {{ (admin | async)?.email }}</p>
-
-
-  <button class="btn cyan waves-effect waves-light" (click)="navigateToSignup()">Envoyer invitations</button>
-  <button class="btn cyan waves-effect waves-light" (click)="navigateToCoachsList()">Nos coachs</button>
-  <button class="btn cyan waves-effect waves-light" (click)="navigateToCoacheesList()">Nos coachés</button>
-  <button class="btn cyan waves-effect waves-light" (click)="navigateToRhsList()">Nos rhs</button>
+  <!--<button class="btn cyan waves-effect waves-light" (click)="navigateToSignup()">Envoyer invitations</button>-->
+  <!--<button class="btn cyan waves-effect waves-light" (click)="navigateToCoachsList()">Nos coachs</button>-->
+  <!--<button class="btn cyan waves-effect waves-light" (click)="navigateToCoacheesList()">Nos coachés</button>-->
+  <!--<button class="btn cyan waves-effect waves-light" (click)="navigateToRhsList()">Nos rhs</button>-->
 
   <router-outlet></router-outlet>
 

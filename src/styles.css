@@ -297,8 +297,10 @@ ngb-datepicker .btn-link:hover{
   color: var(--main-light-grey);
 }
 
-
-
+.add-meeting-btn{
+  background-color: var(--main-electric-blue) !important;
+  margin-left: 16px;
+}
 
 /* Delete Meeting Modal */
 .modal {

@@ -1,6 +1,6 @@
 import {RouterModule, Routes} from "@angular/router";
 import {SigninComponent} from "./login/signin/signin.component";
-import {SignupAdminComponent} from "./login/signup/signup_admin.component";
+import {SignupAdminComponent} from "./login/signup/signup-admin.component";
 import {WelcomeComponent} from "./welcome/welcome.component";
 import {ChatComponent} from "./chat/chat.component";
 import {CoachListComponent} from "./user/coach-list/coach-list.component";

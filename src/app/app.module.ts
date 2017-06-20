@@ -8,7 +8,7 @@ import {HeaderComponent} from "./header/header.component";
 import {DataService} from "./service/data.service";
 import {LogService} from "./service/log.service";
 import {routing} from "./app.routing";
-import {SignupAdminComponent} from "./login/signup/signup_admin.component";
+import {SignupAdminComponent} from "./login/signup/signup-admin.component";
 import {SigninComponent} from "./login/signin/signin.component";
 import {AuthService} from "./service/auth.service";
 import {AuthGuard} from "./login/auth.guard";
