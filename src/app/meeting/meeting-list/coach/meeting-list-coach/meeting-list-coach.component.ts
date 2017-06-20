@@ -299,9 +299,11 @@ export class MeetingListCoachComponent implements OnInit, AfterViewInit, OnDestr
 
         //refresh list of meetings
         this.onRefreshRequested();
+        Materialize.toast('Le compte-rendu a été envoyé !', 3000, 'rounded');
       }, (error) => {
         console.log('closeMeeting error', error);
         //TODO display error
+        Materialize.toast('Impossible de clore la séance', 3000, 'rounded');
       }
     );
   }

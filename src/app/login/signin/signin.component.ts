@@ -5,6 +5,9 @@ import {Router} from '@angular/router';
 import {Coachee} from '../../model/Coachee';
 import {Coach} from '../../model/Coach';
 
+declare var $: any;
+declare var Materialize: any;
+
 @Component({
   selector: 'rb-signin',
   templateUrl: './signin.component.html',
@@ -48,12 +51,13 @@ export class SigninComponent implements OnInit {
 
         /*L'utilisateur est TOUJOURS redirigé vers ses meetings*/
         this.router.navigate(['/meetings']);
-
+        Materialize.toast('Bonjour ' + user.firstName + ' !', 3000, 'rounded');
       },
       error => {
         console.log('onSignIn, error obtained', error);
-        this.error = true;
-        this.errorMessage = error;
+        Materialize.toast("Le mot de passe ou l'adresse mail est inccorect", 3000, 'rounded');
+        //this.error = true;
+        //this.errorMessage = error;
       }
     );
   }

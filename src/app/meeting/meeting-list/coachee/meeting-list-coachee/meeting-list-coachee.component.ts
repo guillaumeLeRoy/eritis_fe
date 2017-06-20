@@ -267,11 +267,11 @@ export class MeetingListCoacheeComponent implements OnInit, AfterViewInit, OnDes
         console.log('validateRateSessionModal, res', response);
         this.onRefreshRequested();
         this.updateRateSessionModalVisibility(false);
-        Materialize.toast('Votre coach vient d\'être noté.', 3000, 'rounded');
+        Materialize.toast('Votre coach vient d\'être noté !', 3000, 'rounded');
       }, (error) => {
         console.log('validateRateSessionModal, error', error);
         this.updateRateSessionModalVisibility(false);
-        Materialize.toast('Une erreur est survenue', 3000, 'rounded');
+        Materialize.toast('Impossible de noter votre coach', 3000, 'rounded');
       }
     );
   }

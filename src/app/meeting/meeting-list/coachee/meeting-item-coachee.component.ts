@@ -36,7 +36,8 @@ export class MeetingItemCoacheeComponent implements OnInit {
   /**
    * Session objective given by the coachee
    */
-  private goal: string;
+  private goal: Observable<string>;
+  private context: Observable<string>;
   private hasGoal: boolean;
 
   /**
@@ -72,6 +73,7 @@ export class MeetingItemCoacheeComponent implements OnInit {
 
     this.loadMeetingPotentialTimes();
     this.getGoal();
+    this.getContext();
     this.getSessionCoachReview();
   }
 
@@ -132,17 +134,39 @@ export class MeetingItemCoacheeComponent implements OnInit {
     this.meetingService.getMeetingGoal(this.meeting.id).subscribe(
       (reviews: MeetingReview[]) => {
         console.log("getMeetingGoal, got goal : ", reviews);
-        if (reviews != null)
-          this.goal = reviews[0].value;
-        else
-          this.goal = null;
+        if (reviews != null) {
+          this.hasGoal = true;
+          this.goal = Observable.of(reviews[0].value);
+        } else {
+        this.hasGoal = false;
+        this.goal = null;
+      }
 
         this.cd.detectChanges();
-        this.hasGoal = (this.goal != null);
         this.loading = false;
       },
       (error) => {
         console.log('getMeetingGoal error', error);
+        //this.displayErrorPostingReview = true;
+      });
+  }
+
+  private getContext() {
+    this.loading = true;
+
+    this.meetingService.getMeetingContext(this.meeting.id).subscribe(
+      (reviews: MeetingReview[]) => {
+        console.log("getMeetingContext, got context : ", reviews);
+        if (reviews != null)
+          this.context = Observable.of(reviews[0].value);
+        else
+          this.context = Observable.of('n/a');
+
+        this.loading = false;
+        this.cd.detectChanges();
+      },
+      (error) => {
+        console.log('getMeetingContext error', error);
         //this.displayErrorPostingReview = true;
       });
   }

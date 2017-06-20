@@ -68,9 +68,11 @@
       <div class="meeting-item-body-content">
         <p class="meeting-item-goal">
           <span class="black-text bold">Objectif de la séance: </span>
-          <span *ngIf="hasGoal">{{ goal }}</span>
+          <span *ngIf="hasGoal">{{goal | async}}</span>
           <span *ngIf="!hasGoal" class="red-text">Veuillez définir votre objectif.</span>
         </p>
+        <br>
+        <p><span class="black-text bold">Context: </span>{{context | async}}</p>
 
         <div *ngIf="!meeting.isOpen" class="meeting-review">
           <div *ngIf="hasSessionResult && hasSessionUtility">
