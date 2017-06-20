@@ -7,7 +7,7 @@ import {ContractPlan} from "../../../../model/ContractPlan";
 import {Coachee} from "../../../../model/Coachee";
 import {Coach} from "../../../../model/Coach";
 import {RhUsageRate} from "../../../../model/UsageRate";
-import {Rh} from "../../../../model/Rh";
+import {HR} from "../../../../model/HR";
 import {PotentialCoachee} from "../../../../model/PotentialCoachee";
 import {ApiUser} from "../../../../model/ApiUser";
 import {CoacheeObjective} from "../../../../model/CoacheeObjective";
@@ -22,7 +22,7 @@ declare var Materialize: any;
 })
 export class MeetingListRhComponent implements OnInit, AfterViewInit, OnDestroy {
 
-  private user: Observable<Coach | Coachee | Rh>;
+  private user: Observable<Coach | Coachee | HR>;
 
   private coachees: Observable<Coachee[]>;
   private potentialCoachees: Observable<PotentialCoachee[]>;
@@ -85,7 +85,7 @@ export class MeetingListRhComponent implements OnInit, AfterViewInit, OnDestroy 
     console.log('onUserObtained, user : ', user);
     if (user) {
 
-      if (user instanceof Rh) {
+      if (user instanceof HR) {
         // rh
         console.log('get a rh');
         this.getAllCoacheesForRh(user.id);
@@ -259,7 +259,7 @@ export class MeetingListRhComponent implements OnInit, AfterViewInit, OnDestroy 
       userObs.take(1).subscribe(
         (user: ApiUser) => {
           console.log('validateAddNewObjectiveModal, got connected user');
-          if (user instanceof Rh) {
+          if (user instanceof HR) {
             this.makeAPICallToAddNewObjective(user);
           }
         }
@@ -267,7 +267,7 @@ export class MeetingListRhComponent implements OnInit, AfterViewInit, OnDestroy 
       return;
     }
 
-    if (user instanceof Rh) {
+    if (user instanceof HR) {
       this.makeAPICallToAddNewObjective(user);
     }
 

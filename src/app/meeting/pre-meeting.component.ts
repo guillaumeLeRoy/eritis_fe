@@ -1,14 +1,6 @@
-import {Component, OnInit, Input, Output, EventEmitter} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output} from "@angular/core";
 
-import {CoachCoacheeService} from "../service/coach_coachee.service";
-
-import {
-
-  MEETING_REVIEW_TYPE_SESSION_CONTEXT, MEETING_REVIEW_TYPE_SESSION_GOAL,
-
-  MeetingReview
-
-} from "../model/MeetingReview";
+import {MeetingReview} from "../model/MeetingReview";
 import {MeetingsService} from "../service/meetings.service";
 
 @Component({
@@ -46,7 +38,7 @@ export class PreMeetingComponent implements OnInit {
       (reviews: MeetingReview[]) => {
         console.log("getMeetingGoal, got goal : ", reviews);
         if (reviews != null)
-          this.updateGoalValue(reviews[0].comment);
+          this.updateGoalValue(reviews[0].value);
       },
       (error) => {
         console.log('getMeetingGoal error', error);
@@ -60,7 +52,7 @@ export class PreMeetingComponent implements OnInit {
       (reviews: MeetingReview[]) => {
         console.log("getMeetingContext, got context : ", reviews);
         if (reviews != null)
-          this.updateContextValue(reviews[0].comment);
+          this.updateContextValue(reviews[0].value);
       },
       (error) => {
         console.log('getMeetingContext error', error);

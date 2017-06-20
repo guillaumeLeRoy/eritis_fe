@@ -4,7 +4,7 @@ import {AuthService} from "../../service/auth.service";
 import {ApiUser} from "../../model/ApiUser";
 import {Coach} from "../../model/Coach";
 import {Coachee} from "../../model/Coachee";
-import {Rh} from "../../model/Rh";
+import {HR} from "../../model/HR";
 
 declare var $: any;
 declare var Materialize: any;
@@ -16,7 +16,7 @@ declare var Materialize: any;
 })
 export class MeetingListComponent implements OnInit, AfterViewInit, OnDestroy {
 
-  private user: Observable<Coach | Coachee | Rh>;
+  private user: Observable<Coach | Coachee | HR>;
   private subscription: Subscription;
   private connectedUserSubscription: Subscription;
 
@@ -48,16 +48,16 @@ export class MeetingListComponent implements OnInit, AfterViewInit, OnDestroy {
     }
   }
 
-  isUserACoach(user: Coach | Coachee | Rh) {
+  isUserACoach(user: Coach | Coachee | HR) {
     return user instanceof Coach;
   }
 
-  isUserACoachee(user: Coach | Coachee | Rh) {
+  isUserACoachee(user: Coach | Coachee | HR) {
     return user instanceof Coachee;
   }
 
-  isUserARh(user: Coach | Coachee | Rh) {
-    return user instanceof Rh;
+  isUserARh(user: Coach | Coachee | HR) {
+    return user instanceof HR;
   }
 
   private onUserObtained(user: ApiUser) {

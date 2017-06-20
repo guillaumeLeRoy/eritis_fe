@@ -1,6 +1,6 @@
 import {AfterViewInit, ChangeDetectorRef, Component, OnDestroy, OnInit} from "@angular/core";
 import {Observable} from "rxjs/Observable";
-import {Rh} from "../../model/Rh";
+import {HR} from "../../model/HR";
 import {Subscription} from "rxjs/Subscription";
 import {AdminAPIService} from "../../service/adminAPI.service";
 
@@ -11,7 +11,7 @@ import {AdminAPIService} from "../../service/adminAPI.service";
 })
 export class RhsListComponent implements OnInit, AfterViewInit, OnDestroy {
 
-  private rhs: Observable<Array<Rh>>;
+  private rhs: Observable<Array<HR>>;
   private getAllrhsSub: Subscription;
 
   constructor(private apiService: AdminAPIService, private cd: ChangeDetectorRef) {
@@ -33,7 +33,7 @@ export class RhsListComponent implements OnInit, AfterViewInit, OnDestroy {
 
   private fetchData() {
     this.getAllrhsSub = this.apiService.getRhs().subscribe(
-      (rhs: Array<Rh>) => {
+      (rhs: Array<HR>) => {
         console.log('getAllrhsSub subscribe, rhs : ', rhs);
 
         this.rhs = Observable.of(rhs);

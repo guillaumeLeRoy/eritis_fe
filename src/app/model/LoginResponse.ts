@@ -1,11 +1,11 @@
 import {Coach} from "./Coach";
 import {Coachee} from "./Coachee";
-import {Rh} from "./Rh";
+import {HR} from "./HR";
 
 export class LoginResponse {
 
   coach: Coach;
   coachee: Coachee;
-  rh: Rh;
+  rh: HR;
 
 }

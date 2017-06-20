@@ -2,7 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {AuthService} from "../service/auth.service";
 import {Response} from "@angular/http";
 import {FormGroup, FormBuilder, Validators} from "@angular/forms";
-import {Rh} from "../model/Rh";
+import {HR} from "../model/HR";
 import {Coachee} from "app/model/Coachee";
 import {Coach} from "../model/Coach";
 import {Router} from "@angular/router";
@@ -34,14 +34,14 @@ export class WelcomeComponent implements OnInit {
 
     // this.connectedUser = this.authService.getConnectedUserObservable();
     this.authService.getConnectedUserObservable().subscribe(
-      (user: Coach | Coachee | Rh) => {
+      (user: Coach | Coachee | HR) => {
         console.log('getConnectedUser : ' + user);
         this.onUserObtained(user);
       }
     );
   }
 
-  private onUserObtained(user: Coach | Coachee | Rh) {
+  private onUserObtained(user: Coach | Coachee | HR) {
     console.log('onUserObtained : ' + user);
     if (user != null)
       this.router.navigate(['/meetings']);

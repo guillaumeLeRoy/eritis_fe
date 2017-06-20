@@ -68,7 +68,7 @@ export class AvailableMeetingsComponent implements OnInit {
   }
 
   private getAllMeetings() {
-    this.meetingService.getAvailablesMeetings().subscribe(
+    this.meetingService.getAvailableMeetings().subscribe(
       (meetings: Meeting[]) => {
         console.log('got getAllMeetings', meetings);
         this.availableMeetings = Observable.of(meetings);

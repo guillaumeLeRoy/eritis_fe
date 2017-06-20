@@ -1,17 +1,14 @@
-import {AfterViewInit, ChangeDetectorRef, Component, Input, OnDestroy, OnInit} from '@angular/core';
+import {AfterViewInit, ChangeDetectorRef, Component, OnDestroy, OnInit} from "@angular/core";
 import {MeetingsService} from "../../../../service/meetings.service";
 import {CoachCoacheeService} from "../../../../service/coach_coachee.service";
 import {AuthService} from "../../../../service/auth.service";
-import {Router} from "@angular/router";
 import {Observable} from "rxjs/Observable";
 import {Meeting} from "../../../../model/Meeting";
 import {Subscription} from "rxjs/Subscription";
-import {ContractPlan} from "../../../../model/ContractPlan";
 import {Coachee} from "../../../../model/Coachee";
 import {Coach} from "../../../../model/Coach";
 import {RhUsageRate} from "../../../../model/UsageRate";
-import {Rh} from "../../../../model/Rh";
-import {PotentialCoachee} from "../../../../model/PotentialCoachee";
+import {HR} from "../../../../model/HR";
 import {ApiUser} from "../../../../model/ApiUser";
 
 declare var $: any;
@@ -24,7 +21,7 @@ declare var Materialize: any;
 })
 export class MeetingListCoachComponent implements OnInit, AfterViewInit, OnDestroy {
 
-  private user: Observable<Coach | Coachee | Rh>;
+  private user: Observable<Coach | Coachee | HR>;
 
   private meetings: Observable<Meeting[]>;
   private meetingsOpened: Observable<Meeting[]>;
@@ -43,7 +40,32 @@ export class MeetingListCoachComponent implements OnInit, AfterViewInit, OnDestr
 
   private rhUsageRate: Observable<RhUsageRate>;
 
-  constructor(private meetingsService: MeetingsService, private coachCoacheeService: CoachCoacheeService, private authService: AuthService, private cd: ChangeDetectorRef) { }
+  /**
+   * Used in the modal to close a session.
+   * This is the report written by the coach to close a session.
+   */
+  private sessionResult: string;
+  /**
+   * Used in the modal to close a session.
+   * This is the report written by the coach to close a session.
+   */
+  private sessionUtility: string;
+
+  /**
+   * Used in the modal to close a session.
+   * This is the id of the meeting to close.
+   */
+  private meetingToReportId: string;
+
+  /**
+   *
+   * @param meetingsService
+   * @param coachCoacheeService
+   * @param authService
+   * @param cd
+   */
+  constructor(private meetingsService: MeetingsService, private coachCoacheeService: CoachCoacheeService, private authService: AuthService, private cd: ChangeDetectorRef) {
+  }
 
   ngOnInit() {
     console.log('ngOnInit');
@@ -209,33 +231,80 @@ export class MeetingListCoachComponent implements OnInit, AfterViewInit, OnDestr
     this.coachCancelModalVisibility(true);
   }
 
-  cancelCoachCancelMeeting() {
-    this.coachCancelModalVisibility(false);
-    this.meetingToCancel = null;
+  //
+  // cancelCoachCancelMeeting() {
+  //   this.coachCancelModalVisibility(false);
+  //   this.meetingToCancel = null;
+  // }
+  //
+  // // remove MeetingTime
+  // validateCoachCancelMeeting() {
+  //   console.log('validateCancelMeeting, agreed date : ', this.meetingToCancel.agreed_date);
+  //   let meetingTimeId = this.meetingToCancel.agreed_date.id;
+  //   console.log('validateCancelMeeting, id : ', meetingTimeId);
+  //
+  //   // hide modal
+  //   this.coachCancelModalVisibility(false);
+  //   this.meetingToCancel = null;
+  //   // perform request
+  //   this.meetingsService.removePotentialTime(meetingTimeId).subscribe(
+  //     (response: Response) => {
+  //       console.log('validateCancelMeeting, res ', response);
+  //       console.log('emit');
+  //       // this.dateRemoved.emit(null);
+  //       this.onRefreshRequested();
+  //       Materialize.toast('Meeting annulé !', 3000, 'rounded');
+  //     }, (error) => {
+  //       console.log('unbookAdate, error', error);
+  //       Materialize.toast('Impossible d\'annuler le meeting', 3000, 'rounded');
+  //     }
+  //   );
+  // }
+
+
+  /*************************************
+   ----------- Modal control to close a sessions ------------
+   *************************************/
+
+  private updateCloseSessionModalVisibility(visible: boolean) {
+    if (visible) {
+      $('#complete_session_modal').openModal();
+    } else {
+      $('#complete_session_modal').closeModal();
+    }
   }
 
-  // remove MeetingTime
-  validateCoachCancelMeeting() {
-    console.log('validateCancelMeeting, agreed date : ', this.meetingToCancel.agreed_date);
-    let meetingTimeId = this.meetingToCancel.agreed_date.id;
-    console.log('validateCancelMeeting, id : ', meetingTimeId);
+  starCloseSessionFlow(meetingId: string) {
+    console.log('startAddNewObjectiveFlow, coacheeId : ', meetingId);
 
-    // hide modal
-    this.coachCancelModalVisibility(false);
-    this.meetingToCancel = null;
-    // perform request
-    this.meetingsService.removePotentialTime(meetingTimeId).subscribe(
-      (response: Response) => {
-        console.log('validateCancelMeeting, res ', response);
-        console.log('emit');
-        // this.dateRemoved.emit(null);
+    this.updateCloseSessionModalVisibility(true);
+    this.meetingToReportId = meetingId;
+  }
+
+  cancelCloseSessionModal() {
+    this.updateCloseSessionModalVisibility(false);
+  }
+
+  validateCloseSessionModal() {
+    console.log('validateCloseSessionModal');
+
+    //TODO start loader
+    this.meetingsService.closeMeeting(this.meetingToReportId, this.sessionResult, this.sessionUtility).subscribe(
+      (meeting: Meeting) => {
+        console.log("submitCloseMeetingForm, got meeting : ", meeting);
+        // TODO stop loader
+
+        //hide modal
+        this.updateCloseSessionModalVisibility(false);
+
+        //refresh list of meetings
         this.onRefreshRequested();
-        Materialize.toast('Meeting annulé !', 3000, 'rounded');
+        Materialize.toast('Le compte-rendu a été envoyé !', 3000, 'rounded');
       }, (error) => {
-        console.log('unbookAdate, error', error);
-        Materialize.toast('Impossible d\'annuler le meeting', 3000, 'rounded');
+        console.log('closeMeeting error', error);
+        //TODO display error
+        Materialize.toast('Impossible de clore la séance', 3000, 'rounded');
       }
     );
   }
-
 }

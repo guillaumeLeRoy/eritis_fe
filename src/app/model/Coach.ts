@@ -10,7 +10,9 @@ export class Coach implements ApiUser {
 
   avatar_url: string;
 
-  display_name: string;
+  firstName: string;
+
+  lastName: string;
 
   start_date: string;
 

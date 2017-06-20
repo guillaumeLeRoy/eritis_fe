@@ -6,7 +6,6 @@ import {MeetingReview} from "../../../model/MeetingReview";
 import {MeetingDate} from "../../../model/MeetingDate";
 import {Router} from "@angular/router";
 import {MeetingsService} from "../../../service/meetings.service";
-import {ApiUser} from "app/model/apiUser";
 
 declare var $: any;
 declare var Materialize: any;
@@ -27,17 +26,37 @@ export class MeetingItemCoacheeComponent implements OnInit {
   @Output()
   cancelMeetingTimeEvent = new EventEmitter<Meeting>();
 
+  @Output()
+  onRateSessionBtnClickedEmitter = new EventEmitter<any>();
+
   months = ['Jan', 'Feb', 'Mar', 'Avr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 
   private coach: Coach;
 
-  private goal: string;
-  private reviewValue: string;
-  private reviewNextStep: string;
-
-  private hasValue: boolean;
-  private hasNextStep: boolean;
+  /**
+   * Session objective given by the coachee
+   */
+  private goal: Observable<string>;
+  private context: Observable<string>;
   private hasGoal: boolean;
+
+  /**
+   * Session review given by the coach
+   */
+  private sessionResult: string;
+  private hasSessionResult: boolean;
+
+  /**
+   * Session review given by the coach
+   */
+  private sessionUtility: string;
+  private hasSessionUtility: boolean;
+
+  /**
+   * Coach rate given by coache
+   */
+  private sessionRate: string;
+  private hasRate: boolean;
 
   private loading: boolean;
 
@@ -54,7 +73,8 @@ export class MeetingItemCoacheeComponent implements OnInit {
 
     this.loadMeetingPotentialTimes();
     this.getGoal();
-    this.getReview();
+    this.getContext();
+    this.getSessionCoachReview();
   }
 
   // onPreMeetingReviewPosted(meeting: Meeting) {
@@ -102,19 +122,27 @@ export class MeetingItemCoacheeComponent implements OnInit {
     return (new Date(date)).getDate() + ' ' + this.months[(new Date(date)).getMonth()];
   }
 
+  private getSessionCoachReview() {
+    this.getSessionReviewTypeResult();
+    this.getSessionReviewTypeUtility();
+    this.getSessionReviewTypeRate();
+  }
+
   private getGoal() {
     this.loading = true;
 
     this.meetingService.getMeetingGoal(this.meeting.id).subscribe(
       (reviews: MeetingReview[]) => {
         console.log("getMeetingGoal, got goal : ", reviews);
-        if (reviews != null)
-          this.goal = reviews[0].comment;
-        else
-          this.goal = null;
+        if (reviews != null) {
+          this.hasGoal = true;
+          this.goal = Observable.of(reviews[0].value);
+        } else {
+        this.hasGoal = false;
+        this.goal = null;
+      }
 
         this.cd.detectChanges();
-        this.hasGoal = (this.goal != null);
         this.loading = false;
       },
       (error) => {
@@ -123,51 +151,87 @@ export class MeetingItemCoacheeComponent implements OnInit {
       });
   }
 
-  private getReviewValue() {
+  private getContext() {
     this.loading = true;
 
-    this.meetingService.getMeetingValue(this.meeting.id).subscribe(
+    this.meetingService.getMeetingContext(this.meeting.id).subscribe(
       (reviews: MeetingReview[]) => {
-        console.log("getMeetingValue, got goal : ", reviews);
+        console.log("getMeetingContext, got context : ", reviews);
         if (reviews != null)
-          this.reviewValue = reviews[0].comment;
+          this.context = Observable.of(reviews[0].value);
         else
-          this.reviewValue = null;
+          this.context = Observable.of('n/a');
 
-        this.cd.detectChanges();
-        this.hasValue = (this.reviewValue != null);
         this.loading = false;
+        this.cd.detectChanges();
       },
       (error) => {
-        console.log('getMeetingValue error', error);
+        console.log('getMeetingContext error', error);
         //this.displayErrorPostingReview = true;
       });
   }
 
-  private getReviewNextStep() {
+  private getSessionReviewTypeResult() {
     this.loading = true;
 
-    this.meetingService.getMeetingNextStep(this.meeting.id).subscribe(
+    this.meetingService.getSessionReviewResult(this.meeting.id).subscribe(
       (reviews: MeetingReview[]) => {
-        console.log("getMeetingNextStep, got goal : ", reviews);
+        console.log("getSessionReviewTypeResult, got result : ", reviews);
         if (reviews != null)
-          this.reviewNextStep = reviews[0].comment;
+          this.sessionResult = reviews[0].value;
         else
-          this.reviewNextStep = null;
+          this.sessionResult = null;
 
         this.cd.detectChanges();
-        this.hasNextStep = (this.reviewNextStep != null);
+        this.hasSessionResult = (this.sessionResult != null);
         this.loading = false;
       },
       (error) => {
-        console.log('getMeetingNextStep error', error);
+        console.log('getReviewResult error', error);
         //this.displayErrorPostingReview = true;
       });
   }
 
-  private getReview() {
-    this.getReviewValue();
-    this.getReviewNextStep();
+  private getSessionReviewTypeUtility() {
+    this.loading = true;
+
+    this.meetingService.getSessionReviewUtility(this.meeting.id).subscribe(
+      (reviews: MeetingReview[]) => {
+        console.log("getSessionReviewTypeUtility, got goal : ", reviews);
+        if (reviews != null)
+          this.sessionUtility = reviews[0].value;
+        else
+          this.sessionUtility = null;
+
+        this.cd.detectChanges();
+        this.hasSessionUtility = (this.sessionUtility != null);
+        this.loading = false;
+      },
+      (error) => {
+        console.log('getSessionReviewTypeUtility error', error);
+        //this.displayErrorPostingReview = true;
+      });
+  }
+
+  private getSessionReviewTypeRate() {
+    this.loading = true;
+
+    this.meetingService.getSessionReviewRate(this.meeting.id).subscribe(
+      (reviews: MeetingReview[]) => {
+        console.log("getSessionReviewTypeRate, got rate : ", reviews);
+        if (reviews != null)
+          this.sessionRate = reviews[0].value;
+        else
+          this.sessionRate = null;
+
+        this.cd.detectChanges();
+        this.hasRate = (this.sessionRate != null);
+        this.loading = false;
+      },
+      (error) => {
+        console.log('getSessionReviewTypeRate error', error);
+        //this.displayErrorPostingReview = true;
+      });
   }
 
   goToModifyDate(meetingId: number) {
@@ -177,7 +241,6 @@ export class MeetingItemCoacheeComponent implements OnInit {
 
   openModal() {
     this.cancelMeetingTimeEvent.emit(this.meeting);//TODO to improve
-
     // $('#deleteModal').openModal();
   }
 
@@ -189,6 +252,11 @@ export class MeetingItemCoacheeComponent implements OnInit {
   goToCoachProfile(coachId: String) {
     window.scrollTo(0, 0);
     this.router.navigate(['/profile_coach', 'visiter', coachId]);
+  }
+
+  rateSession() {
+    console.log('rateSession');
+    this.onRateSessionBtnClickedEmitter.emit(this.meeting.id);
   }
 
   // cancelCancelMeeting() {
