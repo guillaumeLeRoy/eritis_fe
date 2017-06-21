@@ -1,6 +1,137 @@
+button{
+  margin: 0;
+}
 
-.coach_card {
-  /*display: inline-block;*/
-  /*box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.5);*/
-  box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.5);
+p {
+  margin: 0;
+}
+
+.row {
+  margin: 0;
+}
+
+.btn-basic {
+  margin: 0;
+}
+
+.card-content, .card-reveal {
+  padding: 0;
+}
+
+.meeting-item{
+  margin: 0;
+  padding: 16px 0 !important;
+}
+
+.meeting-item > .row {
+  margin: 0;
+}
+
+.meeting-item-coach{
+  margin-top: 2px;
+  margin-bottom: 0;
+}
+
+.meeting-item-coach-avatar{
+  height: 52px;
+  width: 52px;
+  margin-right: 16px;
+}
+
+.meeting-item-date-hour{
+  margin-left: 16px;
+}
+
+.meeting-item-header,
+.meeting-item-body{
+  display: flex;
+  flex-direction: row;
+  flex-grow: 1;
+  align-items: flex-start;
+  padding: 0px;
+}
+
+.meeting-item-header {
+  justify-content: space-between;
+  padding: 8px 0;
+}
+
+.meeting-item-header > div {
+  display: flex;
+  flex-direction: row;
+  flex-grow: 1;
+  align-items: center;
+  padding: 0px;
+}
+
+
+.meeting-item-coach{
+  display: flex;
+  flex-direction: row;
+  flex-grow: 1;
+  align-items: center;
+  cursor: pointer;
+}
+
+.meeting-item-coach:hover,
+.meeting-item-coach:hover .meeting-item-coach-name {
+  color: var(--main-electric-blue) !important;
+}
+
+.meeting-item-date{
+  font-size: 22px;
+  margin-left: 32px;
+  text-align: right;
+}
+
+.meeting-item-body{
+  justify-content: space-between;
+  padding-left: 112px;
+}
+
+.meeting-item-body-buttons {
+  padding: 16px 0;
+  text-align: right;
+}
+
+.meeting-item-body-content {
+  flex-direction: column;
+  justify-content: space-between;
+  align-content: space-between;
+  padding: 24px 0;
+}
+
+.meeting-review {
+  width: 100%;
+}
+
+@media screen and (max-device-width: 1240px), (max-width: 992px) {
+  .meeting-item-body {
+    padding-left: 0;
+  }
+
+  .meeting-item-buttons {
+    width: 100%;
+    text-align: right;
+    align-content: space-between;
+    justify-content: space-between;
+  }
+}
+
+@media only screen and (max-width: 1400px) and (min-width: 1000px) {
+  .usage-title {
+    display: none;
+  }
+}
+
+.preloader-wrapper{
+  left: 50%;
+  margin-left: -30px;
+  margin: 32px 0;
+}
+
+.meeting-list-date {
+  font-size: 20px;
+  font-weight: 500;
+  margin-right: 8px;
 }
