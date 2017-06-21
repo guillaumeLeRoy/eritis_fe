@@ -40,8 +40,12 @@
                  src="https://s-media-cache-ak0.pinimg.com/originals/af/25/49/af25490494d3338afef00869c59fdd37.png">
           </div>
 
-          <div>
+          <div *ngIf="(potentialDates | async) != null">
             <p class="meeting-item-coach-name">Un coach vous sera bientôt attribué</p>
+          </div>
+
+          <div *ngIf="(potentialDates | async) == null">
+            <p class="meeting-item-coach-name red-text">Veuillez ajouter des disponibilités</p>
           </div>
         </div>
 
@@ -50,10 +54,6 @@
           <div *ngIf="meeting.agreed_date">
             <span class="meeting-item-date-date">{{ getDate(meeting.agreed_date.start_date) }}</span>
             <span class="meeting-item-date-hour">{{ printTimeString(meeting.agreed_date.start_date) }}</span>
-          </div>
-
-          <div *ngIf="!meeting.agreed_date">
-            <span class="meeting-item-date-date">N/A</span>
           </div>
 
           <!--<button *ngIf="!meeting.agreed_date" class="btn-basic btn-blue btn-small" (click)="goToModifyDate(meeting.id)">-->

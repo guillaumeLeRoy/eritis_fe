@@ -40,3 +40,7 @@
   color: var(--main-electric-blue);
   opacity: 1;
 }
+
+#coachee_delete_meeting_modal {
+  height: 200px !important;
+}

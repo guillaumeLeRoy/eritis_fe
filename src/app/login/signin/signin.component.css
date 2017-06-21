@@ -24,11 +24,11 @@ textarea:focus:not([readonly]){
 }
 
 button[type="submit"]{
-  background-color: #46b0ff;
+  background-color: var(--main-electric-blue);
   border: none;
   border-radius: 100%;
-  width: 66px;
-  height: 66px;
+  width: 64px;
+  height: 64px;
   font-size: 24px;
   font-weight: 300;
 }
@@ -50,4 +50,8 @@ button[type="submit"]:disabled{
   #main_container{
     width: 80%;
   }
+}
+
+.spinner-white {
+  border-color: #FFF;
 }

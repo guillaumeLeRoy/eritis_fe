@@ -6,7 +6,7 @@ import {AuthService} from "../../../service/auth.service";
 import {ApiUser} from "../../../model/ApiUser";
 import {CoachCoacheeService} from "../../../service/coach_coachee.service";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
-import {Coachee} from "../../../model/coachee";
+import {Coachee} from "../../../model/Coachee";
 import {HR} from "app/model/HR";
 
 declare var $: any;

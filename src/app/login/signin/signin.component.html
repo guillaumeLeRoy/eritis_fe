@@ -21,7 +21,21 @@
       </div>
 
       <div class="text-center">
-        <button type="submit" name="action" [disabled]="!signInForm.valid">Go</button>
+        <button type="submit" name="action" [disabled]="!signInForm.valid" *ngIf="!loginLoading">Go</button>
+        <div class="preloader-wrapper active" *ngIf="loginLoading">
+          <div class="spinner-layer spinner-white">
+            <div class="circle-clipper left">
+              <div class="circle"></div>
+            </div>
+            <div class="gap-patch">
+              <div class="circle"></div>
+            </div>
+            <div class="circle-clipper right">
+              <div class="circle"></div>
+            </div>
+          </div>
+        </div>
+
       </div>
 
       <!-- sign up error div-->

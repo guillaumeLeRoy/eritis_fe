@@ -67,16 +67,19 @@
 
         <div class="row">
           <div class="col-lg-12">
-            <button class="btn-basic btn-plain btn-blue"
+            <button class="btn-basic btn-plain btn-blue btn-small"
                     (click)="bookOrUpdateADate()" [disabled]="dateModel==null"
-                    *ngIf="!isEditingPotentialDate">Valider</button>
-            <button class="btn-basic btn-plain btn-blue"
+                    *ngIf="!isEditingPotentialDate">Ajouter</button>
+            <button class="btn-basic btn-plain btn-blue btn-small"
                     (click)="bookOrUpdateADate()"
                     [disabled]="dateModel==null"
                     *ngIf="isEditingPotentialDate">Modifier</button>
           </div>
-          <div class="col-lg-12">
-            <button class="btn-basic btn-blue" (click)="resetValues()" [disabled]="dateModel==null" *ngIf="isEditingPotentialDate">Annuler</button>
+          <div class="col-lg-12" *ngIf="isEditingPotentialDate">
+            <br>
+            <button class="btn-basic btn-blue btn-small"
+                    (click)="resetValues()"
+                    [disabled]="dateModel==null">Annuler</button>
           </div>
         </div>
       </div>
@@ -85,14 +88,14 @@
 
   <div class="row">
     <div class="col-lg-12 text-center">
-      <button class="btn-basic btn-blue" (click)="finish()" [disabled]="!canFinish()" *ngIf="!isEditingPotentialDate">Terminer</button>
+      <button class="btn-basic btn-blue btn-small" (click)="finish()" [disabled]="!canFinish()" *ngIf="!isEditingPotentialDate">Terminer</button>
     </div>
   </div>
 
 </div>
 
-<div id="card-alert_seance_book" class="card red" *ngIf="displayErrorBookingDate">
-  <div class="card-content white-text">
-    <p>Impossible de réserver votre séance</p>
-  </div>
-</div>
+<!--<div id="card-alert_seance_book" class="card red" *ngIf="displayErrorBookingDate">-->
+  <!--<div class="card-content white-text">-->
+    <!--<p>Impossible de réserver votre séance</p>-->
+  <!--</div>-->
+<!--</div>-->

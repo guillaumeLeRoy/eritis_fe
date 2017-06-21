@@ -304,7 +304,6 @@ ngb-datepicker .btn-link:hover{
 
 /* Delete Meeting Modal */
 .modal {
-  min-height: 250px;
   max-width: 90%;
 }
 

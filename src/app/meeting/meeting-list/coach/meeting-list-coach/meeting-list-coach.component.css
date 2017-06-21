@@ -17,3 +17,7 @@
 .modal textarea {
   min-height: 100px;
 }
+
+#complete_session_modal {
+  height: 500px;
+}
