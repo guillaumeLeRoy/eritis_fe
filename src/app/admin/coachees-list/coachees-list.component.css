@@ -1,0 +1,46 @@
+.collection-item{
+  padding: 0 16px;
+}
+
+.no-meeting {
+  padding: 16px 0;
+}
+
+.card.collection {
+  overflow: visible;
+}
+
+.ratebar {
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+.rate-star {
+  display: inline-block;
+  cursor: pointer;
+}
+
+.rate-star .star {
+  color: var(--main-ultra-light-grey);
+  font-size: 60px;
+  padding: 0 16px;
+}
+
+.rate-star.pre-selected .star {
+  color: var(--main-electric-blue);
+  opacity: .6;
+}
+
+.rate-star.selected .star,
+.rate-star.selected:hover .star {
+  color: var(--main-electric-blue);
+  opacity: 1;
+}
+
+#coachee_delete_meeting_modal {
+  height: 200px !important;
+}
