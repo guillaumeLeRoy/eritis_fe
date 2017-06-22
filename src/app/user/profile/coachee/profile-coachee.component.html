@@ -39,11 +39,12 @@
   </h5>
   <br>
 
-  <div *ngIf="status === 'visiter'">
-    <div class="center">
-      <button class="btn-basic btn-plain btn-blue btn-small center" (click)="goToMeetings()">Retourner au tableau de
-        bord
-      </button>
+  <div *ngIf="status === 'visiter' || status === 'admin'">
+    <div class="center" *ngIf="status === 'visiter'">
+      <button class="btn-basic btn-plain btn-blue btn-small center" (click)="goToMeetings()">Retourner au tableau de bord</button>
+    </div>
+    <div class="center" *ngIf="status === 'admin'">
+      <button class="btn-basic btn-plain btn-blue btn-small center" (click)="goToCoacheesAdmin()">Retourner aux coachees</button>
     </div>
     <br>
 

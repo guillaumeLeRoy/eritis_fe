@@ -110,6 +110,11 @@ export class ProfileCoacheeComponent implements OnInit, AfterViewInit, OnDestroy
     this.router.navigate(['/meetings']);
   }
 
+  goToCoacheesAdmin() {
+    window.scrollTo(0, 0);
+    this.router.navigate(['admin/coachees-list']);
+  }
+
   ngAfterViewInit(): void {
     // let user: ApiUser = this.authService.getConnectedUser();
     // console.log("ngAfterViewInit, user : ", user);

@@ -24,6 +24,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   months = ['Jan', 'Feb', 'Mar', 'Avr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 
   private isAuthenticated: Observable<boolean>;
+  private isAdminMode: Observable<boolean>;
   private subscription: Subscription;
 
   private mUser: Coach | Coachee | HR;
@@ -64,6 +65,14 @@ export class HeaderComponent implements OnInit, OnDestroy {
   private onUserObtained(user: Coach | Coachee | HR) {
     console.log('onUserObtained : ' + user);
 
+    this.isAdminMode = Observable.of(false);
+
+    if (this.isAdmin()) {
+      this.user = null;
+      this.isAuthenticated = Observable.of(false);
+      this.isAdminMode = Observable.of(true);
+    }
+
     if (user == null) {
       this.mUser = user;
       this.isAuthenticated = Observable.of(false);
@@ -72,6 +81,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
       this.isAuthenticated = Observable.of(true);
       this.fetchNotificationsForUser(user);
     }
+
     this.user = Observable.of(user);
     this.cd.detectChanges();
   }
@@ -97,6 +107,18 @@ export class HeaderComponent implements OnInit, OnDestroy {
   onSignUp() {
     window.scrollTo(0, 0);
     this.router.navigate(['/signup']);
+  }
+
+  goToHome(){
+    if (this.isAuthenticated)
+      this.goToMeetings();
+    if (this.isAdmin())
+      this.goToAdmin();
+  }
+
+  goToAdmin() {
+    window.scrollTo(0, 0);
+    this.router.navigate(['/admin']);
   }
 
   goToMeetings() {
@@ -260,8 +282,8 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
   navigateToCoachsList() {
     console.log("navigateToCoachsList")
-
-    window.scrollTo(0, 0);this.router.navigate(['admin/coachs-list']);
+    window.scrollTo(0, 0);
+    this.router.navigate(['admin/coachs-list']);
   }
 
   navigateToCoacheesList() {

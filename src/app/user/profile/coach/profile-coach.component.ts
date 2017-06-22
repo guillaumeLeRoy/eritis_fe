@@ -20,9 +20,6 @@ declare var Materialize: any;
 
 export class ProfileCoachComponent implements OnInit, AfterViewInit, OnDestroy {
 
-  @Input()
-  iCoach: Coach;
-
   private user: Observable<Coach | Coachee | HR>;
   private coach: Observable<Coach>;
   private status = 'visiter';
@@ -112,6 +109,11 @@ export class ProfileCoachComponent implements OnInit, AfterViewInit, OnDestroy {
   goToMeetings() {
     window.scrollTo(0, 0);
     this.router.navigate(['/meetings']);
+  }
+
+  goToCoachsAdmin() {
+    window.scrollTo(0, 0);
+    this.router.navigate(['admin/coachs-list']);
   }
 
   ngAfterViewInit(): void {
