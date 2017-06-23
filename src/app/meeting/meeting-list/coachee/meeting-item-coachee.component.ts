@@ -13,7 +13,7 @@ declare var Materialize: any;
 @Component({
   selector: 'rb-meeting-item-coachee',
   templateUrl: 'meeting-item-coachee.component.html',
-  styleUrls: ['meeting-item-coachee.component.css'],
+  styleUrls: ['./meeting-item-coachee.component.scss'],
 })
 export class MeetingItemCoacheeComponent implements OnInit {
 

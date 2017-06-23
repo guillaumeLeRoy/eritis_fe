@@ -1,10 +1,12 @@
+@import "../../../../saas/variables";
+
 button{
   margin: 0;
 }
 
 a:hover,
 a:focus{
-  color: var(--main-electric-blue) !important;
+  color: $main-electric-blue !important;
 }
 
 p {
@@ -68,7 +70,7 @@ p {
 
 .meeting-item-coach:hover,
 .meeting-item-coach:hover .meeting-item-coach-name {
-  color: var(--main-electric-blue) !important;
+  color: $main-electric-blue !important;
 }
 
 .meeting-item-date{

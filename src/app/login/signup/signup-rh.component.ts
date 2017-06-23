@@ -10,7 +10,7 @@ import {PotentialRh} from "../../model/PotentialRh";
 @Component({
   selector: 'er-signup-rh',
   templateUrl: './signup-rh.component.html',
-  styleUrls: ['./signup-rh.component.css']
+  styleUrls: ['./signup-rh.component.scss']
 })
 export class SignupRhComponent implements OnInit {
 

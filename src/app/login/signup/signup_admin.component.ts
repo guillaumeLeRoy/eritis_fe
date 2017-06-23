@@ -18,7 +18,7 @@ enum SignUpType {
 @Component({
   selector: 'rb-signup',
   templateUrl: './signup_admin.component.html',
-  styleUrls: ['./signup_admin.component.css']
+  styleUrls: ['./signup_admin.component.scss']
 })
 export class SignupAdminComponent implements OnInit {
 
