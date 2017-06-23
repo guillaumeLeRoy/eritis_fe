@@ -19,7 +19,8 @@ nav li{
 
 nav li a{
   cursor: pointer;
-  color: $main-light-grey;
+  color: #FFF;
+  opacity: .9;
 }
 
 nav li.active a{
@@ -33,6 +34,7 @@ nav li a:hover,
 nav li a:focus,
 nav li.active a{
   color: #FFF !important;
+  opacity: 1;
 }
 
 .side-nav li a:hover,
