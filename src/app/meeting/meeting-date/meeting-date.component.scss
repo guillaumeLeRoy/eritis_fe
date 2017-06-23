@@ -1,3 +1,5 @@
+@import "../../../saas/variables";
+
 .container{
   /*Evite que le texte se sélectionne pendant la sélection sur le slider*/
   -webkit-touch-callout: none;
@@ -16,7 +18,7 @@
 .custom-day{
   display: inline-block;
   border-radius: 100%;
-  color: var(--main-dark-grey);
+  color: $main-dark-grey;
   font-size: 16px;
   line-height: 40px;
   height: 40px;
@@ -24,7 +26,7 @@
 }
 
 .custom-day:hover{
-  background-color: var(--main-light-grey);
+  background-color: $main-light-grey;
 }
 
 .custom-day.text-muted{
@@ -34,12 +36,12 @@
 }
 
 .bg-primary{
-  background-color: var(--main-electric-blue) !important;
+  background-color: $main-electric-blue !important;
   color: #FFF !important;
 }
 
 .has-potential-date{
-  color: var(--main-electric-blue);
+  color: $main-electric-blue;
   font-weight: 600;
 }
 
@@ -69,7 +71,7 @@
 }
 
 .blue-point{
-  background-color: var(--main-electric-blue);
+  background-color: $main-electric-blue;
   width: 20px;
   height: 20px;
   border-radius: 100%;
@@ -84,13 +86,13 @@
 
 .modify-timeslot,
 .delete-timeslot{
-  color: var(--main-light-grey) !important;
+  color: $main-light-grey !important;
   margin-left: 8px;
 }
 
 .modify-timeslot:hover,
 .delete-timeslot:hover{
-  color: var(--main-electric-blue) !important;
+  color: $main-electric-blue !important;
   cursor: pointer;
 }
 

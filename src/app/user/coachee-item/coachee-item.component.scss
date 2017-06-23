@@ -1,16 +1,10 @@
-button{
-  margin: 0;
-}
+@import "../../../saas/variables";
 
 p {
   margin: 0;
 }
 
 .row {
-  margin: 0;
-}
-
-.btn-basic {
   margin: 0;
 }
 
@@ -21,7 +15,6 @@ p {
 .meeting-item{
   margin: 0;
   padding: 16px 0 !important;
-  cursor: pointer;
 }
 
 .meeting-item > .row {
@@ -71,6 +64,12 @@ p {
   flex-direction: row;
   flex-grow: 1;
   align-items: center;
+  cursor: pointer;
+}
+
+.meeting-item-coach:hover,
+.meeting-item-coach:hover .meeting-item-coach-name {
+  color: $main-electric-blue !important;
 }
 
 .meeting-item-date{

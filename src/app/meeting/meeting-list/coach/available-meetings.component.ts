@@ -15,7 +15,7 @@ declare var Materialize: any;
 @Component({
   selector: 'er-available-meetings',
   templateUrl: './available-meetings.component.html',
-  styleUrls: ['./available-meetings.component.css']
+  styleUrls: ['./available-meetings.component.scss']
 })
 export class AvailableMeetingsComponent implements OnInit {
 

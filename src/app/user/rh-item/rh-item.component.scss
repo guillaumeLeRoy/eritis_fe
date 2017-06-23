@@ -1,16 +1,10 @@
-button{
-  margin: 0;
-}
+@import "../../../saas/variables";
 
 p {
   margin: 0;
 }
 
 .row {
-  margin: 0;
-}
-
-.btn-basic {
   margin: 0;
 }
 
@@ -70,13 +64,13 @@ p {
   flex-direction: row;
   flex-grow: 1;
   align-items: center;
-  cursor: pointer;
+  /*cursor: pointer;*/
 }
 
-.meeting-item-coach:hover,
-.meeting-item-coach:hover .meeting-item-coach-name {
-  color: var(--main-electric-blue) !important;
-}
+/*.meeting-item-coach:hover,*/
+/*.meeting-item-coach:hover .meeting-item-coach-name {*/
+  /*color: var(--main-electric-blue) !important;*/
+/*}*/
 
 .meeting-item-date{
   font-size: 22px;

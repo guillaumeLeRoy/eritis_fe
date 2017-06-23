@@ -1,3 +1,5 @@
+@import "../../../saas/variables";
+
 /*#main_container {
   padding:32px;
 }
@@ -8,7 +10,7 @@
 }*/
 
 label{
-  color: var(--main-white-color);
+  color: $main-white-color;
   font-size: 20px;
   font-weight: 300;
   opacity: .6;
@@ -24,7 +26,7 @@ textarea:focus:not([readonly]){
 }
 
 button[type="submit"]{
-  background-color: var(--main-electric-blue);
+  background-color: $main-electric-blue;
   border: none;
   border-radius: 100%;
   width: 64px;

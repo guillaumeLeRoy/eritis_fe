@@ -4,7 +4,7 @@ import {Message} from "./message";
 @Component({
   selector: 'rb-chat-item',
   templateUrl: './chat-item.component.html',
-  styleUrls: ['./chat-item.component.css']
+  styleUrls: ['./chat-item.component.scss']
 })
 export class ChatItemComponent implements OnInit {
 

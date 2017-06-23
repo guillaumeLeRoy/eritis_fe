@@ -48,6 +48,10 @@ a:focus{
   color: $main-electric-blue !important;
 }
 
+p {
+  width: 100%;
+}
+
 .container{
   max-width: 80% !important;
 }
@@ -285,7 +289,7 @@ ngb-datepicker .btn-link:hover{
 }
 
 .add-meeting-btn{
-  background-color: var(--main-electric-blue) !important;
+  background-color: $main-electric-blue !important;
   margin-left: 16px;
 }
 

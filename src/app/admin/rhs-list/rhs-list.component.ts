@@ -7,7 +7,7 @@ import {AdminAPIService} from "../../service/adminAPI.service";
 @Component({
   selector: 'er-rhs-list',
   templateUrl: './rhs-list.component.html',
-  styleUrls: ['./rhs-list.component.css']
+  styleUrls: ['./rhs-list.component.scss']
 })
 export class RhsListComponent implements OnInit, AfterViewInit, OnDestroy {
 
