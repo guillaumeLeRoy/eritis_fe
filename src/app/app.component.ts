@@ -5,8 +5,7 @@ import {FirebaseService} from "./service/firebase.service";
 
 @Component({
   selector: 'rb-root',
-  templateUrl: './app.component.html',
-
+  templateUrl: './app.component.html'
 })
 export class AppComponent {
 

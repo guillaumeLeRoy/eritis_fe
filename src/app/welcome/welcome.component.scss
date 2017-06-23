@@ -1,3 +1,5 @@
+@import "/../../saas/variables";
+
 nav{
   background-color: transparent;
   box-shadow: none;
@@ -10,7 +12,7 @@ nav li{
 
 nav li:hover a,
 nav li:focus a{
-  color: var(--main-dark-grey) !important;
+  color: $main-dark-grey !important;
   transition: .3s;
 }
 
@@ -31,7 +33,7 @@ nav li:focus a{
   position: fixed;
   top: 0;
   left: 0;
-  background-color: var(--main-blue-filter);
+  background-color: $main-blue-filter;
   height: 1000px;
   width: 100%;
   max-width: 100%;
@@ -39,7 +41,9 @@ nav li:focus a{
 }
 
 .section{
+  background-color: #FFF;
   padding: 0;
+  width: 100%;
 }
 
 header.section{
@@ -51,7 +55,7 @@ header.section .container{
   flex-direction: column;
   align-items: center;
   text-align: center;
-  color: var(--main-white-color);
+  color: $main-white-color;
   padding: 160px 0;
 }
 
@@ -78,7 +82,7 @@ header.section .container{
 
 .header-arrow-bottom{
   font-size: 66px;
-  color: var(--main-white-color);
+  color: $main-white-color;
   opacity: 0.6;
 }
 
@@ -115,7 +119,7 @@ rb-signin{
 }
 
 #presentation {
-  background: var(--main-white-color);
+  background: $main-white-color;
 }
 
 .presentation_item {
@@ -136,7 +140,7 @@ rb-signin{
 .presentation_item_text{
   font-size: 22px;
   /*font-size: 3vmin;*/
-  color: var(--main-light-grey);
+  color: $main-light-grey;
 }
 
 #coach_section {
@@ -144,11 +148,11 @@ rb-signin{
   background-image: linear-gradient(to top, #46b0ff, #0073cf);
   box-shadow: 0 8px 12px 0 rgba(0, 0, 0, 0.5);
   text-align: center;
-  color: var(--main-white-color);
+  color: $main-white-color;
 }
 
 .coach_section_title {
-  color: var(--main-white-color);
+  color: $main-white-color;
   margin-bottom: 32px;
 }
 
@@ -175,7 +179,7 @@ rb-signin{
   font-size: 22px;
   /*font-size: 2.5vmin;*/
   font-weight: 300;
-  color: var(--main-ultra-light-grey);
+  color: $main-ultra-light-grey;
 }
 
 .coach_img {
@@ -198,7 +202,7 @@ rb-signin{
 }
 
 footer {
-  background-color: var(--main-white-color);
+  background-color: $main-white-color;
 }
 
 textarea{
