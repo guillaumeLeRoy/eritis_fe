@@ -14,7 +14,7 @@ declare var Materialize: any;
 @Component({
   selector: 'rb-meeting-date',
   templateUrl: './meeting-date.component.html',
-  styleUrls: ['./meeting-date.component.scss']
+  styleUrls: ['./meeting-date.component.css']
 })
 export class MeetingDateComponent implements OnInit, OnDestroy {
 

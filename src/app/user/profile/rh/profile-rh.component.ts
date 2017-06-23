@@ -9,7 +9,7 @@ import {AuthService} from "../../../service/auth.service";
 @Component({
   selector: 'rb-profile-rh',
   templateUrl: './profile-rh.component.html',
-  styleUrls: ['./profile-rh.component.scss']
+  styleUrls: ['./profile-rh.component.css']
 })
 export class ProfileRhComponent implements OnInit, AfterViewInit, OnDestroy {
 

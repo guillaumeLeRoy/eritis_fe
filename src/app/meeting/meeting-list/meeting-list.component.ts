@@ -12,7 +12,7 @@ declare var Materialize: any;
 @Component({
   selector: 'rb-meeting-list',
   templateUrl: './meeting-list.component.html',
-  styleUrls: ['./meeting-list.component.scss']
+  styleUrls: ['./meeting-list.component.css']
 })
 export class MeetingListComponent implements OnInit, AfterViewInit, OnDestroy {
 

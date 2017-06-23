@@ -8,7 +8,7 @@ import {FirebaseService} from "../service/firebase.service";
 @Component({
   selector: 'rb-chat',
   templateUrl: './chat.component.html',
-  styleUrls: ['./chat.component.scss']
+  styleUrls: ['./chat.component.css']
 })
 export class ChatComponent implements OnInit,AfterViewInit, OnDestroy {
 

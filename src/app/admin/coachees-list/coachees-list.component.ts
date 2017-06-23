@@ -7,7 +7,7 @@ import {AdminAPIService} from "../../service/adminAPI.service";
 @Component({
   selector: 'er-coachees-list',
   templateUrl: './coachees-list.component.html',
-  styleUrls: ['./coachees-list.component.scss']
+  styleUrls: ['./coachees-list.component.css']
 })
 export class CoacheesListComponent implements OnInit, AfterViewInit, OnDestroy {
 

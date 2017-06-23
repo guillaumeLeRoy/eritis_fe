@@ -6,7 +6,7 @@ import {MeetingsService} from "../service/meetings.service";
 @Component({
   selector: 'er-pre-meeting',
   templateUrl: './pre-meeting.component.html',
-  styleUrls: ['./pre-meeting.component.scss']
+  styleUrls: ['./pre-meeting.component.css']
 })
 
 export class PreMeetingComponent implements OnInit {

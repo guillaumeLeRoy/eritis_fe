@@ -1,7 +1,5 @@
-@import "../../../../../saas/variables";
-
 .add-meeting-btn{
-  background-color: $main-electric-blue;
+  background-color: var(--main-electric-blue);
   margin-left: 16px;
 }
 
@@ -15,12 +13,4 @@
 
 .card.collection {
   overflow: visible;
-}
-
-.modal {
-  min-height: 50%;
-}
-
-.modal textarea {
-  min-height: 100px;
 }

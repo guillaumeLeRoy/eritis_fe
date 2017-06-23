@@ -1,5 +1,3 @@
-@import "../../../../saas/variables";
-
 .header-user{
   background-image: url("../../../../assets/img/eritis-mountain-bg-2.jpg");
   background-attachment: scroll;
@@ -9,8 +7,8 @@
 }
 
 .header-user-filter{
-  background-color: $main-blue-filter;
-  color: $main-white-color;
+  background-color: var(--main-blue-filter);
+  color: var(--main-white-color);
 }
 
 .header-user .container {
@@ -53,7 +51,7 @@
 
 .header-item-title {
   margin: 0;
-  color: $main-ultra-light-grey;
+  color: var(--main-ultra-light-grey);
 }
 
 .gap {

@@ -9,7 +9,7 @@ import {Router} from '@angular/router';
 @Component({
   selector: 'rb-coach-list',
   templateUrl: './coach-list.component.html',
-  styleUrls: ['./coach-list.component.scss']
+  styleUrls: ['./coach-list.component.css']
 })
 //TODO to remove ?
 export class CoachListComponent implements OnInit, AfterViewInit, OnDestroy {

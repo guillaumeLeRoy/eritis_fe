@@ -4,7 +4,7 @@ import {Coach} from "../../../model/Coach";
 @Component({
   selector: 'rb-profile-coach-summary',
   templateUrl: './profile-coach-summary.component.html',
-  styleUrls: ['./profile-coach-summary.component.scss']
+  styleUrls: ['./profile-coach-summary.component.css']
 })
 export class ProfileCoachSummaryComponent implements OnInit {
 

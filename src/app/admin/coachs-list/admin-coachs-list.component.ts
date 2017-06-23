@@ -10,7 +10,7 @@ declare var Materialize: any;
 @Component({
   selector: 'er-admin-coachs-list',
   templateUrl: './admin-coachs-list.component.html',
-  styleUrls: ['./admin-coachs-list.component.scss']
+  styleUrls: ['./admin-coachs-list.component.css']
 })
 export class AdminCoachsListComponent implements OnInit, AfterViewInit, OnDestroy {
 

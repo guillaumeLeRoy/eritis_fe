@@ -1,10 +1,16 @@
-@import "../../../../saas/variables";
-
 button{
   margin: 0;
 }
 
 p {
+  margin: 0;
+}
+
+.row {
+  margin: 0;
+}
+
+.btn-basic {
   margin: 0;
 }
 
@@ -15,6 +21,7 @@ p {
 .meeting-item{
   margin: 0;
   padding: 16px 0 !important;
+  cursor: pointer;
 }
 
 .meeting-item > .row {
@@ -32,13 +39,17 @@ p {
   margin-right: 16px;
 }
 
+.meeting-item-date-hour{
+  margin-left: 16px;
+}
+
 .meeting-item-header,
 .meeting-item-body{
   display: flex;
   flex-direction: row;
   flex-grow: 1;
   align-items: flex-start;
-  padding: 0;
+  padding: 0px;
 }
 
 .meeting-item-header {
@@ -54,20 +65,12 @@ p {
   padding: 0px;
 }
 
+
 .meeting-item-coach{
   display: flex;
   flex-direction: row;
   flex-grow: 1;
   align-items: center;
-  cursor: pointer;
-}
-
-.meeting-item-coach.has-coach {
-  cursor: pointer;
-}
-
-.meeting-item-coach.has-coach:hover .meeting-item-coach-name {
-  color: $main-electric-blue !important;
 }
 
 .meeting-item-date{
@@ -78,12 +81,7 @@ p {
 
 .meeting-item-body{
   justify-content: space-between;
-  padding-left: 64px;
-}
-
-.meeting-item.closed .meeting-item-header,
-.meeting-item.closed .meeting-item-body{
-  align-items: flex-start;
+  padding-left: 112px;
 }
 
 .meeting-item-body-buttons {
@@ -101,19 +99,8 @@ p {
   width: 100%;
 }
 
-.meeting-item-buttons {
-  display: flex;
-  flex-direction: row;
-  align-content: flex-end;
-  justify-content: flex-end;
-}
-
 @media screen and (max-device-width: 1240px), (max-width: 992px) {
   .meeting-item-body {
-    flex-direction: column;
-    justify-content: flex-start;
-    align-content: flex-start;
-    align-items: left;
     padding-left: 0;
   }
 
@@ -125,12 +112,20 @@ p {
   }
 }
 
+@media only screen and (max-width: 1400px) and (min-width: 1000px) {
+  .usage-title {
+    display: none;
+  }
+}
+
 .preloader-wrapper{
   left: 50%;
   margin-left: -30px;
   margin: 32px 0;
 }
 
-.btn-cancel {
-  margin-left: 8px;
+.meeting-list-date {
+  font-size: 20px;
+  font-weight: 500;
+  margin-right: 8px;
 }

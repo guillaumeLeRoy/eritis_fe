@@ -14,7 +14,7 @@ declare var Materialize: any;
 @Component({
   selector: 'er-signup-coachee',
   templateUrl: './signup-coachee.component.html',
-  styleUrls: ['./signup-coachee.component.scss']
+  styleUrls: ['./signup-coachee.component.css']
 })
 export class SignupCoacheeComponent implements OnInit {
 

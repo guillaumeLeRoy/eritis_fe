@@ -1,5 +1,3 @@
-@import "../../saas/variables";
-
 .message-container:first-of-type {
   border-top-width: 0;
 }

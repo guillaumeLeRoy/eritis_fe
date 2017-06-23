@@ -10,7 +10,7 @@ import {User} from "../../user/user";
 @Component({
   selector: 'er-signup-coach',
   templateUrl: './signup-coach.component.html',
-  styleUrls: ['./signup-coach.component.scss']
+  styleUrls: ['./signup-coach.component.css']
 })
 export class SignupCoachComponent implements OnInit {
 

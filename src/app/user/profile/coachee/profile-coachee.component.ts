@@ -15,7 +15,7 @@ declare var Materialize: any;
 @Component({
   selector: 'rb-profile-coachee',
   templateUrl: 'profile-coachee.component.html',
-  styleUrls: ['./profile-coachee.component.scss']
+  styleUrls: ['profile-coachee.component.css']
 })
 export class ProfileCoacheeComponent implements OnInit, AfterViewInit, OnDestroy {
 
