@@ -34,11 +34,12 @@ export class MeetingItemCoacheeComponent implements OnInit {
   private coach: Coach;
 
   /**
-   * Session objective given by the coachee
+   * Session objective and context given by the coachee
    */
   private goal: Observable<string>;
   private context: Observable<string>;
   private hasGoal: boolean;
+  private hasContext: boolean;
 
   /**
    * Session review given by the coach
@@ -138,9 +139,9 @@ export class MeetingItemCoacheeComponent implements OnInit {
           this.hasGoal = true;
           this.goal = Observable.of(reviews[0].value);
         } else {
-        this.hasGoal = false;
-        this.goal = null;
-      }
+          this.hasGoal = false;
+          this.goal = null;
+        }
 
         this.cd.detectChanges();
         this.loading = false;
@@ -157,10 +158,13 @@ export class MeetingItemCoacheeComponent implements OnInit {
     this.meetingService.getMeetingContext(this.meeting.id).subscribe(
       (reviews: MeetingReview[]) => {
         console.log("getMeetingContext, got context : ", reviews);
-        if (reviews != null)
+        if (reviews != null) {
+          this.hasContext = true;
           this.context = Observable.of(reviews[0].value);
-        else
-          this.context = Observable.of('n/a');
+        } else {
+          this.hasContext = false;
+          this.context = null;
+        }
 
         this.loading = false;
         this.cd.detectChanges();
