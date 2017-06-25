@@ -83,23 +83,27 @@
 
       <div class="row">
         <div class="col-sm-12">
-          <label for="edit_avatar_url">Photo de profil</label>
-          <input id="edit_avatar_url" type="text" class="validate"
-                 formControlName="avatar"
-                 placeholder="http://...">
+          <label>Photo de profil</label><br>
+          <!--<input id="edit_avatar_url" type="text" class="validate"-->
+                 <!--formControlName="avatar"-->
+                 <!--placeholder="http://...">-->
+          <div class="input-file-container">
+            <button class="btn-basic btn-blue btn-plain btn-small file-upload-buton">Choisir un fichier</button>
+            <input type="file" id="edit_avatar_url" (change)="fileChange($event)" placeholder="Upload file" accept=".jpg,.png">
+          </div>
         </div>
 
         <div class="col-sm-12 center">
-          <img src="{{formCoachee.get('avatar').value}}" alt="profile image"
+          <img src="{{(avatarUrl | async)}}" alt="profile image"
                class="user-img circle responsive-img z-depth-2">
         </div>
       </div>
 
-      <input type="file" (change)="fileChange($event)" placeholder="Upload file" accept=".jpg,.png">
-
-      <button type="submit" class="btn-basic btn-plain btn-blue btn-small right" [disabled]="!formCoachee.valid">
-        Enregistrer
-      </button>
+      <div class="text-center">
+        <button type="submit" class="btn-basic btn-plain btn-blue btn-small" [disabled]="!formCoachee.valid">
+          Enregistrer
+        </button>
+      </div>
 
     </form>
   </div>

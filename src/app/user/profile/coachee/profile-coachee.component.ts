@@ -27,6 +27,8 @@ export class ProfileCoacheeComponent implements OnInit, AfterViewInit, OnDestroy
   private subscriptionGetCoachee: Subscription;
   private subscriptionGetUser: Subscription;
 
+  private avatarUrl: Observable<string>;
+
   private formCoachee: FormGroup;
 
   constructor(private authService: AuthService, private router: Router, private cd: ChangeDetectorRef, private formBuilder: FormBuilder, private coachService: CoachCoacheeService, private route: ActivatedRoute) {
@@ -39,6 +41,8 @@ export class ProfileCoacheeComponent implements OnInit, AfterViewInit, OnDestroy
 
     if (fileList.length > 0) {
       let file: File = fileList[0];
+      this.avatarUrl = Observable.of(file.name);
+      this.cd.detectChanges();
 
       console.log('fileChange, file : ', file);
 

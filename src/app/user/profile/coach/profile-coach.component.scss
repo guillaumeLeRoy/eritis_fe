@@ -67,3 +67,24 @@
 .description-field {
   min-height: 100px;
 }
+
+.input-file-container {
+  cursor: pointer !important;
+}
+
+.input-file-container:hover .btn-basic {
+  box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.16), 0 2px 10px 0 rgba(0, 0, 0, 0.12);
+}
+
+input[type="file"] {
+  position: absolute;
+  left: 0;
+  opacity: .01;
+  padding: 8px;
+  width: 200px;
+  cursor: pointer !important;
+}
+
+.file-upload-buton {
+  width: 200px;
+}
