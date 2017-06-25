@@ -1,0 +1,89 @@
+<h4 class="black-text">Envoyer une invitation</h4>
+<div class="row">
+  <form class="col s12" [formGroup]="signUpForm" (ngSubmit)="onSignUpSubmitted()">
+    <div class="row">
+      <div class="col s12">
+        <label for="email">Email</label>
+        <input id="email" type="email" formControlName="email" placeholder="exemple@mail.com">
+        <small
+          *ngIf="!signUpForm.controls['email'].pristine &&!signUpForm.controls['email'].valid"
+          class="text-danger">
+          Email is required and format should be <i>john@doe.com</i>.
+        </small>
+      </div>
+    </div>
+
+    <div>
+      <label for="signup_type_selector">Type</label>
+      <select [(ngModel)]="signUpSelectedType"
+              [ngModelOptions]="{standalone: true}"
+              name="signup_type_selector"
+              id="signup_type_selector"
+              class="browser-default">
+        <option value="{{signUpSelectedType}}" disabled selected>Sélectionnez un Type</option>
+        <option *ngFor="let type of signUpTypes" [ngValue]="type">
+          {{ getSignUpTypeName(type) }}
+        </option>
+      </select>
+    </div>
+
+    <div *ngIf="signUpSelectedType == 1">
+      <h4>Choisir un plan pour ce coaché</h4>
+      <div *ngFor="let plan of plans | async" (click)="onSelectPlan(plan)"
+           [class.contract_selected]="plan == mSelectedPlan">
+        Plan id : {{plan.plan_id}}
+        Plan Name : {{plan.plan_name}}
+        Plan Sessions count : {{plan.sessions_count}}
+      </div>
+    </div>
+
+    <br>
+
+    <div class="row">
+      <div class="input-field col s12">
+        <button class="btn-basic btn-blue btn-small right" type="submit" name="action"
+                [disabled]="!signUpForm.valid  || signUpSelectedType==null || (signUpSelectedType == 1 && !mSelectedPlan)">
+          Valider
+        </button>
+
+      </div>
+    </div>
+
+    <!-- sign up error div-->
+    <div *ngIf="error && errorMessage != ''">
+      <!-- add extra separator-->
+      <hr>
+      <small class="text-danger">
+        {{errorMessage}}
+      </small>
+    </div>
+
+  </form>
+</div>
+
+<div class="row">
+  <div class="card-panel col s12">
+    <h4 class="black-text">Conseils</h4>
+    <p>Un email sera envoyé à l'adresse mail entrée, assurez-vous de posséder cet email</p>
+    <br>
+
+    <h5>Email possibles</h5>
+    <div class="row">
+      <div class="col-lg-4">
+        <p>coach.1.eritis@gmail.com</p>
+        <p>pwd : passwordEritis</p>
+      </div>
+
+      <div class="col-lg-4">
+        <p>coachee.1.eritis@gmail.com</p>
+        <p>pwd : passwordEritis</p>
+      </div>
+
+      <div class="col-lg-4">
+        <p>rh.1.eritis@gmail.com</p>
+        <p>pwd : passwordEritis</p>
+      </div>
+    </div>
+
+  </div><!--end card-panel-->
+</div><!--end row-->

@@ -17,7 +17,7 @@ declare var Materialize: any;
 @Component({
   selector: 'rb-meeting-list-coach',
   templateUrl: './meeting-list-coach.component.html',
-  styleUrls: ['./meeting-list-coach.component.css']
+  styleUrls: ['./meeting-list-coach.component.scss']
 })
 export class MeetingListCoachComponent implements OnInit, AfterViewInit, OnDestroy {
 

@@ -14,7 +14,7 @@ declare var Materialize: any;
 @Component({
   selector: 'rb-meeting-date',
   templateUrl: './meeting-date.component.html',
-  styleUrls: ['./meeting-date.component.css']
+  styleUrls: ['./meeting-date.component.scss']
 })
 export class MeetingDateComponent implements OnInit, OnDestroy {
 
@@ -281,7 +281,10 @@ export class MeetingDateComponent implements OnInit, OnDestroy {
         if (user != null) {
           window.scrollTo(0, 0)
           this.router.navigate(['/meetings']);
+          Materialize.toast('Vos disponibilités on été enregitrées !', 3000, 'rounded')
         }
+      }, (error) => {
+        Materialize.toast("Impossible d'enregistrer vos disponibilités", 3000, 'rounded')
       }
     );
   }

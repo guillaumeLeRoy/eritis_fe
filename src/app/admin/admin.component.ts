@@ -8,7 +8,7 @@ import {environment} from "../../environments/environment";
 @Component({
   selector: 'er-admin',
   templateUrl: './admin.component.html',
-  styleUrls: ['./admin.component.css']
+  styleUrls: ['./admin.component.scss']
 })
 export class AdminComponent implements OnInit {
 

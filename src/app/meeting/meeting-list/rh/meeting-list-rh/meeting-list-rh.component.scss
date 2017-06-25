@@ -1,0 +1,24 @@
+@import "../../../../../saas/variables";
+
+.collection-item{
+  padding: 0 16px;
+}
+
+.no-meeting {
+  padding: 16px 0;
+}
+
+.card.collection {
+  overflow: visible;
+}
+
+.welcome-message {
+  line-height: 1.5;
+}
+ #add_new_objective_modal {
+   height: 220px;
+ }
+
+ #add_potential_coachee_modal {
+   height: 350px;
+ }

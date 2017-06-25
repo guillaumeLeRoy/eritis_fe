@@ -8,15 +8,15 @@ import {HeaderComponent} from "./header/header.component";
 import {DataService} from "./service/data.service";
 import {LogService} from "./service/log.service";
 import {routing} from "./app.routing";
-import {SignupAdminComponent} from "./login/signup/signup_admin.component";
+import {SignupAdminComponent} from "./login/signup/signup-admin.component";
 import {SigninComponent} from "./login/signin/signin.component";
 import {AuthService} from "./service/auth.service";
 import {AuthGuard} from "./login/auth.guard";
 import {WelcomeComponent} from "./welcome/welcome.component";
 import {ChatComponent} from "./chat/chat.component";
 import {ChatItemComponent} from "./chat/chat-item.component";
-import {CoachListComponent} from "./user/coach-list/coach-list.component";
-import {CoachItemComponent} from "./user/coach-list/coach-item.component";
+import {CoachListComponent} from "./user/coach-item/coach-list.component";
+import {CoachItemComponent} from "./user/coach-item/coach-item.component";
 import {CoachCoacheeService} from "./service/coach_coachee.service";
 import {CalendarModule} from "angular-calendar"; // lib
 import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
@@ -47,6 +47,8 @@ import { RhsListComponent } from './admin/rhs-list/rhs-list.component';
 import { MeetingListCoachComponent } from './meeting/meeting-list/coach/meeting-list-coach/meeting-list-coach.component';
 import { MeetingListCoacheeComponent } from './meeting/meeting-list/coachee/meeting-list-coachee/meeting-list-coachee.component';
 import { MeetingListRhComponent } from './meeting/meeting-list/rh/meeting-list-rh/meeting-list-rh.component';
+import { CoacheeItemComponent } from './user/coachee-item/coachee-item.component';
+import { RhItemComponent } from './user/rh-item/rh-item.component';
 
 @NgModule({
   declarations: [
@@ -79,7 +81,9 @@ import { MeetingListRhComponent } from './meeting/meeting-list/rh/meeting-list-r
     RhsListComponent,
     MeetingListCoachComponent,
     MeetingListCoacheeComponent,
-    MeetingListRhComponent
+    MeetingListRhComponent,
+    CoacheeItemComponent,
+    RhItemComponent
   ],
   imports: [
     BrowserAnimationsModule,

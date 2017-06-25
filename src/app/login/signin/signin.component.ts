@@ -11,7 +11,7 @@ declare var Materialize: any;
 @Component({
   selector: 'rb-signin',
   templateUrl: './signin.component.html',
-  styleUrls: ['./signin.component.css']
+  styleUrls: ['./signin.component.scss']
 })
 export class SigninComponent implements OnInit {
 
@@ -19,6 +19,8 @@ export class SigninComponent implements OnInit {
 
   private error = false;
   private errorMessage: '';
+
+  private loginLoading = false;
 
   constructor(private formBuilder: FormBuilder, private authService: AuthService, private router: Router) {
     authService.isAuthenticated().subscribe((isAuth) => console.log('onSignIn, isAuth', isAuth));
@@ -34,6 +36,9 @@ export class SigninComponent implements OnInit {
   }
 
   onSignIn() {
+
+    // Activate spinner loader
+    this.loginLoading = true;
 
     // reset errors
     this.error = false;
@@ -52,10 +57,12 @@ export class SigninComponent implements OnInit {
         /*L'utilisateur est TOUJOURS redirigé vers ses meetings*/
         this.router.navigate(['/meetings']);
         Materialize.toast('Bonjour ' + user.firstName + ' !', 3000, 'rounded');
+        this.loginLoading = false;
       },
       error => {
         console.log('onSignIn, error obtained', error);
         Materialize.toast("Le mot de passe ou l'adresse mail est inccorect", 3000, 'rounded');
+        this.loginLoading = false;
         //this.error = true;
         //this.errorMessage = error;
       }

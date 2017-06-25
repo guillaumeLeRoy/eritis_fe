@@ -8,6 +8,7 @@ import {Coach} from "../../../model/Coach";
 import {ActivatedRoute, Router} from "@angular/router";
 import {CoachCoacheeService} from "../../../service/coach_coachee.service";
 import {HR} from "../../../model/HR";
+import {Subscription} from "rxjs/Subscription";
 
 declare var $: any;
 declare var Materialize: any;
@@ -15,17 +16,15 @@ declare var Materialize: any;
 @Component({
   selector: 'rb-profile-coachee',
   templateUrl: 'profile-coachee.component.html',
-  styleUrls: ['profile-coachee.component.css']
+  styleUrls: ['./profile-coachee.component.scss']
 })
 export class ProfileCoacheeComponent implements OnInit, AfterViewInit, OnDestroy {
-
-  // private connectedUser: Observable<ApiUser>;
-  // private connectedUserSubscription: Subscription;
 
   private user: Observable<Coach | Coachee | HR>;
   private coachee: Observable<Coachee>;
   private status = 'visiter';
-  // private subscriptionGetCoach: Subscription;
+  private subscriptionGetCoachee: Subscription;
+  private subscriptionGetUser: Subscription;
 
   private formCoachee: FormGroup;
 
@@ -44,7 +43,7 @@ export class ProfileCoacheeComponent implements OnInit, AfterViewInit, OnDestroy
   }
 
   getCoachee() {
-    this.route.params.subscribe(
+    this.subscriptionGetCoachee = this.route.params.subscribe(
       (params: any) => {
         let coacheeId = params['id'];
         this.status = params['status'];
@@ -63,7 +62,7 @@ export class ProfileCoacheeComponent implements OnInit, AfterViewInit, OnDestroy
   }
 
   getUser() {
-    this.authService.getConnectedUserObservable().subscribe(
+    this.subscriptionGetUser = this.authService.getConnectedUserObservable().subscribe(
       (user: Coach | Coachee | HR) => {
         console.log('getConnectedUser : ' + user);
 
@@ -110,6 +109,11 @@ export class ProfileCoacheeComponent implements OnInit, AfterViewInit, OnDestroy
     this.router.navigate(['/meetings']);
   }
 
+  goToCoacheesAdmin() {
+    window.scrollTo(0, 0);
+    this.router.navigate(['admin/coachees-list']);
+  }
+
   ngAfterViewInit(): void {
     // let user: ApiUser = this.authService.getConnectedUser();
     // console.log("ngAfterViewInit, user : ", user);
@@ -124,9 +128,15 @@ export class ProfileCoacheeComponent implements OnInit, AfterViewInit, OnDestroy
   }
 
   ngOnDestroy(): void {
-    // if (this.connectedUserSubscription) {
-    //   this.connectedUserSubscription.unsubscribe();
-    // }
+    if (this.subscriptionGetCoachee) {
+      console.log("Unsubscribe coach");
+      this.subscriptionGetCoachee.unsubscribe();
+    }
+
+    if (this.subscriptionGetUser) {
+      console.log("Unsubscribe user");
+      this.subscriptionGetUser.unsubscribe();
+    }
   }
 
   // submitCoacheeProfileUpdate() {
