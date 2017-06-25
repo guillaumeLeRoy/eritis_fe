@@ -239,14 +239,19 @@ rb-signin{
 .notif-delete{
   padding: 0;
   text-align: center;
-  color: $main-light-grey;
+  a {
+    color: $main-light-grey !important;
+  }
 }
 
-nav .notif-delete:hover > a{
-  color: $main-electric-blue !important;
+nav .notif-delete:hover {
+  a {
+    color: $main-electric-blue !important;
+  }
 }
 
 .item-user-img{
   height: 35px;
+  width: 35px;
   margin-right: 4px;
 }
