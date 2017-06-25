@@ -5,7 +5,7 @@ import {Router} from "@angular/router";
 @Component({
   selector: 'rb-coachee-item',
   templateUrl: './coachee-item.component.html',
-  styleUrls: ['./coachee-item.component.css']
+  styleUrls: ['./coachee-item.component.scss']
 })
 export class CoacheeItemComponent implements OnInit {
 

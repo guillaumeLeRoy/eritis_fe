@@ -5,7 +5,7 @@ import {HR} from "../../model/HR";
 @Component({
   selector: 'rb-rh-item',
   templateUrl: './rh-item.component.html',
-  styleUrls: ['./rh-item.component.css']
+  styleUrls: ['./rh-item.component.scss']
 })
 export class RhItemComponent implements OnInit {
 

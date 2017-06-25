@@ -11,7 +11,7 @@ declare var Materialize: any;
 @Component({
   selector: 'rb-signin',
   templateUrl: './signin.component.html',
-  styleUrls: ['./signin.component.css']
+  styleUrls: ['./signin.component.scss']
 })
 export class SigninComponent implements OnInit {
 

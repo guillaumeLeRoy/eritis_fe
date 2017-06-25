@@ -29,7 +29,8 @@
           </div>
 
           <div>
-            <p class="meeting-item-coach-name black-text bold">{{ meeting.coach.firstName}} {{ meeting.coach.lastName}}</p>
+            <p class="meeting-item-coach-name black-text bold">{{ meeting.coach.firstName}} {{
+              meeting.coach.lastName}}</p>
           </div>
         </div>
 
@@ -66,13 +67,19 @@
     <!-- GOAL & REVIEW -->
     <div class="meeting-item-body col-md-12 col-lg-7">
       <div class="meeting-item-body-content">
-        <p class="meeting-item-goal">
+        <p>
           <span class="black-text bold">Objectif de la séance: </span>
           <span *ngIf="hasGoal">{{goal | async}}</span>
           <span *ngIf="!hasGoal" class="red-text">Veuillez définir votre objectif.</span>
         </p>
+
         <br>
-        <p><span class="black-text bold">Context: </span>{{context | async}}</p>
+
+        <p>
+          <span class="black-text bold">Context de la séance: </span>
+          <span *ngIf="hasContext">{{context | async}}</span>
+          <span *ngIf="!hasContext" class="red-text">Veuillez définir votre context.</span>
+        </p>
 
         <div *ngIf="!meeting.isOpen" class="meeting-review">
           <div *ngIf="hasSessionResult && hasSessionUtility">

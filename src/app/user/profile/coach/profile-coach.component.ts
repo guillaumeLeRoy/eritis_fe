@@ -8,6 +8,7 @@ import {CoachCoacheeService} from "../../../service/coach_coachee.service";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {Coachee} from "../../../model/Coachee";
 import {HR} from "app/model/HR";
+import {Subscription} from "rxjs/Subscription";
 
 declare var $: any;
 declare var Materialize: any;
@@ -15,7 +16,7 @@ declare var Materialize: any;
 @Component({
   selector: 'rb-profile-coach',
   templateUrl: './profile-coach.component.html',
-  styleUrls: ['./profile-coach.component.css']
+  styleUrls: ['./profile-coach.component.scss']
 })
 
 export class ProfileCoachComponent implements OnInit, AfterViewInit, OnDestroy {
@@ -23,7 +24,8 @@ export class ProfileCoachComponent implements OnInit, AfterViewInit, OnDestroy {
   private user: Observable<Coach | Coachee | HR>;
   private coach: Observable<Coach>;
   private status = 'visiter';
-  // private subscriptionGetCoach: Subscription;
+  private subscriptionGetCoach: Subscription;
+  private subscriptionGetUser: Subscription;
 
   private formCoach: FormGroup;
 
@@ -43,7 +45,7 @@ export class ProfileCoachComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   getCoach() {
-    this.route.params.subscribe(
+    this.subscriptionGetCoach = this.route.params.subscribe(
       (params: any) => {
         let coachId = params['id'];
         this.status = params['status'];
@@ -62,7 +64,7 @@ export class ProfileCoachComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   getUser() {
-    this.authService.getConnectedUserObservable().subscribe(
+    this.subscriptionGetUser = this.authService.getConnectedUserObservable().subscribe(
       (user: Coach | Coachee | HR) => {
         console.log('getConnectedUser : ' + user);
 
@@ -121,13 +123,15 @@ export class ProfileCoachComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    // if (this.subscriptionGetCoach) {
-    //   this.subscriptionGetCoach.unsubscribe();
-    // }
+    if (this.subscriptionGetCoach) {
+      console.log("Unsubscribe coach");
+      this.subscriptionGetCoach.unsubscribe();
+    }
 
-    // if (this.subscriptionConnectUser) {
-    //   this.subscriptionConnectUser.unsubscribe();
-    // }
+    if (this.subscriptionGetUser) {
+      console.log("Unsubscribe user");
+      this.subscriptionGetUser.unsubscribe();
+    }
   }
 
 }
