@@ -8,6 +8,7 @@ import {Coach} from "../../../model/Coach";
 import {ActivatedRoute, Router} from "@angular/router";
 import {CoachCoacheeService} from "../../../service/coach_coachee.service";
 import {HR} from "../../../model/HR";
+import {Headers} from "@angular/http";
 
 declare var $: any;
 declare var Materialize: any;
@@ -30,6 +31,36 @@ export class ProfileCoacheeComponent implements OnInit, AfterViewInit, OnDestroy
   private formCoachee: FormGroup;
 
   constructor(private authService: AuthService, private router: Router, private cd: ChangeDetectorRef, private formBuilder: FormBuilder, private coachService: CoachCoacheeService, private route: ActivatedRoute) {
+  }
+
+  fileChange(event) {
+    let fileList: FileList = event.target.files;
+
+    console.log('fileChange, fileList : ', fileList);
+
+    if (fileList.length > 0) {
+      let file: File = fileList[0];
+
+      console.log('fileChange, file : ', file);
+
+      let formData: FormData = new FormData();
+      formData.append('uploadFile', file, file.name);
+
+      let headers = new Headers();
+      headers.append('Accept', 'application/json');
+
+      this.coachee.take(1).flatMap(
+        (coachee: Coachee) => {
+          let params = [coachee.id];
+          return this.authService.put(AuthService.PUT_COACHEE_PROFILE_PICT, params, formData, {headers: headers})
+            .map(res => res.json())
+            .catch(error => Observable.throw(error))
+        }
+      ).subscribe(
+        data => console.log('success'),
+        error => console.log(error)
+      )
+    }
   }
 
   ngOnInit() {

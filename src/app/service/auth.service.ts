@@ -3,7 +3,7 @@ import {Router} from "@angular/router";
 import {Injectable} from "@angular/core";
 import {BehaviorSubject, Observable, Subject} from "rxjs";
 import {PromiseObservable} from "rxjs/observable/PromiseObservable";
-import {Headers, Http, Response, URLSearchParams} from "@angular/http";
+import {Headers, Http, RequestOptionsArgs, Response, URLSearchParams} from "@angular/http";
 import {ApiUser} from "../model/ApiUser";
 import {environment} from "../../environments/environment";
 import {FirebaseService} from "./firebase.service";
@@ -35,6 +35,7 @@ export class AuthService {
   public static GET_COACHEE_FOR_ID = "/v1/coachees/:id";
   public static GET_COACHEE_NOTIFICATIONS = "/v1/coachees/:id/notifications";
   public static PUT_COACHEE_NOTIFICATIONS_READ = "/v1/coachees/:id/notifications/read";
+  public static PUT_COACHEE_PROFILE_PICT = "/v1/coachees/:id/profile_picture";
 
   /* coach */
   public static UPDATE_COACH = "/v1/coachs/:id";
@@ -169,11 +170,18 @@ export class AuthService {
     return this.isUserAuth.asObservable();
   }
 
-  post(path: string, params: string[], body: any): Observable<Response> {
+  post(path: string, params: string[], body: any, options?: RequestOptionsArgs): Observable<Response> {
     let method = this.getConnectedApiUser().flatMap(
       (firebaseUser: ApiUser) => {
         return this.getHeader(firebaseUser).flatMap(
           (headers: Headers) => {
+
+            for (let headerKey of options.headers.keys()) {
+              console.log('post, options headerKey : ', headerKey);
+              console.log('post, options value : ', options.headers.get(headerKey));
+
+              headers.append(headerKey, options.headers.get(headerKey));
+            }
             return this.httpService.post(this.generatePath(path, params), body, {headers: headers})
           }
         );
@@ -186,11 +194,19 @@ export class AuthService {
     return this.httpService.post(this.generatePath(path, params), body)
   }
 
-  put(path: string, params: string[], body: any): Observable<Response> {
+  put(path: string, params: string[], body: any, options?: RequestOptionsArgs): Observable<Response> {
     let method = this.getConnectedApiUser().flatMap(
       (firebaseUser: ApiUser) => {
         return this.getHeader(firebaseUser).flatMap(
           (headers: Headers) => {
+
+            for (let headerKey of options.headers.keys()) {
+              console.log('put, options headerKey : ', headerKey);
+              console.log('put, options value : ', options.headers.get(headerKey));
+
+              headers.append(headerKey, options.headers.get(headerKey));
+            }
+
             return this.httpService.put(this.generatePath(path, params), body, {headers: headers})
           }
         );

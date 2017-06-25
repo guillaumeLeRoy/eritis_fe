@@ -95,9 +95,12 @@
         </div>
       </div>
 
+      <input type="file" (change)="fileChange($event)" placeholder="Upload file" accept=".jpg,.png">
+
       <button type="submit" class="btn-basic btn-plain btn-blue btn-small right" [disabled]="!formCoachee.valid">
         Enregistrer
       </button>
+
     </form>
   </div>
 
