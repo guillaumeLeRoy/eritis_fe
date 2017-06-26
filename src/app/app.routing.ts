@@ -1,6 +1,6 @@
 import {RouterModule, Routes} from "@angular/router";
 import {SigninComponent} from "./login/signin/signin.component";
-import {SignupAdminComponent} from "./login/signup/signup-admin.component";
+import {SignupAdminComponent} from "./login/signup/signup-admin/signup-admin.component";
 import {WelcomeComponent} from "./welcome/welcome.component";
 import {ChatComponent} from "./chat/chat.component";
 import {MeetingListComponent} from "./meeting/meeting-list/meeting-list.component";
@@ -10,10 +10,10 @@ import {MeetingDateComponent} from "./meeting/meeting-date/meeting-date.componen
 import {AdminCoachsListComponent} from "./admin/coachs-list/admin-coachs-list.component";
 import {AdminComponent} from "./admin/admin.component";
 import {ProfileRhComponent} from "./user/profile/rh/profile-rh.component";
-import {SignupCoacheeComponent} from "./login/signup/signup-coachee.component";
-import {SignupCoachComponent} from "./login/signup/signup-coach.component";
-import {SignupRhComponent} from "./login/signup/signup-rh.component";
-import {AvailableMeetingsComponent} from "./meeting/meeting-list/coach/available-meetings.component";
+import {SignupCoacheeComponent} from "./login/signup/signup-coachee/signup-coachee.component";
+import {SignupCoachComponent} from "./login/signup/signup-coach/signup-coach.component";
+import {SignupRhComponent} from "./login/signup/signup-rh/signup-rh.component";
+import {AvailableMeetingsComponent} from "./meeting/meeting-list/coach/available-meetings/available-meetings.component";
 import {CoacheesListComponent} from "./admin/coachees-list/coachees-list.component";
 import {RhsListComponent} from "./admin/rhs-list/rhs-list.component";
 

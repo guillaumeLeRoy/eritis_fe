@@ -1,21 +1,21 @@
 import {Component, OnInit} from "@angular/core";
 import {Observable} from "rxjs/Observable";
 import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
-import {AuthService} from "../../service/auth.service";
-import {CoachCoacheeService} from "../../service/coach_coachee.service";
+import {AuthService} from "../../../service/auth.service";
+import {CoachCoacheeService} from "../../../service/coach_coachee.service";
 import {ActivatedRoute, Router} from "@angular/router";
-import {User} from "../../user/user";
-import {PotentialRh} from "../../model/PotentialRh";
+import {PotentialCoach} from "../../../model/PotentialCoach";
+import {User} from "../../../user/user";
 
 @Component({
-  selector: 'er-signup-rh',
-  templateUrl: './signup-rh.component.html',
-  styleUrls: ['./signup-rh.component.scss']
+  selector: 'er-signup-coach',
+  templateUrl: './signup-coach.component.html',
+  styleUrls: ['./signup-coach.component.scss']
 })
-export class SignupRhComponent implements OnInit {
+export class SignupCoachComponent implements OnInit {
 
-  potentialRhObs: Observable<PotentialRh>;
-  potentialRh: PotentialRh;
+  potentialCoachObs: Observable<PotentialCoach>;
+  potentialCoach: PotentialCoach;
 
   private signUpForm: FormGroup;
   private error = false;
@@ -35,14 +35,14 @@ export class SignupRhComponent implements OnInit {
 
         console.log("ngOnInit, param token", token);
 
-        this.coachCoacheeService.getPotentialRh(token).subscribe(
-          (coach: PotentialRh) => {
-            console.log("getPotentialRh, data obtained", coach);
-            this.potentialRhObs = Observable.of(coach);
-            this.potentialRh = coach;
+        this.coachCoacheeService.getPotentialCoach(token).subscribe(
+          (coach: PotentialCoach) => {
+            console.log("getPotentialCoach, data obtained", coach);
+            this.potentialCoachObs = Observable.of(coach);
+            this.potentialCoach = coach;
           },
           error => {
-            console.log("getPotentialRh, error obtained", error)
+            console.log("getPotentialCoach, error obtained", error)
 
           }
         );
@@ -69,12 +69,12 @@ export class SignupRhComponent implements OnInit {
     this.error = false;
     this.errorMessage = '';
 
-    console.log("onSignUp, rh");
+    console.log("onSignUp, coachee");
 
     let user: User = this.signUpForm.value;
-    user.email = this.potentialRh.email;
+    user.email = this.potentialCoach.email;
 
-    this.authService.signUpRh(user).subscribe(
+    this.authService.signUpCoach(user).subscribe(
       data => {
         console.log("onSignUp, data obtained", data)
         /*L'utilisateur est TOUJOURS redirigé vers ses meetings*/

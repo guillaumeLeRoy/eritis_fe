@@ -1,11 +1,11 @@
 import {Component, OnInit} from "@angular/core";
 import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
-import {AuthService} from "../../service/auth.service";
+import {AuthService} from "../../../service/auth.service";
 import {Router} from "@angular/router";
 import {Observable} from "rxjs";
-import {ContractPlan} from "../../model/ContractPlan";
+import {ContractPlan} from "../../../model/ContractPlan";
 import {Response} from "@angular/http";
-import {AdminAPIService} from "../../service/adminAPI.service";
+import {AdminAPIService} from "../../../service/adminAPI.service";
 
 
 declare var $: any;

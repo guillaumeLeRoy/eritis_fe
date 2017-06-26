@@ -1,12 +1,18 @@
-@import "../../../../saas/variables";
+@import "../../../../../saas/variables";
 
 button{
   margin: 0;
 }
 
+a:hover,
+a:focus{
+  color: $main-electric-blue !important;
+}
+
 p {
   margin: 0;
 }
+
 
 .card-content, .card-reveal {
   padding: 0;
@@ -33,12 +39,12 @@ p {
 }
 
 .meeting-item-header,
-.meeting-item-body{
+.meeting-item-body {
   display: flex;
   flex-direction: row;
   flex-grow: 1;
   align-items: flex-start;
-  padding: 0;
+  padding: 0px;
 }
 
 .meeting-item-header {
@@ -62,11 +68,8 @@ p {
   cursor: pointer;
 }
 
-.meeting-item-coach.has-coach {
-  cursor: pointer;
-}
-
-.meeting-item-coach.has-coach:hover .meeting-item-coach-name {
+.meeting-item-coach:hover,
+.meeting-item-coach:hover .meeting-item-coach-name {
   color: $main-electric-blue !important;
 }
 
@@ -79,11 +82,6 @@ p {
 .meeting-item-body{
   justify-content: space-between;
   padding-left: 64px;
-}
-
-.meeting-item.closed .meeting-item-header,
-.meeting-item.closed .meeting-item-body{
-  align-items: flex-start;
 }
 
 .meeting-item-body-buttons {
@@ -102,6 +100,32 @@ p {
   width: 100%;
 }
 
+.meeting-potential {
+  margin: 4px 0;
+}
+
+.meeting-potential-date {
+  display: inline-block;
+  width: 60px;
+}
+
+.confirm-meeting-form {
+  display: flex;
+  flex-direction: row;
+  flex-grow: 1;
+  align-content: center;
+  align-items: center;
+}
+
+.confirm-meeting-form .input-field {
+  margin-right: 16px;
+  margin-top: 0;
+}
+
+.confirm-meeting-form select {
+  min-width: 120px;
+}
+
 .meeting-item-buttons {
   display: flex;
   flex-direction: row;
@@ -111,11 +135,17 @@ p {
 
 @media screen and (max-device-width: 1240px), (max-width: 992px) {
   .meeting-item-body {
-    /*flex-direction: column;*/
-    /*justify-content: flex-start;*/
-    /*align-content: flex-start;*/
-    /*align-items: left;*/
     padding-left: 0;
+  }
+
+  .confirm-meeting-form {
+    /*flex-direction: column;*/
+    /*align-items: flex-start;*/
+    /*align-content: flex-start;*/
+  }
+
+  .confirm-meeting-form .input-field {
+    margin-left: 0;
   }
 }
 
@@ -126,6 +156,5 @@ p {
 }
 
 .btn-cancel {
-  margin: 8px 0;
   margin-left: 8px;
 }
