@@ -44,6 +44,7 @@ export class AuthService {
   public static GET_COACH_FOR_ID = "/v1/coachs/:id";
   public static GET_COACH_NOTIFICATIONS = "/v1/coachs/:id/notifications";
   public static PUT_COACH_NOTIFICATIONS_READ = "/v1/coachs/:id/notifications/read";
+  public static PUT_COACH_PROFILE_PICT = "/v1/coachs/:id/profile_picture";
 
   /* HR */
   public static POST_SIGN_UP_RH = "/v1/rhs";
@@ -200,12 +201,13 @@ export class AuthService {
         return this.getHeader(firebaseUser).flatMap(
           (headers: Headers) => {
 
-            for (let headerKey of options.headers.keys()) {
-              console.log('put, options headerKey : ', headerKey);
-              console.log('put, options value : ', options.headers.get(headerKey));
+            if (options != null)
+              for (let headerKey of options.headers.keys()) {
+                console.log('put, options headerKey : ', headerKey);
+                console.log('put, options value : ', options.headers.get(headerKey));
 
-              headers.append(headerKey, options.headers.get(headerKey));
-            }
+                headers.append(headerKey, options.headers.get(headerKey));
+              }
 
             return this.httpService.put(this.generatePath(path, params), body, {headers: headers})
           }
@@ -592,7 +594,7 @@ export class AuthService {
     let params = [id];
     return this.put(AuthService.UPDATE_COACHEE, params, body).map(
       (response: Response) => {
-        //return thing s -e glrs.onUserResponse(response);
+        //return this.onUserResponse(response);
         return null;
       });
   }

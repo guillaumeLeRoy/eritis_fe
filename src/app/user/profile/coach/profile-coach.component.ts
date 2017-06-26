@@ -8,6 +8,7 @@ import {CoachCoacheeService} from "../../../service/coach_coachee.service";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {Coachee} from "../../../model/Coachee";
 import {HR} from "app/model/HR";
+import {Headers} from "@angular/http"
 import {Subscription} from "rxjs/Subscription";
 
 declare var $: any;
@@ -28,6 +29,10 @@ export class ProfileCoachComponent implements OnInit, AfterViewInit, OnDestroy {
   private subscriptionGetUser: Subscription;
 
   private formCoach: FormGroup;
+
+  private avatarUrl: File;
+
+  private updateUserLoading = false;
 
   constructor(private authService: AuthService, private router: Router, private cd: ChangeDetectorRef, private formBuilder: FormBuilder, private coachService: CoachCoacheeService, private route: ActivatedRoute) {
   }
@@ -85,27 +90,76 @@ export class ProfileCoachComponent implements OnInit, AfterViewInit, OnDestroy {
 
   submitCoachProfilUpdate() {
     console.log("submitCoachProfilUpdate");
+
+    this.updateUserLoading = true;
+
+    let formData: FormData = new FormData();
+    formData.append('uploadFile', this.avatarUrl, this.avatarUrl.name);
+
+    let headers = new Headers();
+    headers.append('Accept', 'application/json');
+
     this.coach.last().flatMap(
       (coach: Coach) => {
         console.log("submitCoachProfilUpdate, coach obtained");
         return this.authService.updateCoachForId(coach.id,
           this.formCoach.value.firstName,
           this.formCoach.value.lastName,
-          this.formCoach.value.description,
-          this.formCoach.value.avatar);
+          this.formCoach.value.avatar,
+          this.formCoach.value.description);
       }
     ).subscribe(
       (user: ApiUser) => {
-        console.log("coach updated : ", user);
-        //refresh page
-        Materialize.toast('Votre profil a été modifié !', 3000, 'rounded');
-        this.getCoach();
+        this.coach.take(1).flatMap(
+          (coach: Coach) => {
+            console.log("Upload avatar");
+            let params = [coach.id];
+            return this.authService.put(AuthService.PUT_COACH_PROFILE_PICT, params, formData, {headers: headers})
+              .map(res => res.json())
+              .catch(error => Observable.throw(error))
+          }
+        ).subscribe(
+          data => {
+            console.log('Upload avatar success', data);
+            console.log("coach updated : ", user);
+            //refresh page
+            this.updateUserLoading = false;
+            Materialize.toast('Votre profil a été modifié !', 3000, 'rounded');
+            this.getCoach();
+          }, error => {
+            console.log('Upload avatar error', error);
+            Materialize.toast('Impossible de modifier votre profil', 3000, 'rounded');
+          }
+        )
       },
       (error) => {
         console.log('coach update, error', error);
-        //TODO display error
         Materialize.toast('Impossible de modifier votre profil', 3000, 'rounded');
       });
+  }
+
+  fileChange(event) {
+    let fileList: FileList = event.target.files;
+
+    console.log('fileChange, fileUrl : ', event.target.location);
+    console.log('fileChange, fileList : ', fileList);
+
+    if (fileList.length > 0) {
+      let file: File = fileList[0];
+
+      this.avatarUrl = file;
+
+      //Update form value
+      this.formCoach.setValue({
+        firstName: this.formCoach.value.firstName,
+        lastName: this.formCoach.value.lastName,
+        description: this.formCoach.value.description,
+        avatar: file.name
+      });
+      // TODO display avatar preview
+
+      console.log('fileChange, file : ', file);
+    }
   }
 
   goToMeetings() {

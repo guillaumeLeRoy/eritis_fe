@@ -86,17 +86,24 @@
         </div>
       </div>
 
-      <div class="row">
-        <div class="col-sm-12">
-          <label for="edit_avatar_url">Photo de profil</label>
+      <label>Photo de profil</label>
+      <div class="row avatar-container">
+        <div class="col-sm-12 col-lg-3 center avatar-preview-container">
+          <img [src]="formCoach.value.avatar" alt="profile image"
+               id="avatar-preview"
+               class="circle responsive-img z-depth-2">
+        </div>
+
+        <div class="col-sm-12 col-lg-9 input-file-container">
           <input id="edit_avatar_url" type="text" class="validate"
                  formControlName="avatar"
                  placeholder="http://...">
+          <div>
+            <button class="btn-basic btn-blue btn-plain btn-small file-upload-buton">Choisir un fichier</button>
+            <input type="file" id="upload-avatar-input" (change)="fileChange($event)" placeholder="Upload file" accept=".jpg,.png">
+          </div>
         </div>
 
-        <div class="col-sm-12 center">
-          <img src="{{formCoach.get('avatar').value}}" alt="profile image" class="user-img circle responsive-img z-depth-2">
-        </div>
       </div>
 
       <div class="row">
@@ -109,7 +116,32 @@
         </div>
       </div>
 
-      <button type="submit" class="btn-basic btn-plain btn-blue btn-small right" [disabled]="!formCoach.valid">Enregistrer</button>
+      <div class="text-center">
+        <br>
+
+        <button *ngIf="!updateUserLoading"
+                type="submit"
+                class="btn-basic btn-plain btn-blue btn-small"
+                [disabled]="!formCoach.valid">
+          Enregistrer
+        </button>
+
+        <div class="preloader-wrapper active" *ngIf="updateUserLoading">
+          <div class="spinner-layer spinner-blue-only">
+            <div class="circle-clipper left">
+              <div class="circle"></div>
+            </div>
+            <div class="gap-patch">
+              <div class="circle"></div>
+            </div>
+            <div class="circle-clipper right">
+              <div class="circle"></div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
     </form>
   </div>
 

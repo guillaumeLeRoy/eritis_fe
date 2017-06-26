@@ -1,4 +1,4 @@
-import {AfterViewInit, ChangeDetectorRef, Component, OnDestroy, OnInit} from "@angular/core";
+import {AfterViewInit, ChangeDetectorRef, Component, Input, OnDestroy, OnInit} from "@angular/core";
 import {Observable} from "rxjs";
 import {Coachee} from "../../../model/Coachee";
 import {AuthService} from "../../../service/auth.service";
@@ -27,43 +27,13 @@ export class ProfileCoacheeComponent implements OnInit, AfterViewInit, OnDestroy
   private subscriptionGetCoachee: Subscription;
   private subscriptionGetUser: Subscription;
 
-  private avatarUrl: Observable<string>;
-
   private formCoachee: FormGroup;
 
+  private avatarUrl: File;
+
+  private updateUserLoading = false;
+
   constructor(private authService: AuthService, private router: Router, private cd: ChangeDetectorRef, private formBuilder: FormBuilder, private coachService: CoachCoacheeService, private route: ActivatedRoute) {
-  }
-
-  fileChange(event) {
-    let fileList: FileList = event.target.files;
-
-    console.log('fileChange, fileList : ', fileList);
-
-    if (fileList.length > 0) {
-      let file: File = fileList[0];
-      this.avatarUrl = Observable.of(file.name);
-      this.cd.detectChanges();
-
-      console.log('fileChange, file : ', file);
-
-      let formData: FormData = new FormData();
-      formData.append('uploadFile', file, file.name);
-
-      let headers = new Headers();
-      headers.append('Accept', 'application/json');
-
-      this.coachee.take(1).flatMap(
-        (coachee: Coachee) => {
-          let params = [coachee.id];
-          return this.authService.put(AuthService.PUT_COACHEE_PROFILE_PICT, params, formData, {headers: headers})
-            .map(res => res.json())
-            .catch(error => Observable.throw(error))
-        }
-      ).subscribe(
-        data => console.log('success'),
-        error => console.log(error)
-      )
-    }
   }
 
   ngOnInit() {
@@ -117,6 +87,15 @@ export class ProfileCoacheeComponent implements OnInit, AfterViewInit, OnDestroy
 
   submitCoacheeProfilUpdate() {
     console.log("submitCoacheeProfilUpdate");
+
+    this.updateUserLoading = true;
+
+    let formData: FormData = new FormData();
+    formData.append('uploadFile', this.avatarUrl, this.avatarUrl.name);
+
+    let headers = new Headers();
+    headers.append('Accept', 'application/json');
+
     this.coachee.last().flatMap(
       (coachee: Coachee) => {
         console.log("submitCoacheeProfilUpdate, coachee obtained");
@@ -127,16 +106,55 @@ export class ProfileCoacheeComponent implements OnInit, AfterViewInit, OnDestroy
       }
     ).subscribe(
       (user: ApiUser) => {
-        console.log("coachee updated : ", user);
-        //refresh page
-        Materialize.toast('Votre profil a été modifié !', 3000, 'rounded');
-        this.getCoachee();
+        this.coachee.take(1).flatMap(
+          (coachee: Coachee) => {
+            console.log("Upload avatar");
+            let params = [coachee.id];
+            return this.authService.put(AuthService.PUT_COACHEE_PROFILE_PICT, params, formData, {headers: headers})
+              .map(res => res.json())
+              .catch(error => Observable.throw(error))
+          }
+        ).subscribe(
+          data => {
+            console.log('Upload avatar success', data);
+            console.log("coachee updated : ", user);
+            //refresh page
+            this.updateUserLoading = false;
+            Materialize.toast('Votre profil a été modifié !', 3000, 'rounded');
+            this.getCoachee();
+          }, error => {
+            console.log('Upload avatar error', error);
+            Materialize.toast('Impossible de modifier votre profil', 3000, 'rounded');
+          }
+        )
       },
       (error) => {
         console.log('coachee update, error', error);
-        //TODO display error
         Materialize.toast('Impossible de modifier votre profil', 3000, 'rounded');
       });
+  }
+
+  fileChange(event) {
+    let fileList: FileList = event.target.files;
+
+    console.log('fileChange, fileUrl : ', event.target.location);
+    console.log('fileChange, fileList : ', fileList);
+
+    if (fileList.length > 0) {
+      let file: File = fileList[0];
+
+      this.avatarUrl = file;
+
+      //Update form value
+      this.formCoachee.setValue({
+        firstName: this.formCoachee.value.firstName,
+        lastName: this.formCoachee.value.lastName,
+        avatar: file.name
+      });
+      // TODO display avatar preview
+
+      console.log('fileChange, file : ', file);
+    }
   }
 
   goToMeetings() {
