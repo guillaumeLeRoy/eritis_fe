@@ -26,6 +26,8 @@ export class WelcomeComponent implements OnInit {
   }
 
   ngOnInit() {
+    window.scrollTo(0, 0);
+
     this.contactForm = this.formBuilder.group({
       name: ['', Validators.compose([Validators.required])],
       mail: ['', Validators.compose([Validators.required])],

@@ -63,42 +63,49 @@
 
   <div *ngIf="status === 'owner'">
     <h4 class="black-text">Mettre à jour votre profil</h4>
+    <br>
 
     <form [formGroup]="formCoachee" (ngSubmit)="submitCoacheeProfilUpdate()">
       <div class="row">
-        <div class="col-xs-12 col-sm-6">
-          <label for="edit_name">Prénom</label>
-          <input id="edit_name" type="text" class="validate"
-                 formControlName="firstName"
-                 placeholder="Prénom">
-        </div>
+        <div class="col-lg-6">
+          <div class="row">
+            <div class="col-lg-12">
+              <label for="edit_name">Prénom</label>
+              <input id="edit_name" type="text" class="validate"
+                     formControlName="firstName"
+                     placeholder="Prénom">
+            </div>
 
-        <div class="col-xs-12 col-sm-6">
-          <label for="edit_surname">Nom</label>
-          <input id="edit_surname" type="text" class="validate"
-                 formControlName="lastName"
-                 placeholder="Nom">
-        </div>
-      </div>
-
-      <label>Photo de profil</label>
-      <div class="row avatar-container">
-        <div class="col-sm-12 col-lg-3 center avatar-preview-container">
-          <img [src]="formCoachee.value.avatar" alt="profile image"
-               id="avatar-preview"
-               class="circle responsive-img z-depth-2">
-        </div>
-
-        <div class="col-sm-12 col-lg-9 input-file-container">
-          <input id="edit_avatar_url" type="text" class="validate"
-                 formControlName="avatar"
-                 placeholder="http://...">
-          <div>
-            <button class="btn-basic btn-blue btn-plain btn-small file-upload-buton">Choisir un fichier</button>
-            <input type="file" id="upload-avatar-input" (change)="fileChange($event)" placeholder="Upload file" accept=".jpg,.png">
+            <div class="col-lg-12">
+              <label for="edit_surname">Nom</label>
+              <input id="edit_surname" type="text" class="validate"
+                     formControlName="lastName"
+                     placeholder="Nom">
+            </div>
           </div>
         </div>
 
+        <div class="col-lg-1"></div>
+
+        <div class="col-lg-5">
+          <label>Photo de profil</label>
+          <div class="row avatar-container">
+            <img [src]="formCoachee.value.avatar" alt="profile image"
+                 id="avatar-preview"
+                 class="circle responsive-img z-depth-2">
+
+            <!--<input id="edit_avatar_url" type="text" class="validate"-->
+            <!--formControlName="avatar"-->
+            <!--placeholder="http://...">-->
+            <div class="input-file-container">
+              <button class="btn-basic btn-blue btn-plain btn-small file-upload-buton">Choisir un fichier</button>
+              <input type="file"
+                     id="upload-avatar-input"
+                     accept=".jpg,.png"
+                     (change)="filePreview($event)">
+            </div>
+          </div>
+        </div>
       </div>
 
       <div class="text-center">

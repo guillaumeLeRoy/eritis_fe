@@ -10,6 +10,7 @@ import {Coachee} from "../../../model/Coachee";
 import {HR} from "app/model/HR";
 import {Headers} from "@angular/http"
 import {Subscription} from "rxjs/Subscription";
+import {runInThisContext} from "vm";
 
 declare var $: any;
 declare var Materialize: any;
@@ -38,6 +39,8 @@ export class ProfileCoachComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   ngOnInit() {
+    window.scrollTo(0, 0);
+
     this.formCoach = this.formBuilder.group({
       firstName: ['', Validators.required],
       lastName: ['', Validators.required],
@@ -105,8 +108,8 @@ export class ProfileCoachComponent implements OnInit, AfterViewInit, OnDestroy {
         return this.authService.updateCoachForId(coach.id,
           this.formCoach.value.firstName,
           this.formCoach.value.lastName,
-          this.formCoach.value.avatar,
-          this.formCoach.value.description);
+          this.formCoach.value.description,
+          this.formCoach.value.avatar);
       }
     ).subscribe(
       (user: ApiUser) => {
@@ -114,9 +117,11 @@ export class ProfileCoachComponent implements OnInit, AfterViewInit, OnDestroy {
           (coach: Coach) => {
             console.log("Upload avatar");
             let params = [coach.id];
-            return this.authService.put(AuthService.PUT_COACH_PROFILE_PICT, params, formData, {headers: headers})
-              .map(res => res.json())
-              .catch(error => Observable.throw(error))
+            if (this.avatarUrl != null) {
+              return this.authService.put(AuthService.PUT_COACH_PROFILE_PICT, params, formData, {headers: headers})
+                .map(res => res.json())
+                .catch(error => Observable.throw(error))
+            }
           }
         ).subscribe(
           data => {
@@ -138,37 +143,26 @@ export class ProfileCoachComponent implements OnInit, AfterViewInit, OnDestroy {
       });
   }
 
-  fileChange(event) {
-    let fileList: FileList = event.target.files;
+  filePreview(event: any) {
+    if (event.target.files && event.target.files[0]) {
+      this.avatarUrl = event.target.files[0];
+      console.log("filePreview", this.avatarUrl);
 
-    console.log('fileChange, fileUrl : ', event.target.location);
-    console.log('fileChange, fileList : ', fileList);
+      let reader = new FileReader();
 
-    if (fileList.length > 0) {
-      let file: File = fileList[0];
+      reader.onload = function (e: any) {
+        $('#avatar-preview').attr('src', e.target.result);
+      }
 
-      this.avatarUrl = file;
-
-      //Update form value
-      this.formCoach.setValue({
-        firstName: this.formCoach.value.firstName,
-        lastName: this.formCoach.value.lastName,
-        description: this.formCoach.value.description,
-        avatar: file.name
-      });
-      // TODO display avatar preview
-
-      console.log('fileChange, file : ', file);
+      reader.readAsDataURL(event.target.files[0]);
     }
   }
 
   goToMeetings() {
-    window.scrollTo(0, 0);
     this.router.navigate(['/meetings']);
   }
 
   goToCoachsAdmin() {
-    window.scrollTo(0, 0);
     this.router.navigate(['admin/coachs-list']);
   }
 

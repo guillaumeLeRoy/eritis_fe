@@ -37,6 +37,8 @@ export class ProfileCoacheeComponent implements OnInit, AfterViewInit, OnDestroy
   }
 
   ngOnInit() {
+    window.scrollTo(0, 0);
+
     this.formCoachee = this.formBuilder.group({
       firstName: ['', Validators.required],
       lastName: ['', Validators.required],
@@ -110,9 +112,12 @@ export class ProfileCoacheeComponent implements OnInit, AfterViewInit, OnDestroy
           (coachee: Coachee) => {
             console.log("Upload avatar");
             let params = [coachee.id];
-            return this.authService.put(AuthService.PUT_COACHEE_PROFILE_PICT, params, formData, {headers: headers})
-              .map(res => res.json())
-              .catch(error => Observable.throw(error))
+
+            if (this.avatarUrl != null) {
+              return this.authService.put(AuthService.PUT_COACHEE_PROFILE_PICT, params, formData, {headers: headers})
+                .map(res => res.json())
+                .catch(error => Observable.throw(error))
+            }
           }
         ).subscribe(
           data => {
@@ -134,26 +139,18 @@ export class ProfileCoacheeComponent implements OnInit, AfterViewInit, OnDestroy
       });
   }
 
-  fileChange(event) {
-    let fileList: FileList = event.target.files;
+  filePreview(event: any) {
+    if (event.target.files && event.target.files[0]) {
+      this.avatarUrl = event.target.files[0];
+      console.log("filePreview", this.avatarUrl);
 
-    console.log('fileChange, fileUrl : ', event.target.location);
-    console.log('fileChange, fileList : ', fileList);
+      let reader = new FileReader();
 
-    if (fileList.length > 0) {
-      let file: File = fileList[0];
+      reader.onload = function (e: any) {
+        $('#avatar-preview').attr('src', e.target.result);
+      }
 
-      this.avatarUrl = file;
-
-      //Update form value
-      this.formCoachee.setValue({
-        firstName: this.formCoachee.value.firstName,
-        lastName: this.formCoachee.value.lastName,
-        avatar: file.name
-      });
-      // TODO display avatar preview
-
-      console.log('fileChange, file : ', file);
+      reader.readAsDataURL(event.target.files[0]);
     }
   }
 
