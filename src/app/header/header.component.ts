@@ -187,7 +187,10 @@ export class HeaderComponent implements OnInit, OnDestroy {
   }
 
   isSigningUp(): boolean {
-    return this.router.url === '/signup_coachee' || this.router.url === '/signup_coach' || this.router.url === '/signup_rh';
+    let signupCoach = new RegExp('/signup_coach');
+    let signupCoachee = new RegExp('/signup_coachee');
+    let signupRh = new RegExp('/signup_rh');
+    return signupCoach.test(this.router.url) || signupCoachee.test(this.router.url) || signupRh.test(this.router.url);
   }
 
   goToCoachs() {
