@@ -293,7 +293,7 @@ export class MeetingItemCoachComponent implements OnInit, AfterViewInit {
 
   goToCoacheeProfile(coacheeId: String) {
     window.scrollTo(0, 0);
-    this.router.navigate(['/profile_coachee', 'visiter', coacheeId]);
+    this.router.navigate(['/profile_coachee', coacheeId]);
   }
 
   onValidateDateClick() {

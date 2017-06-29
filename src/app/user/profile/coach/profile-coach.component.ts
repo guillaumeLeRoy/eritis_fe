@@ -1,4 +1,4 @@
-import {AfterViewInit, ChangeDetectorRef, Component, Input, OnDestroy, OnInit} from "@angular/core";
+import {AfterViewInit, ChangeDetectorRef, Component, Input, OnDestroy, OnInit, Output, EventEmitter} from "@angular/core";
 import {Observable} from "rxjs";
 import {ActivatedRoute, Router} from "@angular/router";
 import {Coach} from "../../../model/Coach";
@@ -10,7 +10,6 @@ import {Coachee} from "../../../model/Coachee";
 import {HR} from "app/model/HR";
 import {Headers} from "@angular/http"
 import {Subscription} from "rxjs/Subscription";
-import {runInThisContext} from "vm";
 
 declare var $: any;
 declare var Materialize: any;
@@ -22,10 +21,12 @@ declare var Materialize: any;
 })
 
 export class ProfileCoachComponent implements OnInit, AfterViewInit, OnDestroy {
+  zone: any;
 
   private user: Observable<Coach | Coachee | HR>;
   private coach: Observable<Coach>;
-  private status = 'visiter';
+  private isOwner = false;
+  private isAdmin = false;
   private subscriptionGetCoach: Subscription;
   private subscriptionGetUser: Subscription;
 
@@ -48,15 +49,22 @@ export class ProfileCoachComponent implements OnInit, AfterViewInit, OnDestroy {
       description: ['', Validators.required],
     });
 
-    this.getCoach();
-    this.getUser();
+    // this.getUser();
+    this.getCoachAndUser();
   }
 
-  getCoach() {
+  ngAfterViewInit(): void {
+    console.log("afterViewInit");
+    // this.isOwner = (user instanceof Coach) && (coach.email === user.email);
+  }
+
+  private getCoachAndUser() {
+    console.log("getCoach");
+
     this.subscriptionGetCoach = this.route.params.subscribe(
       (params: any) => {
         let coachId = params['id'];
-        this.status = params['status'];
+        this.isAdmin = params['admin'];
 
         this.coachService.getCoachForId(coachId).subscribe(
           (coach: Coach) => {
@@ -64,23 +72,36 @@ export class ProfileCoachComponent implements OnInit, AfterViewInit, OnDestroy {
 
             this.setFormValues(coach);
             this.coach = Observable.of(coach);
+            console.log("getUser");
+            let user = this.authService.getConnectedUser();
+            this.user = Observable.of(user);
+            this.isOwner = (user instanceof Coach) && (coach.email === user.email);
             this.cd.detectChanges();
+
+          }, (error) => {
+            console.log('getCoach, error', error);
           }
         );
       }
     )
   }
 
-  getUser() {
-    this.subscriptionGetUser = this.authService.getConnectedUserObservable().subscribe(
-      (user: Coach | Coachee | HR) => {
-        console.log('getConnectedUser : ' + user);
-
-        this.user = Observable.of(user);
-        this.cd.detectChanges()
-      }
-    );
-  }
+  // private getUser() {
+  //   console.log("getUser");
+  //
+  //   // this.subscriptionGetUser = this.authService.getConnectedUserObservable().subscribe(
+  //   //   (user: Coach | Coachee | HR) => {
+  //   //     console.log('gotUser : ' + user);
+  //   //
+  //   //     this.user = Observable.of(user);
+  //   //     this.cd.detectChanges()
+  //   //   }, (error) => {
+  //   //     console.log('getUser, error', error);
+  //   //   }
+  //   // );
+  //
+  //   this.user = Observable.of(this.authService.getConnectedUser());
+  // }
 
   setFormValues(coach: Coach) {
     this.formCoach.setValue({
@@ -117,6 +138,7 @@ export class ProfileCoachComponent implements OnInit, AfterViewInit, OnDestroy {
           (coach: Coach) => {
             console.log("Upload avatar");
             let params = [coach.id];
+
             if (this.avatarUrl != null) {
               return this.authService.put(AuthService.PUT_COACH_PROFILE_PICT, params, formData, {headers: headers})
                 .map(res => res.json())
@@ -127,10 +149,12 @@ export class ProfileCoachComponent implements OnInit, AfterViewInit, OnDestroy {
           data => {
             console.log('Upload avatar success', data);
             console.log("coach updated : ", user);
-            //refresh page
             this.updateUserLoading = false;
             Materialize.toast('Votre profil a été modifié !', 3000, 'rounded');
-            this.getCoach();
+            //refresh page
+            setTimeout('', 1000);
+            window.location.reload();
+
           }, error => {
             console.log('Upload avatar error', error);
             Materialize.toast('Impossible de modifier votre profil', 3000, 'rounded');
@@ -164,10 +188,6 @@ export class ProfileCoachComponent implements OnInit, AfterViewInit, OnDestroy {
 
   goToCoachsAdmin() {
     this.router.navigate(['admin/coachs-list']);
-  }
-
-  ngAfterViewInit(): void {
-    console.log("afterViewInit");
   }
 
   ngOnDestroy(): void {

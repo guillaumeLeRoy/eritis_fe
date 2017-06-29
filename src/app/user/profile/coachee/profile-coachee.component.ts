@@ -23,7 +23,8 @@ export class ProfileCoacheeComponent implements OnInit, AfterViewInit, OnDestroy
 
   private user: Observable<Coach | Coachee | HR>;
   private coachee: Observable<Coachee>;
-  private status = 'visiter';
+  private isOwner = false;
+  private isAdmin = false;
   private subscriptionGetCoachee: Subscription;
   private subscriptionGetUser: Subscription;
 
@@ -45,15 +46,15 @@ export class ProfileCoacheeComponent implements OnInit, AfterViewInit, OnDestroy
       avatar: ['', Validators.required]
     });
 
-    this.getCoachee();
-    this.getUser();
+    this.getCoacheeAndUser();
+    // this.getUser();
   }
 
-  getCoachee() {
+  getCoacheeAndUser() {
     this.subscriptionGetCoachee = this.route.params.subscribe(
       (params: any) => {
         let coacheeId = params['id'];
-        this.status = params['status'];
+        this.isAdmin = params['admin'];
 
         this.coachService.getCoacheeForId(coacheeId).subscribe(
           (coachee: Coachee) => {
@@ -61,6 +62,10 @@ export class ProfileCoacheeComponent implements OnInit, AfterViewInit, OnDestroy
 
             this.setFormValues(coachee);
             this.coachee = Observable.of(coachee);
+            console.log("getUser");
+            let user = this.authService.getConnectedUser();
+            this.user = Observable.of(user);
+            this.isOwner = (user instanceof Coachee) && (coachee.email === user.email);
             this.cd.detectChanges();
           }
         );
@@ -123,10 +128,11 @@ export class ProfileCoacheeComponent implements OnInit, AfterViewInit, OnDestroy
           data => {
             console.log('Upload avatar success', data);
             console.log("coachee updated : ", user);
-            //refresh page
             this.updateUserLoading = false;
             Materialize.toast('Votre profil a été modifié !', 3000, 'rounded');
-            this.getCoachee();
+            //refresh page
+            setTimeout('', 1000);
+            window.location.reload();
           }, error => {
             console.log('Upload avatar error', error);
             Materialize.toast('Impossible de modifier votre profil', 3000, 'rounded');

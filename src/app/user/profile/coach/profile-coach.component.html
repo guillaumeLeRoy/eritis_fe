@@ -44,11 +44,11 @@
   <h4 class="text-right italic">"{{ (coach | async)?.description }}"</h4>
   <br>
 
-  <div *ngIf="status === 'visiter' || status === 'admin'">
-    <div class="center" *ngIf="status === 'visiter'">
+  <div *ngIf="!isOwner">
+    <div class="center" *ngIf="!isAdmin">
       <button class="btn-basic btn-plain btn-blue btn-small center" (click)="goToMeetings()">Retourner au tableau de bord</button>
     </div>
-    <div class="center" *ngIf="status === 'admin'">
+    <div class="center" *ngIf="isAdmin">
       <button class="btn-basic btn-plain btn-blue btn-small center" (click)="goToCoachsAdmin()">Retourner aux coachs</button>
     </div>
     <br>
@@ -66,7 +66,7 @@
     <!--</form>-->
   </div>
 
-  <div *ngIf="status === 'owner'">
+  <div *ngIf="isOwner">
     <h4 class="black-text">Mettre à jour votre profil</h4>
     <br>
 

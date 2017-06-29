@@ -140,9 +140,9 @@ export class HeaderComponent implements OnInit, OnDestroy {
   goToProfile() {
     window.scrollTo(0, 0);
     if (this.mUser instanceof Coach) {
-      this.router.navigate(['/profile_coach', 'owner', this.mUser.id]);
+      this.router.navigate(['/profile_coach', this.mUser.id]);
     } else if (this.mUser instanceof Coachee) {
-      this.router.navigate(['/profile_coachee', 'owner', this.mUser.id]);
+      this.router.navigate(['/profile_coachee', this.mUser.id]);
     } else if (this.mUser instanceof HR) {
       this.router.navigate(['/profile_rh']);
     }
