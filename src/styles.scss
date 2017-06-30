@@ -196,6 +196,8 @@ input[type="password"],
 input[type="password"]:focus:not([readonly]),
 input[type="email"],
 input[type="email"]:focus:not([readonly]),
+input[type="url"],
+input[type="url"]:focus:not([readonly]),
 textarea,
 textarea:focus:not([readonly]){
   border: none !important;

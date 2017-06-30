@@ -48,6 +48,7 @@ import { MeetingListRhComponent } from './meeting/meeting-list/rh/meeting-list-r
 import { CoacheeItemComponent } from './user/coachee-item/coachee-item.component';
 import { RhItemComponent } from './user/rh-item/rh-item.component';
 import { RegisterCoachComponent } from './login/register/register-coach/register-coach.component';
+import { CodeDeontologieComponent } from './login/register/register-coach/code-deontologie/code-deontologie.component';
 
 @NgModule({
   declarations: [
@@ -81,7 +82,8 @@ import { RegisterCoachComponent } from './login/register/register-coach/register
     MeetingListRhComponent,
     CoacheeItemComponent,
     RhItemComponent,
-    RegisterCoachComponent
+    RegisterCoachComponent,
+    CodeDeontologieComponent
   ],
   imports: [
     BrowserAnimationsModule,
