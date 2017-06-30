@@ -1,3 +1,16 @@
+<header *ngIf="isSigningUp()" class="page-topbar user-connected">
+  <div class="navbar navbar-fixed">
+    <nav>
+      <div class="navbar-color navbar-fixed z-depth-2">
+        <div class="col s12">
+          <a (click)="goToHome()" class="brand-logo center"><img
+            src="assets/img/logo-eritis-new.png" alt="Eritis"></a>
+        </div>
+      </div>
+    </nav>
+  </div>
+</header>
+
 <header id="header" class="page-topbar"
         [class.user-connected]="(isAuthenticated | async) || (isAdminMode | async )"
         [hidden]="isSigningUp()">
