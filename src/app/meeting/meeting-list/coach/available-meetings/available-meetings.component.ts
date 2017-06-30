@@ -1,13 +1,13 @@
 import {ChangeDetectorRef, Component, OnInit} from "@angular/core";
 import {Observable} from "rxjs/Observable";
-import {Meeting} from "../../../model/Meeting";
-import {MeetingsService} from "../../../service/meetings.service";
-import {AuthService} from "../../../service/auth.service";
+import {Meeting} from '../../../../model/Meeting';
+import {MeetingsService} from '../../../../service/meetings.service';
+import {AuthService} from "../../../../service/auth.service";
 import {Subscription} from "rxjs/Subscription";
-import {Coach} from "../../../model/Coach";
-import {ApiUser} from "../../../model/ApiUser";
+import {Coach} from "../../../../model/Coach";
+import {ApiUser} from "../../../../model/ApiUser";
 import {Router} from "@angular/router";
-import {MeetingDate} from "../../../model/MeetingDate";
+import {MeetingDate} from "../../../../model/MeetingDate";
 
 declare var $: any;
 declare var Materialize: any;

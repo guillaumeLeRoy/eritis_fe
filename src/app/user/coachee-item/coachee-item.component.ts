@@ -21,7 +21,7 @@ export class CoacheeItemComponent implements OnInit {
 
   goToCoacheeProfile(coacheeId: String) {
     window.scrollTo(0, 0);
-    this.router.navigate(['/profile_coachee', 'admin', coacheeId]);
+    this.router.navigate(['/profile_coachee', '1', coacheeId]);
   }
 
   printDateString(date: string) {

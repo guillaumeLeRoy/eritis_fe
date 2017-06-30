@@ -3,7 +3,7 @@ import {Router} from "@angular/router";
 import {Injectable} from "@angular/core";
 import {BehaviorSubject, Observable, Subject} from "rxjs";
 import {PromiseObservable} from "rxjs/observable/PromiseObservable";
-import {Headers, Http, Response, URLSearchParams} from "@angular/http";
+import {Headers, Http, RequestOptionsArgs, Response, URLSearchParams} from "@angular/http";
 import {ApiUser} from "../model/ApiUser";
 import {environment} from "../../environments/environment";
 import {FirebaseService} from "./firebase.service";
@@ -35,6 +35,7 @@ export class AuthService {
   public static GET_COACHEE_FOR_ID = "/v1/coachees/:id";
   public static GET_COACHEE_NOTIFICATIONS = "/v1/coachees/:id/notifications";
   public static PUT_COACHEE_NOTIFICATIONS_READ = "/v1/coachees/:id/notifications/read";
+  public static PUT_COACHEE_PROFILE_PICT = "/v1/coachees/:id/profile_picture";
 
   /* coach */
   public static UPDATE_COACH = "/v1/coachs/:id";
@@ -43,6 +44,7 @@ export class AuthService {
   public static GET_COACH_FOR_ID = "/v1/coachs/:id";
   public static GET_COACH_NOTIFICATIONS = "/v1/coachs/:id/notifications";
   public static PUT_COACH_NOTIFICATIONS_READ = "/v1/coachs/:id/notifications/read";
+  public static PUT_COACH_PROFILE_PICT = "/v1/coachs/:id/profile_picture";
 
   /* HR */
   public static POST_SIGN_UP_RH = "/v1/rhs";
@@ -62,21 +64,21 @@ export class AuthService {
   public static ADMIN_GET_RHS = "/v1/admins/rhs";
 
   /*Meeting*/
-  public static POST_MEETING = "/meeting";
-  public static DELETE_MEETING = "/meeting/:meetingId";
-  public static GET_MEETING_REVIEWS = "/meeting/:meetingId/reviews";
+  public static POST_MEETING = "/v1/meetings";
+  public static DELETE_MEETING = "/v1/meetings/:meetingId";
+  public static GET_MEETING_REVIEWS = "/v1/meetings/:meetingId/reviews";
   public static PUT_MEETING_REVIEW = "/v1/meetings/:meetingId/reviews";//add or replace meeting review
-  public static DELETE_MEETING_REVIEW = "/meeting/reviews/:reviewId";//delete review
+  public static DELETE_MEETING_REVIEW = "/v1/meetings/reviews/:reviewId";//delete review
   public static CLOSE_MEETING = "/v1/meetings/:meetingId/close";// close meeting
-  public static GET_MEETINGS_FOR_COACHEE_ID = "/meetings/coachee/:coacheeId";
-  public static GET_MEETINGS_FOR_COACH_ID = "/meetings/coach/:coachId";
-  public static POST_MEETING_POTENTIAL_DATE = "/meeting/:meetingId/potential";
-  public static GET_MEETING_POTENTIAL_DATES = "/meeting/:meetingId/potentials";
-  public static PUT_POTENTIAL_DATE_TO_MEETING = "/meeting/potential/:potentialId";//update potential date
-  public static DELETE_POTENTIAL_DATE = "/meeting/potentials/:potentialId";//delete potential date
-  public static PUT_FINAL_DATE_TO_MEETING = "/meeting/:meetingId/date/:potentialId";//set the potential date as the meeting selected date
+  public static GET_MEETINGS_FOR_COACHEE_ID = "/v1/meetings/coachees/:coacheeId";
+  public static GET_MEETINGS_FOR_COACH_ID = "/v1/meetings/coachs/:coachId";
+  public static POST_MEETING_POTENTIAL_DATE = "/v1/meetings/:meetingId/potentials";
+  public static GET_MEETING_POTENTIAL_DATES = "/v1/meetings/:meetingId/potentials";
+  public static PUT_POTENTIAL_DATE_TO_MEETING = "/v1/meetings/potentials/:potentialId";//update potential date
+  public static DELETE_POTENTIAL_DATE = "/v1/meetings/potentials/:potentialId";//delete potential date
+  public static PUT_FINAL_DATE_TO_MEETING = "/v1/meetings/:meetingId/dates/:potentialId";//set the potential date as the meeting selected date
   public static GET_AVAILABLE_MEETINGS = "/v1/meetings";//get available meetings ( meetings with NO coach associated )
-  public static PUT_COACH_TO_MEETING = "/v1/meeting/:meetingId/coach/:coachId";//associate coach with meeting
+  public static PUT_COACH_TO_MEETING = "/v1/meetings/:meetingId/coachs/:coachId";//associate coach with meeting
 
   private onAuthStateChangedCalled = false;
   // private user: User
@@ -169,11 +171,18 @@ export class AuthService {
     return this.isUserAuth.asObservable();
   }
 
-  post(path: string, params: string[], body: any): Observable<Response> {
+  post(path: string, params: string[], body: any, options?: RequestOptionsArgs): Observable<Response> {
     let method = this.getConnectedApiUser().flatMap(
       (firebaseUser: ApiUser) => {
         return this.getHeader(firebaseUser).flatMap(
           (headers: Headers) => {
+
+            for (let headerKey of options.headers.keys()) {
+              console.log('post, options headerKey : ', headerKey);
+              console.log('post, options value : ', options.headers.get(headerKey));
+
+              headers.append(headerKey, options.headers.get(headerKey));
+            }
             return this.httpService.post(this.generatePath(path, params), body, {headers: headers})
           }
         );
@@ -186,11 +195,20 @@ export class AuthService {
     return this.httpService.post(this.generatePath(path, params), body)
   }
 
-  put(path: string, params: string[], body: any): Observable<Response> {
+  put(path: string, params: string[], body: any, options?: RequestOptionsArgs): Observable<Response> {
     let method = this.getConnectedApiUser().flatMap(
       (firebaseUser: ApiUser) => {
         return this.getHeader(firebaseUser).flatMap(
           (headers: Headers) => {
+
+            if (options != null)
+              for (let headerKey of options.headers.keys()) {
+                console.log('put, options headerKey : ', headerKey);
+                console.log('put, options value : ', options.headers.get(headerKey));
+
+                headers.append(headerKey, options.headers.get(headerKey));
+              }
+
             return this.httpService.put(this.generatePath(path, params), body, {headers: headers})
           }
         );
@@ -576,7 +594,7 @@ export class AuthService {
     let params = [id];
     return this.put(AuthService.UPDATE_COACHEE, params, body).map(
       (response: Response) => {
-        //return thing s -e glrs.onUserResponse(response);
+        //return this.onUserResponse(response);
         return null;
       });
   }

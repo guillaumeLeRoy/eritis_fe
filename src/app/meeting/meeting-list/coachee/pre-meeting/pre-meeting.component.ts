@@ -1,7 +1,7 @@
 import {Component, EventEmitter, Input, OnInit, Output} from "@angular/core";
 
-import {MeetingReview} from "../model/MeetingReview";
-import {MeetingsService} from "../service/meetings.service";
+import {MeetingReview} from "../../../../model/MeetingReview";
+import {MeetingsService} from "../../../../service/meetings.service";
 
 @Component({
   selector: 'er-pre-meeting',

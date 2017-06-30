@@ -1,18 +1,18 @@
 import {ChangeDetectorRef, Component, EventEmitter, Input, OnInit, Output} from "@angular/core";
-import {Meeting} from "../../../model/Meeting";
+import {Meeting} from "../../../../model/Meeting";
 import {Observable} from "rxjs";
-import {Coach} from "../../../model/Coach";
-import {MeetingReview} from "../../../model/MeetingReview";
-import {MeetingDate} from "../../../model/MeetingDate";
+import {Coach} from "../../../../model/Coach";
+import {MeetingReview} from "../../../../model/MeetingReview";
+import {MeetingDate} from "../../../../model/MeetingDate";
 import {Router} from "@angular/router";
-import {MeetingsService} from "../../../service/meetings.service";
+import {MeetingsService} from "../../../../service/meetings.service";
 
 declare var $: any;
 declare var Materialize: any;
 
 @Component({
   selector: 'rb-meeting-item-coachee',
-  templateUrl: 'meeting-item-coachee.component.html',
+  templateUrl: './meeting-item-coachee.component.html',
   styleUrls: ['./meeting-item-coachee.component.scss'],
 })
 export class MeetingItemCoacheeComponent implements OnInit {
@@ -255,7 +255,7 @@ export class MeetingItemCoacheeComponent implements OnInit {
 
   goToCoachProfile(coachId: String) {
     window.scrollTo(0, 0);
-    this.router.navigate(['/profile_coach', 'visiter', coachId]);
+    this.router.navigate(['/profile_coach', coachId]);
   }
 
   rateSession() {

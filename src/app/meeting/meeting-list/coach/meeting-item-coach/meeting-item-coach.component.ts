@@ -1,13 +1,13 @@
 import {AfterViewInit, ChangeDetectorRef, Component, EventEmitter, Input, OnInit, Output} from "@angular/core";
-import {Meeting} from "../../../model/Meeting";
+import {Meeting} from "../../../../model/Meeting";
 import {Observable} from "rxjs";
-import {MeetingReview} from "../../../model/MeetingReview";
-import {Coachee} from "../../../model/Coachee";
-import {MeetingDate} from "../../../model/MeetingDate";
-import {MeetingsService} from "../../../service/meetings.service";
-import {Coach} from "../../../model/Coach";
-import {AuthService} from "../../../service/auth.service";
-import {ApiUser} from "../../../model/ApiUser";
+import {MeetingReview} from "../../../../model/MeetingReview";
+import {Coachee} from "../../../../model/Coachee";
+import {MeetingDate} from "../../../../model/MeetingDate";
+import {MeetingsService} from "../../../../service/meetings.service";
+import {Coach} from "../../../../model/Coach";
+import {AuthService} from "../../../../service/auth.service";
+import {ApiUser} from "../../../../model/ApiUser";
 import {Subscription} from "rxjs/Subscription";
 import {Router} from "@angular/router";
 
@@ -16,7 +16,7 @@ declare var Materialize: any;
 
 @Component({
   selector: 'rb-meeting-item-coach',
-  templateUrl: 'meeting-item-coach.component.html',
+  templateUrl: './meeting-item-coach.component.html',
   styleUrls: ['./meeting-item-coach.component.scss']
 })
 export class MeetingItemCoachComponent implements OnInit, AfterViewInit {
@@ -293,7 +293,7 @@ export class MeetingItemCoachComponent implements OnInit, AfterViewInit {
 
   goToCoacheeProfile(coacheeId: String) {
     window.scrollTo(0, 0);
-    this.router.navigate(['/profile_coachee', 'visiter', coacheeId]);
+    this.router.navigate(['/profile_coachee', coacheeId]);
   }
 
   onValidateDateClick() {

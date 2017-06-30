@@ -1,12 +1,12 @@
 import {AfterViewInit, ChangeDetectorRef, Component, EventEmitter, Input, OnInit, Output} from "@angular/core";
-import {Coachee} from "../../../model/Coachee";
-import {PotentialCoachee} from "../../../model/PotentialCoachee";
-import {CoachCoacheeService} from "../../../service/coach_coachee.service";
-import {Meeting} from "../../../model/Meeting";
+import {Coachee} from "../../../../model/Coachee";
+import {PotentialCoachee} from "../../../../model/PotentialCoachee";
+import {CoachCoacheeService} from "../../../../service/coach_coachee.service";
+import {Meeting} from "../../../../model/Meeting";
 import {Observable} from "rxjs/Observable";
-import {MeetingsService} from "../../../service/meetings.service";
+import {MeetingsService} from "../../../../service/meetings.service";
 import {RhUsageRate} from "app/model/UsageRate";
-import {MeetingReview} from "../../../model/MeetingReview";
+import {MeetingReview} from "../../../../model/MeetingReview";
 
 
 declare var $: any;
