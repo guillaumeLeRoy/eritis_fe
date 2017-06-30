@@ -64,21 +64,21 @@ export class AuthService {
   public static ADMIN_GET_RHS = "/v1/admins/rhs";
 
   /*Meeting*/
-  public static POST_MEETING = "/meeting";
-  public static DELETE_MEETING = "/meeting/:meetingId";
-  public static GET_MEETING_REVIEWS = "/meeting/:meetingId/reviews";
+  public static POST_MEETING = "/v1/meetings";
+  public static DELETE_MEETING = "/v1/meetings/:meetingId";
+  public static GET_MEETING_REVIEWS = "/v1/meetings/:meetingId/reviews";
   public static PUT_MEETING_REVIEW = "/v1/meetings/:meetingId/reviews";//add or replace meeting review
-  public static DELETE_MEETING_REVIEW = "/meeting/reviews/:reviewId";//delete review
+  public static DELETE_MEETING_REVIEW = "/v1/meetings/reviews/:reviewId";//delete review
   public static CLOSE_MEETING = "/v1/meetings/:meetingId/close";// close meeting
-  public static GET_MEETINGS_FOR_COACHEE_ID = "/meetings/coachee/:coacheeId";
-  public static GET_MEETINGS_FOR_COACH_ID = "/meetings/coach/:coachId";
-  public static POST_MEETING_POTENTIAL_DATE = "/meeting/:meetingId/potential";
-  public static GET_MEETING_POTENTIAL_DATES = "/meeting/:meetingId/potentials";
-  public static PUT_POTENTIAL_DATE_TO_MEETING = "/meeting/potential/:potentialId";//update potential date
-  public static DELETE_POTENTIAL_DATE = "/meeting/potentials/:potentialId";//delete potential date
-  public static PUT_FINAL_DATE_TO_MEETING = "/meeting/:meetingId/date/:potentialId";//set the potential date as the meeting selected date
+  public static GET_MEETINGS_FOR_COACHEE_ID = "/v1/meetings/coachees/:coacheeId";
+  public static GET_MEETINGS_FOR_COACH_ID = "/v1/meetings/coachs/:coachId";
+  public static POST_MEETING_POTENTIAL_DATE = "/v1/meetings/:meetingId/potentials";
+  public static GET_MEETING_POTENTIAL_DATES = "/v1/meetings/:meetingId/potentials";
+  public static PUT_POTENTIAL_DATE_TO_MEETING = "/v1/meetings/potentials/:potentialId";//update potential date
+  public static DELETE_POTENTIAL_DATE = "/v1/meetings/potentials/:potentialId";//delete potential date
+  public static PUT_FINAL_DATE_TO_MEETING = "/v1/meetings/:meetingId/dates/:potentialId";//set the potential date as the meeting selected date
   public static GET_AVAILABLE_MEETINGS = "/v1/meetings";//get available meetings ( meetings with NO coach associated )
-  public static PUT_COACH_TO_MEETING = "/v1/meeting/:meetingId/coach/:coachId";//associate coach with meeting
+  public static PUT_COACH_TO_MEETING = "/v1/meetings/:meetingId/coachs/:coachId";//associate coach with meeting
 
   private onAuthStateChangedCalled = false;
   // private user: User
