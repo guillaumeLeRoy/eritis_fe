@@ -1,4 +1,4 @@
-import {AfterViewInit, ChangeDetectorRef, Component, OnDestroy, OnInit} from "@angular/core";
+import {AfterViewInit, ChangeDetectorRef, Component, Input, OnDestroy, OnInit} from "@angular/core";
 import {Observable} from "rxjs";
 import {Coachee} from "../../../model/Coachee";
 import {AuthService} from "../../../service/auth.service";
@@ -8,6 +8,7 @@ import {Coach} from "../../../model/Coach";
 import {ActivatedRoute, Router} from "@angular/router";
 import {CoachCoacheeService} from "../../../service/coach_coachee.service";
 import {HR} from "../../../model/HR";
+import {Headers} from "@angular/http";
 import {Subscription} from "rxjs/Subscription";
 
 declare var $: any;
@@ -22,31 +23,38 @@ export class ProfileCoacheeComponent implements OnInit, AfterViewInit, OnDestroy
 
   private user: Observable<Coach | Coachee | HR>;
   private coachee: Observable<Coachee>;
-  private status = 'visiter';
+  private isOwner = false;
+  private isAdmin = false;
   private subscriptionGetCoachee: Subscription;
   private subscriptionGetUser: Subscription;
 
   private formCoachee: FormGroup;
 
+  private avatarUrl: File;
+
+  private updateUserLoading = false;
+
   constructor(private authService: AuthService, private router: Router, private cd: ChangeDetectorRef, private formBuilder: FormBuilder, private coachService: CoachCoacheeService, private route: ActivatedRoute) {
   }
 
   ngOnInit() {
+    window.scrollTo(0, 0);
+
     this.formCoachee = this.formBuilder.group({
       firstName: ['', Validators.required],
       lastName: ['', Validators.required],
       avatar: ['', Validators.required]
     });
 
-    this.getCoachee();
-    this.getUser();
+    this.getCoacheeAndUser();
+    // this.getUser();
   }
 
-  getCoachee() {
+  getCoacheeAndUser() {
     this.subscriptionGetCoachee = this.route.params.subscribe(
       (params: any) => {
         let coacheeId = params['id'];
-        this.status = params['status'];
+        this.isAdmin = params['admin'];
 
         this.coachService.getCoacheeForId(coacheeId).subscribe(
           (coachee: Coachee) => {
@@ -54,6 +62,10 @@ export class ProfileCoacheeComponent implements OnInit, AfterViewInit, OnDestroy
 
             this.setFormValues(coachee);
             this.coachee = Observable.of(coachee);
+            console.log("getUser");
+            let user = this.authService.getConnectedUser();
+            this.user = Observable.of(user);
+            this.isOwner = (user instanceof Coachee) && (coachee.email === user.email);
             this.cd.detectChanges();
           }
         );
@@ -82,6 +94,15 @@ export class ProfileCoacheeComponent implements OnInit, AfterViewInit, OnDestroy
 
   submitCoacheeProfilUpdate() {
     console.log("submitCoacheeProfilUpdate");
+
+    this.updateUserLoading = true;
+
+    let formData: FormData = new FormData();
+    formData.append('uploadFile', this.avatarUrl, this.avatarUrl.name);
+
+    let headers = new Headers();
+    headers.append('Accept', 'application/json');
+
     this.coachee.last().flatMap(
       (coachee: Coachee) => {
         console.log("submitCoacheeProfilUpdate, coachee obtained");
@@ -92,16 +113,51 @@ export class ProfileCoacheeComponent implements OnInit, AfterViewInit, OnDestroy
       }
     ).subscribe(
       (user: ApiUser) => {
-        console.log("coachee updated : ", user);
-        //refresh page
-        Materialize.toast('Votre profil a été modifié !', 3000, 'rounded');
-        this.getCoachee();
+        this.coachee.take(1).flatMap(
+          (coachee: Coachee) => {
+            console.log("Upload avatar");
+            let params = [coachee.id];
+
+            if (this.avatarUrl != null) {
+              return this.authService.put(AuthService.PUT_COACHEE_PROFILE_PICT, params, formData, {headers: headers})
+                .map(res => res.json())
+                .catch(error => Observable.throw(error))
+            }
+          }
+        ).subscribe(
+          data => {
+            console.log('Upload avatar success', data);
+            console.log("coachee updated : ", user);
+            this.updateUserLoading = false;
+            Materialize.toast('Votre profil a été modifié !', 3000, 'rounded');
+            //refresh page
+            setTimeout('', 1000);
+            window.location.reload();
+          }, error => {
+            console.log('Upload avatar error', error);
+            Materialize.toast('Impossible de modifier votre profil', 3000, 'rounded');
+          }
+        )
       },
       (error) => {
         console.log('coachee update, error', error);
-        //TODO display error
         Materialize.toast('Impossible de modifier votre profil', 3000, 'rounded');
       });
+  }
+
+  filePreview(event: any) {
+    if (event.target.files && event.target.files[0]) {
+      this.avatarUrl = event.target.files[0];
+      console.log("filePreview", this.avatarUrl);
+
+      let reader = new FileReader();
+
+      reader.onload = function (e: any) {
+        $('#avatar-preview').attr('src', e.target.result);
+      }
+
+      reader.readAsDataURL(event.target.files[0]);
+    }
   }
 
   goToMeetings() {

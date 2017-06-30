@@ -25,6 +25,7 @@ export class MeetingListComponent implements OnInit, AfterViewInit, OnDestroy {
 
   ngOnInit() {
     console.log('ngOnInit');
+    window.scrollTo(0, 0);
   }
 
   ngAfterViewInit(): void {

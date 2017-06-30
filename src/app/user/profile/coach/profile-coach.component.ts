@@ -1,4 +1,4 @@
-import {AfterViewInit, ChangeDetectorRef, Component, Input, OnDestroy, OnInit} from "@angular/core";
+import {AfterViewInit, ChangeDetectorRef, Component, Input, OnDestroy, OnInit, Output, EventEmitter} from "@angular/core";
 import {Observable} from "rxjs";
 import {ActivatedRoute, Router} from "@angular/router";
 import {Coach} from "../../../model/Coach";
@@ -8,6 +8,7 @@ import {CoachCoacheeService} from "../../../service/coach_coachee.service";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {Coachee} from "../../../model/Coachee";
 import {HR} from "app/model/HR";
+import {Headers} from "@angular/http"
 import {Subscription} from "rxjs/Subscription";
 
 declare var $: any;
@@ -20,19 +21,27 @@ declare var Materialize: any;
 })
 
 export class ProfileCoachComponent implements OnInit, AfterViewInit, OnDestroy {
+  zone: any;
 
   private user: Observable<Coach | Coachee | HR>;
   private coach: Observable<Coach>;
-  private status = 'visiter';
+  private isOwner = false;
+  private isAdmin = false;
   private subscriptionGetCoach: Subscription;
   private subscriptionGetUser: Subscription;
 
   private formCoach: FormGroup;
 
+  private avatarUrl: File;
+
+  private updateUserLoading = false;
+
   constructor(private authService: AuthService, private router: Router, private cd: ChangeDetectorRef, private formBuilder: FormBuilder, private coachService: CoachCoacheeService, private route: ActivatedRoute) {
   }
 
   ngOnInit() {
+    window.scrollTo(0, 0);
+
     this.formCoach = this.formBuilder.group({
       firstName: ['', Validators.required],
       lastName: ['', Validators.required],
@@ -40,15 +49,22 @@ export class ProfileCoachComponent implements OnInit, AfterViewInit, OnDestroy {
       description: ['', Validators.required],
     });
 
-    this.getCoach();
-    this.getUser();
+    // this.getUser();
+    this.getCoachAndUser();
   }
 
-  getCoach() {
+  ngAfterViewInit(): void {
+    console.log("afterViewInit");
+    // this.isOwner = (user instanceof Coach) && (coach.email === user.email);
+  }
+
+  private getCoachAndUser() {
+    console.log("getCoach");
+
     this.subscriptionGetCoach = this.route.params.subscribe(
       (params: any) => {
         let coachId = params['id'];
-        this.status = params['status'];
+        this.isAdmin = params['admin'];
 
         this.coachService.getCoachForId(coachId).subscribe(
           (coach: Coach) => {
@@ -56,23 +72,36 @@ export class ProfileCoachComponent implements OnInit, AfterViewInit, OnDestroy {
 
             this.setFormValues(coach);
             this.coach = Observable.of(coach);
+            console.log("getUser");
+            let user = this.authService.getConnectedUser();
+            this.user = Observable.of(user);
+            this.isOwner = (user instanceof Coach) && (coach.email === user.email);
             this.cd.detectChanges();
+
+          }, (error) => {
+            console.log('getCoach, error', error);
           }
         );
       }
     )
   }
 
-  getUser() {
-    this.subscriptionGetUser = this.authService.getConnectedUserObservable().subscribe(
-      (user: Coach | Coachee | HR) => {
-        console.log('getConnectedUser : ' + user);
-
-        this.user = Observable.of(user);
-        this.cd.detectChanges()
-      }
-    );
-  }
+  // private getUser() {
+  //   console.log("getUser");
+  //
+  //   // this.subscriptionGetUser = this.authService.getConnectedUserObservable().subscribe(
+  //   //   (user: Coach | Coachee | HR) => {
+  //   //     console.log('gotUser : ' + user);
+  //   //
+  //   //     this.user = Observable.of(user);
+  //   //     this.cd.detectChanges()
+  //   //   }, (error) => {
+  //   //     console.log('getUser, error', error);
+  //   //   }
+  //   // );
+  //
+  //   this.user = Observable.of(this.authService.getConnectedUser());
+  // }
 
   setFormValues(coach: Coach) {
     this.formCoach.setValue({
@@ -85,6 +114,15 @@ export class ProfileCoachComponent implements OnInit, AfterViewInit, OnDestroy {
 
   submitCoachProfilUpdate() {
     console.log("submitCoachProfilUpdate");
+
+    this.updateUserLoading = true;
+
+    let formData: FormData = new FormData();
+    formData.append('uploadFile', this.avatarUrl, this.avatarUrl.name);
+
+    let headers = new Headers();
+    headers.append('Accept', 'application/json');
+
     this.coach.last().flatMap(
       (coach: Coach) => {
         console.log("submitCoachProfilUpdate, coach obtained");
@@ -96,30 +134,60 @@ export class ProfileCoachComponent implements OnInit, AfterViewInit, OnDestroy {
       }
     ).subscribe(
       (user: ApiUser) => {
-        console.log("coach updated : ", user);
-        //refresh page
-        Materialize.toast('Votre profil a été modifié !', 3000, 'rounded');
-        this.getCoach();
+        this.coach.take(1).flatMap(
+          (coach: Coach) => {
+            console.log("Upload avatar");
+            let params = [coach.id];
+
+            if (this.avatarUrl != null) {
+              return this.authService.put(AuthService.PUT_COACH_PROFILE_PICT, params, formData, {headers: headers})
+                .map(res => res.json())
+                .catch(error => Observable.throw(error))
+            }
+          }
+        ).subscribe(
+          data => {
+            console.log('Upload avatar success', data);
+            console.log("coach updated : ", user);
+            this.updateUserLoading = false;
+            Materialize.toast('Votre profil a été modifié !', 3000, 'rounded');
+            //refresh page
+            setTimeout('', 1000);
+            window.location.reload();
+
+          }, error => {
+            console.log('Upload avatar error', error);
+            Materialize.toast('Impossible de modifier votre profil', 3000, 'rounded');
+          }
+        )
       },
       (error) => {
         console.log('coach update, error', error);
-        //TODO display error
         Materialize.toast('Impossible de modifier votre profil', 3000, 'rounded');
       });
   }
 
+  filePreview(event: any) {
+    if (event.target.files && event.target.files[0]) {
+      this.avatarUrl = event.target.files[0];
+      console.log("filePreview", this.avatarUrl);
+
+      let reader = new FileReader();
+
+      reader.onload = function (e: any) {
+        $('#avatar-preview').attr('src', e.target.result);
+      }
+
+      reader.readAsDataURL(event.target.files[0]);
+    }
+  }
+
   goToMeetings() {
-    window.scrollTo(0, 0);
     this.router.navigate(['/meetings']);
   }
 
   goToCoachsAdmin() {
-    window.scrollTo(0, 0);
     this.router.navigate(['admin/coachs-list']);
-  }
-
-  ngAfterViewInit(): void {
-    console.log("afterViewInit");
   }
 
   ngOnDestroy(): void {

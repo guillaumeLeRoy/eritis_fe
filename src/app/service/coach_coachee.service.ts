@@ -54,7 +54,7 @@ export class CoachCoacheeService {
         console.log("getCoacheeForId, got coachee", response);
         let coachee: Coachee = response.json();
         return coachee;
-      },(error) => {
+      }, (error) => {
         console.log("getCoacheeForId, error", error);
       });
   }
