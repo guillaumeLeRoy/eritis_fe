@@ -183,14 +183,16 @@ export class HeaderComponent implements OnInit, OnDestroy {
   }
 
   isAdmin(): boolean {
-    return this.router.url === '/admin' || this.router.url === '/admin/signup' || this.router.url === '/admin/coachees-list' || this.router.url === '/admin/coachs-list' || this.router.url === '/admin/rhs-list';
+    let admin = new RegExp('/admin');
+    return admin.test(this.router.url);
   }
 
   isSigningUp(): boolean {
     let signupCoach = new RegExp('/signup_coach');
     let signupCoachee = new RegExp('/signup_coachee');
     let signupRh = new RegExp('/signup_rh');
-    return signupCoach.test(this.router.url) || signupCoachee.test(this.router.url) || signupRh.test(this.router.url);
+    let registerCoach = new RegExp('/register_coach');
+    return signupCoach.test(this.router.url) || signupCoachee.test(this.router.url) || signupRh.test(this.router.url) || registerCoach.test(this.router.url);
   }
 
   goToCoachs() {

@@ -17,12 +17,14 @@ import {SignupRhComponent} from "./login/signup/signup-rh.component";
 import {AvailableMeetingsComponent} from "./meeting/meeting-list/coach/available-meetings.component";
 import {CoacheesListComponent} from "./admin/coachees-list/coachees-list.component";
 import {RhsListComponent} from "./admin/rhs-list/rhs-list.component";
+import {RegisterCoachComponent} from "./login/register/register-coach/register-coach.component";
 
 const APP_ROUTES: Routes = [
   {path: '', redirectTo: '/welcome', pathMatch: 'full'},
   {path: 'welcome', component: WelcomeComponent},
   {path: 'chat', component: ChatComponent},
   {path: 'signin', component: SigninComponent},
+  {path: 'register_coach', component: RegisterCoachComponent},
   {path: 'signup_coachee', component: SignupCoacheeComponent},
   {path: 'signup_coach', component: SignupCoachComponent},
   {path: 'signup_rh', component: SignupRhComponent},

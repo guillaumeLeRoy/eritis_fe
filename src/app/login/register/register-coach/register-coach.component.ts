@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 
 @Component({
-  selector: 'er-register-coach',
+  selector: 'rb-register-coach',
   templateUrl: './register-coach.component.html',
   styleUrls: ['./register-coach.component.scss']
 })
