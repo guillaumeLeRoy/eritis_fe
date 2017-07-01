@@ -37,8 +37,9 @@ export class PreMeetingComponent implements OnInit {
     this.meetingService.getMeetingGoal(this.meetingId).subscribe(
       (reviews: MeetingReview[]) => {
         console.log("getMeetingGoal, got goal : ", reviews);
-        if (reviews != null)
+        if (reviews != undefined) {
           this.updateGoalValue(reviews[0].value);
+        }
       },
       (error) => {
         console.log('getMeetingGoal error', error);
@@ -51,8 +52,9 @@ export class PreMeetingComponent implements OnInit {
     this.meetingService.getMeetingContext(this.meetingId).subscribe(
       (reviews: MeetingReview[]) => {
         console.log("getMeetingContext, got context : ", reviews);
-        if (reviews != null)
+        if (reviews != undefined) {
           this.updateContextValue(reviews[0].value);
+        }
       },
       (error) => {
         console.log('getMeetingContext error', error);
