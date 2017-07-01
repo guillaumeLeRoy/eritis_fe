@@ -49,14 +49,18 @@ export class MeetingItemRhComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit(): void {
-    console.log('ngOnInit');
+    console.log('ngOnInit, coachee : ', this.coachee);
 
-    this.getUsageRate(this.coachee.id);
-    this.getAllMeetingsForCoachee(this.coachee.id);
+    if (this.coachee != null) {
+      this.getUsageRate(this.coachee.id);
+      this.getAllMeetingsForCoachee(this.coachee.id);
+    }
+
   }
 
   ngAfterViewInit(): void {
-    console.log('ngAfterViewInit');
+    console.log('ngAfterViewInit, coachee : ', this.coachee);
+
     // this.fetchConnectedUser();
   }
 

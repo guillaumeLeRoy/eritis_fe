@@ -12,6 +12,7 @@ import {Coachee} from "../model/Coachee";
 import {LoginResponse} from "../model/LoginResponse";
 import {HR} from "../model/HR";
 import {PotentialCoachee} from "../model/PotentialCoachee";
+import {isUndefined} from "util";
 
 @Injectable()
 export class AuthService {
@@ -177,12 +178,14 @@ export class AuthService {
         return this.getHeader(firebaseUser).flatMap(
           (headers: Headers) => {
 
-            for (let headerKey of options.headers.keys()) {
-              console.log('post, options headerKey : ', headerKey);
-              console.log('post, options value : ', options.headers.get(headerKey));
-
-              headers.append(headerKey, options.headers.get(headerKey));
+            if( options != undefined){
+              for (let headerKey of options.headers.keys()) {
+                console.log('post, options headerKey : ', headerKey);
+                console.log('post, options value : ', options.headers.get(headerKey));
+                headers.append(headerKey, options.headers.get(headerKey));
+              }
             }
+
             return this.httpService.post(this.generatePath(path, params), body, {headers: headers})
           }
         );
