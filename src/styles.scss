@@ -190,6 +190,11 @@ label.active{
   font-weight: 500;
 }
 
+[type="checkbox"]:checked + label:before {
+  border-right-color: $main-electric-blue;
+  border-bottom-color: $main-electric-blue;
+}
+
 input[type="text"],
 input[type="text"]:focus:not([readonly]),
 input[type="password"],

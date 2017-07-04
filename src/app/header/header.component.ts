@@ -1,5 +1,5 @@
 import {ChangeDetectorRef, Component, OnDestroy, OnInit} from "@angular/core";
-import {Router} from "@angular/router";
+import {NavigationEnd, Router} from "@angular/router";
 import {AuthService} from "../service/auth.service";
 import {Observable, Subscription} from "rxjs";
 import {Coach} from "../model/Coach";
@@ -60,6 +60,14 @@ export class HeaderComponent implements OnInit, OnDestroy {
         this.onUserObtained(user);
       }
     );
+
+    this.router.events.subscribe((evt) => {
+      if (!(evt instanceof NavigationEnd)) {
+        return;
+      }
+      console.log('Header navigation');
+      window.scrollTo(0, 0)
+    });
   }
 
   private onUserObtained(user: Coach | Coachee | HR) {
@@ -110,10 +118,19 @@ export class HeaderComponent implements OnInit, OnDestroy {
   }
 
   goToHome(){
-    if (this.isAuthenticated)
+    console.log('goToHome');
+    if (this.isAuthenticated) {
+      console.log('goToHomeUser');
       this.goToMeetings();
-    if (this.isAdmin())
+    }
+    if (this.isAdmin()) {
+      console.log('goToHomeAdmin');
       this.goToAdmin();
+    }
+    if (this.isSigningUp()) {
+      console.log('goToWelcomePage');
+      this.router.navigate(['/welcome']);
+    }
   }
 
   goToAdmin() {
