@@ -49,6 +49,8 @@ import { CoacheeItemComponent } from './user/coachee-item/coachee-item.component
 import { RhItemComponent } from './user/rh-item/rh-item.component';
 import { RegisterCoachComponent } from './login/register/register-coach/register-coach.component';
 import { CodeDeontologieComponent } from './login/register/register-coach/code-deontologie/code-deontologie.component';
+import { RegisterCoachFormComponent } from './login/register/register-coach/register-coach-form/register-coach-form.component';
+import { RegisterCoachMessageComponent } from './login/register/register-coach/register-coach-message/register-coach-message.component';
 
 @NgModule({
   declarations: [
@@ -83,7 +85,9 @@ import { CodeDeontologieComponent } from './login/register/register-coach/code-d
     CoacheeItemComponent,
     RhItemComponent,
     RegisterCoachComponent,
-    CodeDeontologieComponent
+    CodeDeontologieComponent,
+    RegisterCoachFormComponent,
+    RegisterCoachMessageComponent
   ],
   imports: [
     BrowserAnimationsModule,

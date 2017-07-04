@@ -84,5 +84,7 @@ export class WelcomeComponent implements OnInit {
 
   }
 
-
+  goToCoachRegister() {
+    this.router.navigate(['/register_coach/step1']);
+  }
 }

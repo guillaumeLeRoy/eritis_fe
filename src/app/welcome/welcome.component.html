@@ -117,7 +117,23 @@
           </div>
         </div><!--end row-->
 
-        <a pageScroll href="#contact" class="btn-basic">Contactez-nous</a>
+        <div class="row hide-on-small-and-down">
+          <div class="header-btn col-xs-12 col-sm-6">
+            <a pageScroll href="#contact" class="btn-basic right">Contactez-nous</a>
+          </div>
+          <div class="header-btn col-xs-12 col-sm-6">
+            <button class="btn-basic btn-plain btn-connexion left" (click)="goToCoachRegister()">Devenir coach</button>
+          </div>
+        </div>
+
+        <div class="row hide-on-med-and-up">
+          <div class="header-btn col-xs-12 col-sm-6">
+            <a pageScroll href="#contact" class="btn-basic btn-small">Contactez-nous</a>
+          </div>
+          <div class="header-btn col-xs-12 col-sm-6">
+            <button class="btn-basic btn-plain btn-connexion btn-small" (click)="goToCoachRegister()">Devenir coach</button>
+          </div>
+        </div>
 
       </div><!--end container-->
     </section><!--end section-->

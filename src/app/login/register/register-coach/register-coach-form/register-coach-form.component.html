@@ -1,0 +1,134 @@
+<div id="registerForm" class="container">
+  <h2 class="black-text">Formulaire d'inscription</h2>
+  <br>
+  <form [formGroup]="registerForm" (ngSubmit)="onRegister()">
+    <div class="row">
+
+      <div class="col-lg-6">
+        <div class="row">
+          <div class="col-lg-12">
+            <label for="surname">Nom</label>
+            <input type="text" id="surname" name="surname" formControlName="surname" placeholder="Nom">
+          </div>
+
+          <div class="col-lg-12">
+            <label>Prénom</label>
+            <input type="text" id="name" name="name" formControlName="name" placeholder="Prénom">
+          </div>
+
+          <div class="col-lg-12">
+            <label>Email</label>
+            <input type="email" id="email" name="email" formControlName="email" placeholder="exemple@mail.com">
+          </div>
+        </div>
+      </div>
+
+      <div class="col-lg-6">
+        <label>Photo de profil</label>
+        <div class="input-file-container">
+          <img alt="profile image"
+               id="avatar-preview"
+               class="circle responsive-img z-depth-2"
+               *ngIf="avatarUrl != null">
+          <button class="btn-basic btn-blue btn-plain btn-small file-upload-buton">Choisir un fichier</button>
+          <input type="file"
+                 id="upload-avatar-input"
+                 accept=".jpg,.png"
+                 (change)="filePreview($event, 'avatar')">
+        </div>
+      </div>
+
+      <div class="col-lg-12">
+        <div class="row">
+          <div class="col-lg-12 input-container">
+            <label>Profil Linkedin</label>
+            <input type="url" id="linkedin" name="linkedin" formControlName="linkedin" placeholder="http://...">
+          </div>
+
+          <div class="col-lg-12 input-container">
+            <label>Décrivez-vous en trois lignes</label>
+            <textarea id="description" name="description" formControlName="description" placeholder="Description..."></textarea>
+          </div>
+
+          <div class="col-lg-12 input-container">
+            <label>Quelle est votre formation initiale ?</label>
+            <input type="text" id="formation" name="formation" formControlName="formation" placeholder="Formation">
+          </div>
+
+          <div class="col-lg-12 input-container">
+            <label>Quels sont vos diplômes, certifications et accréditations en coaching ?</label>
+            <input type="text" id="diplomas" name="diplomas" placeholder="Diplômes, certifications, accréditations, ...">
+          </div>
+
+          <div class="col-lg-12 input-container">
+            <label>Exercez-vous d'autres activités que le coaching ?</label>
+            <input type="text" id="otherActivities" name="otherActivities" placeholder="Si oui, précisez">
+          </div>
+
+          <div class="col-lg-12 input-container">
+            <label>Depuis combien de temps exercez-vous l'activité de coaching ?</label>
+            <input type="text" id="experienceTime" name="experienceTime" placeholder="3 ans, 8 mois, ..." formControlName="experienceTime">
+          </div>
+
+          <div class="col-lg-12 input-container">
+            <label>Quelles sont vos expériences en coaching individuel et en coaching individuel via visioconférence (Skype par exemple) ?</label>
+            <textarea id="experienceVisio" name="experienceVisio" placeholder="Précisez..." formControlName="experienceVisio"></textarea>
+          </div>
+
+          <div class="col-lg-12 input-container">
+            <label>Combien d'heures de coaching individuel avez-vous déjà réalisé ?</label>
+            <input type="text" id="coachingHours" name="coachingHours" placeholder="10h, 75h, ..." formControlName="coachingHours">
+          </div>
+
+          <div class="col-lg-12 input-container">
+            <label>Quel est votre dispositif de supervision ?</label>
+            <input type="text" id="supervision" name="supervision" placeholder="Précisez..." formControlName="supervision">
+          </div>
+
+          <div class="col-lg-12 input-container">
+            <label>Quels types ou situations de coaching privilégiez-vous ?</label>
+            <textarea id="preferedCoaching" name="preferedCoaching" placeholder="Précisez..." formControlName="preferedCoaching"></textarea>
+          </div>
+
+          <div class="col-lg-12 input-container">
+            <label>Quel est votre statut ?</label>
+            <input type="text" id="status" name="status" placeholder="Statut" formControlName="status">
+          </div>
+
+          <div class="col-lg-12 input-container">
+            <label>Quel est votre chiffre d'affaires sur les 3 dernières années ?</label>
+            <div class="row">
+              <div class="col-lg-4">
+                <input type="text" id="ca1" name="ca1" placeholder="2016" formControlName="ca1">
+              </div>
+              <div class="col-lg-4">
+                <input type="text" id="ca2" name="ca2" placeholder="2015" formControlName="ca2">
+              </div>
+              <div class="col-lg-4">
+                <input type="text" id="ca3" name="ca3" placeholder="2014" formControlName="ca3">
+              </div>
+            </div>
+          </div>
+
+          <div class="col-lg-12 input-container">
+            <label>Avez-vous une copie de votre assurance RC Pro ?</label><br>
+            Si vous disposez pas d'une copie dans l'immédiat, merci de nous la faire parvenir a l'adresse suivante: diana@eritis.co.uk (nécessaire pour finaliser l'inscription).
+            <div class="input-file-container">
+              <span class="bold" *ngIf="insuranceUrl != null">{{insuranceUrl.name}} </span>
+              <button class="btn-basic btn-blue btn-plain btn-small file-upload-buton">Choisir un fichier</button>
+              <input type="file"
+                     accept=".pdf"
+                     formControlName="insurance"
+                     (change)="filePreview($event, 'insurance')">
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class=" col-lg-12 text-center input-container">
+        <button class="btn-basic btn-plain btn-small btn-blue" (click)="onRegister()" [disabled]="!registerForm.valid">Valider</button>
+      </div>
+
+    </div><!--end row>-->
+  </form>
+</div>
