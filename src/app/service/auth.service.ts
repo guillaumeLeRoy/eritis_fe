@@ -223,6 +223,18 @@ export class AuthService {
     return method;
   }
 
+  putNotAuth(path: string, params: string[], body: any, options?: RequestOptionsArgs): Observable<Response> {
+    let headers = new Headers();
+    if (options != null)
+      for (let headerKey of options.headers.keys()) {
+        console.log('put, options headerKey : ', headerKey);
+        console.log('put, options value : ', options.headers.get(headerKey));
+        headers.append(headerKey, options.headers.get(headerKey));
+      }
+
+    return this.httpService.put(this.generatePath(path, params), body, {headers: headers})
+  }
+
   get(path: string, params: string[]): Observable<Response> {
     return this.getWithSearchParams(path, params, null);
   }

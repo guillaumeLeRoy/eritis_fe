@@ -134,7 +134,7 @@ export class RegisterCoachComponent implements OnInit {
       "lastName": this.registerForm.value.surname
     }
     var params = []
-    this.authService.put(AuthService.UPDATE_POSSIBLE_COACH, params, body).subscribe(
+    this.authService.putNotAuth(AuthService.UPDATE_POSSIBLE_COACH, params, body).subscribe(
       (response: Response) => {
         response.json()
       }
@@ -152,7 +152,7 @@ export class RegisterCoachComponent implements OnInit {
       headers.append('Accept', 'application/json');
 
       var params = []
-      this.authService.put(AuthService.UPDATE_POSSIBLE_COACH_PICTURE, params, formData, {headers: headers}).subscribe(
+      this.authService.putNotAuth(AuthService.UPDATE_POSSIBLE_COACH_PICTURE, params, formData, {headers: headers}).subscribe(
         (response: Response) => {
           response.json()
         }
@@ -172,7 +172,7 @@ export class RegisterCoachComponent implements OnInit {
       headers.append('Accept', 'application/json');
 
       var params = []
-      this.authService.put(AuthService.UPDATE_POSSIBLE_COACH_ASSURANCE_DOC, params, formData, {headers: headers}).subscribe(
+      this.authService.putNotAuth(AuthService.UPDATE_POSSIBLE_COACH_ASSURANCE_DOC, params, formData, {headers: headers}).subscribe(
         (response: Response) => {
           response.json()
         }
