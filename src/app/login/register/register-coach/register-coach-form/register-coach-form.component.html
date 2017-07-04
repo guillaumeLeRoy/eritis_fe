@@ -126,7 +126,24 @@
       </div>
 
       <div class=" col-lg-12 text-center input-container">
-        <button class="btn-basic btn-plain btn-small btn-blue" (click)="onRegister()" [disabled]="!registerForm.valid">Valider</button>
+        <button class="btn-basic btn-plain btn-small btn-blue"
+                (click)="onRegister()"
+                *ngIf="!onRegisterLoading"
+                [disabled]="!registerForm.valid">Valider</button>
+
+        <div class="preloader-wrapper active" *ngIf="onRegisterLoading">
+          <div class="spinner-layer spinner-blue-only">
+            <div class="circle-clipper left">
+              <div class="circle"></div>
+            </div>
+            <div class="gap-patch">
+              <div class="circle"></div>
+            </div>
+            <div class="circle-clipper right">
+              <div class="circle"></div>
+            </div>
+          </div>
+        </div>
       </div>
 
     </div><!--end row>-->

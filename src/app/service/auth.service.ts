@@ -229,6 +229,7 @@ export class AuthService {
       for (let headerKey of options.headers.keys()) {
         console.log('put, options headerKey : ', headerKey);
         console.log('put, options value : ', options.headers.get(headerKey));
+
         headers.append(headerKey, options.headers.get(headerKey));
       }
 
