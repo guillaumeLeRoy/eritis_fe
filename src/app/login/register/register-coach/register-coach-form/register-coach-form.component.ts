@@ -78,36 +78,59 @@ export class RegisterCoachFormComponent implements OnInit {
 
     this.onRegisterLoading = true;
 
-    this.updatePossibleCoach().subscribe(
-      data => {
-        console.log('onRegister, updatePossibleCoach success');
-        this.updatePossibleCoachPicture().subscribe(
-          data2 => {
-            console.log('onRegister, updatePossibleCoachPicture success');
-            this.updatePossibleCoachAssuranceDoc().subscribe(
-              data3 => {
-                console.log('onRegister, updatePossibleCoachAssuranceDoc success');
-                Materialize.toast('Votre candiature a été envoyée !', 3000, 'rounded');
-                this.onRegisterLoading = false;
-                this.router.navigate(['register_coach/step3']);
-              }, error => {
-                console.log('onRegister, updatePossibleCoachAssuranceDoc error', error);
-                Materialize.toast('Impossible de soumettre votre candidature', 3000, 'rounded');
-                this.onRegisterLoading = false;
-              }
-            );
-          }, error => {
-            console.log('onRegister, updatePossibleCoachPicture error', error);
-            Materialize.toast('Impossible de soumettre votre candidature', 3000, 'rounded');
-            this.onRegisterLoading = false;
-          }
-        );
-      }, error => {
-        console.log('onRegister, updatePossibleCoach error', error);
+    this.updatePossibleCoach().flatMap(
+      (res: Response) => {
+        console.log("onRegister upadatePicture");
+        return this.updatePossibleCoachPicture();
+      }
+    ).flatMap(
+      (res: Response) => {
+        console.log("onRegister upadateAssurance");
+        return this.updatePossibleCoachAssuranceDoc();
+      }
+    ).subscribe(
+      (res: Response) => {
+        console.log("onRegister success", res);
+        Materialize.toast('Votre candiature a été envoyée !', 3000, 'rounded');
+        this.onRegisterLoading = false;
+        this.router.navigate(['register_coach/step3']);
+      }, (error) => {
+        console.log('onRegister error', error);
         Materialize.toast('Impossible de soumettre votre candidature', 3000, 'rounded');
         this.onRegisterLoading = false;
       }
     );
+
+    // this.updatePossibleCoach().subscribe(
+    //   data => {
+    //     console.log('onRegister, updatePossibleCoach success');
+    //     this.updatePossibleCoachPicture().subscribe(
+    //       data2 => {
+    //         console.log('onRegister, updatePossibleCoachPicture success');
+    //         this.updatePossibleCoachAssuranceDoc().subscribe(
+    //           data3 => {
+    //             console.log('onRegister, updatePossibleCoachAssuranceDoc success');
+    //             Materialize.toast('Votre candiature a été envoyée !', 3000, 'rounded');
+    //             this.onRegisterLoading = false;
+    //             this.router.navigate(['register_coach/step3']);
+    //           }, error => {
+    //             console.log('onRegister, updatePossibleCoachAssuranceDoc error', error);
+    //             Materialize.toast('Impossible de soumettre votre candidature', 3000, 'rounded');
+    //             this.onRegisterLoading = false;
+    //           }
+    //         );
+    //       }, error => {
+    //         console.log('onRegister, updatePossibleCoachPicture error', error);
+    //         Materialize.toast('Impossible de soumettre votre candidature', 3000, 'rounded');
+    //         this.onRegisterLoading = false;
+    //       }
+    //     );
+    //   }, error => {
+    //     console.log('onRegister, updatePossibleCoach error', error);
+    //     Materialize.toast('Impossible de soumettre votre candidature', 3000, 'rounded');
+    //     this.onRegisterLoading = false;
+    //   }
+    // );
   }
 
   private updatePossibleCoach(): Observable<Response> {

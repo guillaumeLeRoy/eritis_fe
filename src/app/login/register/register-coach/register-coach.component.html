@@ -1,50 +1,52 @@
-<div id="introduction" class="container">
-  <h2 class="black-text">L'équipe Eritis vous souhaite la bienvenue !</h2>
-  <br>
-  <div class="introduction-text">
-    <p>Nous avons été récemment en contact, et sommes heureux de vous transmettre le lien pour continuer le processus
-      de référencement sur notre plateforme Eritis. En continuant le processus de référencement Eritis, vous vous engagez
-      à respecter notre code de déontologie, et les différents conditions d’exercices ci dessous. Pour continuer vers l’étape
-      suivante, nous vous remercions de renseigner les données suivantes. Une fois votre dossier complété, nous reviendrons
-      vers vous pour planifier un entretien de 45’ avec 2 de nos référents métier, et nous vous donnerons alors notre feedback
-      en vue d’un référencement définitif sur notre plateforme.</p>
-
+<div class="container">
+  <div id="introduction">
+    <h2 class="black-text">L'équipe Eritis vous souhaite la bienvenue !</h2>
     <br>
-    <p>Pour continuer, merci de prendre connaissance des pre-requis et engagements ci dessous, et d'accepter la chartre de deontologie Eritis.</p>
+    <div class="introduction-text">
+      <p>Nous avons été récemment en contact, et sommes heureux de vous transmettre le lien pour continuer le processus
+        de référencement sur notre plateforme Eritis. En continuant le processus de référencement Eritis, vous vous engagez
+        à respecter notre code de déontologie, et les différents conditions d’exercices ci dessous. Pour continuer vers l’étape
+        suivante, nous vous remercions de renseigner les données suivantes. Une fois votre dossier complété, nous reviendrons
+        vers vous pour planifier un entretien de 45’ avec 2 de nos référents métier, et nous vous donnerons alors notre feedback
+        en vue d’un référencement définitif sur notre plateforme.</p>
 
-    <br>
-    <p>Quelques prérequis:</p>
-    <ol>
-      <li>Vous avez une expérience de 2 ans minimum en tant que coach professionnel en entreprise.</li>
-      <li>Vous disposez d’un espace de supervision, et de développement personnel.</li>
-      <li>Vous disposez du matériel informatique, et de la connexion qui vous permette de réaliser
-        les sessions en visio avec une qualité d’image et de sons adaptée à une séance de travail.</li>
-      <li>Vous suivez une supervision a la fréquence d'un fois tous les 2 mois minimum.</li>
-    </ol>
+      <br>
+      <p>Pour continuer, merci de prendre connaissance des pre-requis et engagements ci dessous, et d'accepter la chartre de deontologie Eritis.</p>
 
-    <br>
-    <p>Quelques engagements:</p>
-    <ol>
-      <li>Vous vous engagez à respecter le code de déontologie.</li>
-      <li>Vous vous engagez à respecter la ponctualité des séances de travail
-        avec les coachés, et à rédiger un compte rendu avec le coaché pendant les 5
-        dernières minutes de la séance et à le mettre en ligne immédiatement sur la plateforme.</li>
-      <li>Votre activité de coaching auprès d’Eritis représente moins de 50% de votre activité principale.</li>
-      <li>Vous vous engagez à suivre une séance de supervision sur notre plateforme avec un de nos coachs référents tous les 2 mois.</li>
-      <li>Votre tenue vestimentaire et le décor visible autour de vous en visio sont compatibles avec les codes du monde de l’entreprise.</li>
-      <li>Votre tenue vestimentaire et le décor visible autour de vous en visio sont compatibles avec les codes du monde de l’entreprise.</li>
-      <li>Vous nous transmettez votre attestation de Responsabilité Civile Professionnelle à jour.</li>
-    </ol>
+      <br>
+      <p>Quelques prérequis:</p>
+      <ol>
+        <li>Vous avez une expérience de 2 ans minimum en tant que coach professionnel en entreprise.</li>
+        <li>Vous disposez d’un espace de supervision, et de développement personnel.</li>
+        <li>Vous disposez du matériel informatique, et de la connexion qui vous permette de réaliser
+          les sessions en visio avec une qualité d’image et de sons adaptée à une séance de travail.</li>
+        <li>Vous suivez une supervision a la fréquence d'un fois tous les 2 mois minimum.</li>
+      </ol>
 
-    <br><br>
-    <input type="checkbox" id="check-deontologie" [(ngModel)]="conditionsChecked"/>
-    <label for="check-deontologie">J'ai lu et j'accepte le <a (click)="goToDeontologie()">code de déontologie</a></label>
+      <br>
+      <p>Quelques engagements:</p>
+      <ol>
+        <li>Vous vous engagez à respecter le code de déontologie.</li>
+        <li>Vous vous engagez à respecter la ponctualité des séances de travail
+          avec les coachés, et à rédiger un compte rendu avec le coaché pendant les 5
+          dernières minutes de la séance et à le mettre en ligne immédiatement sur la plateforme.</li>
+        <li>Votre activité de coaching auprès d’Eritis représente moins de 50% de votre activité principale.</li>
+        <li>Vous vous engagez à suivre une séance de supervision sur notre plateforme avec un de nos coachs référents tous les 2 mois.</li>
+        <li>Votre tenue vestimentaire et le décor visible autour de vous en visio sont compatibles avec les codes du monde de l’entreprise.</li>
+        <li>Votre tenue vestimentaire et le décor visible autour de vous en visio sont compatibles avec les codes du monde de l’entreprise.</li>
+        <li>Vous nous transmettez votre attestation de Responsabilité Civile Professionnelle à jour.</li>
+      </ol>
 
-    <br><br>
-    <div class="text-center">
-      <button class="btn-basic btn-plain btn-small btn-blue"
-              (click)="goToForm()"
-              [disabled]="!conditionsChecked">Continuer</button>
+      <br><br>
+      <input type="checkbox" id="check-deontologie" [(ngModel)]="conditionsChecked"/>
+      <label for="check-deontologie">J'ai lu et j'accepte le <a (click)="goToDeontologie()">code de déontologie</a></label>
+
+      <br><br>
+      <div class="text-center">
+        <button class="btn-basic btn-plain btn-small btn-blue"
+                (click)="goToForm()"
+                [disabled]="!conditionsChecked">Continuer</button>
+      </div>
     </div>
   </div>
 </div>
