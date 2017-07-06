@@ -1,4 +1,4 @@
-import {Component, OnInit, Input, AfterViewInit} from '@angular/core';
+import {Component, Input, OnInit} from "@angular/core";
 import {Coach} from "../../model/Coach";
 import {Router} from "@angular/router";
 

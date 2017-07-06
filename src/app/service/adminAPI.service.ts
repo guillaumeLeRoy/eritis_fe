@@ -69,6 +69,16 @@ export class AdminAPIService {
     );
   }
 
+  getPossibleCoachs(): Observable<Array<Coach>> {
+    return this.get(AuthService.ADMIN_GET_POSSIBLE_COACHS, null).map(
+      (res: Response) => {
+        let coachs: Array<Coach> = res.json();
+        return coachs;
+      }
+    );
+  }
+
+
   private post(path: string, params: string[], body: any): Observable<Response> {
     return this.httpService.post(this.generatePath(path, params), body)
   }

@@ -1,0 +1,16 @@
+<div class="row">
+  <h4 class="col-lg-12 black-text">Liste des demandes d'inscription</h4>
+
+  <div class="col-lg-12 card collection">
+    <div *ngIf="(possibleCoachs | async) != null">
+      <div class="collection-item" *ngFor="let coach of possibleCoachs | async">
+        <rb-coach-item [coach]="coach"></rb-coach-item>
+      </div>
+    </div>
+
+    <div class="text-center" *ngIf="(possibleCoachs | async) == null">
+      <h5 class="no-meeting">Les Demandes apparaîtront ici</h5>
+    </div>
+  </div>
+</div> <!--end row-->
+

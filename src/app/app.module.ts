@@ -51,6 +51,7 @@ import { RegisterCoachComponent } from './login/register/register-coach/register
 import { CodeDeontologieComponent } from './login/register/register-coach/code-deontologie/code-deontologie.component';
 import { RegisterCoachFormComponent } from './login/register/register-coach/register-coach-form/register-coach-form.component';
 import { RegisterCoachMessageComponent } from './login/register/register-coach/register-coach-message/register-coach-message.component';
+import { PossibleCoachsListComponent } from './admin/possible-coachs-list/possible-coachs-list.component';
 
 @NgModule({
   declarations: [
@@ -87,7 +88,8 @@ import { RegisterCoachMessageComponent } from './login/register/register-coach/r
     RegisterCoachComponent,
     CodeDeontologieComponent,
     RegisterCoachFormComponent,
-    RegisterCoachMessageComponent
+    RegisterCoachMessageComponent,
+    PossibleCoachsListComponent
   ],
   imports: [
     BrowserAnimationsModule,

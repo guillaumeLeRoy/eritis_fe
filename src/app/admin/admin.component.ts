@@ -49,20 +49,5 @@ export class AdminComponent implements OnInit {
     this.router.navigate(['admin/signup']);
   }
 
-  navigateToCoachsList() {
-    console.log("navigateToCoachsList")
-    this.router.navigate(['admin/coachs-list']);
-  }
-
-  navigateToCoacheesList() {
-    console.log("navigateToCoacheesList")
-    this.router.navigate(['admin/coachees-list']);
-  }
-
-  navigateToRhsList() {
-    console.log("navigateToRhsList")
-    this.router.navigate(['admin/rhs-list']);
-  }
-
 
 }

@@ -319,4 +319,10 @@ export class HeaderComponent implements OnInit, OnDestroy {
     window.scrollTo(0, 0);
     this.router.navigate(['admin/rhs-list']);
   }
+
+  navigateToPossibleCoachsList() {
+    console.log("navigateToPossibleCoachsList")
+    this.router.navigate(['admin/possible_coachs-list']);
+  }
+
 }
