@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import {FormGroup, Validators, FormBuilder} from '@angular/forms';
 import {AuthService} from '../../../../service/auth.service';
 import {Router} from '@angular/router';
-import {Headers} from '@angular/http';
+import {Headers, Response} from '@angular/http';
 import {Observable} from "rxjs/Observable";
 
 declare var $: any;
@@ -78,9 +78,9 @@ export class RegisterCoachFormComponent implements OnInit {
 
     this.onRegisterLoading = true;
 
-    this.updatePossibleCoach().flatMap(
-      (res: Response) => {
-        console.log("onRegister upadatePicture");
+    return this.updatePossibleCoach().flatMap(
+      (res: Response)  => {
+        console.log("onRegister, userCreated");
         return this.updatePossibleCoachPicture();
       }
     ).flatMap(
@@ -100,40 +100,10 @@ export class RegisterCoachFormComponent implements OnInit {
         this.onRegisterLoading = false;
       }
     );
-
-    // this.updatePossibleCoach().subscribe(
-    //   data => {
-    //     console.log('onRegister, updatePossibleCoach success');
-    //     this.updatePossibleCoachPicture().subscribe(
-    //       data2 => {
-    //         console.log('onRegister, updatePossibleCoachPicture success');
-    //         this.updatePossibleCoachAssuranceDoc().subscribe(
-    //           data3 => {
-    //             console.log('onRegister, updatePossibleCoachAssuranceDoc success');
-    //             Materialize.toast('Votre candiature a été envoyée !', 3000, 'rounded');
-    //             this.onRegisterLoading = false;
-    //             this.router.navigate(['register_coach/step3']);
-    //           }, error => {
-    //             console.log('onRegister, updatePossibleCoachAssuranceDoc error', error);
-    //             Materialize.toast('Impossible de soumettre votre candidature', 3000, 'rounded');
-    //             this.onRegisterLoading = false;
-    //           }
-    //         );
-    //       }, error => {
-    //         console.log('onRegister, updatePossibleCoachPicture error', error);
-    //         Materialize.toast('Impossible de soumettre votre candidature', 3000, 'rounded');
-    //         this.onRegisterLoading = false;
-    //       }
-    //     );
-    //   }, error => {
-    //     console.log('onRegister, updatePossibleCoach error', error);
-    //     Materialize.toast('Impossible de soumettre votre candidature', 3000, 'rounded');
-    //     this.onRegisterLoading = false;
-    //   }
-    // );
   }
 
   private updatePossibleCoach(): Observable<Response> {
+    console.log('updatePossibleCoach');
 
     // TODO create body
     let body = {
@@ -141,17 +111,22 @@ export class RegisterCoachFormComponent implements OnInit {
       'firstName': this.registerForm.value.name,
       'lastName': this.registerForm.value.surname
     }
+
     let params = []
-    this.authService.putNotAuth(AuthService.UPDATE_POSSIBLE_COACH, params, body).subscribe(
+
+    return this.authService.putNotAuth(AuthService.UPDATE_POSSIBLE_COACH, params, body).map(
       response => {
-        return Observable.of(response);
+        let res = response.json();
+        console.log('updatePossibleCoach success', res);
+        return res;
+      }, error => {
+        console.log('updatePossibleCoach error', error);
       }
     );
-
-    return Observable.of(null);
   }
 
   private updatePossibleCoachPicture(): Observable<Response> {
+    console.log('updatePossibleCoachPicture');
 
     if (this.avatarUrl !== undefined) {
       let formData: FormData = new FormData();
@@ -161,18 +136,22 @@ export class RegisterCoachFormComponent implements OnInit {
       let headers = new Headers();
       headers.append('Accept', 'application/json');
 
-      let params = []
-      this.authService.putNotAuth(AuthService.UPDATE_POSSIBLE_COACH_PICTURE, params, formData, {headers: headers}).subscribe(
+      let params = [];
+
+      return this.authService.putNotAuth(AuthService.UPDATE_POSSIBLE_COACH_PICTURE, params, formData, {headers: headers}).map(
         response => {
-          return Observable.of(response);
+          let res = response.json();
+          console.log('updatePossibleCoachPicture success', res);
+          return res;
+        }, error => {
+          console.log('updatePossibleCoachPicture error', error);
         }
       );
     }
-
-    return Observable.of(null);
   }
 
   private updatePossibleCoachAssuranceDoc(): Observable<Response> {
+    console.log('updatePossibleCoachAssuranceDoc');
 
     if (this.insuranceUrl !== undefined) {
       let formData: FormData = new FormData();
@@ -182,14 +161,17 @@ export class RegisterCoachFormComponent implements OnInit {
       let headers = new Headers();
       headers.append('Accept', 'application/json');
 
-      let params = []
-      this.authService.putNotAuth(AuthService.UPDATE_POSSIBLE_COACH_ASSURANCE_DOC, params, formData, {headers: headers}).subscribe(
+      let params = [];
+
+      return this.authService.putNotAuth(AuthService.UPDATE_POSSIBLE_COACH_ASSURANCE_DOC, params, formData, {headers: headers}).map(
         response => {
-          return Observable.of(response);
+          let res = response.json();
+          console.log('updatePossibleCoachAssuranceDoc success', res);
+          return res;
+        }, error =>{
+          console.log('updatePossibleCoachAssuranceDoc error', error);
         }
       );
     }
-
-    return Observable.of(null);
   }
 }
