@@ -1,13 +1,10 @@
 <div class="row">
-  <h4 class="col-lg-12 black-text">Liste des demandes d'inscription</h4>
+  <h4 class="col-lg-12 black-text">Demandes d'inscription</h4>
 
   <div class="col-lg-12 card collection">
     <div *ngIf="(possibleCoachs | async) != null">
       <div class="collection-item" *ngFor="let coach of possibleCoachs | async">
-        <rb-coach-item [coach]="coach"></rb-coach-item>
-
-        <button class="btn-basic btn-blue btn-connexion left" (click)="sendInvite(coach.email)">Envoyer une invitation</button>
-
+        <rb-possible-coach-item [coach]="coach"></rb-possible-coach-item>
       </div>
     </div>
 
