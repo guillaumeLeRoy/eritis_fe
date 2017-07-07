@@ -15,7 +15,10 @@ export class AdminAPIService {
     console.log("ctr done");
   }
 
-  createPotentialCoach(body: any) {
+  createPotentialCoach(email: string) {
+    let body = {
+      "email": email,
+    };
     return this.post(AuthService.POST_POTENTIAL_COACH, null, body).map(
       (res: Response) => {
         let potentialCoach: any = res.json();
@@ -106,8 +109,6 @@ export class AdminAPIService {
       if (seg == "" || seg == null) {
         continue;
       }
-      // console.log("generatePath, seg : ", seg);
-      // console.log("generatePath, paramIndex : ", paramIndex);
 
       completedPath += "/";
       if (seg.charAt(0) == ":") {

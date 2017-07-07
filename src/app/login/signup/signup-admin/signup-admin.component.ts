@@ -109,11 +109,8 @@ export class SignupAdminComponent implements OnInit {
 
   createPotentialCoach(email: string) {
     console.log('createPotentialCoach');
-    let body = {
-      "email": email,
-    };
 
-    this.adminAPIService.createPotentialCoach(body).subscribe(
+    this.adminAPIService.createPotentialCoach(email).subscribe(
       (res: any) => {
         console.log('createPotentialCoach, res', res);
         Materialize.toast('Collaborateur Coach ajouté !', 3000, 'rounded');

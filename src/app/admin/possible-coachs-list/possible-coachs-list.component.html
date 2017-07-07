@@ -5,6 +5,9 @@
     <div *ngIf="(possibleCoachs | async) != null">
       <div class="collection-item" *ngFor="let coach of possibleCoachs | async">
         <rb-coach-item [coach]="coach"></rb-coach-item>
+
+        <button class="btn-basic btn-blue btn-connexion left" (click)="sendInvite(coach.email)">Envoyer une invitation</button>
+
       </div>
     </div>
 
