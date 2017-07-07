@@ -1,0 +1,104 @@
+@import "../../../../../saas/variables";
+
+.header-user{
+  background-image: url("../../../../../assets/img/eritis-mountain-bg-2.jpg");
+  background-attachment: scroll;
+  background-position: center;
+  background-size: cover;
+  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.5);
+}
+
+.header-user-filter{
+  background-color: $main-blue-filter;
+  color: $main-white-color;
+}
+
+.header-user .container {
+  padding: 64px 0;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.user {
+  display: flex;
+  align-items: center;
+  align-content: center;
+}
+
+.user-info{
+  margin-left: 16px;
+}
+
+.user-img{
+  height: 100px;
+  width: 100px;
+}
+
+.header-item {
+  text-align: center;
+}
+
+.header-item-number {
+  margin: 0;
+  font-size: 40px;
+  font-weight: 500;
+}
+
+.header-item-number .indice {
+  font-size: 18px;
+  font-weight: 400;
+}
+
+.header-item-title {
+  margin: 0;
+  color: $main-ultra-light-grey;
+}
+
+.gap {
+  height: 64px;
+}
+
+.message-field {
+  min-height: 200px;
+}
+
+.description-field {
+  min-height: 100px;
+}
+
+.avatar-container {
+  display: flex;
+  flex-direction: row;
+  align-content: center;
+  align-items: center;
+}
+
+.input-file-container {
+  margin: 16px 0;
+  position: relative;
+}
+
+.input-file-container:hover {
+  .file-upload-buton {
+    box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.16), 0 2px 10px 0 rgba(0, 0, 0, 0.12);
+  }
+}
+
+input[type="file"] {
+  position: absolute;
+  left: 0;
+  top: 0;
+  padding: 8px;
+  opacity: .01;
+  cursor: pointer;
+  max-width: 170px;
+}
+
+#avatar-preview {
+  height: 150px;
+  width: 150px;
+  margin-right: 16px;
+}
+

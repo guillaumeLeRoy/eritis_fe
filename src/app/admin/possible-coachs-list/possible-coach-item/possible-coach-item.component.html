@@ -20,7 +20,7 @@
     <div class="row">
       <div class="meeting-item-header col-md-12 col-lg-4">
         <div>
-          <div class="meeting-item-coach" (click)="goToCoachProfile(coach.id)">
+          <div class="meeting-item-coach has-coach" (click)="goToCoachProfile(coach.id)">
             <div>
               <!-- image coach -->
               <img class="meeting-item-coach-avatar circle img-responsive" alt="coach" [src]="coach.avatar_url">
@@ -47,7 +47,12 @@
         </div>
 
         <div class="meeting-item-body-buttons">
-          <button class="btn-basic btn-blue btn-plain btn-small" (click)="sendInvite(coach.email)">Envoyer une invitation</button>
+          <button class="btn-basic btn-blue btn-plain btn-small"
+                  *ngIf="!coach.invite_sent"
+                  (click)="sendInvite(coach.email)">Envoyer une invitation</button>
+          <button class="btn-basic btn-small"
+                  *ngIf="coach.invite_sent"
+                  disabled>En attente...</button>
         </div>
       </div><!--end meeting-item-body-->
 

@@ -87,6 +87,7 @@ p {
   cursor: pointer;
 }
 
+.meeting-item-coach.has-coach:hover,
 .meeting-item-coach.has-coach:hover .meeting-item-coach-name {
   color: $main-electric-blue !important;
 }

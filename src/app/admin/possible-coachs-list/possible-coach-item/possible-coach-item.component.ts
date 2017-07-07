@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {Coach} from "../../../model/Coach";
 import {Router} from "@angular/router";
 import {AdminAPIService} from "../../../service/adminAPI.service";
@@ -11,6 +11,9 @@ declare var Materialize: any;
   styleUrls: ['./possible-coach-item.component.scss']
 })
 export class PossibleCoachItemComponent implements OnInit {
+
+  @Output()
+  coachAdded = new EventEmitter();
 
   @Input()
   coach: Coach
@@ -27,7 +30,8 @@ export class PossibleCoachItemComponent implements OnInit {
 
   goToCoachProfile(coachId: String) {
     window.scrollTo(0, 0);
-    this.router.navigate(['/profile_coach', '1', coachId]);
+    console.log(coachId);
+    this.router.navigate(['/profile_coach_admi', coachId]);
   }
 
   sendInvite(email: string) {
@@ -36,6 +40,7 @@ export class PossibleCoachItemComponent implements OnInit {
     this.apiService.createPotentialCoach(email).subscribe(
       (res: any) => {
         console.log('createPotentialCoach, res', res);
+        this.coachAdded.emit(null);
         Materialize.toast('Invitation envoyée au Coach !', 3000, 'rounded');
       }, (error) => {
         console.log('createPotentialCoach, error', error);

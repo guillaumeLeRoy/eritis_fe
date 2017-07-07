@@ -34,6 +34,10 @@ export class PossibleCoachsListComponent implements OnInit, AfterViewInit, OnDes
     }
   }
 
+  updateList() {
+    this.fetchData();
+  }
+
   private fetchData() {
     this.getAllPossibleCoachsSub = this.apiService.getPossibleCoachs().subscribe(
       (coachs: Array<Coach>) => {

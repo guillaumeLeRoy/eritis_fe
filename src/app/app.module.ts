@@ -53,6 +53,7 @@ import { RegisterCoachFormComponent } from './login/register/register-coach/regi
 import { RegisterCoachMessageComponent } from './login/register/register-coach/register-coach-message/register-coach-message.component';
 import { PossibleCoachsListComponent } from './admin/possible-coachs-list/possible-coachs-list.component';
 import { PossibleCoachItemComponent } from './admin/possible-coachs-list/possible-coach-item/possible-coach-item.component';
+import { ProfileCoachAdminComponent } from './user/profile/coach/profile-coach-admin/profile-coach-admin.component';
 
 @NgModule({
   declarations: [
@@ -91,7 +92,8 @@ import { PossibleCoachItemComponent } from './admin/possible-coachs-list/possibl
     RegisterCoachFormComponent,
     RegisterCoachMessageComponent,
     PossibleCoachsListComponent,
-    PossibleCoachItemComponent
+    PossibleCoachItemComponent,
+    ProfileCoachAdminComponent
   ],
   imports: [
     BrowserAnimationsModule,

@@ -1,0 +1,147 @@
+<div class="header-user">
+  <div class="header-user-filter">
+    <div class="container row">
+
+      <div class="user col-lg-5">
+        <img src="{{(coach | async)?.avatar_url}}" alt="profile image" class="user-img circle responsive-img z-depth-2">
+        <div class="user-info">
+          <h5>{{(coach | async)?.firstName}} {{(coach | async)?.lastName}}</h5>
+          <h6>{{(coach | async)?.email}}</h6>
+        </div>
+      </div>
+
+      <div class="col-sm-12 hide-on-large-only gap"></div>
+
+      <div class="header-stats col-lg-7">
+        <div class="row">
+          <div class="header-item col-sm-4">
+            <div class="header-item-number"><span>{{(coach | async)?.score}}</span><span class="indice"> / 5</span></div>
+            <p class="header-item-title">Moyenne</p>
+          </div>
+
+          <!--<div class="header-item col-sm-3">-->
+          <!--<div class="header-item-number"><span>10</span><span class="indice">mois</span></div>-->
+          <!--<p class="header-item-title">Expérience</p>-->
+          <!--</div>-->
+
+          <div class="header-item col-sm-4">
+            <div class="header-item-number"><span>6</span></div>
+            <p class="header-item-title">Séances réalisées</p>
+          </div>
+
+          <div class="header-item col-sm-4">
+            <div class="header-item-number"><span>3</span></div>
+            <p class="header-item-title">Personnes coachées</p>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<div class="container">
+  <h4 class="text-right italic">"{{ (coach | async)?.description }}"</h4>
+  <br>
+
+  <div>
+    <div class="center">
+      <button class="btn-basic btn-plain btn-blue btn-small center" (click)="goToCoachsAdmin()">Retourner aux coachs</button>
+    </div>
+    <br><br>
+  </div>
+
+  <h4 class="black-text">Formulaire d'inscription</h4>
+  <br>
+
+  <div class="row">
+
+    <div class="col-lg-12">
+      <div class="row">
+        <div class="col-lg-12 input-container">
+          <label>Profil Linkedin</label>
+          <p>{{ (coach | async)?.linkedin_url }}</p>
+          <br>
+        </div>
+
+        <div class="col-lg-12 input-container">
+          <label>Quelle est votre formation initiale ?</label>
+          <p>{{ (coach | async)?.Training }}</p>
+          <br>
+        </div>
+
+        <div class="col-lg-12 input-container">
+          <label>Quels sont vos diplômes, certifications et accréditations en coaching ?</label>
+          <p>{{ (coach | async)?.Degree }}</p>
+          <br>
+        </div>
+
+        <div class="col-lg-12 input-container">
+          <label>Exercez-vous d'autres activités que le coaching ?</label>
+          <p>{{ (coach | async)?.ExtraActivities }}</p>
+          <br>
+        </div>
+
+        <div class="col-lg-12 input-container">
+          <label>Depuis combien de temps exercez-vous l'activité de coaching ?</label>
+          <p>{{ (coach | async)?.CoachForYears }}</p>
+          <br>
+        </div>
+
+        <div class="col-lg-12 input-container">
+          <label>Quelles sont vos expériences en coaching individuel et en coaching individuel via visioconférence (Skype par exemple) ?</label>
+          <p>{{ (coach | async)?.CoachingExperience }}</p>
+          <br>
+        </div>
+
+        <div class="col-lg-12 input-container">
+          <label>Combien d'heures de coaching individuel avez-vous déjà réalisé ?</label>
+          <p>{{ (coach | async)?.CoachingHours }}</p>
+          <br>
+        </div>
+
+        <div class="col-lg-12 input-container">
+          <label>Quel est votre dispositif de supervision ?</label>
+          <p>{{ (coach | async)?.Supervisor }}</p>
+          <br>
+        </div>
+
+        <div class="col-lg-12 input-container">
+          <label>Quels types ou situations de coaching privilégiez-vous ?</label>
+          <p>{{ (coach | async)?.FavoriteCoachingSituation}}</p>
+          <br>
+        </div>
+
+        <div class="col-lg-12 input-container">
+          <label>Quel est votre statut ?</label>
+          <p>{{ (coach | async)?.Status }}</p>
+          <br>
+        </div>
+
+        <div class="col-lg-12 input-container">
+          <label>Quel est votre chiffre d'affaires sur les 3 dernières années ?</label>
+          <p>{{ (coach | async)?.Revenue }}</p>
+          <br>
+        </div>
+
+        <div class="col-lg-12 input-container">
+          <label>Avez-vous une copie de votre assurance RC Pro ?</label><br>
+          <p><a [href]="(coach | async)?.AssuranceUrl">Contrat d'assurance</a></p>
+          <br>
+        </div>
+      </div>
+    </div>
+
+    <div class=" col-lg-12 text-center input-container">
+      <br>
+      <button class="btn-basic btn-blue btn-plain btn-small"
+              *ngIf="!(coach | async)?.invite_sent"
+              (click)="sendInvite(coach.email)">Envoyer une invitation</button>
+      <button class="btn-basic btn-small"
+              *ngIf="(coach | async)?.invite_sent"
+              disabled>En attente...</button>
+    </div>
+
+  </div><!--end row>-->
+
+</div>
