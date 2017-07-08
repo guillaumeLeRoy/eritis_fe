@@ -17,9 +17,10 @@
    ``"Supervisor":"","FavoriteCoachingSituation":"","Status":"","Revenue":"","AvatarURL":"","AssuranceUrl":""}]
  */
 export class PossibleCoach {
-  readonly id: string;
 
-  email: string
+  id: string;
+
+  email: string;
 
   avatar_url: string;
 
@@ -27,11 +28,13 @@ export class PossibleCoach {
 
   lastName: string;
 
-  start_date: string;
+  inscription_date: string;
 
   description: string;
 
   chat_room_url: string;
+
+  invite_sent: boolean;
 
 }
 

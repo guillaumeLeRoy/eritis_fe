@@ -7,6 +7,7 @@ import {Coachee} from "../model/Coachee";
 import {AuthService} from "./auth.service";
 import {Admin} from "../model/Admin";
 import {HR} from "../model/HR";
+import {PossibleCoach} from "../model/PossibleCoach";
 
 @Injectable()
 export class AdminAPIService {
@@ -81,6 +82,15 @@ export class AdminAPIService {
     );
   }
 
+  getPossibleCoach(id: string): Observable<PossibleCoach> {
+    let params = [id];
+    return this.get(AuthService.ADMIN_GET_POSSIBLE_COACH, params).map(
+      (res: Response) => {
+        let possibleCoach: PossibleCoach = res.json();
+        return possibleCoach;
+      }
+    );
+  }
 
   private post(path: string, params: string[], body: any): Observable<Response> {
     return this.httpService.post(this.generatePath(path, params), body)

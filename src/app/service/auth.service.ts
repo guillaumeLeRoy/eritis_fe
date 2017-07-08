@@ -67,6 +67,7 @@ export class AuthService {
   public static ADMIN_GET_COACHEES = "/v1/admins/coachees";
   public static ADMIN_GET_RHS = "/v1/admins/rhs";
   public static ADMIN_GET_POSSIBLE_COACHS = "/v1/admins/possible_coachs";
+  public static ADMIN_GET_POSSIBLE_COACH = "/v1/admins/possible_coachs/:id";
 
   /* Meeting */
   public static POST_MEETING = "/v1/meetings";

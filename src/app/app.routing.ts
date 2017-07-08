@@ -22,6 +22,7 @@ import {RegisterCoachMessageComponent} from "./login/register/register-coach/reg
 import {CodeDeontologieComponent} from "./login/register/register-coach/code-deontologie/code-deontologie.component";
 import {PossibleCoachsListComponent} from "./admin/possible-coachs-list/possible-coachs-list.component";
 import {ProfileCoachAdminComponent} from "./user/profile/coach/profile-coach-admin/profile-coach-admin.component";
+import {PossibleCoachComponent} from "./user/profile/possible-coach/possible-coach.component";
 
 const APP_ROUTES: Routes = [
   {path: '', redirectTo: '/welcome', pathMatch: 'full'},
@@ -39,6 +40,7 @@ const APP_ROUTES: Routes = [
   // {path: 'profile_coachee', component: ProfileCoacheeComponent},
   {path: 'profile_rh', component: ProfileRhComponent},
   {path: 'profile_coach_admin/:id', component: ProfileCoachAdminComponent},
+  {path: 'profile_possible_coach_admin/:id', component: PossibleCoachComponent},
   {path: 'profile_coach/:id', component: ProfileCoachComponent},
   {path: 'profile_coachee/:admin/:id', component: ProfileCoacheeComponent},
   {path: 'profile_coachee/:id', component: ProfileCoacheeComponent},

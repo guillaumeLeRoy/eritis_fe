@@ -1,7 +1,7 @@
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {Coach} from "../../../model/Coach";
+import {Component, EventEmitter, Input, OnInit, Output} from "@angular/core";
 import {Router} from "@angular/router";
 import {AdminAPIService} from "../../../service/adminAPI.service";
+import {PossibleCoach} from "../../../model/PossibleCoach";
 
 declare var Materialize: any;
 
@@ -16,7 +16,7 @@ export class PossibleCoachItemComponent implements OnInit {
   coachAdded = new EventEmitter();
 
   @Input()
-  coach: Coach
+  coach: PossibleCoach
 
   months = ['Janvier', 'Février', 'Mars', 'Avril', 'Mai', 'Juin', 'Juillet', 'Août', 'Septembre', 'Octobre', 'Novembre', 'Décembre'];
 
@@ -28,10 +28,10 @@ export class PossibleCoachItemComponent implements OnInit {
 
   }
 
-  goToCoachProfile(coachId: String) {
+  goToCoachProfile(coachId: string) {
+    console.log("goToCoachProfile, coach : ", coachId);
     window.scrollTo(0, 0);
-    console.log(coachId);
-    this.router.navigate(['/profile_coach_admi', coachId]);
+    this.router.navigate(['/profile_possible_coach_admin', coachId]);
   }
 
   sendInvite(email: string) {

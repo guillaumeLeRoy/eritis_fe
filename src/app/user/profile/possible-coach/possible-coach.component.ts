@@ -1,24 +1,23 @@
 import {AfterViewInit, ChangeDetectorRef, Component, OnDestroy, OnInit} from "@angular/core";
 import {ActivatedRoute, Router} from "@angular/router";
-import {AdminAPIService} from "../../../../service/adminAPI.service";
+import {AdminAPIService} from "../../../service/adminAPI.service";
 import {Subscription} from "rxjs/Subscription";
 import {Observable} from "rxjs/Observable";
-import {Coach} from "../../../../model/Coach";
-import {CoachCoacheeService} from "app/service/coach_coachee.service";
+import {PossibleCoach} from "../../../model/PossibleCoach";
 
 declare var Materialize: any;
 
 @Component({
-  selector: 'er-profile-coach-admin',
-  templateUrl: './profile-coach-admin.component.html',
-  styleUrls: ['./profile-coach-admin.component.scss']
+  selector: 'er-possible-coach',
+  templateUrl: './possible-coach.component.html',
+  styleUrls: ['./possible-coach.component.css']
 })
-export class ProfileCoachAdminComponent implements OnInit, AfterViewInit, OnDestroy {
+export class PossibleCoachComponent implements OnInit, AfterViewInit, OnDestroy {
 
-  private coach: Observable<Coach>;
+  private coach: Observable<PossibleCoach>;
   private subscriptionGetCoach: Subscription;
 
-  constructor(private apiService: AdminAPIService, private router: Router, private cd: ChangeDetectorRef, private coachService: CoachCoacheeService, private route: ActivatedRoute) {
+  constructor(private apiService: AdminAPIService, private router: Router, private cd: ChangeDetectorRef, private route: ActivatedRoute) {
   }
 
   ngOnInit() {
@@ -32,9 +31,9 @@ export class ProfileCoachAdminComponent implements OnInit, AfterViewInit, OnDest
       (params: any) => {
         let coachId = params['id'];
 
-        this.coachService.getCoachForId(coachId).subscribe(
-          (coach: Coach) => {
-            console.log("gotCoach", coach);
+        this.apiService.getPossibleCoach(coachId).subscribe(
+          (coach: PossibleCoach) => {
+            console.log("getPossibleCoach", coach);
 
             this.coach = Observable.of(coach);
             this.cd.detectChanges();
@@ -77,4 +76,5 @@ export class ProfileCoachAdminComponent implements OnInit, AfterViewInit, OnDest
       this.subscriptionGetCoach.unsubscribe();
     }
   }
+
 }

@@ -22,8 +22,12 @@ export class CoachItemComponent implements OnInit {
 
   }
 
-  goToCoachProfile(coachId: String) {
-    window.scrollTo(0, 0);
+  goToCoachProfile(coachId: string) {
+    console.log("goToCoachProfile");
+
+    console.log("goToCoachProfile, %s : ", coachId);
+
+    // window.scrollTo(0, 0);
     this.router.navigate(['/profile_coach_admin', coachId]);
   }
 
