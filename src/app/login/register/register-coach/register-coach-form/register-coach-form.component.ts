@@ -1,9 +1,10 @@
-import { Component, OnInit } from '@angular/core';
-import {FormGroup, Validators, FormBuilder} from '@angular/forms';
-import {AuthService} from '../../../../service/auth.service';
-import {Router} from '@angular/router';
-import {Headers, Response} from '@angular/http';
+import {Component, OnInit} from "@angular/core";
+import {FormBuilder, FormGroup, Validators} from "@angular/forms";
+import {AuthService} from "../../../../service/auth.service";
+import {Router} from "@angular/router";
+import {Headers, Response} from "@angular/http";
 import {Observable} from "rxjs/Observable";
+import {environment} from "../../../../../environments/environment";
 
 declare var $: any;
 declare var Materialize: any;
@@ -22,7 +23,8 @@ export class RegisterCoachFormComponent implements OnInit {
   private avatarUrl: File;
   private insuranceUrl: File;
 
-  constructor(private formBuilder: FormBuilder, private authService: AuthService, private router: Router) { }
+  constructor(private formBuilder: FormBuilder, private authService: AuthService, private router: Router) {
+  }
 
   ngOnInit() {
     window.scrollTo(0, 0);
@@ -32,20 +34,20 @@ export class RegisterCoachFormComponent implements OnInit {
       name: ['', Validators.required],
       surname: ['', Validators.required],
       avatar: [''],
-      linkedin: [''],
-      description: [''],
-      formation: [''],
-      diplomas: [''],
-      otherActivities: [''],
-      experienceTime: [''],
-      experienceVisio: [''],
-      coachingHours: [''],
-      supervision: [''],
-      preferedCoaching: [''],
-      status: [''],
-      ca1: [''],
-      ca2: [''],
-      ca3: [''],
+      linkedin: ['', Validators.required],
+      description: ['', Validators.required],
+      formation: ['', Validators.required],
+      diplomas: ['', Validators.required],
+      otherActivities: ['', Validators.required],
+      experienceTime: ['', Validators.required],
+      experienceVisio: ['', Validators.required],
+      coachingHours: ['', Validators.required],
+      supervision: ['', Validators.required],
+      preferedCoaching: ['', Validators.required],
+      status: ['', Validators.required],
+      ca1: ['', Validators.required],
+      ca2: ['', Validators.required],
+      ca3: ['', Validators.required],
       insurance: ['']
     });
   }
@@ -79,7 +81,7 @@ export class RegisterCoachFormComponent implements OnInit {
     this.onRegisterLoading = true;
 
     return this.updatePossibleCoach().flatMap(
-      (res: Response)  => {
+      (res: Response) => {
         console.log("onRegister, userCreated");
         return this.updatePossibleCoachPicture();
       }
@@ -102,18 +104,74 @@ export class RegisterCoachFormComponent implements OnInit {
     );
   }
 
+  displayAutoCompleteButton() {
+    return !environment.production
+  }
+
+  /**
+   * Complete the form with fake values
+   */
+  autoCompleteForm() {
+    console.log('autoCompleteForm');
+
+    let random = Math.floor(Math.random() * 100);
+
+    console.log('autoCompleteForm, random : ', random);
+
+    let email = 'coach.1.eritis@gmail.com';
+    let name = 'auto_complete_name_' + random;
+    let surname = 'auto_complete_surname_' + random;
+    let linkedin = 'https://www.linkedin.com/in/guillaume-le-roy-33310949/';
+    let description = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum';
+
+    this.registerForm = this.formBuilder.group({
+      email: [email, [Validators.required, Validators.pattern('[a-z0-9!#$%&\'*+/=?^_`{|}~-]+(?:.[a-z0-9!#$%&\'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?')]],
+      name: [name, Validators.required],
+      surname: [surname, Validators.required],
+      avatar: [''],
+      linkedin: [linkedin, Validators.required],
+      description: [description, Validators.required],
+      formation: ['auto complete formation', Validators.required],
+      diplomas: ['auto complete diplomas', Validators.required],
+      otherActivities: ['auto complete other activities', Validators.required],
+      experienceTime: ['auto complete  experience time', Validators.required],
+      experienceVisio: ['auto complete experience visio conf, Lorem ipsum dolor sit amet, consectetur adipiscing elit, ', Validators.required],
+      coachingHours: ['auto complete coaching hours ' + random, Validators.required],
+      supervision: ['auto complete supervision', Validators.required],
+      preferedCoaching: ['auto complete prefered coaching', Validators.required],
+      status: ['auto complete status', Validators.required],
+      ca1: ['auto complete ca1', Validators.required],
+      ca2: ['auto complete ca2', Validators.required],
+      ca3: ['auto complete ca3', Validators.required],
+      insurance: ['']
+    });
+
+    // this.registerForm.controls['dept'].setValue(selected.id);
+
+  }
+
   private updatePossibleCoach(): Observable<Response> {
     console.log('updatePossibleCoach');
 
-    // TODO create body
     let body = {
       'email': this.registerForm.value.email,
       'firstName': this.registerForm.value.name,
-      'lastName': this.registerForm.value.surname
+      'lastName': this.registerForm.value.surname,
+      'linkedin_url': this.registerForm.value.linkedin,
+      'description': this.registerForm.value.description,
+      'training': this.registerForm.value.formation,
+      'degree': this.registerForm.value.diplomas,
+      'extraActivities': this.registerForm.value.otherActivities,
+      'coachForYears': this.registerForm.value.experienceTime,
+      'coachingExperience': this.registerForm.value.experienceVisio,
+      'coachingHours': this.registerForm.value.coachingHours,
+      'supervisor': this.registerForm.value.supervision,
+      'favoriteCoachingSituation': this.registerForm.value.preferedCoaching,
+      'status': this.registerForm.value.status,
+      'revenue': this.registerForm.value.ca1 + "_" + this.registerForm.value.ca2 + "_" + this.registerForm.value.ca2,
     }
 
     let params = []
-
     return this.authService.putNotAuth(AuthService.UPDATE_POSSIBLE_COACH, params, body).map(
       response => {
         let res = response.json();
@@ -147,6 +205,8 @@ export class RegisterCoachFormComponent implements OnInit {
           console.log('updatePossibleCoachPicture error', error);
         }
       );
+    } else {
+      return Observable.of(null);
     }
   }
 
@@ -162,16 +222,17 @@ export class RegisterCoachFormComponent implements OnInit {
       headers.append('Accept', 'application/json');
 
       let params = [];
-
       return this.authService.putNotAuth(AuthService.UPDATE_POSSIBLE_COACH_ASSURANCE_DOC, params, formData, {headers: headers}).map(
         response => {
           let res = response.json();
           console.log('updatePossibleCoachAssuranceDoc success', res);
           return res;
-        }, error =>{
+        }, error => {
           console.log('updatePossibleCoachAssuranceDoc error', error);
         }
       );
+    } else {
+      return Observable.of(null);
     }
   }
 }

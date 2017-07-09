@@ -20,19 +20,41 @@ export class PossibleCoach {
 
   id: string;
 
-  email: string;
+  inscription_date: string;
 
-  avatar_url: string;
+  email: string;
 
   firstName: string;
 
   lastName: string;
 
-  inscription_date: string;
+  linkedin_url: string;
 
   description: string;
 
-  chat_room_url: string;
+  training: string;
+
+  degree: string;
+
+  extraActivities: string;
+
+  coachForYears: string;
+
+  coachingExperience: string;
+
+  coachingHours: string;
+
+  supervisor: string;
+
+  favoriteCoachingSituation: string;
+
+  status: string;
+
+  revenues: string;
+
+  avatar_url: string;
+
+  assurance_url: string;
 
   invite_sent: boolean;
 

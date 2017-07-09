@@ -14,7 +14,7 @@ declare var Materialize: any;
 })
 export class PossibleCoachComponent implements OnInit, AfterViewInit, OnDestroy {
 
-  private coach: Observable<PossibleCoach>;
+  private possibleCoach: Observable<PossibleCoach>;
   private subscriptionGetCoach: Subscription;
 
   constructor(private apiService: AdminAPIService, private router: Router, private cd: ChangeDetectorRef, private route: ActivatedRoute) {
@@ -32,10 +32,10 @@ export class PossibleCoachComponent implements OnInit, AfterViewInit, OnDestroy 
         let coachId = params['id'];
 
         this.apiService.getPossibleCoach(coachId).subscribe(
-          (coach: PossibleCoach) => {
-            console.log("getPossibleCoach", coach);
+          (possibleCoach: PossibleCoach) => {
+            console.log("getPossibleCoach", possibleCoach);
 
-            this.coach = Observable.of(coach);
+            this.possibleCoach = Observable.of(possibleCoach);
             this.cd.detectChanges();
 
           }, (error) => {
