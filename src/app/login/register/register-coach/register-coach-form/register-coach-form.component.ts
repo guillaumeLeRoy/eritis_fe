@@ -158,6 +158,7 @@ export class RegisterCoachFormComponent implements OnInit {
       'firstName': this.registerForm.value.name,
       'lastName': this.registerForm.value.surname,
       'linkedin_url': this.registerForm.value.linkedin,
+      'assurance_url': this.registerForm.value.insurance,
       'description': this.registerForm.value.description,
       'training': this.registerForm.value.formation,
       'degree': this.registerForm.value.diplomas,
