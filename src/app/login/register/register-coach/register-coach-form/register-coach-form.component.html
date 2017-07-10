@@ -4,15 +4,15 @@
     <h2 class="black-text">Formulaire d'inscription</h2>
 
     <div class="form-save-buttons">
-      <p>Vous pouvez enregistrer vos réponses pour y revenir plus tard ou compléter automatiquement le formulaire avec vos réponses précédemment enregistrées.</p>
-      <button class="btn-basic btn-plain btn-small btn-blue"
-              (click)="autoCompleteForm()" [disabled]="!hasSavedValues">
-        Auto-compléter</button>
+      <p>Les réponses que vous rentrez sont sauvegardées, vous pouvez donc revenir à ce formulaire ultérieurement.</p>
+      <!--<button class="btn-basic btn-plain btn-small btn-blue"-->
+              <!--(click)="autoCompleteForm()" -->
+              <!--[disabled]="!hasSavedValues">Auto-compléter</button>-->
       <button class="btn-basic btn-blue btn-plain btn-small"
               (click)="saveFormValues()">Enregistrer</button>
     </div>
 
-    <form [formGroup]="registerForm">
+    <form [formGroup]="registerForm" (change)="saveFormValues()">
       <div class="row">
 
         <div class="col-lg-6">

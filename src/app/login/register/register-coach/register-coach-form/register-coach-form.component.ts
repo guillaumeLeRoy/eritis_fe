@@ -54,16 +54,16 @@ export class RegisterCoachFormComponent implements OnInit {
       insurance: ['']
     });
 
-    this.hasSavedFormValues();
+    this.getSavedFormValues();
   }
 
-  private hasSavedFormValues() {
-    let cookie = this.cookieService.get('COACH_REGISTER_FORM_VALUES');
-    console.log('hasSavedFormValues, ', cookie);
-    if (cookie !== null && cookie !== undefined) {
-      this.hasSavedValues = true;
-    }
-  }
+  // private hasSavedFormValues() {
+  //   let cookie = this.cookieService.get('COACH_REGISTER_FORM_VALUES');
+  //   console.log('hasSavedFormValues, ', cookie);
+  //   if (cookie !== null && cookie !== undefined) {
+  //     this.hasSavedValues = true;
+  //   }
+  // }
 
   private getSavedFormValues() {
     let cookie = this.cookieService.getObject('COACH_REGISTER_FORM_VALUES');
@@ -97,7 +97,6 @@ export class RegisterCoachFormComponent implements OnInit {
     let date = (new Date());
     date.setFullYear(2030);
     this.cookieService.putObject('COACH_REGISTER_FORM_VALUES', this.registerForm.value, {expires: date.toDateString()});
-    Materialize.toast('Vos réponses ont été enregistrées !', 3000, 'rounded');
   }
 
   filePreview(event: any, type: string) {
