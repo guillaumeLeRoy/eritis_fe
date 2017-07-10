@@ -38,14 +38,14 @@
       </ol>
 
       <br><br>
-      <input type="checkbox" id="check-deontologie" [(ngModel)]="conditionsChecked"/>
+      <input type="checkbox" id="check-deontologie" [(ngModel)]="conditionsChecked" (change)="toggleAcceptedConditions()"/>
       <label for="check-deontologie">J'ai lu et j'accepte le <a (click)="goToDeontologie()">code de déontologie</a></label>
 
       <br><br>
       <div class="text-center">
         <button class="btn-basic btn-plain btn-small btn-blue"
                 (click)="goToForm()"
-                [disabled]="!conditionsChecked">Continuer</button>
+                [disabled]="!hasAcceptedConditions()">Continuer</button>
       </div>
     </div>
   </div>

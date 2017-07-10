@@ -32,6 +32,10 @@ export class RegisterCoachFormComponent implements OnInit {
   ngOnInit() {
     window.scrollTo(0, 0);
 
+    if (!this.hasAcceptedConditions()) {
+      this.router.navigate(['register_coach/step1']);
+    }
+
     this.registerForm = this.formBuilder.group({
       email: ['', [Validators.required, Validators.pattern('[a-z0-9!#$%&\'*+/=?^_`{|}~-]+(?:.[a-z0-9!#$%&\'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?')]],
       name: ['', Validators.required],
@@ -56,6 +60,15 @@ export class RegisterCoachFormComponent implements OnInit {
 
     this.getSavedFormValues();
   }
+
+  hasAcceptedConditions() {
+    let cookie = this.cookieService.get('COACH_REGISTER_CONDITIONS_ACCEPTED');
+    console.log('Coach register conditions accepted, ', cookie);
+    if (cookie !== null && cookie !== undefined) {
+      return true;
+    }
+  }
+
 
   // private hasSavedFormValues() {
   //   let cookie = this.cookieService.get('COACH_REGISTER_FORM_VALUES');
@@ -142,6 +155,7 @@ export class RegisterCoachFormComponent implements OnInit {
         console.log("onRegister success", res);
         Materialize.toast('Votre candiature a été envoyée !', 3000, 'rounded');
         this.onRegisterLoading = false;
+        this.cookieService.put('COACH_REGISTER_FORM_SENT', 'true');
         this.router.navigate(['register_coach/step3']);
       }, (error) => {
         console.log('onRegister error', error);
