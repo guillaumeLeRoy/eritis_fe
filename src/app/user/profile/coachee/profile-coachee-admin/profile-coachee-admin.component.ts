@@ -2,8 +2,8 @@ import {AfterViewInit, ChangeDetectorRef, Component, OnDestroy, OnInit} from '@a
 import {Observable} from "rxjs/Observable";
 import {Subscription} from "rxjs/Subscription";
 import {Coachee} from "../../../../model/Coachee";
-import {CoachCoacheeService} from "../../../../service/coach_coachee.service";
 import {ActivatedRoute, Router} from "@angular/router";
+import {AdminAPIService} from "../../../../service/adminAPI.service";
 
 @Component({
   selector: 'rb-profile-coachee-admin',
@@ -15,7 +15,7 @@ export class ProfileCoacheeAdminComponent implements OnInit, AfterViewInit, OnDe
   private coachee: Observable<Coachee>;
   private subscriptionGetCoachee: Subscription;
 
-  constructor(private router: Router, private cd: ChangeDetectorRef, private coachService: CoachCoacheeService, private route: ActivatedRoute) {
+  constructor(private router: Router, private cd: ChangeDetectorRef, private apiService: AdminAPIService, private route: ActivatedRoute) {
   }
 
   ngOnInit() {
@@ -23,12 +23,12 @@ export class ProfileCoacheeAdminComponent implements OnInit, AfterViewInit, OnDe
     this.getCoachee();
   }
 
-  getCoachee() {
+  private getCoachee() {
     this.subscriptionGetCoachee = this.route.params.subscribe(
       (params: any) => {
         let coacheeId = params['id'];
 
-        this.coachService.getCoacheeForId(coacheeId).subscribe(
+        this.apiService.getCoachee(coacheeId).subscribe(
           (coachee: Coachee) => {
             console.log("gotCoachee", coachee);
             this.coachee = Observable.of(coachee);

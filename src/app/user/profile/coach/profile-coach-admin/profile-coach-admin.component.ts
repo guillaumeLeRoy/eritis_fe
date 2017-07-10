@@ -18,7 +18,7 @@ export class ProfileCoachAdminComponent implements OnInit, AfterViewInit, OnDest
   private coach: Observable<Coach>;
   private subscriptionGetCoach: Subscription;
 
-  constructor(private apiService: AdminAPIService, private router: Router, private cd: ChangeDetectorRef, private coachService: CoachCoacheeService, private route: ActivatedRoute) {
+  constructor(private apiService: AdminAPIService, private router: Router, private cd: ChangeDetectorRef, private route: ActivatedRoute) {
   }
 
   ngOnInit() {
@@ -26,21 +26,15 @@ export class ProfileCoachAdminComponent implements OnInit, AfterViewInit, OnDest
   }
 
   private getCoach() {
-    console.log("getCoach");
-
     this.subscriptionGetCoach = this.route.params.subscribe(
       (params: any) => {
         let coachId = params['id'];
 
-        this.coachService.getCoachForId(coachId).subscribe(
+        this.apiService.getCoach(coachId).subscribe(
           (coach: Coach) => {
             console.log("gotCoach", coach);
-
             this.coach = Observable.of(coach);
             this.cd.detectChanges();
-
-          }, (error) => {
-            console.log('getCoach, error', error);
           }
         );
       }

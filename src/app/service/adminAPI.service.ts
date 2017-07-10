@@ -55,6 +55,16 @@ export class AdminAPIService {
     );
   }
 
+  getCoach(id: string): Observable<Coach> {
+    let params = [id];
+    return this.get(AuthService.ADMIN_GET_COACH, params).map(
+      (res: Response) => {
+        let coach: Coach = res.json();
+        return coach;
+      }
+    );
+  }
+
   getCoachees(): Observable<Array<Coachee>> {
     return this.get(AuthService.ADMIN_GET_COACHEES, null).map(
       (res: Response) => {
@@ -64,11 +74,31 @@ export class AdminAPIService {
     );
   }
 
+  getCoachee(id: string): Observable<Coachee> {
+    let params = [id];
+    return this.get(AuthService.ADMIN_GET_COACHEE, params).map(
+      (res: Response) => {
+        let coachee: Coachee = res.json();
+        return coachee;
+      }
+    );
+  }
+
   getRhs(): Observable<Array<HR>> {
     return this.get(AuthService.ADMIN_GET_RHS, null).map(
       (res: Response) => {
         let HRs: Array<HR> = res.json();
         return HRs;
+      }
+    );
+  }
+
+  getRh(id: string): Observable<HR> {
+    let params = [id];
+    return this.get(AuthService.ADMIN_GET_RH, params).map(
+      (res: Response) => {
+        let rh: HR = res.json();
+        return rh;
       }
     );
   }

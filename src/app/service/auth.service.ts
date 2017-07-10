@@ -64,8 +64,11 @@ export class AuthService {
   /* admin */
   public static GET_ADMIN = "/v1/admins/user";
   public static ADMIN_GET_COACHS = "/v1/admins/coachs";
+  public static ADMIN_GET_COACH = "/v1/admins/coachs/:id";
   public static ADMIN_GET_COACHEES = "/v1/admins/coachees";
+  public static ADMIN_GET_COACHEE = "/v1/admins/coachees/:id";
   public static ADMIN_GET_RHS = "/v1/admins/rhs";
+  public static ADMIN_GET_RH = "/v1/admins/rhs/:id";
   public static ADMIN_GET_POSSIBLE_COACHS = "/v1/admins/possible_coachs";
   public static ADMIN_GET_POSSIBLE_COACH = "/v1/admins/possible_coachs/:id";
 
