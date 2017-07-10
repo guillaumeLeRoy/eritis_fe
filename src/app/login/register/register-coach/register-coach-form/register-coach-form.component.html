@@ -3,14 +3,14 @@
 
     <h2 class="black-text">Formulaire d'inscription</h2>
 
-    <br>
-
-    <button *ngIf="displayAutoCompleteButton()" class="btn-basic btn-plain btn-small btn-blue"
-            (click)="autoCompleteForm()">
-      Auto-compléter
-    </button>
-
-    <br>
+    <div class="form-save-buttons">
+      <p>Vous pouvez enregistrer vos réponses pour y revenir plus tard ou compléter automatiquement le formulaire avec vos réponses précédemment enregistrées.</p>
+      <button class="btn-basic btn-plain btn-small btn-blue"
+              (click)="autoCompleteForm()" [disabled]="!hasSavedValues">
+        Auto-compléter</button>
+      <button class="btn-basic btn-blue btn-plain btn-small"
+              (click)="saveFormValues()">Enregistrer</button>
+    </div>
 
     <form [formGroup]="registerForm">
       <div class="row">

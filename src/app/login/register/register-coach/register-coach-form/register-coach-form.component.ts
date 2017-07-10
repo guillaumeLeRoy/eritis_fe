@@ -5,6 +5,7 @@ import {Router} from "@angular/router";
 import {Headers, Response} from "@angular/http";
 import {Observable} from "rxjs/Observable";
 import {environment} from "../../../../../environments/environment";
+import {CookieService} from "ngx-cookie";
 
 declare var $: any;
 declare var Materialize: any;
@@ -20,10 +21,12 @@ export class RegisterCoachFormComponent implements OnInit {
 
   private onRegisterLoading = false;
 
+  private hasSavedValues = false;
+
   private avatarUrl: File;
   private insuranceUrl: File;
 
-  constructor(private formBuilder: FormBuilder, private authService: AuthService, private router: Router) {
+  constructor(private formBuilder: FormBuilder, private authService: AuthService, private router: Router, private cookieService: CookieService) {
   }
 
   ngOnInit() {
@@ -50,6 +53,51 @@ export class RegisterCoachFormComponent implements OnInit {
       ca3: ['', Validators.required],
       insurance: ['']
     });
+
+    this.hasSavedFormValues();
+  }
+
+  private hasSavedFormValues() {
+    let cookie = this.cookieService.get('COACH_REGISTER_FORM_VALUES');
+    console.log('hasSavedFormValues, ', cookie);
+    if (cookie !== null && cookie !== undefined) {
+      this.hasSavedValues = true;
+    }
+  }
+
+  private getSavedFormValues() {
+    let cookie = this.cookieService.getObject('COACH_REGISTER_FORM_VALUES');
+    console.log("getSavedFormValues", cookie);
+    if (cookie !== null && cookie !== undefined) {
+      this.registerForm = this.formBuilder.group({
+        email: [cookie['email'], [Validators.required, Validators.pattern('[a-z0-9!#$%&\'*+/=?^_`{|}~-]+(?:.[a-z0-9!#$%&\'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?')]],
+        name: [cookie['name'], Validators.required],
+        surname: [cookie['surname'], Validators.required],
+        avatar: [cookie['avatar']],
+        linkedin: [cookie['linkedin'], Validators.required],
+        description: [cookie['description'], Validators.required],
+        formation: [cookie['formation'], Validators.required],
+        diplomas: [cookie['diplomas'], Validators.required],
+        otherActivities: [cookie['otherActivities'], Validators.required],
+        experienceTime: [cookie['experienceTime'], Validators.required],
+        experienceVisio: [cookie['experienceVisio'], Validators.required],
+        coachingHours: [cookie['coachingHours'], Validators.required],
+        supervision: [cookie['supervision'], Validators.required],
+        preferedCoaching: [cookie['preferedCoaching'], Validators.required],
+        status: [cookie['status'], Validators.required],
+        ca1: [cookie['ca1'], Validators.required],
+        ca2: [cookie['ca2'], Validators.required],
+        ca3: [cookie['ca3'], Validators.required],
+        insurance: [cookie['insurance']]
+      });
+    }
+  }
+
+  saveFormValues() {
+    let date = (new Date());
+    date.setFullYear(2030);
+    this.cookieService.putObject('COACH_REGISTER_FORM_VALUES', this.registerForm.value, {expires: date.toDateString()});
+    Materialize.toast('Vos réponses ont été enregistrées !', 3000, 'rounded');
   }
 
   filePreview(event: any, type: string) {
@@ -113,41 +161,7 @@ export class RegisterCoachFormComponent implements OnInit {
    */
   autoCompleteForm() {
     console.log('autoCompleteForm');
-
-    let random = Math.floor(Math.random() * 100);
-
-    console.log('autoCompleteForm, random : ', random);
-
-    let email = 'coach.1.eritis@gmail.com';
-    let name = 'auto_complete_name_' + random;
-    let surname = 'auto_complete_surname_' + random;
-    let linkedin = 'https://www.linkedin.com/in/guillaume-le-roy-33310949/';
-    let description = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum';
-
-    this.registerForm = this.formBuilder.group({
-      email: [email, [Validators.required, Validators.pattern('[a-z0-9!#$%&\'*+/=?^_`{|}~-]+(?:.[a-z0-9!#$%&\'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?')]],
-      name: [name, Validators.required],
-      surname: [surname, Validators.required],
-      avatar: [''],
-      linkedin: [linkedin, Validators.required],
-      description: [description, Validators.required],
-      formation: ['auto complete formation', Validators.required],
-      diplomas: ['auto complete diplomas', Validators.required],
-      otherActivities: ['auto complete other activities', Validators.required],
-      experienceTime: ['auto complete  experience time', Validators.required],
-      experienceVisio: ['auto complete experience visio conf, Lorem ipsum dolor sit amet, consectetur adipiscing elit, ', Validators.required],
-      coachingHours: ['auto complete coaching hours ' + random, Validators.required],
-      supervision: ['auto complete supervision', Validators.required],
-      preferedCoaching: ['auto complete prefered coaching', Validators.required],
-      status: ['auto complete status', Validators.required],
-      ca1: ['auto complete ca1', Validators.required],
-      ca2: ['auto complete ca2', Validators.required],
-      ca3: ['auto complete ca3', Validators.required],
-      insurance: ['']
-    });
-
-    // this.registerForm.controls['dept'].setValue(selected.id);
-
+    this.getSavedFormValues();
   }
 
   private updatePossibleCoach(): Observable<Response> {
