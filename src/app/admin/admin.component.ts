@@ -22,7 +22,6 @@ export class AdminComponent implements OnInit {
   }
 
   getAdmin() {
-
     if (environment.production) {
       this.adminHttpService.getAdmin().subscribe(
         (admin: Admin) => {
@@ -32,11 +31,14 @@ export class AdminComponent implements OnInit {
         },
         error => {
           console.log('getAdmin, error obtained', error);
-
         }
       );
     }
+  }
 
+  isOnProfile() {
+    let admin = new RegExp('/profile');
+    return admin.test(this.router.url);
   }
 
   navigateAdminHome() {

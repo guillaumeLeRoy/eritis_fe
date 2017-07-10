@@ -2,13 +2,13 @@
   <h4 class="col-lg-12 black-text">Nos coachs</h4>
 
   <div class="col-lg-12 card collection">
-    <div *ngIf="(coachs | async) != null">
+    <div *ngIf="(coachs | async) != null  && (coachs | async).length > 0">
       <div class="collection-item" *ngFor="let coach of coachs | async">
         <rb-coach-item [coach]="coach"></rb-coach-item>
       </div>
     </div>
 
-    <div class="text-center" *ngIf="(coachs | async) == null">
+    <div class="text-center" *ngIf="(coachs | async) == null || (coachs | async).length < 1">
       <h5 class="no-meeting">Les coachs apparaîtront ici</h5>
     </div>
   </div>

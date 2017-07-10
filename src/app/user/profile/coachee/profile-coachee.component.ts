@@ -24,7 +24,6 @@ export class ProfileCoacheeComponent implements OnInit, AfterViewInit, OnDestroy
   private user: Observable<Coach | Coachee | HR>;
   private coachee: Observable<Coachee>;
   private isOwner = false;
-  private isAdmin = false;
   private subscriptionGetCoachee: Subscription;
   private subscriptionGetUser: Subscription;
 
@@ -54,7 +53,6 @@ export class ProfileCoacheeComponent implements OnInit, AfterViewInit, OnDestroy
     this.subscriptionGetCoachee = this.route.params.subscribe(
       (params: any) => {
         let coacheeId = params['id'];
-        this.isAdmin = params['admin'];
 
         this.coachService.getCoacheeForId(coacheeId).subscribe(
           (coachee: Coachee) => {

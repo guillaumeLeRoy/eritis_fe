@@ -1,27 +1,22 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {Coachee} from "../../model/Coachee";
 import {Router} from "@angular/router";
+import {HR} from "../../../model/HR";
 
 @Component({
-  selector: 'rb-coachee-item',
-  templateUrl: './coachee-item.component.html',
-  styleUrls: ['./coachee-item.component.scss']
+  selector: 'rb-rh-item',
+  templateUrl: './rh-item.component.html',
+  styleUrls: ['./rh-item.component.scss']
 })
-export class CoacheeItemComponent implements OnInit {
+export class RhItemComponent implements OnInit {
 
   @Input()
-  coachee: Coachee;
+  rh: HR;
 
   months = ['Janvier', 'Février', 'Mars', 'Avril', 'Mai', 'Juin', 'Juillet', 'Août', 'Septembre', 'Octobre', 'Novembre', 'Décembre'];
 
   constructor(private router: Router) { }
 
   ngOnInit() {
-  }
-
-  goToCoacheeProfile(coacheeId: String) {
-    window.scrollTo(0, 0);
-    this.router.navigate(['/profile_coachee', '1', coacheeId]);
   }
 
   printDateString(date: string) {

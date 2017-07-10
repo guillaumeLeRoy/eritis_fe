@@ -8,11 +8,11 @@ import {PossibleCoach} from "../../../model/PossibleCoach";
 declare var Materialize: any;
 
 @Component({
-  selector: 'er-possible-coach',
-  templateUrl: './possible-coach.component.html',
-  styleUrls: ['./possible-coach.component.css']
+  selector: 'rb-possible-coach',
+  templateUrl: './profile-possible-coach.component.html',
+  styleUrls: ['./profile-possible-coach.component.scss']
 })
-export class PossibleCoachComponent implements OnInit, AfterViewInit, OnDestroy {
+export class ProfilePossibleCoachComponent implements OnInit, AfterViewInit, OnDestroy {
 
   private possibleCoach: Observable<PossibleCoach>;
   private subscriptionGetCoach: Subscription;
@@ -66,8 +66,8 @@ export class PossibleCoachComponent implements OnInit, AfterViewInit, OnDestroy 
     );
   }
 
-  goToCoachsAdmin() {
-    this.router.navigate(['admin/coachs-list']);
+  goToPossibleCoachsAdmin() {
+    this.router.navigate(['admin/possible_coachs-list']);
   }
 
   ngOnDestroy(): void {

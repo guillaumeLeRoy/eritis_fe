@@ -43,9 +43,15 @@ a{
   cursor: pointer;
 }
 
+a,
 a:hover,
-a:focus{
+a:focus,
+a:visited{
   color: $main-electric-blue !important;
+}
+
+a:hover {
+  font-weight: bold;
 }
 
 p {
@@ -61,7 +67,7 @@ p {
   border-radius: 64px;
   background-color: transparent;
   border: solid 2px $main-white-color;
-  color: $main-white-color;
+  color: $main-white-color !important;
   font-size: 25px;
   padding: 16px 16px;
   /*margin-top: 32px;*/
@@ -69,6 +75,7 @@ p {
   vertical-align: baseline;
   transition: .3s;
   min-width: 200px;
+  font-weight: normal !important;
 }
 
 .btn-basic:disabled{
@@ -82,7 +89,7 @@ p {
 .btn-basic:focus,
 .btn-plain{
   background-color: $main-white-color;
-  color: $main-dark-grey;
+  color: $main-dark-grey !important;
 }
 
 .btn-basic:hover{
@@ -92,19 +99,19 @@ p {
 .btn-basic.btn-blue{
   background-color: transparent;
   border-color: $main-electric-blue;
-  color: $main-electric-blue;
+  color: $main-electric-blue !important;
 }
 
 .btn-basic.btn-red{
   background-color: transparent;
   border-color: $main-red-color;
-  color: $main-red-color;
+  color: $main-red-color !important;
 }
 
 .btn-basic.btn-green{
   background-color: transparent;
   border-color: $main-light-green;
-  color: $main-light-green;
+  color: $main-light-green !important;
 }
 
 .btn-plain.btn-red,
@@ -112,7 +119,7 @@ p {
 .btn-red:focus{
   background-color: $main-red-color;
   border-color: $main-red-color;
-  color: #FFF;
+  color: #FFF !important;
 }
 
 .btn-plain.btn-blue,
@@ -120,7 +127,7 @@ p {
 .btn-blue:focus{
   background-color: $main-electric-blue;
   border-color: $main-electric-blue;
-  color: #fff;
+  color: #FFF !important;
 }
 
 .btn-plain.btn-green,
@@ -128,7 +135,7 @@ p {
 .btn-green:focus{
   background-color: $main-light-green;
   border-color: $main-light-green;
-  color: #fff;
+  color: #FFF !important;
 }
 
 .btn-small{
@@ -150,13 +157,13 @@ a.btn-small {
   width: 40px;
   min-width: auto;
   border-color: $main-light-grey;
-  color: $main-light-grey;
+  color: $main-light-grey !important;
 }
 
 .btn-cancel:hover,
 .btn-cancel:focus {
   background-color: $main-light-grey;
-  color: #FFF;
+  color: #FFF !important;
 }
 
 .black-text{

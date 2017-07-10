@@ -19,13 +19,21 @@
   <h4 class="text-right italic">"{{ (possibleCoach | async)?.description }}"</h4>
   <br>
 
+  <div class="center">
+    <button class="btn-basic btn-plain btn-blue btn-small center" (click)="goToPossibleCoachsAdmin()">Retourner aux demandes de coach</button>
+  </div>
+
+  <br><br>
+
   <div class="row">
 
     <div class="col-lg-12">
       <div class="row">
         <div class="col-lg-12 input-container">
           <label>Profil Linkedin</label>
-          <p>{{ (possibleCoach | async)?.linkedin_url }}</p>
+          <p>
+            <a target="_blank" [href]="(possibleCoach | async)?.linkedin_url">{{ (possibleCoach | async)?.linkedin_url }}</a>
+          </p>
           <br>
         </div>
 
