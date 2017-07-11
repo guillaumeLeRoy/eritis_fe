@@ -24,16 +24,18 @@ nav li a{
 }
 
 nav li.active a{
-  font-weight: bold;
+  font-weight: bold !important;
   font-size: 110%;
   padding: 0;
   margin: 0 16px;
+  opacity: 1;
+
 }
 
 nav li a:hover,
-nav li a:focus,
-nav li.active a{
+nav li a:focus {
   color: #FFF !important;
+  font-weight: normal !important;
   opacity: 1;
 }
 
@@ -254,4 +256,12 @@ nav .notif-delete:hover {
   height: 35px;
   width: 35px;
   margin-right: 4px;
+}
+
+a.button-collapse {
+  color: #FFF !important;
+}
+
+.side-nav-items li a {
+  color: $main-dark-grey !important;
 }

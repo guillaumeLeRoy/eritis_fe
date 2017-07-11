@@ -23,7 +23,9 @@
           <div class="meeting-item-coach">
             <div>
               <!-- image coachee -->
-              <img class="meeting-item-coach-avatar circle img-responsive" alt="coachee" [src]="coachee.avatar_url">
+              <!--<img class="meeting-item-coach-avatar circle img-responsive" alt="coachee" [src]="coachee.avatar_url">-->
+              <div class="meeting-item-coach-avatar avatar"
+                   [style.background-image]="'url(' + coachee.avatar_url + ')'"></div>
             </div>
 
             <div>

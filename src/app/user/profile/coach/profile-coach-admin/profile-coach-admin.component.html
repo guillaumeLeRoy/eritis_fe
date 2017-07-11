@@ -3,7 +3,10 @@
     <div class="container row">
 
       <div class="user col-lg-5">
-        <img src="{{(coach | async)?.avatar_url}}" alt="profile image" class="user-img circle responsive-img z-depth-2">
+        <!--<img src="{{(coach | async)?.avatar_url}}" alt="profile image" class="user-img circle responsive-img z-depth-2">-->
+        <div class="user-img avatar z-depth-2"
+             [style.background-image]="'url(' + (coach | async)?.avatar_url + ')'"></div>
+
         <div class="user-info">
           <h5>{{(coach | async)?.firstName}} {{(coach | async)?.lastName}}</h5>
           <h6>{{(coach | async)?.email}}</h6>

@@ -60,8 +60,10 @@
               <li [hidden]="!(isAuthenticated | async)"
                   [class.active]="router.url === '/profile_coach' || router.url === '/profile_coachee' || router.url === '/profile_rh'">
                 <a class="dropdown-button-profile" data-activates="profil">
-                  <img src="{{(user | async)?.avatar_url}}" alt="profile image"
-                       class="item-user-img circle responsive-img">
+                  <!--<img src="{{(user | async)?.avatar_url}}" alt="profile image"-->
+                       <!--class="item-user-img circle responsive-img">-->
+                  <div class="item-user-img avatar"
+                       [style.background-image]="'url(' + (user | async)?.avatar_url + ')'"></div>
                   {{ (user | async)?.firstName}} {{ (user | async)?.lastName}}
                 </a>
               </li>
@@ -87,8 +89,10 @@
             <div class="side-nav-header" *ngIf="(isAuthenticated | async)">
               <div class="side-nav-header-container  z-depth-1">
                 <div *ngIf="!(isAdminMode | async )">
-                  <img src="{{(user | async)?.avatar_url}}" alt="profile image"
-                       class="side-nav-user-img circle responsive-img z-depth-2">
+                  <!--<img src="{{(user | async)?.avatar_url}}" alt="profile image"-->
+                       <!--class="side-nav-user-img circle responsive-img z-depth-2">-->
+                  <div class="side-nav-user-img avatar z-depth-2"
+                       [style.background-image]="'url(' + (user | async)?.avatar_url + ')'"></div>
                   <div class="side-nav-user-info">
                     <h5>{{ (user | async)?.firstName}} {{ (user | async)?.lastName}}</h5>
                     <span>{{(user | async)?.email}}</span>

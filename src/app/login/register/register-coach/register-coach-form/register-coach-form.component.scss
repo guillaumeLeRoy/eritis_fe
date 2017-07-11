@@ -9,6 +9,13 @@
     font-size: 18px;
   }
 
+  .avatar-container {
+    display: flex;
+    flex-direction: row;
+    align-content: center;
+    align-items: center;
+  }
+
   .input-file-container {
     margin: 16px 0;
     position: relative;

@@ -23,7 +23,9 @@
           <div class="meeting-item-coach has-coach" (click)="goToCoachProfile(coach.id)">
             <div>
               <!-- image coach -->
-              <img class="meeting-item-coach-avatar circle img-responsive" alt="coach" [src]="coach.avatar_url">
+              <!--<img class="meeting-item-coach-avatar circle img-responsive" alt="coach" [src]="coach.avatar_url">-->
+              <div class="meeting-item-coach-avatar avatar"
+                   [style.background-image]="'url(' + coach.avatar_url + ')'"></div>
             </div>
 
             <div>

@@ -122,7 +122,8 @@ export class RegisterCoachFormComponent implements OnInit {
         let reader = new FileReader();
 
         reader.onload = function (e: any) {
-          $('#avatar-preview').attr('src', e.target.result);
+          // $('#avatar-preview').attr('src', e.target.result);
+          $('#avatar-preview').css('background-image', 'url(' + e.target.result + ')');
         }
 
         reader.readAsDataURL(event.target.files[0]);

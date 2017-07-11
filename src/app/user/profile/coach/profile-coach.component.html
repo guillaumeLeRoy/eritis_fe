@@ -3,7 +3,10 @@
     <div class="container row">
 
       <div class="user col-lg-5">
-        <img src="{{(coach | async)?.avatar_url}}" alt="profile image" class="user-img circle responsive-img z-depth-2">
+        <!--<img src="{{(coach | async)?.avatar_url}}" alt="profile image" class="user-img circle responsive-img z-depth-2">-->
+        <div class="user-img avatar z-depth-2"
+             [style.background-image]="'url(' + (coach | async)?.avatar_url + ')'"></div>
+
         <div class="user-info">
           <h5>{{(coach | async)?.firstName}} {{(coach | async)?.lastName}}</h5>
           <h6>{{(coach | async)?.email}}</h6>
@@ -92,10 +95,12 @@
         <div class="col-lg-5">
           <label>Photo de profil</label>
           <div class="row avatar-container">
-            <img [src]="formCoach.value.avatar" alt="profile image"
-                 id="avatar-preview"
-                 class="circle responsive-img z-depth-2">
-
+            <!--<img [src]="formCoach.value.avatar" alt="profile image"-->
+                 <!--id="avatar-preview"-->
+                 <!--class="circle responsive-img z-depth-2">-->
+            <div id="avatar-preview"
+                 class="avatar z-depth-2"
+                 [style.background-image]="'url(' + formCoach.value.avatar + ')'"></div>
             <!--<input id="edit_avatar_url" type="text" class="validate"-->
             <!--formControlName="avatar"-->
             <!--placeholder="http://...">-->
