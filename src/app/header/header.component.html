@@ -87,8 +87,8 @@
           <ul class="side-nav" id="side-nav">
 
             <div class="side-nav-header" *ngIf="(isAuthenticated | async)">
-              <div class="side-nav-header-container  z-depth-1">
-                <div *ngIf="!(isAdminMode | async )">
+              <div>
+                <div class="side-nav-header-container z-depth-1" *ngIf="!(isAdminMode | async )">
                   <!--<img src="{{(user | async)?.avatar_url}}" alt="profile image"-->
                        <!--class="side-nav-user-img circle responsive-img z-depth-2">-->
                   <div class="side-nav-user-img avatar z-depth-2"
@@ -99,7 +99,7 @@
                   </div>
                 </div>
 
-                <div *ngIf="(isAdminMode | async )">
+                <div class="side-nav-header-container z-depth-1" *ngIf="(isAdminMode | async )">
                   <h4>Admin</h4>
                 </div>
               </div>
