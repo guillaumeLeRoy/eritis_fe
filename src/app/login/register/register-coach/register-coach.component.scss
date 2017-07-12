@@ -1,0 +1,21 @@
+@import "../../../../saas/variables";
+
+#introduction,
+#code-deontologie,
+#registerForm{
+  max-width: 1080px;
+  margin: auto;
+  box-sizing: border-box;
+}
+
+.introduction-text {
+  font-size: 18px;
+
+  ol {
+    list-style-type: disc !important;
+  }
+
+  a{
+    color: $main-electric-blue;
+  }
+}

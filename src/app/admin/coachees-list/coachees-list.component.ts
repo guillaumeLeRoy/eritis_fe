@@ -18,6 +18,7 @@ export class CoacheesListComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   ngOnInit() {
+    window.scrollTo(0, 0);
   }
 
   ngAfterViewInit(): void {

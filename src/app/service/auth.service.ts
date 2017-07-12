@@ -12,7 +12,6 @@ import {Coachee} from "../model/Coachee";
 import {LoginResponse} from "../model/LoginResponse";
 import {HR} from "../model/HR";
 import {PotentialCoachee} from "../model/PotentialCoachee";
-import {isUndefined} from "util";
 
 @Injectable()
 export class AuthService {
@@ -29,8 +28,13 @@ export class AuthService {
   public static GET_POTENTIAL_COACH_FOR_TOKEN = "/v1/potentials/coachs/:token";
   public static GET_POTENTIAL_RH_FOR_TOKEN = "/v1/potentials/rhs/:token";
 
+  /* Possible coach */
+  public static UPDATE_POSSIBLE_COACH = "/v1/possible_coachs";
+  public static UPDATE_POSSIBLE_COACH_PICTURE = "/v1/possible_coachs/profile_picture";
+  public static UPDATE_POSSIBLE_COACH_ASSURANCE_DOC = "/v1/possible_coachs/assurance";
+
   /* coachee */
-  public static UPDATE_COACHEE = "v1/coachees/:id";
+  public static UPDATE_COACHEE = "/v1/coachees/:id";
   public static POST_SIGN_UP_COACHEE = "/v1/coachees";
   public static GET_COACHEES = "/v1/coachees";
   public static GET_COACHEE_FOR_ID = "/v1/coachees/:id";
@@ -57,14 +61,18 @@ export class AuthService {
   public static PUT_RH_NOTIFICATIONS_READ = "/v1/rhs/:id/notifications/read";
   public static POST_COACHEE_OBJECTIVE = "/v1/rhs/:uidRH/coachees/:uidCoachee/objective";//create new objective for this coachee
 
-
   /* admin */
   public static GET_ADMIN = "/v1/admins/user";
   public static ADMIN_GET_COACHS = "/v1/admins/coachs";
+  public static ADMIN_GET_COACH = "/v1/admins/coachs/:id";
   public static ADMIN_GET_COACHEES = "/v1/admins/coachees";
+  public static ADMIN_GET_COACHEE = "/v1/admins/coachees/:id";
   public static ADMIN_GET_RHS = "/v1/admins/rhs";
+  public static ADMIN_GET_RH = "/v1/admins/rhs/:id";
+  public static ADMIN_GET_POSSIBLE_COACHS = "/v1/admins/possible_coachs";
+  public static ADMIN_GET_POSSIBLE_COACH = "/v1/admins/possible_coachs/:id";
 
-  /*Meeting*/
+  /* Meeting */
   public static POST_MEETING = "/v1/meetings";
   public static DELETE_MEETING = "/v1/meetings/:meetingId";
   public static GET_MEETING_REVIEWS = "/v1/meetings/:meetingId/reviews";
@@ -178,7 +186,7 @@ export class AuthService {
         return this.getHeader(firebaseUser).flatMap(
           (headers: Headers) => {
 
-            if( options != undefined){
+            if (options != undefined) {
               for (let headerKey of options.headers.keys()) {
                 console.log('post, options headerKey : ', headerKey);
                 console.log('post, options value : ', options.headers.get(headerKey));
@@ -218,6 +226,19 @@ export class AuthService {
       }
     );
     return method;
+  }
+
+  putNotAuth(path: string, params: string[], body: any, options?: RequestOptionsArgs): Observable<Response> {
+    let headers = new Headers();
+    if (options != null)
+      for (let headerKey of options.headers.keys()) {
+        console.log('put, options headerKey : ', headerKey);
+        console.log('put, options value : ', options.headers.get(headerKey));
+
+        headers.append(headerKey, options.headers.get(headerKey));
+      }
+
+    return this.httpService.put(this.generatePath(path, params), body, {headers: headers})
   }
 
   get(path: string, params: string[]): Observable<Response> {

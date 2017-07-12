@@ -21,14 +21,13 @@ declare var Materialize: any;
 })
 
 export class ProfileCoachComponent implements OnInit, AfterViewInit, OnDestroy {
-  zone: any;
 
   private user: Observable<Coach | Coachee | HR>;
   private coach: Observable<Coach>;
-  private isOwner = false;
-  private isAdmin = false;
   private subscriptionGetCoach: Subscription;
   private subscriptionGetUser: Subscription;
+
+  private isOwner = false;
 
   private formCoach: FormGroup;
 
@@ -64,7 +63,6 @@ export class ProfileCoachComponent implements OnInit, AfterViewInit, OnDestroy {
     this.subscriptionGetCoach = this.route.params.subscribe(
       (params: any) => {
         let coachId = params['id'];
-        this.isAdmin = params['admin'];
 
         this.coachService.getCoachForId(coachId).subscribe(
           (coach: Coach) => {
@@ -175,7 +173,8 @@ export class ProfileCoachComponent implements OnInit, AfterViewInit, OnDestroy {
       let reader = new FileReader();
 
       reader.onload = function (e: any) {
-        $('#avatar-preview').attr('src', e.target.result);
+        // $('#avatar-preview').attr('src', e.target.result);
+        $('#avatar-preview').css('background-image', 'url(' + e.target.result + ')');
       }
 
       reader.readAsDataURL(event.target.files[0]);
@@ -184,10 +183,6 @@ export class ProfileCoachComponent implements OnInit, AfterViewInit, OnDestroy {
 
   goToMeetings() {
     this.router.navigate(['/meetings']);
-  }
-
-  goToCoachsAdmin() {
-    this.router.navigate(['admin/coachs-list']);
   }
 
   ngOnDestroy(): void {

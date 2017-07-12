@@ -23,12 +23,14 @@
           <div class="meeting-item-coach">
             <div>
               <!-- image coachee -->
-              <img class="meeting-item-coach-avatar circle img-responsive" alt="coachee" [src]="coachee.avatar_url">
+              <!--<img class="meeting-item-coach-avatar circle img-responsive" alt="coachee" [src]="coachee.avatar_url">-->
+              <div class="meeting-item-coach-avatar avatar"
+                   [style.background-image]="'url(' + coachee.avatar_url + ')'"></div>
             </div>
 
             <div>
               <p class="meeting-item-coach black-text bold">{{ coachee.firstName}} {{ coachee.lastName}}</p>
-              <p class="italic">Inscrit le {{ printDateString(coachee.start_date) }}</p>
+              <span class="italic">Inscrit le {{ printDateString(coachee.start_date) }}</span>
             </div>
           </div>
 
@@ -46,7 +48,7 @@
       <div class="meeting-item-body col-md-12 col-lg-7">
         <div class="meeting-item-body-content">
           <p class="meeting-item-goal">
-            <span class="black-text bold">Objectif personnel: </span>
+            <span class="black-text bold">Objectif de développement</span><br>
             <span *ngIf="coachee.last_objective">{{ coachee.last_objective.objective }}</span>
             <span *ngIf="!coachee.last_objective">n/a</span>
           </p>
@@ -81,8 +83,8 @@
                 </div>
               </div>
               <br>
-            </div>
-          </div>
+            </div><!--enf ngFor-->
+          </div><!--end ngIf-->
         </div>
       </div><!--end meeting-review-->
 
@@ -91,21 +93,23 @@
     <!-- POTENTIAL COACHEE -->
     <div *ngIf="potentialCoachee != null" class="row">
       <div class="meeting-item-header col-lg-12">
-        <div class="meeting-item-coach">
-          <div>
-            <!-- image coachee -->
-            <img class="meeting-item-coach-avatar circle img-responsive" alt="potentialCoachee"
-                 src="https://s-media-cache-ak0.pinimg.com/originals/af/25/49/af25490494d3338afef00869c59fdd37.png">
+        <div>
+          <div class="meeting-item-coach">
+            <div>
+              <!-- image coachee -->
+              <img class="meeting-item-coach-avatar circle img-responsive" alt="potentialCoachee"
+                   src="https://s-media-cache-ak0.pinimg.com/originals/af/25/49/af25490494d3338afef00869c59fdd37.png">
+            </div>
+
+            <div>
+              <p class="meeting-item-coach">{{ potentialCoachee.email }}</p>
+            </div>
           </div>
 
-          <div>
-            <p class="meeting-item-coach">{{ potentialCoachee.email }}</p>
+          <!-- PLAN -->
+          <div class="meeting-item-date">
+            <span class="meeting-item-date-date"><span class="blue-text">{{ potentialCoachee.plan.sessions_count }}</span> séances</span>
           </div>
-        </div>
-
-        <!-- PLAN -->
-        <div class="meeting-item-date">
-          <span class="meeting-item-date-date"><span class="blue-text">{{ potentialCoachee.plan.sessions_count }}</span> séances</span>
         </div>
       </div>
     </div><!--end potentialCoachee-->

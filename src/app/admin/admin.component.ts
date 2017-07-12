@@ -18,11 +18,11 @@ export class AdminComponent implements OnInit {
   }
 
   ngOnInit() {
+    window.scrollTo(0, 0);
     this.getAdmin();
   }
 
   getAdmin() {
-
     if (environment.production) {
       this.adminHttpService.getAdmin().subscribe(
         (admin: Admin) => {
@@ -32,11 +32,14 @@ export class AdminComponent implements OnInit {
         },
         error => {
           console.log('getAdmin, error obtained', error);
-
         }
       );
     }
+  }
 
+  isOnProfile() {
+    let admin = new RegExp('/profile');
+    return admin.test(this.router.url);
   }
 
   navigateAdminHome() {
@@ -47,21 +50,6 @@ export class AdminComponent implements OnInit {
   navigateToSignup() {
     console.log("navigateToSignup")
     this.router.navigate(['admin/signup']);
-  }
-
-  navigateToCoachsList() {
-    console.log("navigateToCoachsList")
-    this.router.navigate(['admin/coachs-list']);
-  }
-
-  navigateToCoacheesList() {
-    console.log("navigateToCoacheesList")
-    this.router.navigate(['admin/coachees-list']);
-  }
-
-  navigateToRhsList() {
-    console.log("navigateToRhsList")
-    this.router.navigate(['admin/rhs-list']);
   }
 
 

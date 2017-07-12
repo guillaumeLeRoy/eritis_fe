@@ -20,15 +20,17 @@
     <div class="row">
       <div class="meeting-item-header col-md-12 col-lg-6">
         <div>
-          <div class="meeting-item-coach" (click)="goToCoacheeProfile(coachee.id)">
+          <div class="meeting-item-coach has-coach" (click)="goToCoacheeProfile(coachee.id)">
             <div>
               <!-- image coachee -->
-              <img class="meeting-item-coach-avatar circle img-responsive" alt="coachee" [src]="coachee.avatar_url">
+              <!--<img class="meeting-item-coach-avatar circle img-responsive" alt="coachee" [src]="coachee.avatar_url">-->
+              <div class="meeting-item-coach-avatar avatar"
+                   [style.background-image]="'url(' + coachee.avatar_url + ')'"></div>
             </div>
 
             <div>
               <p class="meeting-item-coach-name black-text bold">{{ coachee.firstName}} {{ coachee.lastName}}</p>
-              <p class="italic">{{ coachee.email }}</p>
+              <span class="italic">{{ coachee.email }}</span>
             </div>
           </div>
 

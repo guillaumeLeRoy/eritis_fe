@@ -7,6 +7,7 @@ import {Coachee} from "../model/Coachee";
 import {AuthService} from "./auth.service";
 import {Admin} from "../model/Admin";
 import {HR} from "../model/HR";
+import {PossibleCoach} from "../model/PossibleCoach";
 
 @Injectable()
 export class AdminAPIService {
@@ -15,7 +16,10 @@ export class AdminAPIService {
     console.log("ctr done");
   }
 
-  createPotentialCoach(body: any) {
+  createPotentialCoach(email: string) {
+    let body = {
+      "email": email,
+    };
     return this.post(AuthService.POST_POTENTIAL_COACH, null, body).map(
       (res: Response) => {
         let potentialCoach: any = res.json();
@@ -51,6 +55,16 @@ export class AdminAPIService {
     );
   }
 
+  getCoach(id: string): Observable<Coach> {
+    let params = [id];
+    return this.get(AuthService.ADMIN_GET_COACH, params).map(
+      (res: Response) => {
+        let coach: Coach = res.json();
+        return coach;
+      }
+    );
+  }
+
   getCoachees(): Observable<Array<Coachee>> {
     return this.get(AuthService.ADMIN_GET_COACHEES, null).map(
       (res: Response) => {
@@ -60,11 +74,50 @@ export class AdminAPIService {
     );
   }
 
+  getCoachee(id: string): Observable<Coachee> {
+    let params = [id];
+    return this.get(AuthService.ADMIN_GET_COACHEE, params).map(
+      (res: Response) => {
+        let coachee: Coachee = res.json();
+        return coachee;
+      }
+    );
+  }
+
   getRhs(): Observable<Array<HR>> {
     return this.get(AuthService.ADMIN_GET_RHS, null).map(
       (res: Response) => {
         let HRs: Array<HR> = res.json();
         return HRs;
+      }
+    );
+  }
+
+  getRh(id: string): Observable<HR> {
+    let params = [id];
+    return this.get(AuthService.ADMIN_GET_RH, params).map(
+      (res: Response) => {
+        let rh: HR = res.json();
+        return rh;
+      }
+    );
+  }
+
+  getPossibleCoachs(): Observable<Array<Coach>> {
+    return this.get(AuthService.ADMIN_GET_POSSIBLE_COACHS, null).map(
+      (res: Response) => {
+        let coachs: Array<Coach> = res.json();
+        return coachs;
+      }
+    );
+  }
+
+  getPossibleCoach(id: string): Observable<PossibleCoach> {
+    let params = [id];
+    return this.get(AuthService.ADMIN_GET_POSSIBLE_COACH, params).map(
+      (res: Response) => {
+        let possibleCoach: PossibleCoach = res.json();
+        return possibleCoach;
       }
     );
   }
@@ -96,8 +149,6 @@ export class AdminAPIService {
       if (seg == "" || seg == null) {
         continue;
       }
-      // console.log("generatePath, seg : ", seg);
-      // console.log("generatePath, paramIndex : ", paramIndex);
 
       completedPath += "/";
       if (seg.charAt(0) == ":") {

@@ -26,6 +26,7 @@ export class SignupRhComponent implements OnInit {
   }
 
   ngOnInit() {
+    window.scrollTo(0, 0);
     console.log("ngOnInit");
 
     // meetingId should be in the router

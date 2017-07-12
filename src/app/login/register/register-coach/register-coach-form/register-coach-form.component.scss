@@ -1,0 +1,61 @@
+@import "../../../../../saas/variables";
+
+#registerForm{
+  max-width: 1080px ;
+  margin: auto;
+  box-sizing: border-box;
+
+  p {
+    font-size: 18px;
+  }
+
+  .avatar-container {
+    display: flex;
+    flex-direction: row;
+    align-content: center;
+    align-items: center;
+  }
+
+  .input-file-container {
+    margin: 16px 0;
+    position: relative;
+  }
+
+  .input-file-container:hover {
+    .file-upload-buton {
+      box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.16), 0 2px 10px 0 rgba(0, 0, 0, 0.12);
+    }
+  }
+
+  input[type="file"] {
+    position: absolute;
+    left: 0;
+    top: 0;
+    padding: 8px;
+    opacity: .01;
+    cursor: pointer;
+    max-width: 170px;
+  }
+
+  #avatar-preview {
+    height: 150px;
+    width: 150px;
+    margin-right: 16px;
+  }
+
+  textarea {
+    min-height: 150px;
+  }
+
+  .input-container {
+    margin-top: 16px;
+  }
+}
+
+.form-save-buttons {
+  margin: 64px 0;
+
+  button {
+    margin: 0 8px;
+  }
+}

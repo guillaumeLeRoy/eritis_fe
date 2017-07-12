@@ -1,5 +1,5 @@
 import {ChangeDetectorRef, Component, OnDestroy, OnInit} from "@angular/core";
-import {Router} from "@angular/router";
+import {NavigationEnd, Router} from "@angular/router";
 import {AuthService} from "../service/auth.service";
 import {Observable, Subscription} from "rxjs";
 import {Coach} from "../model/Coach";
@@ -60,6 +60,14 @@ export class HeaderComponent implements OnInit, OnDestroy {
         this.onUserObtained(user);
       }
     );
+
+    this.router.events.subscribe((evt) => {
+      if (!(evt instanceof NavigationEnd)) {
+        return;
+      }
+      console.log('Header navigation');
+      window.scrollTo(0, 0)
+    });
   }
 
   private onUserObtained(user: Coach | Coachee | HR) {
@@ -105,26 +113,32 @@ export class HeaderComponent implements OnInit, OnDestroy {
   }
 
   onSignUp() {
-    window.scrollTo(0, 0);
     this.router.navigate(['/signup']);
   }
 
   goToHome(){
-    if (this.isAuthenticated)
+    console.log('goToHome');
+    if (this.isAuthenticated) {
+      console.log('goToHomeUser');
       this.goToMeetings();
-    if (this.isAdmin())
+    }
+    if (this.isAdmin()) {
+      console.log('goToHomeAdmin');
       this.goToAdmin();
+    }
+    if (this.isSigningUp()) {
+      console.log('goToWelcomePage');
+      this.router.navigate(['/welcome']);
+    }
   }
 
   goToAdmin() {
-    window.scrollTo(0, 0);
     this.router.navigate(['/admin']);
   }
 
   goToMeetings() {
     let user = this.authService.getConnectedUser();
     if (user != null) {
-      window.scrollTo(0, 0);
       this.router.navigate(['/meetings']);
     }
   }
@@ -132,13 +146,11 @@ export class HeaderComponent implements OnInit, OnDestroy {
   goToAvailableSessions() {
     let user = this.authService.getConnectedUser();
     if (user != null) {
-      window.scrollTo(0, 0);
       this.router.navigate(['/available_meetings']);
     }
   }
 
   goToProfile() {
-    window.scrollTo(0, 0);
     if (this.mUser instanceof Coach) {
       this.router.navigate(['/profile_coach', this.mUser.id]);
     } else if (this.mUser instanceof Coachee) {
@@ -183,16 +195,29 @@ export class HeaderComponent implements OnInit, OnDestroy {
   }
 
   isAdmin(): boolean {
-    return this.router.url === '/admin' || this.router.url === '/admin/signup' || this.router.url === '/admin/coachees-list' || this.router.url === '/admin/coachs-list' || this.router.url === '/admin/rhs-list';
+    let admin = new RegExp('/admin');
+    return admin.test(this.router.url);
+  }
+
+  isHomePage(): boolean {
+    let home = new RegExp('/welcome');
+    return home.test(this.router.url);
   }
 
   isSigningUp(): boolean {
-    return this.router.url === '/signup_coachee' || this.router.url === '/signup_coach' || this.router.url === '/signup_rh';
+    let signupCoach = new RegExp('/signup_coach');
+    let signupCoachee = new RegExp('/signup_coachee');
+    let signupRh = new RegExp('/signup_rh');
+    let registerCoach = new RegExp('/register_coach');
+    return signupCoach.test(this.router.url) || signupCoachee.test(this.router.url) || signupRh.test(this.router.url) || registerCoach.test(this.router.url);
   }
 
   goToCoachs() {
-    window.scrollTo(0, 0);
     this.router.navigate(['/coachs']);
+  }
+
+  goToRegisterCoach() {
+    this.router.navigate(['register_coach/step1'])
   }
 
   canDisplayListOfCoach(): boolean {
@@ -269,32 +294,33 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
   /******* Admin page *****/
   navigateAdminHome() {
-    console.log("navigateAdminHome")
-    window.scrollTo(0, 0);
+    console.log("navigateAdminHome");
     this.router.navigate(['/admin']);
   }
 
   navigateToSignup() {
-    console.log("navigateToSignup")
-    window.scrollTo(0, 0);
+    console.log("navigateToSignup");
     this.router.navigate(['admin/signup']);
   }
 
   navigateToCoachsList() {
-    console.log("navigateToCoachsList")
-    window.scrollTo(0, 0);
+    console.log("navigateToCoachsList");
     this.router.navigate(['admin/coachs-list']);
   }
 
   navigateToCoacheesList() {
-    console.log("navigateToCoacheesList")
-    window.scrollTo(0, 0);
+    console.log("navigateToCoacheesList");
     this.router.navigate(['admin/coachees-list']);
   }
 
   navigateToRhsList() {
-    console.log("navigateToRhsList")
-    window.scrollTo(0, 0);
+    console.log("navigateToRhsList");
     this.router.navigate(['admin/rhs-list']);
   }
+
+  navigateToPossibleCoachsList() {
+    console.log("navigateToPossibleCoachsList")
+    this.router.navigate(['admin/possible_coachs-list']);
+  }
+
 }

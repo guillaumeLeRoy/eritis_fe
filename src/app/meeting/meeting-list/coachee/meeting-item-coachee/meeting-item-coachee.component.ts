@@ -253,7 +253,7 @@ export class MeetingItemCoacheeComponent implements OnInit {
     let win = window.open(this.meeting.coach.chat_room_url, "_blank");
   }
 
-  goToCoachProfile(coachId: String) {
+  goToCoachProfile(coachId: string) {
     window.scrollTo(0, 0);
     this.router.navigate(['/profile_coach', coachId]);
   }

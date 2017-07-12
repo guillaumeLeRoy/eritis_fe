@@ -1,26 +1,42 @@
+<header *ngIf="isSigningUp()" class="page-topbar user-connected">
+  <div class="navbar navbar-fixed">
+    <nav>
+      <div class="navbar-color navbar-fixed z-depth-2">
+        <div class="col s12">
+          <a (click)="goToHome()" class="brand-logo center"><img
+            src="assets/img/logo-eritis-new.png" alt="Eritis"></a>
+        </div>
+      </div>
+    </nav>
+  </div>
+</header>
+
 <header id="header" class="page-topbar"
         [class.user-connected]="(isAuthenticated | async) || (isAdminMode | async )"
         [hidden]="isSigningUp()">
-  <div class="navbar" [class.navbar-fixed]="(isAuthenticated | async) || (isAdminMode | async )" [class.z-depth-2]="!(isAuthenticated | async) && !(isAdminMode | async )">
+  <div class="navbar" [class.navbar-fixed]="(isAuthenticated | async) || (isAdminMode | async )"
+       [class.z-depth-2]="!(isAuthenticated | async) && !(isAdminMode | async )">
     <nav>
       <div class="navbar-color" [class.z-depth-2]="(isAuthenticated | async) || (isAdminMode | async )">
         <div class="col s12">
 
           <a (click)="goToHome()" class="brand-logo left hide-on-med-and-down"
-             *ngIf="(isAuthenticated | async) || (isAdminMode | async )"><img src="assets/img/logo-eritis-new.png" alt="Eritis"></a>
-          <a (click)="goToHome()" class="brand-logo center hide-on-med-and-down" *ngIf="!(isAuthenticated | async) && !(isAdminMode | async )"><img
+             *ngIf="(isAuthenticated | async) || (isAdminMode | async )"><img src="assets/img/logo-eritis-new.png"
+                                                                              alt="Eritis"></a>
+          <a (click)="goToHome()" class="brand-logo center hide-on-med-and-down"
+             *ngIf="!(isAuthenticated | async) && !(isAdminMode | async )"><img
             src="assets/img/logo-eritis-new.png" alt="Eritis"></a>
-          <a (click)="goToHome()" class="brand-logo center hide-on-large-only"><img
+          <a (click)="goToHome()" class="brand-logo brand-logo-phone center hide-on-large-only"><img
             src="assets/img/logo-eritis-new.png" alt="Eritis"></a>
 
-          <a data-activates="side-nav" class="button-collapse left" [hidden]="!(isAuthenticated | async)">
+          <a data-activates="side-nav" class="button-collapse left" [hidden]="!(isAuthenticated | async) && !(isAdminMode | async )">
             <i class="mdi-navigation-menu"></i>
           </a>
 
           <ul class="right hide-on-med-and-down">
             <!--<li *ngIf="canDisplayListOfCoach()"><a (click)="goToCoachs()">Liste Des Coachs</a></li>-->
 
-            <div *ngIf="!(isAdminMode | async )">
+            <div *ngIf="!(isAdminMode | async ) && !isHomePage()">
               <li *ngIf="(isAuthenticated | async) && isUserACoach()"
                   [class.active]="router.url === '/available_meetings'"><a (click)="goToAvailableSessions()">
                 Demandes en attente</a></li>
@@ -32,7 +48,8 @@
               <!--<li *ngIf="(isAuthenticated | async) && isUserACoach()"><a (click)="goToProfile()">Profil</a></li>-->
 
               <li [hidden]="!(isAuthenticated | async)">
-                <a class="dropdown-button-notifs" data-activates="notifs"><i class="material-icons">notifications</i></a>
+                <a class="dropdown-button-notifs" data-activates="notifs"><i
+                  class="material-icons">notifications</i></a>
                 <div class="notif-count" *ngIf="(notifications | async) != null || (notifications | async)?.length > 0">
                   {{(notifications | async).length}}
                 </div>
@@ -43,8 +60,10 @@
               <li [hidden]="!(isAuthenticated | async)"
                   [class.active]="router.url === '/profile_coach' || router.url === '/profile_coachee' || router.url === '/profile_rh'">
                 <a class="dropdown-button-profile" data-activates="profil">
-                  <img src="{{(user | async)?.avatar_url}}" alt="profile image"
-                       class="item-user-img circle responsive-img">
+                  <!--<img src="{{(user | async)?.avatar_url}}" alt="profile image"-->
+                       <!--class="item-user-img circle responsive-img">-->
+                  <div class="item-user-img avatar"
+                       [style.background-image]="'url(' + (user | async)?.avatar_url + ')'"></div>
                   {{ (user | async)?.firstName}} {{ (user | async)?.lastName}}
                 </a>
               </li>
@@ -57,6 +76,13 @@
                 <a (click)="navigateToCoacheesList()">Nos Coachees</a></li>
               <li [class.active]="router.url === '/admin/rhs-list'">
                 <a (click)="navigateToRhsList()">Nos Rhs</a></li>
+              <li [class.active]="router.url === '/admin/possible_coachs-list'">
+                <a (click)="navigateToPossibleCoachsList()">Demandes d'inscription</a></li>
+            </div>
+
+            <div *ngIf="isHomePage()">
+              <li [class.active]="router.url === '/admin/coachs-list'">
+                <a (click)="goToRegisterCoach()">Devenir coach</a></li>
             </div>
 
           </ul>
@@ -65,19 +91,21 @@
           <!-- Side Nav -->
           <ul class="side-nav" id="side-nav">
 
-            <div class="side-nav-header" *ngIf="(isAuthenticated | async)">
-              <div class="side-nav-header-container  z-depth-1">
-                <div *ngIf="!(isAdminMode | async )">
-                  <img src="{{(user | async)?.avatar_url}}" alt="profile image"
-                       class="side-nav-user-img circle responsive-img z-depth-2">
+            <div class="side-nav-header" *ngIf="(isAuthenticated | async) || (isAdminMode | async )">
+              <div>
+                <div class="side-nav-header-container z-depth-1" *ngIf="!(isAdminMode | async )">
+                  <!--<img src="{{(user | async)?.avatar_url}}" alt="profile image"-->
+                       <!--class="side-nav-user-img circle responsive-img z-depth-2">-->
+                  <div class="side-nav-user-img avatar z-depth-2"
+                       [style.background-image]="'url(' + (user | async)?.avatar_url + ')'"></div>
                   <div class="side-nav-user-info">
-                    <h5>{{ (user | async)?.firstName}} {{ (user | async)?.lastName}}</h5>
+                    <h6>{{ (user | async)?.firstName}} {{ (user | async)?.lastName}}</h6>
                     <span>{{(user | async)?.email}}</span>
                   </div>
                 </div>
 
-                <div *ngIf="(isAdminMode | async )">
-                  <h4>Admin</h4>
+                <div class="side-nav-header-container z-depth-1" *ngIf="(isAdminMode | async )">
+                  <h3>Admin</h3>
                 </div>
               </div>
             </div>
@@ -112,6 +140,8 @@
                 <a (click)="navigateToCoacheesList()">Nos Coachees</a></li>
               <li [class.active]="router.url === '/admin/rhs-list'">
                 <a (click)="navigateToRhsList()">Nos Rhs</a></li>
+              <li [class.active]="router.url === '/admin/possible_coachs-list'">
+                <a (click)="navigateToPossibleCoachsList()">Demandes d'inscription</a></li>
             </div>
 
           </ul>
@@ -128,10 +158,10 @@
 
         <div class="row hide-on-small-and-down">
           <div class="header-btn col-xs-12 col-sm-6">
-            <a pageScroll href="#coach_section" class="btn-basic right">En savoir plus</a>
+            <a pageScroll href="#coach_section" class="btn-basic btn-small right">En savoir plus</a>
           </div>
           <div class="header-btn col-xs-12 col-sm-6">
-            <button class="btn-basic btn-plain btn-connexion left" (click)="activateLogin()"><i class="material-icons">perm_identity</i>
+            <button class="btn-basic btn-plain btn-connexion btn-small left" (click)="activateLogin()"><i class="material-icons">perm_identity</i>
               Connexion
             </button>
           </div>
@@ -139,10 +169,11 @@
 
         <div class="row hide-on-med-and-up">
           <div class="header-btn col-xs-12 col-sm-6">
-            <a pageScroll href="#coach_section" class="btn-basic">En savoir plus</a>
+            <a pageScroll href="#coach_section" class="btn-basic btn-small">En savoir plus</a>
           </div>
           <div class="header-btn col-xs-12 col-sm-6">
-            <button class="btn-basic btn-plain btn-connexion" (click)="activateLogin()"><i class="material-icons">perm_identity</i>
+            <button class="btn-basic btn-plain btn-connexion btn-small" (click)="activateLogin()"><i
+              class="material-icons">perm_identity</i>
               Connexion
             </button>
           </div>

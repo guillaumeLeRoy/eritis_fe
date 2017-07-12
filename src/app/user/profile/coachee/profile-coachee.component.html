@@ -2,9 +2,12 @@
   <div class="header-user-filter">
     <div class="container row">
 
-      <div class="user col-lg-5">
-        <img src="{{(coachee | async)?.avatar_url}}" alt="profile image"
-             class="user-img circle responsive-img z-depth-2">
+      <div class="user col-lg-7">
+        <!--<img src="{{(coachee | async)?.avatar_url}}" alt="profile image"-->
+             <!--class="user-img circle responsive-img z-depth-2">-->
+        <div class="user-img avatar z-depth-2"
+             [style.background-image]="'url(' + (coachee | async)?.avatar_url + ')'"></div>
+
         <div class="user-info">
           <h5>{{(coachee | async)?.firstName}} {{(coachee | async)?.lastName}}</h5>
           <h6>{{(coachee | async)?.email}}</h6>
@@ -13,14 +16,14 @@
 
       <div class="col-sm-12 hide-on-large-only gap"></div>
 
-      <div class="header-stats col-lg-7">
+      <div class="header-stats col-lg-5">
         <div class="row">
-          <div class="header-item col-sm-6">
-            <div class="header-item-number"><span>10</span><span class="indice">mois</span></div>
-            <p class="header-item-title">Expérience</p>
-          </div>
+          <!--<div class="header-item col-sm-3">-->
+            <!--<div class="header-item-number"><span>10</span><span class="indice">mois</span></div>-->
+            <!--<p class="header-item-title">Expérience</p>-->
+          <!--</div>-->
 
-          <div class="header-item col-sm-6">
+          <div class="header-item col-sm-12">
             <div class="header-item-number"><span>6</span></div>
             <p class="header-item-title">Séances réalisées</p>
           </div>
@@ -39,7 +42,7 @@
   </h5>
   <br>
 
-  <div *ngIf="!isOwner">
+  <div>
     <div class="center" *ngIf="!isAdmin">
       <button class="btn-basic btn-plain btn-blue btn-small center" (click)="goToMeetings()">Retourner au tableau de bord</button>
     </div>
@@ -90,9 +93,12 @@
         <div class="col-lg-5">
           <label>Photo de profil</label>
           <div class="row avatar-container">
-            <img [src]="formCoachee.value.avatar" alt="profile image"
-                 id="avatar-preview"
-                 class="circle responsive-img z-depth-2">
+            <!--<img [src]="formCoachee.value.avatar" alt="profile image"-->
+                 <!--id="avatar-preview"-->
+                 <!--class="circle responsive-img z-depth-2">-->
+            <div id="avatar-preview"
+                 class="avatar z-depth-2"
+                 [style.background-image]="'url(' + formCoachee.value.avatar + ')'"></div>
 
             <!--<input id="edit_avatar_url" type="text" class="validate"-->
             <!--formControlName="avatar"-->

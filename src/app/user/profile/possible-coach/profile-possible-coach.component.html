@@ -1,0 +1,126 @@
+<div class="header-user">
+  <div class="header-user-filter">
+    <div class="container row">
+
+      <div class="user col-lg-12">
+        <!--<img src="{{(possibleCoach | async)?.avatar_url}}" alt="profile image"-->
+             <!--class="user-img circle responsive-img z-depth-2">-->
+        <div class="user-img avatar z-depth-2"
+             [style.background-image]="'url(' + (possibleCoach | async)?.avatar_url + ')'"></div>
+
+        <div class="user-info">
+          <h5>{{(possibleCoach | async)?.firstName}} {{(possibleCoach | async)?.lastName}}</h5>
+          <h6>{{(possibleCoach | async)?.email}}</h6>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<div class="container">
+  <h4 class="text-right italic">"{{ (possibleCoach | async)?.description }}"</h4>
+  <br>
+
+  <div class="center">
+    <button class="btn-basic btn-plain btn-blue btn-small center" (click)="goToPossibleCoachsAdmin()">Retourner aux demandes de coach</button>
+  </div>
+
+  <br><br>
+
+  <div class="row">
+
+    <div class="col-lg-12">
+      <div class="row">
+        <div class="col-lg-12 input-container">
+          <label>Profil Linkedin</label>
+          <p>
+            <a target="_blank" [href]="(possibleCoach | async)?.linkedin_url">{{ (possibleCoach | async)?.linkedin_url }}</a>
+          </p>
+          <br>
+        </div>
+
+        <div class="col-lg-12 input-container">
+          <label>Quelle est votre formation initiale ?</label>
+          <p>{{ (possibleCoach | async)?.training }}</p>
+          <br>
+        </div>
+
+        <div class="col-lg-12 input-container">
+          <label>Quels sont vos diplômes, certifications et accréditations en coaching ?</label>
+          <p>{{ (possibleCoach | async)?.degree }}</p>
+          <br>
+        </div>
+
+        <div class="col-lg-12 input-container">
+          <label>Exercez-vous d'autres activités que le coaching ?</label>
+          <p>{{ (possibleCoach | async)?.extraActivities }}</p>
+          <br>
+        </div>
+
+        <div class="col-lg-12 input-container">
+          <label>Depuis combien de temps exercez-vous l'activité de coaching ?</label>
+          <p>{{ (possibleCoach | async)?.coachForYears }}</p>
+          <br>
+        </div>
+
+        <div class="col-lg-12 input-container">
+          <label>Quelles sont vos expériences en coaching individuel et en coaching individuel via
+            visioconférence (Skype par exemple) ?</label>
+          <p>{{ (possibleCoach | async)?.coachingExperience }}</p>
+          <br>
+        </div>
+
+        <div class="col-lg-12 input-container">
+          <label>Combien d'heures de coaching individuel avez-vous déjà réalisé ?</label>
+          <p>{{ (possibleCoach | async)?.coachingHours }}</p>
+          <br>
+        </div>
+
+        <div class="col-lg-12 input-container">
+          <label>Quel est votre dispositif de supervision ?</label>
+          <p>{{ (possibleCoach | async)?.supervisor }}</p>
+          <br>
+        </div>
+
+        <div class="col-lg-12 input-container">
+          <label>Quels types ou situations de coaching privilégiez-vous ?</label>
+          <p>{{ (possibleCoach | async)?.favoriteCoachingSituation}}</p>
+          <br>
+        </div>
+
+        <div class="col-lg-12 input-container">
+          <label>Quel est votre statut ?</label>
+          <p>{{ (possibleCoach | async)?.status }}</p>
+          <br>
+        </div>
+
+        <div class="col-lg-12 input-container">
+          <label>Quel est votre chiffre d'affaires sur les 3 dernières années ?</label>
+          <p>{{ (possibleCoach | async)?.revenues }}</p>
+          <br>
+        </div>
+
+        <div class="col-lg-12 input-container">
+          <label>Avez-vous une copie de votre assurance RC Pro ?</label><br>
+          <p><a [href]="(possibleCoach | async)?.assurance_url">Contrat d'assurance</a></p>
+          <br>
+        </div>
+      </div>
+    </div>
+
+    <div class=" col-lg-12 text-center input-container">
+      <br>
+      <button class="btn-basic btn-blue btn-plain btn-small"
+              *ngIf="!(possibleCoach | async)?.invite_sent"
+              (click)="sendInvite(possibleCoach.email)">Envoyer une invitation
+      </button>
+      <button class="btn-basic btn-small"
+              *ngIf="(possibleCoach | async)?.invite_sent"
+              disabled>En attente...
+      </button>
+    </div>
+
+  </div><!--end row>-->
+
+</div>

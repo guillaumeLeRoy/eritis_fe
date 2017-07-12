@@ -15,7 +15,7 @@ import {AuthGuard} from "./login/auth.guard";
 import {WelcomeComponent} from "./welcome/welcome.component";
 import {ChatComponent} from "./chat/chat.component";
 import {ChatItemComponent} from "./chat/chat-item.component";
-import {CoachItemComponent} from "./user/coach-item/coach-item.component";
+import {CoachItemComponent} from "./admin/coachs-list/coach-item/coach-item.component";
 import {CoachCoacheeService} from "./service/coach_coachee.service";
 import {CalendarModule} from "angular-calendar"; // lib
 import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
@@ -45,8 +45,19 @@ import { RhsListComponent } from './admin/rhs-list/rhs-list.component';
 import { MeetingListCoachComponent } from './meeting/meeting-list/coach/meeting-list-coach/meeting-list-coach.component';
 import { MeetingListCoacheeComponent } from './meeting/meeting-list/coachee/meeting-list-coachee/meeting-list-coachee.component';
 import { MeetingListRhComponent } from './meeting/meeting-list/rh/meeting-list-rh/meeting-list-rh.component';
-import { CoacheeItemComponent } from './user/coachee-item/coachee-item.component';
-import { RhItemComponent } from './user/rh-item/rh-item.component';
+import { CoacheeItemComponent } from './admin/coachees-list/coachee-item/coachee-item.component';
+import { RhItemComponent } from './admin/rhs-list/rh-item/rh-item.component';
+import { RegisterCoachComponent } from './login/register/register-coach/register-coach.component';
+import { CodeDeontologieComponent } from './login/register/register-coach/code-deontologie/code-deontologie.component';
+import { RegisterCoachFormComponent } from './login/register/register-coach/register-coach-form/register-coach-form.component';
+import { RegisterCoachMessageComponent } from './login/register/register-coach/register-coach-message/register-coach-message.component';
+import { PossibleCoachsListComponent } from './admin/possible-coachs-list/possible-coachs-list.component';
+import { PossibleCoachItemComponent } from './admin/possible-coachs-list/possible-coach-item/possible-coach-item.component';
+import { ProfileCoachAdminComponent } from './user/profile/coach/profile-coach-admin/profile-coach-admin.component';
+import { ProfilePossibleCoachComponent } from './user/profile/possible-coach/profile-possible-coach.component';
+import { ProfileCoacheeAdminComponent } from './user/profile/coachee/profile-coachee-admin/profile-coachee-admin.component';
+import { ProfileRhAdminComponent } from './user/profile/rh/profile-rh-admin/profile-rh-admin.component';
+import {CookieModule} from "ngx-cookie";
 
 @NgModule({
   declarations: [
@@ -79,7 +90,17 @@ import { RhItemComponent } from './user/rh-item/rh-item.component';
     MeetingListCoacheeComponent,
     MeetingListRhComponent,
     CoacheeItemComponent,
-    RhItemComponent
+    RhItemComponent,
+    RegisterCoachComponent,
+    CodeDeontologieComponent,
+    RegisterCoachFormComponent,
+    RegisterCoachMessageComponent,
+    PossibleCoachsListComponent,
+    PossibleCoachItemComponent,
+    ProfileCoachAdminComponent,
+    ProfilePossibleCoachComponent,
+    ProfileCoacheeAdminComponent,
+    ProfileRhAdminComponent
   ],
   imports: [
     BrowserAnimationsModule,
@@ -91,7 +112,8 @@ import { RhItemComponent } from './user/rh-item/rh-item.component';
     CalendarModule.forRoot(),
     NgbModule.forRoot(),
     SliderModule,
-    Ng2PageScrollModule.forRoot()
+    Ng2PageScrollModule.forRoot(),
+    CookieModule.forRoot()
   ],
   providers: [DataService, LogService, AuthService, AuthGuard, CoachCoacheeService, MeetingsService, FirebaseService, AdminAPIService],
   bootstrap: [AppComponent]

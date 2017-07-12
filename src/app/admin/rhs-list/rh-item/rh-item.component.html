@@ -23,12 +23,14 @@
           <div class="meeting-item-coach">
             <div>
               <!-- image rh -->
-              <img class="meeting-item-coach-avatar circle img-responsive" alt="coach" [src]="rh.avatar_url">
+              <!--<img class="meeting-item-coach-avatar circle img-responsive" alt="coach" [src]="rh.avatar_url">-->
+              <div class="meeting-item-coach-avatar avatar"
+                   [style.background-image]="'url(' + rh.avatar_url + ')'"></div>
             </div>
 
             <div>
               <p class="meeting-item-coach-name black-text bold">{{ rh.firstName}} {{ rh.lastName}}</p>
-              <p class="italic">{{ rh.email }}</p>
+              <span class="italic">{{ rh.email }}</span>
             </div>
           </div>
 

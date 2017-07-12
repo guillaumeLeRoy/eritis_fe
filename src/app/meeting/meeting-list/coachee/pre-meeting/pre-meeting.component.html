@@ -2,15 +2,14 @@
 
 <div class="row">
   <div class="col s12">
-    <label for="objectif">Quel est votre objectif ?</label>
-    <input id="objectif" type="text" [ngModel]="uiMeetingGoal" (change)="onGoalValueChanged($event)" placeholder="Objectif...">
+    <label for="context">Pouvez-vous décrire votre contexte ?</label>
+    <textarea id="context" [ngModel]="uiMeetingContext" (change)="onContextValueChanged($event)" placeholder="Context..."></textarea>
   </div>
 </div>
 
-
 <div class="row">
   <div class="col s12">
-    <label for="context">Quel est le context ?</label>
-    <input id="context" type="text" [ngModel]="uiMeetingContext" (change)="onContextValueChanged($event)" placeholder="Context...">
+    <label for="objectif">Quel est votre objectif ou votre demande pour cette séance ?</label>
+    <input id="objectif" type="text" [ngModel]="uiMeetingGoal" (change)="onGoalValueChanged($event)" placeholder="Objectif...">
   </div>
 </div>

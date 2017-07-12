@@ -1,4 +1,4 @@
-import {AfterViewInit, ChangeDetectorRef, Component, Input, OnDestroy, OnInit} from "@angular/core";
+import {AfterViewInit, ChangeDetectorRef, Component, OnDestroy, OnInit} from "@angular/core";
 import {Observable} from "rxjs";
 import {Coachee} from "../../../model/Coachee";
 import {AuthService} from "../../../service/auth.service";
@@ -24,7 +24,6 @@ export class ProfileCoacheeComponent implements OnInit, AfterViewInit, OnDestroy
   private user: Observable<Coach | Coachee | HR>;
   private coachee: Observable<Coachee>;
   private isOwner = false;
-  private isAdmin = false;
   private subscriptionGetCoachee: Subscription;
   private subscriptionGetUser: Subscription;
 
@@ -54,7 +53,6 @@ export class ProfileCoacheeComponent implements OnInit, AfterViewInit, OnDestroy
     this.subscriptionGetCoachee = this.route.params.subscribe(
       (params: any) => {
         let coacheeId = params['id'];
-        this.isAdmin = params['admin'];
 
         this.coachService.getCoacheeForId(coacheeId).subscribe(
           (coachee: Coachee) => {
@@ -153,7 +151,8 @@ export class ProfileCoacheeComponent implements OnInit, AfterViewInit, OnDestroy
       let reader = new FileReader();
 
       reader.onload = function (e: any) {
-        $('#avatar-preview').attr('src', e.target.result);
+        // $('#avatar-preview').attr('src', e.target.result);
+        $('#avatar-preview').css('background-image', 'url(' + e.target.result + ')');
       }
 
       reader.readAsDataURL(event.target.files[0]);

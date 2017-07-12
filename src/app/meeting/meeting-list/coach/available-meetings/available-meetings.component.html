@@ -4,7 +4,7 @@
     <div class="col s12">
 
       <div class="row">
-        <h4 class="col-lg-12 black-text">Demandes disponibles</h4>
+        <h4 class="col-lg-12 black-text">Demandes en attente</h4>
         <div class="card collection col-lg-12">
 
           <div *ngIf="hasAvailableMeetings">
@@ -34,8 +34,8 @@
       <h5 class="black-text center">Vous ne pourrez pas annuler ce meeting, êtes-vous sûr de vouloir valider ce créneau ?</h5>
     </div>
     <div class="action-modal-footer">
-      <button class="btn-basic btn-plain btn-small" (click)="cancelCoachValidateMeeting()">Annuler</button>
-      <button class="btn-basic btn-blue btn-small" (click)="onSubmitValidateMeeting()">Valider</button>
+      <button class="btn-basic btn-blue btn-small" (click)="cancelCoachValidateMeeting()">Annuler</button>
+      <button class="btn-basic btn-blue btn-plain btn-small" (click)="onSubmitValidateMeeting()">Valider</button>
     </div>
   </div>
 </div>

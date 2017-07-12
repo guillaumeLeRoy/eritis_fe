@@ -4,8 +4,13 @@
   padding: 0 16px;
 }
 
+.has-collaborator {
+  cursor: pointer;
+}
+
 .no-meeting {
-  padding: 16px 0;
+  padding: 32px 0;
+  margin: 0;
 }
 
 .card.collection {

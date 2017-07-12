@@ -1,6 +1,6 @@
-<h4 class="text-right welcome-message">Bonjour {{ (user | async)?.firstName}},<br>
+<h3 class="text-right welcome-message">Bonjour {{ (user | async)?.firstName}},<br>
   Le taux total d'utilisation de vos collaborateurs est de <span class="blue-text">{{(rhUsageRate | async)?.usage_rate}}%</span>
-</h4>
+</h3>
 <p class="text-right">
   <span class="blue-text">Cliquez</span> ici pour ajouter un collaborateur
   <a class="btn-floating btn-large waves-effect waves-light add-meeting-btn"
@@ -15,7 +15,7 @@
   <div class="card collection col-lg-12">
 
     <div *ngIf="hasCollaborators">
-      <div class="collection-item" *ngFor="let coachee of coachees | async">
+      <div class="collection-item has-collaborator" *ngFor="let coachee of coachees | async">
         <rb-meeting-item-rh [coachee]="coachee"
                             [potentialCoachee]="null"
                             (onUpdateObjectiveBtnClick)="startAddNewObjectiveFlow($event)">
@@ -83,7 +83,7 @@
       <input type="text" placeholder="Objectif" id="" [(ngModel)]="coacheeNewObjective">
     </div>
     <div class="action-modal-footer">
-      <button class="btn-basic btn-plain btn-small" (click)="cancelAddNewObjectiveModal()">Annuler</button>
+      <button class="btn-basic btn-blue btn-small" (click)="cancelAddNewObjectiveModal()">Annuler</button>
       <button class="btn-basic btn-blue btn-plain btn-small" (click)="validateAddNewObjectiveModal()"
               [disabled]="!coacheeNewObjective">Ajouter
       </button>

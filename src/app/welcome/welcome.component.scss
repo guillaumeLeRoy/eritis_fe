@@ -46,50 +46,6 @@ nav li:focus a{
   width: 100%;
 }
 
-header.section{
-  padding: 0;
-}
-
-header.section .container{
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  text-align: center;
-  color: $main-white-color;
-  padding: 160px 0;
-}
-
-.header-title{
-  /*font-size: 66px*/
-  font-size: 8vmin; /*Test taille adaptative relative à la taille minimale de l'écran*/
-  font-weight: 500;
-  letter-spacing: 1.1px;
-  margin: 0;
-}
-
-.header-subtitle{
-  /*font-size: 36px;*/
-  font-size: 4vmin;
-  font-weight: 300;
-  letter-spacing: 2.3px;
-  margin: 64px 0;
-  opacity: 0.6;
-}
-
-.header-btn .btn-basic{
-  min-width: 200px;
-}
-
-.header-arrow-bottom{
-  font-size: 66px;
-  color: $main-white-color;
-  opacity: 0.6;
-}
-
-.header-arrow-bottom:hover{
-  opacity: 1;
-}
-
 rb-signin{
   width: 30%;
 }
@@ -110,9 +66,6 @@ rb-signin{
 }
 
 .section_title{
-  /*font-size: 42px;*/
-  color: #000;
-  font-size: 5vmin;
   font-weight: 600;
   margin-bottom: 32px;
   margin-top: 0;
@@ -131,15 +84,11 @@ rb-signin{
 }
 
 .presentation_item_title{
-  font-size: 32px;
-  /*font-size: 4vmin;*/
   height: 64px;
   color: #1D1D1D;
 }
 
 .presentation_item_text{
-  font-size: 22px;
-  /*font-size: 3vmin;*/
   color: $main-light-grey;
 }
 
@@ -149,6 +98,11 @@ rb-signin{
   box-shadow: 0 8px 12px 0 rgba(0, 0, 0, 0.5);
   text-align: center;
   color: $main-white-color;
+
+  .btn-basic {
+    min-width: 220px;
+    margin: 8px;
+  }
 }
 
 .coach_section_title {
@@ -170,14 +124,10 @@ rb-signin{
 }
 
 .coach_description h4{
-  font-size: 32px;
-  /*font-size: 4vmin;*/
   height: 72px;
 }
 
 .coach_description p{
-  font-size: 22px;
-  /*font-size: 2.5vmin;*/
   font-weight: 300;
   color: $main-ultra-light-grey;
 }
@@ -210,12 +160,7 @@ textarea{
   min-height: 192px;
 }
 
-.address{
-  color: #000;
-}
-
 .address p{
-  font-size: 22px;
   font-weight: 400;
 }
 

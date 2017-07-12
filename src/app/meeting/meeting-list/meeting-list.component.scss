@@ -16,3 +16,138 @@
 .card.collection {
   overflow: visible;
 }
+
+button{
+  margin: 0;
+}
+
+p {
+  margin: 0;
+}
+
+
+
+
+/* ITEMS */
+
+.card-content, .card-reveal {
+  padding: 0;
+}
+
+.meeting-item {
+  margin: 0;
+  padding: 16px 0 !important;
+}
+
+.meeting-item .row {
+  margin: 0;
+}
+
+.meeting-item-coach{
+  margin-top: 2px;
+  margin-bottom: 0;
+}
+
+.meeting-item-coach-avatar{
+  height: 52px;
+  width: 52px;
+  margin-right: 16px;
+}
+
+.meeting-item-header,
+.meeting-item-body{
+  display: flex;
+  flex-direction: row;
+  flex-grow: 1;
+  align-items: flex-start;
+  padding: 0;
+}
+
+.meeting-item-header {
+  justify-content: space-between;
+  padding: 8px 0;
+}
+
+.meeting-item-header > div {
+  display: flex;
+  flex-direction: row;
+  flex-grow: 1;
+  align-items: center;
+  padding: 0px;
+}
+
+.meeting-item-coach{
+  display: flex;
+  flex-direction: row;
+  flex-grow: 1;
+  align-items: center;
+}
+
+.meeting-item-coach.has-coach {
+  cursor: pointer;
+}
+
+.meeting-item-coach.has-coach:hover,
+.meeting-item-coach.has-coach:hover .meeting-item-coach-name {
+  color: $main-electric-blue !important;
+}
+
+.meeting-item-date{
+  font-size: 22px;
+  margin-left: 32px;
+  text-align: right;
+}
+
+.meeting-item-body{
+  justify-content: space-between;
+  padding-left: 64px;
+}
+
+.meeting-item.closed .meeting-item-header,
+.meeting-item.closed .meeting-item-body{
+  align-items: flex-start;
+}
+
+.meeting-item-body-buttons {
+  padding: 16px 0;
+  text-align: right;
+}
+
+.meeting-item-body-content {
+  flex-direction: column;
+  justify-content: space-between;
+  align-content: space-between;
+  padding: 24px 0;
+}
+
+.meeting-review {
+  width: 100%;
+}
+
+.meeting-item-buttons {
+  display: flex;
+  flex-direction: row;
+  align-content: flex-end;
+  justify-content: flex-end;
+}
+
+@media screen and (max-device-width: 1240px), (max-width: 992px) {
+  .meeting-item-body {
+    /*flex-direction: column;*/
+    /*justify-content: flex-start;*/
+    /*align-content: flex-start;*/
+    /*align-items: left;*/
+    padding-left: 0;
+  }
+}
+
+.preloader-wrapper{
+  left: 50%;
+  margin-left: -30px;
+  margin: 32px 0;
+}
+
+.btn-cancel {
+  margin: 8px 0;
+  margin-left: 8px;
+}

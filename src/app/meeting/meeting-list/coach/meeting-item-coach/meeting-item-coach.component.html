@@ -1,5 +1,4 @@
 <div class="meeting-item col-lg-12" [class.closed]="!meeting.isOpen" [class.unbooked]="!meeting.agreed_date">
-  <!--<span class="card-title">Vous avez choisi {{ coach.display_name }} pour être votre coach.</span>-->
 
   <div class="preloader-wrapper active" *ngIf="loading">
     <div class="spinner-layer spinner-blue-only">
@@ -35,17 +34,19 @@
         <!--</div>-->
         <!--</div>&lt;!&ndash;end meeting-item-coach&ndash;&gt;-->
 
-        <div class="meeting-item-coach" (click)="goToCoacheeProfile(meeting.coachee.id)">
+        <div class="meeting-item-coach has-coach" (click)="goToCoacheeProfile(meeting.coachee.id)">
           <div>
             <!-- image coachee-->
-            <img class="meeting-item-coach-avatar circle img-responsive" alt="coach"
-                 [src]="meeting.coachee.avatar_url">
+            <!--<img class="meeting-item-coach-avatar circle img-responsive" alt="coach"-->
+                 <!--[src]="meeting.coachee.avatar_url">-->
+            <div class="meeting-item-coach-avatar avatar"
+                 [style.background-image]="'url(' + meeting.coachee.avatar_url + ')'"></div>
           </div>
 
           <div>
             <p class="meeting-item-coach-name black-text bold">{{ meeting.coachee.firstName}} {{
               meeting.coachee.lastName}}</p>
-            <p class="italic">Company name</p>
+            <span class="italic">Company name</span>
           </div>
         </div>
 
@@ -66,26 +67,26 @@
     <div class="meeting-item-body col-md-12 col-lg-7">
       <div class="meeting-item-body-content">
         <p>
-          <span class="black-text bold">Objectif personnel: </span>
+          <span class="black-text bold">Objectif donné par le RH</span><br>
           <span *ngIf="meeting.coachee.last_objective != null">{{ meeting.coachee.last_objective.objective }}</span>
           <span *ngIf="meeting.coachee.last_objective == null">n/a</span>
         </p>
         <br>
         <p class="meeting-item-goal">
-          <span class="black-text bold">Objectif de la séance: </span>
+          <span class="black-text bold">Objectif de la séance</span><br>
           <span *ngIf="hasGoal">{{(goal | async)}}</span>
           <span *ngIf="!hasGoal" class="red-text">Pas encore défini...</span>
         </p>
         <br>
-        <p><span class="black-text bold">Context :</span> {{ (context | async) }}</p>
+        <p><span class="black-text bold">Contexte</span><br> {{ (context | async) }}</p>
 
         <!--Complétées-->
         <div *ngIf="!meeting.isOpen" class="meeting-review">
           <div *ngIf="hasValue && hasNextStep">
             <br>
-            <p><span class="black-text bold">Avec quoi êtes vous reparti ? </span>{{ reviewNextStep }}</p>
+            <p><span class="black-text bold">Avec quoi êtes vous reparti ? </span><br>{{ reviewNextStep }}</p>
             <br>
-            <p><span class="black-text bold">En quoi la séance a-t-elle été utile ? </span>{{ reviewValue }}</p>
+            <p><span class="black-text bold">En quoi la séance a-t-elle été utile ? </span><br>{{ reviewValue }}</p>
 
           </div>
         </div><!--end meeting-review-->
