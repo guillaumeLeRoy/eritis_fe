@@ -50,6 +50,7 @@ export class SignupAdminComponent implements OnInit {
   }
 
   ngOnInit() {
+    window.scrollTo(0, 0);
     console.log("ngOnInit");
 
     // this.signUpTypes = [SignUpType.COACH, SignUpType.COACHEE, SignUpType.RH];

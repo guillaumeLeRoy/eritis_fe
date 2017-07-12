@@ -25,6 +25,7 @@ export class ProfileRhComponent implements OnInit, AfterViewInit, OnDestroy {
 
 
   ngOnInit() {
+    window.scrollTo(0, 0);
     this.formRh = this.formBuilder.group({
       firstName: [''],
       lastName: [''],

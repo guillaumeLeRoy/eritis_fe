@@ -53,6 +53,7 @@ export class MeetingDateComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+    window.scrollTo(0, 0);
     console.log("MeetingDateComponent onInit");
 
     // meetingId should be in the router

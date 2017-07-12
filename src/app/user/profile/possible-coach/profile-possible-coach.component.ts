@@ -21,6 +21,7 @@ export class ProfilePossibleCoachComponent implements OnInit, AfterViewInit, OnD
   }
 
   ngOnInit() {
+    window.scrollTo(0, 0);
     this.getCoach();
   }
 

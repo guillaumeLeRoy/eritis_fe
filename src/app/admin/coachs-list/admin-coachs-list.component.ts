@@ -21,6 +21,7 @@ export class AdminCoachsListComponent implements OnInit, AfterViewInit, OnDestro
   }
 
   ngOnInit() {
+    window.scrollTo(0, 0);
   }
 
   ngAfterViewInit(): void {

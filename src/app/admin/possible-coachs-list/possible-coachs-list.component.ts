@@ -21,6 +21,7 @@ export class PossibleCoachsListComponent implements OnInit, AfterViewInit, OnDes
   }
 
   ngOnInit() {
+    window.scrollTo(0, 0);
   }
 
   ngAfterViewInit(): void {

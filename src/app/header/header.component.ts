@@ -113,7 +113,6 @@ export class HeaderComponent implements OnInit, OnDestroy {
   }
 
   onSignUp() {
-    window.scrollTo(0, 0);
     this.router.navigate(['/signup']);
   }
 
@@ -134,14 +133,12 @@ export class HeaderComponent implements OnInit, OnDestroy {
   }
 
   goToAdmin() {
-    window.scrollTo(0, 0);
     this.router.navigate(['/admin']);
   }
 
   goToMeetings() {
     let user = this.authService.getConnectedUser();
     if (user != null) {
-      window.scrollTo(0, 0);
       this.router.navigate(['/meetings']);
     }
   }
@@ -149,13 +146,11 @@ export class HeaderComponent implements OnInit, OnDestroy {
   goToAvailableSessions() {
     let user = this.authService.getConnectedUser();
     if (user != null) {
-      window.scrollTo(0, 0);
       this.router.navigate(['/available_meetings']);
     }
   }
 
   goToProfile() {
-    window.scrollTo(0, 0);
     if (this.mUser instanceof Coach) {
       this.router.navigate(['/profile_coach', this.mUser.id]);
     } else if (this.mUser instanceof Coachee) {
@@ -213,7 +208,6 @@ export class HeaderComponent implements OnInit, OnDestroy {
   }
 
   goToCoachs() {
-    window.scrollTo(0, 0);
     this.router.navigate(['/coachs']);
   }
 
@@ -291,32 +285,27 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
   /******* Admin page *****/
   navigateAdminHome() {
-    console.log("navigateAdminHome")
-    window.scrollTo(0, 0);
+    console.log("navigateAdminHome");
     this.router.navigate(['/admin']);
   }
 
   navigateToSignup() {
-    console.log("navigateToSignup")
-    window.scrollTo(0, 0);
+    console.log("navigateToSignup");
     this.router.navigate(['admin/signup']);
   }
 
   navigateToCoachsList() {
-    console.log("navigateToCoachsList")
-    window.scrollTo(0, 0);
+    console.log("navigateToCoachsList");
     this.router.navigate(['admin/coachs-list']);
   }
 
   navigateToCoacheesList() {
-    console.log("navigateToCoacheesList")
-    window.scrollTo(0, 0);
+    console.log("navigateToCoacheesList");
     this.router.navigate(['admin/coachees-list']);
   }
 
   navigateToRhsList() {
-    console.log("navigateToRhsList")
-    window.scrollTo(0, 0);
+    console.log("navigateToRhsList");
     this.router.navigate(['admin/rhs-list']);
   }
 

@@ -22,6 +22,7 @@ export class ProfileCoachAdminComponent implements OnInit, AfterViewInit, OnDest
   }
 
   ngOnInit() {
+    window.scrollTo(0, 0);
     this.getCoach();
   }
 
