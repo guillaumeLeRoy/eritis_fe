@@ -199,6 +199,11 @@ export class HeaderComponent implements OnInit, OnDestroy {
     return admin.test(this.router.url);
   }
 
+  isHomePage(): boolean {
+    let home = new RegExp('/welcome');
+    return home.test(this.router.url);
+  }
+
   isSigningUp(): boolean {
     let signupCoach = new RegExp('/signup_coach');
     let signupCoachee = new RegExp('/signup_coachee');
@@ -209,6 +214,10 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
   goToCoachs() {
     this.router.navigate(['/coachs']);
+  }
+
+  goToRegisterCoach() {
+    this.router.navigate(['register_coach/step1'])
   }
 
   canDisplayListOfCoach(): boolean {

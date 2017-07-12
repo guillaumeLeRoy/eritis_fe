@@ -36,7 +36,7 @@
           <ul class="right hide-on-med-and-down">
             <!--<li *ngIf="canDisplayListOfCoach()"><a (click)="goToCoachs()">Liste Des Coachs</a></li>-->
 
-            <div *ngIf="!(isAdminMode | async )">
+            <div *ngIf="!(isAdminMode | async ) && !isHomePage()">
               <li *ngIf="(isAuthenticated | async) && isUserACoach()"
                   [class.active]="router.url === '/available_meetings'"><a (click)="goToAvailableSessions()">
                 Demandes en attente</a></li>
@@ -78,6 +78,11 @@
                 <a (click)="navigateToRhsList()">Nos Rhs</a></li>
               <li [class.active]="router.url === '/admin/possible_coachs-list'">
                 <a (click)="navigateToPossibleCoachsList()">Demandes d'inscription</a></li>
+            </div>
+
+            <div *ngIf="isHomePage()">
+              <li [class.active]="router.url === '/admin/coachs-list'">
+                <a (click)="goToRegisterCoach()">Devenir coach</a></li>
             </div>
 
           </ul>
