@@ -20,6 +20,9 @@ export class RegisterCoachMessageComponent implements OnInit {
   }
 
   goToWelcomePage() {
+    // Clean cookies
+    this.cookieService.remove('COACH_REGISTER_CONDITIONS_ACCEPTED');
+    this.cookieService.remove('COACH_REGISTER_FORM_SENT');
     this.router.navigate(['/welcome']);
   }
 

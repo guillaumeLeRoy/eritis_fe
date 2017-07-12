@@ -26,10 +26,10 @@
           <a (click)="goToHome()" class="brand-logo center hide-on-med-and-down"
              *ngIf="!(isAuthenticated | async) && !(isAdminMode | async )"><img
             src="assets/img/logo-eritis-new.png" alt="Eritis"></a>
-          <a (click)="goToHome()" class="brand-logo center hide-on-large-only"><img
+          <a (click)="goToHome()" class="brand-logo brand-logo-phone center hide-on-large-only"><img
             src="assets/img/logo-eritis-new.png" alt="Eritis"></a>
 
-          <a data-activates="side-nav" class="button-collapse left" [hidden]="!(isAuthenticated | async)">
+          <a data-activates="side-nav" class="button-collapse left" [hidden]="!(isAuthenticated | async) && !(isAdminMode | async )">
             <i class="mdi-navigation-menu"></i>
           </a>
 
@@ -86,7 +86,7 @@
           <!-- Side Nav -->
           <ul class="side-nav" id="side-nav">
 
-            <div class="side-nav-header" *ngIf="(isAuthenticated | async)">
+            <div class="side-nav-header" *ngIf="(isAuthenticated | async) || (isAdminMode | async )">
               <div>
                 <div class="side-nav-header-container z-depth-1" *ngIf="!(isAdminMode | async )">
                   <!--<img src="{{(user | async)?.avatar_url}}" alt="profile image"-->
@@ -94,13 +94,13 @@
                   <div class="side-nav-user-img avatar z-depth-2"
                        [style.background-image]="'url(' + (user | async)?.avatar_url + ')'"></div>
                   <div class="side-nav-user-info">
-                    <h5>{{ (user | async)?.firstName}} {{ (user | async)?.lastName}}</h5>
+                    <h6>{{ (user | async)?.firstName}} {{ (user | async)?.lastName}}</h6>
                     <span>{{(user | async)?.email}}</span>
                   </div>
                 </div>
 
                 <div class="side-nav-header-container z-depth-1" *ngIf="(isAdminMode | async )">
-                  <h4>Admin</h4>
+                  <h3>Admin</h3>
                 </div>
               </div>
             </div>
@@ -153,10 +153,10 @@
 
         <div class="row hide-on-small-and-down">
           <div class="header-btn col-xs-12 col-sm-6">
-            <a pageScroll href="#coach_section" class="btn-basic right">En savoir plus</a>
+            <a pageScroll href="#coach_section" class="btn-basic btn-small right">En savoir plus</a>
           </div>
           <div class="header-btn col-xs-12 col-sm-6">
-            <button class="btn-basic btn-plain btn-connexion left" (click)="activateLogin()"><i class="material-icons">perm_identity</i>
+            <button class="btn-basic btn-plain btn-connexion btn-small left" (click)="activateLogin()"><i class="material-icons">perm_identity</i>
               Connexion
             </button>
           </div>

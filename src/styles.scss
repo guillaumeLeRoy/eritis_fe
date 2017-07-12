@@ -23,6 +23,34 @@ body .container {
   padding: 96px 0;
 }
 
+h1 {
+  font-size: 2.7em;
+}
+
+h2 {
+  font-size: 2.3em;
+}
+
+h3 {
+  font-size: 2em;
+}
+
+h4 {
+  font-size: 1.8em;
+}
+
+h5 {
+  font-size: 1.6em;
+}
+
+h6 {
+  font-size: 1.4em;
+}
+
+p {
+  font-size: 1.2em;
+}
+
 .recipes_grid {
   height: 100%;
   width: 100%;
@@ -78,7 +106,8 @@ p {
   font-weight: normal !important;
 }
 
-.btn-basic:disabled{
+button.btn-basic:disabled,
+a.btn-basic:disabled {
   background-color: $main-light-grey !important;
   border-color:  $main-light-grey !important;
   box-shadow: none !important;

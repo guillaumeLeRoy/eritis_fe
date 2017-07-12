@@ -1,5 +1,5 @@
 <div class="row">
-  <h4 class="col-lg-12 black-text">Nos coachs</h4>
+  <h3 class="col-lg-12 black-text">Nos coachs</h3>
 
   <div class="col-lg-12 card collection">
     <div *ngIf="(coachs | async) != null  && (coachs | async).length > 0">
@@ -9,7 +9,7 @@
     </div>
 
     <div class="text-center" *ngIf="(coachs | async) == null || (coachs | async).length < 1">
-      <h5 class="no-meeting">Les coachs apparaîtront ici</h5>
+      <p class="no-meeting">Les coachs apparaîtront ici</p>
     </div>
   </div>
 </div> <!--end row-->

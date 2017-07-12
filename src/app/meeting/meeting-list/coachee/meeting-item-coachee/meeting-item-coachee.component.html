@@ -44,11 +44,11 @@
           </div>
 
           <div *ngIf="(potentialDates | async) != null">
-            <p class="meeting-item-coach-name">Un coach vous sera bientôt attribué</p>
+            <span class="meeting-item-coach-name">Un coach vous sera bientôt attribué</span>
           </div>
 
           <div *ngIf="(potentialDates | async) == null">
-            <p class="meeting-item-coach-name red-text">Veuillez ajouter des disponibilités</p>
+            <span class="meeting-item-coach-name red-text">Veuillez ajouter des disponibilités</span>
           </div>
         </div>
 

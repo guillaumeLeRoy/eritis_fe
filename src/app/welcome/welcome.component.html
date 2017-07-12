@@ -1,187 +1,146 @@
-<main>
+<div class="content">
 
-  <div class="bg-top-image"></div>
-  <div class="bg-top-filter"></div>
-
-  <header class="section">
-    <!--<div class="navbar">-->
-      <!--<nav>-->
-        <!--<div class="navbar-color">-->
-          <!--<div class="col s12">-->
-            <!--<a [routerLink]="['/']" class="logo-text"><img src="assets/img/logo-eritis-new.png" alt="Eritis"></a>-->
-          <!--</div>-->
-        <!--</div>&lt;!&ndash;end navbar-color&ndash;&gt;-->
-      <!--</nav>-->
-    <!--</div>&lt;!&ndash;end navbar&ndash;&gt;-->
-
-    <!--<div class="container">-->
-      <!--<h1 class="header-title">Atteignez vos objectifs</h1>-->
-      <!--<h3 class="header-subtitle">Séances de coaching individuel avec un coach certifié</h3>-->
-
-      <!--<div class="row">-->
-        <!--<div class="header-btn col-xs-12 col-sm-6">-->
-          <!--<a pageScroll href="#coach_section" class="btn-basic">En savoir plus</a>-->
-        <!--</div>-->
-        <!--<div class="header-btn col-xs-12 col-sm-6">-->
-          <!--<button class="btn-basic btn-plain btn-connexion" (click)="activateLogin()"><i class="material-icons">perm_identity</i>-->
-            <!--Connexion-->
-          <!--</button>-->
-        <!--</div>-->
-      <!--</div>-->
-
-      <!--<rb-signin *ngIf="loginActivated"></rb-signin>-->
-
-      <!--<a pageScroll href="#presentation" class="header-arrow-bottom"><i class="fa fa-angle-down" aria-hidden="true"></i></a>-->
-
-    <!--</div>-->
-  </header> <!--end header-->
-
-  <div class="content">
-
-    <section id="presentation" class="section">
-      <div class="container">
-        <h2 class="text-center section_title presentation_title">Construisez le coaching qui correspond à vos
-          besoins</h2>
-        <div class="row">
-          <div class="col-sm-12 col-lg-4">
-            <div class="presentation_item text-center">
-              <img src="assets/img/todos.svg" class="desc_icon"/>
-              <h3 class="presentation_item_title">Définissez votre besoin​</h3>
-              <p class="presentation_item_text">Utilisez l'outil de réservation et organisez votre séance de
-                coaching.</p>
-            </div>
-          </div>
-
-          <div class="col-sm-12 col-lg-4">
-            <div class="presentation_item text-center">
-              <img src="assets/img/confirm-user.svg" class="desc_icon"/>
-              <h3 class="presentation_item_title">Trouvez votre coach</h3>
-              <p class="presentation_item_text">Connectez-vous sur votre plateforme pour votre séance de 45 min.</p>
-            </div>
-          </div>
-
-          <div class="col-sm-12 col-lg-4">
-            <div class="presentation_item text-center">
-              <img src="assets/img/presentation.svg" class="desc_icon"/>
-              <h3 class="presentation_item_title">Suivez votre progression</h3>
-              <p class="presentation_item_text">Chaque séance se conclut par un compte rendu avec un plan d'action.</p>
-            </div>
-          </div>
-        </div> <!--end row-->
-      </div> <!--end container-->
-    </section> <!--end section-->
-
-
-    <section id="coach_section" class="section">
-      <div class="container">
-        <h2 class="text-center section_title coach_section_title">Conçu par une équipe de coachs certifiés</h2>
-        <h5 class="text-center coach_section_subtitle">
-          Notre équipe de coachs expérimentés constitue un label de qualité
-          sans équivalent sur le marché du coaching professionnel.
-        </h5>
-
-        <div class="small-line-container">
-          <div class="small-line"></div>
-        </div>
-
-        <div class="row">
-          <div class="col-sm-12 col-lg-4 coach_description">
-            <img class="coach_img"
-                 src="https://static.wixstatic.com/media/04261a_d639816d3928429d8a34a774be2c77c2~mv2.png/v1/fill/w_298,h_298,al_c,usm_0.66_1.00_0.01/04261a_d639816d3928429d8a34a774be2c77c2~mv2.png">
-            <h4>Etienne Roy</h4>
-            <p>
-              20 ans d'expérience en accompagnement d'équipes, de cadres dirigeants et d'organisation
-              dans des phases de changement.
-            </p>
-          </div>
-
-          <div class="col-sm-12 col-lg-4 coach_description">
-            <img class="coach_img"
-                 src="https://static.wixstatic.com/media/04261a_992204f8b935467e90154abc73a30105~mv2.png/v1/fill/w_298,h_298,al_c,lg_1/04261a_992204f8b935467e90154abc73a30105~mv2.png">
-            <h4>Elaine Lecoeur</h4>
-            <p>
-              Canadienne, installée en France depuis 1995 et forte de 20 ans d'expérience
-              en entreprise, c'est sur ce terrain que j'avance avec vous pour construire les
-              environnements apprenants adaptés à ces nouveaux enjeux.
-            </p>
-          </div>
-
-          <div class="col-xs-12 col-lg-4 coach_description">
-            <img class="coach_img"
-                 src="https://static.wixstatic.com/media/04261a_c405cc6001b041b997493ad886d4781b~mv2.png/v1/fill/w_298,h_298,al_c,lg_1/04261a_c405cc6001b041b997493ad886d4781b~mv2.png">
-            <h4>Annette Leclerc Vanel</h4>
-            <p>
-              Directrice d'agences opérationnelles et directrice de secteur dans les métiers
-              des services pendant 20 ans, Annette est coach depuis 18 ans.
-            </p>
-          </div>
-        </div><!--end row-->
-
-        <div class="row hide-on-small-and-down">
-          <div class="header-btn col-xs-12 col-sm-6">
-            <a pageScroll href="#contact" class="btn-basic right">Contactez-nous</a>
-          </div>
-          <div class="header-btn col-xs-12 col-sm-6">
-            <button class="btn-basic btn-plain btn-connexion left" (click)="goToCoachRegister()">Devenir coach</button>
-          </div>
-        </div>
-
-        <div class="row hide-on-med-and-up">
-          <div class="header-btn col-xs-12 col-sm-6">
-            <a pageScroll href="#contact" class="btn-basic btn-small">Contactez-nous</a>
-          </div>
-          <div class="header-btn col-xs-12 col-sm-6">
-            <button class="btn-basic btn-plain btn-connexion btn-small" (click)="goToCoachRegister()">Devenir coach</button>
-          </div>
-        </div>
-
-      </div><!--end container-->
-    </section><!--end section-->
-
-  </div><!--end content-->
-
-
-  <footer class="footer section" id="contact">
+  <section id="presentation" class="section">
     <div class="container">
+      <h2 class="text-center black-text section_title presentation_title">Construisez le coaching qui correspond à vos
+        besoins</h2>
       <div class="row">
-        <div class="col-sm-12 col-lg-5">
-          <div class="address">
-            <h4>Eritis</h4>
-            <p>
-              78 Avenue de Saint-Mandé
-              <br>75012 Paris, France
-            </p>
+        <div class="col-sm-12 col-lg-4">
+          <div class="presentation_item text-center">
+            <img src="assets/img/todos.svg" class="desc_icon"/>
+            <h4 class="black-text presentation_item_title">Définissez votre besoin​</h4>
+            <p class="presentation_item_text">Utilisez l'outil de réservation et organisez votre séance de
+              coaching.</p>
           </div>
         </div>
-        <div class="col-sm-12 col-lg-7">
-          <form [formGroup]="contactForm" (ngSubmit)="onContactSubmit()">
-            <div class="input_field">
-              <label for="name">Nom</label>
-              <input type="text" name="name" id="name" formControlName="name" placeholder="Nom">
-            </div>
-            <br>
-            <div class="input_field">
-              <label for="mail">Adresse Mail</label>
-              <input type="text" name="mail" id="mail" formControlName="mail" placeholder="exemple@mail.com">
-            </div>
-            <br>
-            <div class="input_field">
-              <label for="message">Message</label>
-              <textarea name="message" class="materialize-textarea" id="message" formControlName="message" placeholder="Message..."></textarea>
-            </div>
-            <div class="input_field text-right">
-              <button type="submit" name="submit" class="btn-basic btn-small btn-submit" [disabled]="!contactForm.valid">Envoyer
-              </button>
-            </div>
-          </form>
 
+        <div class="col-sm-12 col-lg-4">
+          <div class="presentation_item text-center">
+            <img src="assets/img/confirm-user.svg" class="desc_icon"/>
+            <h4 class="black-text presentation_item_title">Trouvez votre coach</h4>
+            <p class="presentation_item_text">Connectez-vous sur votre plateforme pour votre séance de 45 min.</p>
+          </div>
+        </div>
+
+        <div class="col-sm-12 col-lg-4">
+          <div class="presentation_item text-center">
+            <img src="assets/img/presentation.svg" class="desc_icon"/>
+            <h4 class="black-text presentation_item_title">Suivez votre progression</h4>
+            <p class="presentation_item_text">Chaque séance se conclut par un compte rendu avec un plan d'action.</p>
+          </div>
+        </div>
+      </div> <!--end row-->
+    </div> <!--end container-->
+  </section> <!--end section-->
+
+
+  <section id="coach_section" class="section">
+    <div class="container">
+      <h2 class="text-center section_title coach_section_title">Conçu par une équipe de coachs certifiés</h2>
+      <h6 class="text-center coach_section_subtitle">
+        Notre équipe de coachs expérimentés constitue un label de qualité
+        sans équivalent sur le marché du coaching professionnel.
+      </h6>
+
+      <div class="small-line-container">
+        <div class="small-line"></div>
+      </div>
+
+      <div class="row">
+        <div class="col-sm-12 col-lg-4 coach_description">
+          <img class="coach_img"
+               src="https://static.wixstatic.com/media/04261a_d639816d3928429d8a34a774be2c77c2~mv2.png/v1/fill/w_298,h_298,al_c,usm_0.66_1.00_0.01/04261a_d639816d3928429d8a34a774be2c77c2~mv2.png">
+          <h4>Etienne Roy</h4>
+          <p>
+            20 ans d'expérience en accompagnement d'équipes, de cadres dirigeants et d'organisation
+            dans des phases de changement.
+          </p>
+        </div>
+
+        <div class="col-sm-12 col-lg-4 coach_description">
+          <img class="coach_img"
+               src="https://static.wixstatic.com/media/04261a_992204f8b935467e90154abc73a30105~mv2.png/v1/fill/w_298,h_298,al_c,lg_1/04261a_992204f8b935467e90154abc73a30105~mv2.png">
+          <h4>Elaine Lecoeur</h4>
+          <p>
+            Canadienne, installée en France depuis 1995 et forte de 20 ans d'expérience
+            en entreprise, c'est sur ce terrain que j'avance avec vous pour construire les
+            environnements apprenants adaptés à ces nouveaux enjeux.
+          </p>
+        </div>
+
+        <div class="col-xs-12 col-lg-4 coach_description">
+          <img class="coach_img"
+               src="https://static.wixstatic.com/media/04261a_c405cc6001b041b997493ad886d4781b~mv2.png/v1/fill/w_298,h_298,al_c,lg_1/04261a_c405cc6001b041b997493ad886d4781b~mv2.png">
+          <h4>Annette Leclerc Vanel</h4>
+          <p>
+            Directrice d'agences opérationnelles et directrice de secteur dans les métiers
+            des services pendant 20 ans, Annette est coach depuis 18 ans.
+          </p>
         </div>
       </div><!--end row-->
+
+      <div class="row hide-on-small-and-down">
+        <div class="header-btn col-xs-12 col-sm-6">
+          <a pageScroll href="#contact" class="btn-basic btn-small right">Contactez-nous</a>
+        </div>
+        <div class="header-btn col-xs-12 col-sm-6">
+          <button class="btn-basic btn-plain btn-connexion btn-small left" (click)="goToCoachRegister()">Devenir coach</button>
+        </div>
+      </div>
+
+      <div class="row hide-on-med-and-up">
+        <div class="header-btn col-xs-12 col-sm-6">
+          <a pageScroll href="#contact" class="btn-basic btn-small">Contactez-nous</a>
+        </div>
+        <div class="header-btn col-xs-12 col-sm-6">
+          <button class="btn-basic btn-plain btn-connexion btn-small" (click)="goToCoachRegister()">Devenir coach</button>
+        </div>
+      </div>
+
     </div><!--end container-->
-  </footer>
+  </section><!--end section-->
+
+</div><!--end content-->
 
 
-</main>
+<footer class="footer section" id="contact">
+  <div class="container">
+    <div class="row">
+      <div class="col-sm-12 col-lg-5">
+        <div class="black-text address">
+          <h3>Eritis</h3>
+          <p>
+            78 Avenue de Saint-Mandé
+            <br>75012 Paris, France
+          </p>
+        </div>
+      </div>
+      <div class="col-sm-12 col-lg-7">
+        <form [formGroup]="contactForm" (ngSubmit)="onContactSubmit()">
+          <div class="input_field">
+            <label for="name">Nom</label>
+            <input type="text" name="name" id="name" formControlName="name" placeholder="Nom">
+          </div>
+          <br>
+          <div class="input_field">
+            <label for="mail">Adresse Mail</label>
+            <input type="text" name="mail" id="mail" formControlName="mail" placeholder="exemple@mail.com">
+          </div>
+          <br>
+          <div class="input_field">
+            <label for="message">Message</label>
+            <textarea name="message" class="materialize-textarea" id="message" formControlName="message" placeholder="Message..."></textarea>
+          </div>
+          <div class="input_field text-right">
+            <button type="submit" name="submit" class="btn-basic btn-small btn-submit" [disabled]="!contactForm.valid">Envoyer
+            </button>
+          </div>
+        </form>
+
+      </div>
+    </div><!--end row-->
+  </div><!--end container-->
+</footer>
 
 <script type="text/javascript">
   $('.navbar-fixed').hide();

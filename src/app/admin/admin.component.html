@@ -1,9 +1,9 @@
 <div [class.container]="!isOnProfile()">
   <div [hidden]="isOnProfile()">
-    <h4 class="text-right">Espace admin
+    <h3 class="text-right">Espace admin
       <span class="text-right italic blue-text admin-name" *ngIf="(admin | async)?.email != null">{{ (admin | async)?.email }}</span>
       <span class="text-right italic blue-text admin-name" *ngIf="(admin | async)?.email == null">non identifié</span>
-    </h4>
+    </h3>
     <p class="text-right">
       <span class="blue-text">Cliquez</span> ici pour ajouter un utilisateur
       <a class="btn-floating btn-large waves-effect waves-light add-meeting-btn"

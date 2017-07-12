@@ -6,6 +6,7 @@ import {HR} from "../model/HR";
 import {Coachee} from "app/model/Coachee";
 import {Coach} from "../model/Coach";
 import {Router} from "@angular/router";
+import {CookieService} from "ngx-cookie";
 
 declare var Materialize: any;
 declare var $: any;
@@ -22,11 +23,15 @@ export class WelcomeComponent implements OnInit {
   private error = false;
   private errorMessage: '';
 
-  constructor(private router: Router, private authService: AuthService, private formBuilder: FormBuilder) {
+  constructor(private router: Router, private authService: AuthService, private formBuilder: FormBuilder, private cookieService: CookieService) {
   }
 
   ngOnInit() {
     window.scrollTo(0, 0);
+
+    // Clean cookies
+    this.cookieService.remove('COACH_REGISTER_CONDITIONS_ACCEPTED');
+    this.cookieService.remove('COACH_REGISTER_FORM_SENT');
 
     this.contactForm = this.formBuilder.group({
       name: ['', Validators.compose([Validators.required])],
