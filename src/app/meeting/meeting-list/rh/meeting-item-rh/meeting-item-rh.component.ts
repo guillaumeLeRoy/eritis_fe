@@ -7,6 +7,7 @@ import {Observable} from "rxjs/Observable";
 import {MeetingsService} from "../../../../service/meetings.service";
 import {RhUsageRate} from "app/model/UsageRate";
 import {MeetingReview} from "../../../../model/MeetingReview";
+import {Router} from "@angular/router";
 
 
 declare var $: any;
@@ -45,7 +46,7 @@ export class MeetingItemRhComponent implements OnInit, AfterViewInit {
 
   // private coacheeUsageRate: Observable<RhUsageRate>;
 
-  constructor(private meetingsService: MeetingsService, private coachCoacheeService: CoachCoacheeService, private cd: ChangeDetectorRef) {
+  constructor(private meetingsService: MeetingsService, private coachCoacheeService: CoachCoacheeService, private cd: ChangeDetectorRef, private router: Router) {
   }
 
   ngOnInit(): void {
@@ -81,6 +82,10 @@ export class MeetingItemRhComponent implements OnInit, AfterViewInit {
 
   getDate(date: string): string {
     return (new Date(date)).getDate() + ' ' + this.months[(new Date(date)).getMonth()] + ' ' + (new Date(date)).getFullYear();
+  }
+
+  goToCoacheeProfile(coacheeId: String) {
+    this.router.navigate(['/profile_coachee', coacheeId]);
   }
 
   toggleShowDetails() {

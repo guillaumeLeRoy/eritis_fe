@@ -33,6 +33,7 @@
           <div>
             <p class="meeting-item-coach-name black-text bold">{{ meeting.coach.firstName}} {{
               meeting.coach.lastName}}</p>
+            <span class="italic">{{meeting.coach.email}}</span>
           </div>
         </div>
 
@@ -57,6 +58,10 @@
           <div *ngIf="meeting.agreed_date">
             <span class="meeting-item-date-date">{{ getDate(meeting.agreed_date.start_date) }}</span>
             <span class="meeting-item-date-hour">{{ printTimeString(meeting.agreed_date.start_date) }}</span>
+          </div>
+
+          <div *ngIf="!meeting.agreed_date">
+            <span>En attente...</span>
           </div>
 
           <!--<button *ngIf="!meeting.agreed_date" class="btn-basic btn-blue btn-small" (click)="goToModifyDate(meeting.id)">-->

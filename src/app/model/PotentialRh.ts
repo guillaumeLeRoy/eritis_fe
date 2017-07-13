@@ -7,6 +7,10 @@ export class PotentialRh {
 
   email: string;
 
+  firstName: string;
+
+  lastName: string;
+
   start_date: string;
 
   constructor(id: string) {

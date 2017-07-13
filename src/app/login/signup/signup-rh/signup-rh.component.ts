@@ -7,6 +7,8 @@ import {ActivatedRoute, Router} from "@angular/router";
 import {User} from "../../../user/user";
 import {PotentialRh} from "../../../model/PotentialRh";
 
+declare var Materialize: any;
+
 @Component({
   selector: 'er-signup-rh',
   templateUrl: './signup-rh.component.html',
@@ -18,8 +20,8 @@ export class SignupRhComponent implements OnInit {
   potentialRh: PotentialRh;
 
   private signUpForm: FormGroup;
-  private error = false;
-  private errorMessage = "";
+
+  private sendLoading = false;
 
   constructor(private formBuilder: FormBuilder, private authService: AuthService, private coachCoacheeService: CoachCoacheeService, private router: Router, private route: ActivatedRoute) {
     console.log("constructor")
@@ -37,10 +39,10 @@ export class SignupRhComponent implements OnInit {
         console.log("ngOnInit, param token", token);
 
         this.coachCoacheeService.getPotentialRh(token).subscribe(
-          (coach: PotentialRh) => {
-            console.log("getPotentialRh, data obtained", coach);
-            this.potentialRhObs = Observable.of(coach);
-            this.potentialRh = coach;
+          (rh: PotentialRh) => {
+            console.log("getPotentialRh, data obtained", rh);
+            this.potentialRhObs = Observable.of(rh);
+            this.potentialRh = rh;
           },
           error => {
             console.log("getPotentialRh, error obtained", error)
@@ -66,9 +68,7 @@ export class SignupRhComponent implements OnInit {
   onSignUpSubmitted() {
     console.log("onSignUp")
 
-    //reset errors
-    this.error = false;
-    this.errorMessage = '';
+    this.sendLoading = true;
 
     console.log("onSignUp, rh");
 
@@ -78,13 +78,18 @@ export class SignupRhComponent implements OnInit {
     this.authService.signUpRh(user).subscribe(
       data => {
         console.log("onSignUp, data obtained", data)
+        this.sendLoading = false;
         /*L'utilisateur est TOUJOURS redirigé vers ses meetings*/
         this.router.navigate(['/meetings']);
+        Materialize.toast('Inscription terminée !', 3000, 'rounded');
       },
       error => {
         console.log("onSignUp, error obtained", error)
-        this.error = true;
-        this.errorMessage = error
+        this.sendLoading = false;
+        Materialize.toast('Impossible de finaliser votre inscription', 3000, 'rounded');
+        if (error.code == 'auth/email-already-in-use') {
+          Materialize.toast("L'adresse mail est déjà utilisée par un autre compte", 3000, 'rounded');
+        }
       })
   }
 

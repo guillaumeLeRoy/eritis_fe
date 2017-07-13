@@ -24,7 +24,6 @@ export class HeaderComponent implements OnInit, OnDestroy {
   months = ['Jan', 'Feb', 'Mar', 'Avr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 
   private isAuthenticated: Observable<boolean>;
-  private isAdminMode: Observable<boolean>;
   private subscription: Subscription;
 
   private mUser: Coach | Coachee | HR;
@@ -73,12 +72,9 @@ export class HeaderComponent implements OnInit, OnDestroy {
   private onUserObtained(user: Coach | Coachee | HR) {
     console.log('onUserObtained : ' + user);
 
-    this.isAdminMode = Observable.of(false);
-
     if (this.isAdmin()) {
       this.user = null;
       this.isAuthenticated = Observable.of(false);
-      this.isAdminMode = Observable.of(true);
     }
 
     if (user == null) {
@@ -124,16 +120,16 @@ export class HeaderComponent implements OnInit, OnDestroy {
     }
     if (this.isAdmin()) {
       console.log('goToHomeAdmin');
-      this.goToAdmin();
+      this.navigateAdminHome();
     }
     if (this.isSigningUp()) {
       console.log('goToWelcomePage');
-      this.router.navigate(['/welcome']);
+      this.goToWelcomePage();
     }
   }
 
-  goToAdmin() {
-    this.router.navigate(['/admin']);
+  goToWelcomePage() {
+    this.router.navigate(['/welcome']);
   }
 
   goToMeetings() {
@@ -156,7 +152,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
     } else if (this.mUser instanceof Coachee) {
       this.router.navigate(['/profile_coachee', this.mUser.id]);
     } else if (this.mUser instanceof HR) {
-      this.router.navigate(['/profile_rh']);
+      this.router.navigate(['/profile_rh', this.mUser.id]);
     }
   }
 
@@ -204,16 +200,19 @@ export class HeaderComponent implements OnInit, OnDestroy {
     return home.test(this.router.url);
   }
 
+  isEditingProfile(): boolean {
+    let profileCoach = new RegExp('/profile_coach');
+    let profileCoachee = new RegExp('/profile_coachee');
+    let profileRh = new RegExp('/profile_rh');
+    return profileCoach.test(this.router.url) || profileCoachee.test(this.router.url) || profileRh.test(this.router.url);
+  }
+
   isSigningUp(): boolean {
     let signupCoach = new RegExp('/signup_coach');
     let signupCoachee = new RegExp('/signup_coachee');
     let signupRh = new RegExp('/signup_rh');
     let registerCoach = new RegExp('/register_coach');
     return signupCoach.test(this.router.url) || signupCoachee.test(this.router.url) || signupRh.test(this.router.url) || registerCoach.test(this.router.url);
-  }
-
-  goToCoachs() {
-    this.router.navigate(['/coachs']);
   }
 
   goToRegisterCoach() {

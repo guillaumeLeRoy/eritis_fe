@@ -96,7 +96,7 @@ export class CoachCoacheeService {
   getPotentialRh(token: string): Observable<PotentialRh> {
     console.log("getPotentialRh, start request");
     let param = [token];
-    return this.apiService.getPotentialCoachee(AuthService.GET_POTENTIAL_RH_FOR_TOKEN, param);
+    return this.apiService.getPotentialRh(AuthService.GET_POTENTIAL_RH_FOR_TOKEN, param);
   }
 
   getUsageRate(rhId: string): Observable<RhUsageRate> {

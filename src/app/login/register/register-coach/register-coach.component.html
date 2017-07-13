@@ -1,6 +1,6 @@
 <div class="container">
   <div id="introduction">
-    <h2 class="black-text">L'équipe Eritis vous souhaite la bienvenue !</h2>
+    <h1 class="black-text text-center">L'équipe Eritis vous souhaite la bienvenue !</h1>
     <br>
     <div class="introduction-text">
       <p>Nous avons été récemment en contact, et sommes heureux de vous transmettre le lien pour continuer le processus
@@ -38,7 +38,7 @@
       </ol>
 
       <br><br>
-      <input type="checkbox" id="check-deontologie" [(ngModel)]="conditionsChecked" (change)="toggleAcceptedConditions()"/>
+      <input type="checkbox" id="check-deontologie" (change)="toggleAcceptedConditions()" [checked]="hasAcceptedConditions()"/>
       <label for="check-deontologie">J'ai lu et j'accepte le <a (click)="goToDeontologie()">code de déontologie</a></label>
 
       <br><br>

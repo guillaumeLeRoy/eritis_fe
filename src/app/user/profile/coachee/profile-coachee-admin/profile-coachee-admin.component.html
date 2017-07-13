@@ -6,6 +6,7 @@
         <!--<img src="{{(coachee | async)?.avatar_url}}" alt="profile image"-->
              <!--class="user-img circle responsive-img z-depth-2">-->
         <div class="user-img avatar z-depth-2"
+             *ngIf="(coachee | async)?.avatar_url != null"
              [style.background-image]="'url(' + (coachee | async)?.avatar_url + ')'"></div>
 
         <div class="user-info">

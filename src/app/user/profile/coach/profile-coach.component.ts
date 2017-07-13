@@ -24,6 +24,7 @@ export class ProfileCoachComponent implements OnInit, AfterViewInit, OnDestroy {
 
   private user: Observable<Coach | Coachee | HR>;
   private coach: Observable<Coach>;
+  private mcoach: Coach;
   private subscriptionGetCoach: Subscription;
   private subscriptionGetUser: Subscription;
 
@@ -44,7 +45,6 @@ export class ProfileCoachComponent implements OnInit, AfterViewInit, OnDestroy {
     this.formCoach = this.formBuilder.group({
       firstName: ['', Validators.required],
       lastName: ['', Validators.required],
-      avatar: ['', Validators.required],
       description: ['', Validators.required],
     });
 
@@ -69,6 +69,7 @@ export class ProfileCoachComponent implements OnInit, AfterViewInit, OnDestroy {
             console.log("gotCoach", coach);
 
             this.setFormValues(coach);
+            this.mcoach = coach;
             this.coach = Observable.of(coach);
             console.log("getUser");
             let user = this.authService.getConnectedUser();
@@ -105,7 +106,6 @@ export class ProfileCoachComponent implements OnInit, AfterViewInit, OnDestroy {
     this.formCoach.setValue({
       firstName: coach.firstName,
       lastName: coach.lastName,
-      avatar: coach.avatar_url,
       description: coach.description
     });
   }
@@ -128,7 +128,7 @@ export class ProfileCoachComponent implements OnInit, AfterViewInit, OnDestroy {
           this.formCoach.value.firstName,
           this.formCoach.value.lastName,
           this.formCoach.value.description,
-          this.formCoach.value.avatar);
+          this.mcoach.avatar_url);
       }
     ).subscribe(
       (user: ApiUser) => {

@@ -2,17 +2,14 @@
   <div class="row">
     <div class="col s12 m12 l6">
       <div>
-        <h4 class="black-text">Bienvenue chez Eritis</h4>
+        <h3 class="black-text">Bonjour {{ (potentialRhObs | async)?.firstName }}, bienvenue chez Eritis !</h3>
+        <p><span class="black-text">Votre email:</span> {{ (potentialRhObs | async)?.email }}</p>
+        <br>
+        <h4>Choississez un mot de passe pour finaliser votre inscription</h4>
+
+
         <div class="row">
           <form class="col s12" [formGroup]="signUpForm" (ngSubmit)="onSignUpSubmitted()">
-            <div class="row">
-              <div class="col s12">
-                <p>Votre email {{ (potentialRhObs | async)?.email }}</p>
-              </div>
-            </div>
-
-            <p>Choississez un mot de passe pour finaliser votre inscription.</p>
-
             <div class="row">
               <div class="col s12">
                 <label for="password">Password</label>
@@ -35,25 +32,28 @@
               </div>
             </div>
 
-            <div class="row">
-              <div class="col s12">
+            <div class="text-center">
+              <div *ngIf="!sendLoading">
                 <button class="btn-basic btn-blue btn-small btn-plain right" type="submit" name="action"
                         [disabled]="!signUpForm.valid">Valider
                 </button>
               </div>
-            </div>
 
-
-            <!-- sign up error div-->
-
-            <div *ngIf="error && errorMessage != ''">
-
-              <!-- add extra separator-->
-              <hr>
-
-              <small class="text-danger">
-                {{errorMessage}}
-              </small>
+              <div *ngIf="sendLoading">
+                <div class="preloader-wrapper active">
+                  <div class="spinner-layer spinner-blue">
+                    <div class="circle-clipper left">
+                      <div class="circle"></div>
+                    </div>
+                    <div class="gap-patch">
+                      <div class="circle"></div>
+                    </div>
+                    <div class="circle-clipper right">
+                      <div class="circle"></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
 
           </form>

@@ -12,6 +12,7 @@ import {Coachee} from "../model/Coachee";
 import {LoginResponse} from "../model/LoginResponse";
 import {HR} from "../model/HR";
 import {PotentialCoachee} from "../model/PotentialCoachee";
+import {PotentialRh} from "../model/PotentialRh";
 
 @Injectable()
 export class AuthService {
@@ -295,6 +296,14 @@ export class AuthService {
     );
   }
 
+  getPotentialRh(path: string, params: string[]): Observable<PotentialRh> {
+    return this.httpService.get(this.generatePath(path, params)).map(
+      (res: Response) => {
+        return this.parsePotentialRh(res.json());
+      }
+    );
+  }
+
   private getConnectedApiUser(): Observable<ApiUser> {
     console.log("2. getConnectedApiUser");
     if (this.ApiUser) {
@@ -564,6 +573,15 @@ export class AuthService {
     rh.start_date = json.start_date;
     rh.avatar_url = json.avatar_url;
     return rh;
+  }
+
+  private parsePotentialRh(json: any): PotentialRh {
+    let potentialRh: PotentialRh = new PotentialRh(json.id);
+    potentialRh.email = json.email;
+    potentialRh.firstName = json.first_name;
+    potentialRh.lastName = json.last_name;
+    potentialRh.start_date = json.create_date;
+    return potentialRh;
   }
 
   private parsePotentialCoachee(json: any): PotentialCoachee {

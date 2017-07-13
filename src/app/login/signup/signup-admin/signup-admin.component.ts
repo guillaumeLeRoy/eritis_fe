@@ -22,12 +22,12 @@ enum SignUpType {
 })
 export class SignupAdminComponent implements OnInit {
 
-  private signUpSelectedType = SignUpType.NULL;
+  private signUpSelectedType = SignUpType.RH;
   private signUpTypes: SignUpType[];
 
   private signUpForm: FormGroup;
-  private error = false;
-  private errorMessage = "";
+
+  private sendLoading = false;
 
   /* ----- Contract Plan ----*/
 
@@ -60,7 +60,9 @@ export class SignupAdminComponent implements OnInit {
       email: ['', Validators.compose([
         Validators.required,
         this.isEmail
-      ])]
+      ])],
+      name: ['', Validators.required],
+      lastname: ['', Validators.required]
     });
 
     this.getListOfContractPlans();
@@ -75,35 +77,36 @@ export class SignupAdminComponent implements OnInit {
   onSignUpSubmitted() {
     console.log("onSignUp")
 
-    //reset errors
-    this.error = false;
-    this.errorMessage = '';
-
-
     if (this.signUpSelectedType == SignUpType.COACH) {
       console.log("onSignUp, coach");
       this.createPotentialCoach(this.signUpForm.value.email);
     } else if (this.signUpSelectedType == SignUpType.RH) {
-      this.createPotentialRh(this.signUpForm.value.email);
+      this.createPotentialRh(this.signUpForm.value.email, this.signUpForm.value.name, this.signUpForm.value.lastname);
     } else {
       Materialize.toast('Vous devez sélectionner un type', 3000, 'rounded')
     }
   }
 
-  createPotentialRh(email: string) {
+  createPotentialRh(email: string, name: string, lastname: string) {
     console.log('createPotentialRh');
+
+    this.sendLoading = true;
 
     let body = {
       "email": email,
+      "first_name": name,
+      "last_name": lastname
     };
 
     this.adminAPIService.createPotentialRh(body).subscribe(
       (res: any) => {
         console.log('createPotentialRh, res', res);
         Materialize.toast('Collaborateur RH ajouté !', 3000, 'rounded');
+        this.sendLoading = false;
       }, (error) => {
         console.log('createPotentialRh, error', error);
         Materialize.toast("Impossible d'ajouter le RH", 3000, 'rounded');
+        this.sendLoading = false;
       }
     );
   }
