@@ -137,10 +137,12 @@ export class ProfileCoachComponent implements OnInit, AfterViewInit, OnDestroy {
             console.log("Upload avatar");
             let params = [coach.id];
 
-            if (this.avatarUrl != null) {
+            if (this.avatarUrl !== null && this.avatarUrl !== undefined) {
               return this.authService.put(AuthService.PUT_COACH_PROFILE_PICT, params, formData, {headers: headers})
                 .map(res => res.json())
                 .catch(error => Observable.throw(error))
+            } else {
+              return Observable.of(coach);
             }
           }
         ).subscribe(
@@ -151,16 +153,18 @@ export class ProfileCoachComponent implements OnInit, AfterViewInit, OnDestroy {
             Materialize.toast('Votre profil a été modifié !', 3000, 'rounded');
             //refresh page
             setTimeout('', 1000);
-            window.location.reload();
+            // window.location.reload();
 
           }, error => {
             console.log('Upload avatar error', error);
+            this.updateUserLoading = false;
             Materialize.toast('Impossible de modifier votre profil', 3000, 'rounded');
           }
         )
       },
       (error) => {
         console.log('coach update, error', error);
+        this.updateUserLoading = false;
         Materialize.toast('Impossible de modifier votre profil', 3000, 'rounded');
       });
   }

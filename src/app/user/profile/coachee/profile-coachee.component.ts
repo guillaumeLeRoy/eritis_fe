@@ -133,12 +133,14 @@ export class ProfileCoacheeComponent implements OnInit, AfterViewInit, OnDestroy
             window.location.reload();
           }, error => {
             console.log('Upload avatar error', error);
+            this.updateUserLoading = false;
             Materialize.toast('Impossible de modifier votre profil', 3000, 'rounded');
           }
         )
       },
       (error) => {
         console.log('coachee update, error', error);
+        this.updateUserLoading = false;
         Materialize.toast('Impossible de modifier votre profil', 3000, 'rounded');
       });
   }

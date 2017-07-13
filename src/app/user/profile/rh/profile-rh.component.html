@@ -1,157 +1,148 @@
-<!--<rb-header></rb-header>-->
-<!--start container-->
-<div class="container">
+<div class="header-user">
+  <div class="header-user-filter">
+    <div class="container row">
 
-  <div id="profile-page" class="section">
-    <!-- profile-page-header -->
-    <div id="profile-page-header" class="card">
-      <div class="card-image waves-effect waves-block waves-light">
-        <img class="activator" src="images/user-profile-bg.jpg" alt="user background">
+      <div class="user col-lg-5">
+        <!--<img src="{{(coach | async)?.avatar_url}}" alt="profile image" class="user-img circle responsive-img z-depth-2">-->
+        <div class="user-img avatar z-depth-2"
+             *ngIf="(rh | async)?.avatar_url != null"
+             [style.background-image]="'url(' + (rh | async)?.avatar_url + ')'"></div>
+
+        <div class="user-info">
+          <h5>{{(rh | async)?.firstName}} {{(rh | async)?.lastName}}</h5>
+          <h6>{{(rh | async)?.email}}</h6>
+        </div>
       </div>
-      <figure class="card-profile-image">
-        <img src="{{ ( rh | async)?.avatar_url}}" alt="profile image"
-             class="circle z-depth-2 responsive-img activator">
-      </figure>
-      <div class="card-content">
+
+      <div class="col-sm-12 hide-on-large-only gap"></div>
+
+      <div class="header-stats col-lg-7">
         <div class="row">
-          <div class="col s3 offset-s2">
-            <h4 class="card-title grey-text text-darken-4">{{ (rh | async)?.firstName}} {{ (rh | async)?.lastName}}</h4>
-            <p class="medium-small grey-text">Coachee</p>
-          </div>
-          <div class="col s2 center-align">
-            <h4 class="card-title grey-text text-darken-4">10+</h4>
-            <p class="medium-small grey-text">Work Experience</p>
-          </div>
-          <div class="col s2 center-align">
-            <h4 class="card-title grey-text text-darken-4">6</h4>
-            <p class="medium-small grey-text">Completed Sessions</p>
-          </div>
-          <div class="col s2 center-align">
-            <h4 class="card-title grey-text text-darken-4">$ 1,253,000</h4>
-            <p class="medium-small grey-text">Business Profit</p>
-          </div>
-          <div class="col s1 right-align">
-            <a class="btn-floating activator waves-effect waves-light darken-2 right">
-              <i class="mdi-action-perm-identity"></i>
-            </a>
-          </div>
+          <!--<div class="header-item col-sm-4">-->
+            <!--<div class="header-item-number"><span>{{(rh | async)?.score}}</span><span class="indice"> / 5</span></div>-->
+            <!--<p class="header-item-title">Moyenne</p>-->
+          <!--</div>-->
+
+          <!--<div class="header-item col-sm-3">-->
+          <!--<div class="header-item-number"><span>10</span><span class="indice">mois</span></div>-->
+          <!--<p class="header-item-title">Expérience</p>-->
+          <!--</div>-->
+
+          <!--<div class="header-item col-sm-4">-->
+            <!--<div class="header-item-number"><span>6</span></div>-->
+            <!--<p class="header-item-title">Séances réalisées</p>-->
+          <!--</div>-->
+
+          <!--<div class="header-item col-sm-4">-->
+            <!--<div class="header-item-number"><span>3</span></div>-->
+            <!--<p class="header-item-title">Personnes coachées</p>-->
+          <!--</div>-->
         </div>
       </div>
-      <div class="card-reveal">
-        <p>
-            <span class="card-title grey-text text-darken-4">{{ (rh | async)?.firstName}} {{ (rh | async)?.lastName}} <i
-              class="mdi-navigation-close right"></i></span>
-          <span><i class="mdi-action-perm-identity cyan-text text-darken-2"></i>Coach</span>
-        </p>
 
-        <p>Coachee description</p>
-
-        <p><i class="mdi-action-perm-phone-msg cyan-text text-darken-2"></i> +1 (612) 222 8989</p>
-        <p><i class="mdi-communication-email cyan-text text-darken-2"></i> {{ (rh | async)?.email }}</p>
-        <p><i class="mdi-social-cake cyan-text text-darken-2"></i> Start Date : {{ (rh | async)?.start_date }}
-        </p>
-        <p><i class="mdi-device-airplanemode-on cyan-text text-darken-2"></i> BAR - AUS</p>
-        <p><i class="mdi-social-cake cyan-text text-darken-2"></i> eritis id : {{ (rh | async)?.id }}</p>
-
-      </div>
-    </div>
-    <!--/ profile-page-header -->
-
-    <!-- profile-page-content -->
-    <div id="profile-page-content" class="row">
-      <!-- profile-page-sidebar-->
-      <div id="profile-page-sidebar" class="col s12 m4">
-        <!-- Profile About  -->
-        <div class="card light-blue">
-          <div class="card-content white-text">
-            <span class="card-title">About Me!</span>
-            <p>Coachee description</p>
-
-          </div>
-        </div>
-        <!-- Profile About  -->
-
-        <!-- Profile About Details  -->
-        <ul id="profile-page-about-details" class="collection z-depth-1">
-          <li class="collection-item">
-            <div class="row">
-              <div class="col s5 grey-text darken-1"><i class="mdi-action-wallet-travel"></i> Project</div>
-              <div class="col s7 grey-text text-darken-4 right-align">ABC Name</div>
-            </div>
-          </li>
-          <li class="collection-item">
-            <div class="row">
-              <div class="col s5 grey-text darken-1"><i class="mdi-social-poll"></i> Skills</div>
-              <div class="col s7 grey-text text-darken-4 right-align">HTML, CSS</div>
-            </div>
-          </li>
-          <li class="collection-item">
-            <div class="row">
-              <div class="col s5 grey-text darken-1"><i class="mdi-social-domain"></i> Lives in</div>
-              <div class="col s7 grey-text text-darken-4 right-align">NY, USA</div>
-            </div>
-          </li>
-          <li class="collection-item">
-            <div class="row">
-              <div class="col s5 grey-text darken-1"><i class="mdi-social-cake"></i> Birth date</div>
-              <div class="col s7 grey-text text-darken-4 right-align">18th June, 1991</div>
-            </div>
-          </li>
-        </ul>
-        <!--/ Profile About Details  -->
-
-        <!-- Profile About  -->
-
-        <!-- Profile Edit  -->
-        <div class="card">
-          <div class="card-content">
-            <span class="card-title">Modifier votre profile</span>
-
-            <form [formGroup]="formRh" (ngSubmit)="submitRhProfileUpdate()">
-
-              <div class="row">
-                <div class="input-field col s10">
-                  <input id="edit_firstName" type="text" formControlName="firstName" class="validate"
-                         placeholder="{{ (rh | async)?.display_name }}">
-                  <label for="edit_firstName">Prénom</label>
-                </div>
-              </div>
-
-              <div class="row">
-                <div class="input-field col s10">
-                  <input id="edit_lastName" type="text" formControlName="lastName" class="validate"
-                         placeholder="{{ (rh | async)?.display_name }}">
-                  <label for="edit_lastName">Nom</label>
-                </div>
-              </div>
-
-
-              <div class="row">
-                <div class="input-field col s10">
-                    <textarea id="edit_description" row="2" class="materialize-textarea"
-                              placeholder="Décrivez-vous"></textarea>
-                  <label for="edit_description">Description</label>
-                </div>
-              </div>
-
-              <div class="row">
-                <div class="input-field col s10">
-                  <input id="edit_avatar_url" type="text" formControlName="avatar"
-                         placeholder="{{ (rh | async)?.avatar_url }}">
-                  <label for="edit_avatar_url">Avatar url</label>
-                </div>
-              </div>
-
-              <button type="submit" class="btn btn-success" [disabled]="!formRh.valid">Mettre à jour</button>
-
-            </form>
-
-          </div>
-        </div>
-        <!-- / Profile Edit  -->
-      </div>
     </div>
   </div>
 </div>
 
+<div class="container">
+  <!--<h4 class="text-right italic">"{{ (rh | async)?.description }}"</h4>-->
+  <!--<br>-->
 
+  <div>
+    <div class="center">
+      <button class="btn-basic btn-plain btn-blue btn-small center" (click)="goToMeetings()">Retourner au tableau de bord</button>
+    </div>
+    <br>
+
+    <!--<form>-->
+    <!--<div class="row">-->
+    <!--<div class="col s12">-->
+    <!--<label for="message">Envoyer un message à {{(coach | async)?.display_name}}</label>-->
+    <!--<textarea name="message" id="message" class="message-field"></textarea>-->
+    <!--</div>-->
+    <!--</div>-->
+    <!--<div class="input-field">-->
+    <!--<button class="btn-basic btn-plain btn-blue right">Envoyer</button>-->
+    <!--</div>-->
+    <!--</form>-->
+  </div>
+
+  <div *ngIf="isOwner">
+    <h4 class="black-text">Mettre à jour votre profil</h4>
+    <br>
+
+    <form [formGroup]="formRh" (ngSubmit)="submitRhProfilUpdate()">
+      <div class="row">
+        <div class="col-lg-6">
+          <div class="row">
+            <div class="col-lg-12">
+              <label for="edit_name">Prénom</label>
+              <input id="edit_name" type="text" class="validate"
+                     formControlName="firstName"
+                     placeholder="Prénom">
+            </div>
+
+            <div class="col-lg-12">
+              <label for="edit_surname">Nom</label>
+              <input id="edit_surname" type="text" class="validate"
+                     formControlName="lastName"
+                     placeholder="Nom">
+            </div>
+          </div>
+        </div>
+
+        <div class="col-lg-1"></div>
+
+        <div class="col-lg-5">
+          <label>Photo de profil</label>
+          <div class="row avatar-container">
+            <!--<img [src]="formCoach.value.avatar" alt="profile image"-->
+            <!--id="avatar-preview"-->
+            <!--class="circle responsive-img z-depth-2">-->
+            <div id="avatar-preview"
+                 class="avatar z-depth-2"
+                 [style.background-image]="'url(' + (rh | async)?.avatar_url + ')'"></div>
+            <!--<input id="edit_avatar_url" type="text" class="validate"-->
+            <!--formControlName="avatar"-->
+            <!--placeholder="http://...">-->
+            <div class="input-file-container">
+              <button class="btn-basic btn-blue btn-plain btn-small file-upload-buton">Choisir un fichier</button>
+              <input type="file"
+                     id="upload-avatar-input"
+                     accept=".jpg,.png"
+                     (change)="filePreview($event)">
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="text-center">
+        <br>
+
+        <button *ngIf="!updateUserLoading"
+                type="submit"
+                class="btn-basic btn-plain btn-blue btn-small"
+                [disabled]="!formRh.valid">
+          Enregistrer
+        </button>
+
+        <div class="preloader-wrapper active" *ngIf="updateUserLoading">
+          <div class="spinner-layer spinner-blue-only">
+            <div class="circle-clipper left">
+              <div class="circle"></div>
+            </div>
+            <div class="gap-patch">
+              <div class="circle"></div>
+            </div>
+            <div class="circle-clipper right">
+              <div class="circle"></div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+    </form>
+  </div>
+
+</div>

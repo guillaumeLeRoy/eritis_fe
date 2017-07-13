@@ -101,7 +101,7 @@
                  <!--class="circle responsive-img z-depth-2">-->
             <div id="avatar-preview"
                  class="avatar z-depth-2"
-                 [style.background-image]="'url(' + formCoach.value.avatar + ')'"></div>
+                 [style.background-image]="'url(' + (coach | async)?.avatar_url + ')'"></div>
             <!--<input id="edit_avatar_url" type="text" class="validate"-->
             <!--formControlName="avatar"-->
             <!--placeholder="http://...">-->
@@ -117,7 +117,7 @@
       </div>
 
       <div class="row">
-        <div class="col s12">
+        <div class="col-lg-12">
           <label for="edit_description">Description</label>
           <textarea id="edit_description" class="description-field validate"
                     formControlName="description"

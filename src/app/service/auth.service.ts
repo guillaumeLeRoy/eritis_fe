@@ -53,6 +53,7 @@ export class AuthService {
   public static PUT_COACH_PROFILE_PICT = "/v1/coachs/:id/profile_picture";
 
   /* HR */
+  public static UPDATE_RH = "/v1/rhs/:id";
   public static POST_SIGN_UP_RH = "/v1/rhs";
   public static GET_COACHEES_FOR_RH = "/v1/rhs/:uid/coachees";
   public static GET_POTENTIAL_COACHEES_FOR_RH = "/v1/rhs/:uid/potentials";
@@ -61,6 +62,8 @@ export class AuthService {
   public static GET_RH_NOTIFICATIONS = "/v1/rhs/:id/notifications";
   public static PUT_RH_NOTIFICATIONS_READ = "/v1/rhs/:id/notifications/read";
   public static POST_COACHEE_OBJECTIVE = "/v1/rhs/:uidRH/coachees/:uidCoachee/objective";//create new objective for this coachee
+  public static PUT_RH_PROFILE_PICT = "/v1/rhs/:id/profile_picture";
+
 
   /* admin */
   public static GET_ADMIN = "/v1/admins/user";
@@ -642,7 +645,7 @@ export class AuthService {
   }
 
   updateCoachForId(id: string, firstName: string, lastName: string, description: string, avatarUrl: string): Observable<ApiUser> {
-    console.log("updateCoachDisplayNameForId, id", id);
+    console.log("updateCoachForId, id", id);
 
     let body = {
       first_name: firstName,
@@ -653,6 +656,24 @@ export class AuthService {
 
     let params = [id];
     return this.put(AuthService.UPDATE_COACH, params, body).map(
+      (response: Response) => {
+        //convert to coach
+        // return this.onUserResponse(response);
+        return null;
+      });
+  }
+
+  updateRhForId(id: string, firstName: string, lastName: string, avatarUrl: string): Observable<ApiUser> {
+    console.log("updateRhForId, id", id);
+
+    let body = {
+      first_name: firstName,
+      last_name: lastName,
+      avatar_url: avatarUrl,
+    };
+
+    let params = [id];
+    return this.put(AuthService.UPDATE_RH, params, body).map(
       (response: Response) => {
         //convert to coach
         // return this.onUserResponse(response);
