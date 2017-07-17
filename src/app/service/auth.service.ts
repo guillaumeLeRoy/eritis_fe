@@ -569,6 +569,7 @@ export class AuthService {
   }
 
   parseRh(json: any): HR {
+    console.log(json);
     let rh: HR = new HR(json.id);
     rh.email = json.email;
     rh.description = json.descritpion;

@@ -29,8 +29,6 @@ export class PossibleCoachItemComponent implements OnInit {
   }
 
   goToCoachProfile(coachId: string) {
-    console.log("goToCoachProfile, coach : ", coachId);
-    window.scrollTo(0, 0);
     this.router.navigate(['admin/profile/possible-coach', coachId]);
   }
 

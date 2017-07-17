@@ -38,4 +38,7 @@ export class RhItemComponent implements OnInit {
     return (new Date(date)).getDate() + ' ' + this.months[(new Date(date)).getMonth()] + ' ' + (new Date(date)).getFullYear();
   }
 
+  goToRhProfile() {
+    this.router.navigate(['admin/profile/rh', this.rh.id])
+  }
 }

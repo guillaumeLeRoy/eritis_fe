@@ -85,15 +85,11 @@ export class ProfileRhComponent implements OnInit, AfterViewInit, OnDestroy {
 
   setFormValues(rh: HR) {
     this.formRh.setValue({
-      firstName: 'Guy',
-      lastName: 'Rh',
-      description: 'Description'
+      firstName: rh.first_name,
+      lastName: rh.last_name,
+      description: "description"
     });
   }
-
-  // firstName: rh.firstName,
-  // lastName: rh.lastName,
-  // description: rh.description
 
   submitRhProfilUpdate() {
     console.log("submitRhProfilUpdate");
