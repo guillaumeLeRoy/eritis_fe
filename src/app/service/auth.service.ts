@@ -529,8 +529,8 @@ export class AuthService {
   private parseCoach(json: any): Coach {
     let coach: Coach = new Coach(json.id);
     coach.email = json.email;
-    coach.firstName = json.firstName;
-    coach.lastName = json.lastName;
+    coach.first_name = json.first_name;
+    coach.last_name = json.last_name;
     coach.avatar_url = json.avatar_url;
     coach.start_date = json.start_date;
     coach.description = json.description;
@@ -543,8 +543,8 @@ export class AuthService {
     let coachee: Coachee = new Coachee(json.id);
     coachee.id = json.id;
     coachee.email = json.email;
-    coachee.firstName = json.firstName;
-    coachee.lastName = json.lastName;
+    coachee.first_name = json.first_name;
+    coachee.last_name = json.last_name;
     coachee.avatar_url = json.avatar_url;
     coachee.start_date = json.start_date;
     coachee.selectedCoach = json.selectedCoach;
@@ -559,8 +559,8 @@ export class AuthService {
   private parseRh(json: any): HR {
     let rh: HR = new HR(json.id);
     rh.email = json.email;
-    rh.firstName = json.firstName;
-    rh.lastName = json.lastName;
+    rh.first_name = json.first_name;
+    rh.last_name = json.last_name;
     rh.start_date = json.start_date;
     rh.avatar_url = json.avatar_url;
     return rh;
@@ -606,12 +606,12 @@ export class AuthService {
   }
 
 
-  updateCoacheeForId(id: string, firstName: string, lastName: string, avatarUrl: string): Observable<ApiUser> {
+  updateCoacheeForId(id: string, firstName: string, last_name: string, avatarUrl: string): Observable<ApiUser> {
     console.log("updateCoacheeForId, id", id);
 
     let body = {
-      first_name: firstName,
-      last_name: lastName,
+      first_name: first_name,
+      last_name: last_name,
       avatar_url: avatarUrl,
     };
 

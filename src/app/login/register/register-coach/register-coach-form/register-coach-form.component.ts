@@ -183,8 +183,8 @@ export class RegisterCoachFormComponent implements OnInit {
 
     let body = {
       'email': this.registerForm.value.email,
-      'firstName': this.registerForm.value.name,
-      'lastName': this.registerForm.value.surname,
+      'first_name': this.registerForm.value.name,
+      'last_name': this.registerForm.value.surname,
       'linkedin_url': this.registerForm.value.linkedin,
       'assurance_url': this.registerForm.value.insurance,
       'description': this.registerForm.value.description,

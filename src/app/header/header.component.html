@@ -64,7 +64,7 @@
                        <!--class="item-user-img circle responsive-img">-->
                   <div class="item-user-img avatar"
                        [style.background-image]="'url(' + (user | async)?.avatar_url + ')'"></div>
-                  {{ (user | async)?.firstName}} {{ (user | async)?.lastName}}
+                  {{ (user | async)?.first_name}} {{ (user | async)?.last_name}}
                 </a>
               </li>
             </div>
@@ -99,7 +99,7 @@
                   <div class="side-nav-user-img avatar z-depth-2"
                        [style.background-image]="'url(' + (user | async)?.avatar_url + ')'"></div>
                   <div class="side-nav-user-info">
-                    <h6>{{ (user | async)?.firstName}} {{ (user | async)?.lastName}}</h6>
+                    <h6>{{ (user | async)?.first_name}} {{ (user | async)?.last_name}}</h6>
                     <span>{{(user | async)?.email}}</span>
                   </div>
                 </div>
