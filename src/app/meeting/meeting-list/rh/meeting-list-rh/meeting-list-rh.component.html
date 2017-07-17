@@ -1,4 +1,4 @@
-<h3 class="text-right welcome-message">Bonjour {{ (user | async)?.firstName}},<br>
+<h3 class="text-right welcome-message">Bonjour {{ (user | async)?.first_name}},<br>
   Le taux total d'utilisation de vos collaborateurs est de <span class="blue-text">{{(rhUsageRate | async)?.usage_rate}}%</span>
 </h3>
 <p class="text-right">

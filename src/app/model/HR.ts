@@ -12,11 +12,11 @@ export class HR implements ApiUser {
 
   avatar_url: string;
 
-  firstName: string;
+  first_name: string;
 
   description: string;
 
-  lastName: string;
+  last_name: string;
 
   start_date: string;
 

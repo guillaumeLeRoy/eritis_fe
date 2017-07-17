@@ -24,9 +24,9 @@ export class PossibleCoach {
 
   email: string;
 
-  firstName: string;
+  first_name: string;
 
-  lastName: string;
+  last_name: string;
 
   linkedin_url: string;
 

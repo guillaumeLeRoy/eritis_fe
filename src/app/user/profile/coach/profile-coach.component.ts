@@ -104,8 +104,9 @@ export class ProfileCoachComponent implements OnInit, AfterViewInit, OnDestroy {
 
   setFormValues(coach: Coach) {
     this.formCoach.setValue({
-      firstName: coach.firstName,
-      lastName: coach.lastName,
+      firstName: coach.first_name,
+      lastName: coach.last_name,
+      avatar: coach.avatar_url,
       description: coach.description
     });
   }
