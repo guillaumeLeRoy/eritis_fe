@@ -66,7 +66,7 @@ export class CoachCoacheeService {
     return this.apiService.get(AuthService.GET_RH_FOR_ID, params).map(
       (response: Response) => {
         console.log("getRhForId, got rh", response);
-        let rh: HR = response.json();
+        let rh: HR = this.apiService.parseRh(response.json());
         return rh;
       }, (error) => {
         console.log("getRhForId, error", error);

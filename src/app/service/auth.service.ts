@@ -568,11 +568,12 @@ export class AuthService {
     return coachee;
   }
 
-  private parseRh(json: any): HR {
+  parseRh(json: any): HR {
     let rh: HR = new HR(json.id);
     rh.email = json.email;
     rh.firstName = json.firstName;
     rh.lastName = json.lastName;
+    rh.description = json.descritpion;
     rh.start_date = json.start_date;
     rh.avatar_url = json.avatar_url;
     return rh;
@@ -663,12 +664,13 @@ export class AuthService {
       });
   }
 
-  updateRhForId(id: string, firstName: string, lastName: string, avatarUrl: string): Observable<ApiUser> {
+  updateRhForId(id: string, firstName: string, lastName: string, description: string, avatarUrl: string): Observable<ApiUser> {
     console.log("updateRhForId, id", id);
 
     let body = {
       first_name: firstName,
       last_name: lastName,
+      description: description,
       avatar_url: avatarUrl,
     };
 

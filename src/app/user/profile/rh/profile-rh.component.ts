@@ -22,8 +22,8 @@ declare var $: any;
 export class ProfileRhComponent implements OnInit, AfterViewInit, OnDestroy {
 
   private user: Observable<Coach | Coachee | HR>;
-  private rh: Observable<Coach>;
-  private mrh: Coach;
+  private rh: Observable<HR>;
+  private mrh: HR;
   private subscriptionGetRh: Subscription;
   private subscriptionGetUser: Subscription;
 
@@ -43,7 +43,8 @@ export class ProfileRhComponent implements OnInit, AfterViewInit, OnDestroy {
 
     this.formRh = this.formBuilder.group({
       firstName: ['', Validators.required],
-      lastName: ['', Validators.required]
+      lastName: ['', Validators.required],
+      description: ['', Validators.required]
     });
 
     this.getRhAndUser();
@@ -62,7 +63,7 @@ export class ProfileRhComponent implements OnInit, AfterViewInit, OnDestroy {
         let rhId = params['id'];
 
         this.coachService.getRhForId(rhId).subscribe(
-          (rh: Coach) => {
+          (rh: HR) => {
             console.log("gotRh", rh);
 
             this.setFormValues(rh);
@@ -82,12 +83,17 @@ export class ProfileRhComponent implements OnInit, AfterViewInit, OnDestroy {
     )
   }
 
-  setFormValues(rh: Coach) {
+  setFormValues(rh: HR) {
     this.formRh.setValue({
-      firstName: rh.firstName,
-      lastName: rh.lastName
+      firstName: 'Guy',
+      lastName: 'Rh',
+      description: 'Description'
     });
   }
+
+  // firstName: rh.firstName,
+  // lastName: rh.lastName,
+  // description: rh.description
 
   submitRhProfilUpdate() {
     console.log("submitRhProfilUpdate");
@@ -106,6 +112,7 @@ export class ProfileRhComponent implements OnInit, AfterViewInit, OnDestroy {
         return this.authService.updateRhForId(rh.id,
           this.formRh.value.firstName,
           this.formRh.value.lastName,
+          this.formRh.value.description,
           this.mrh.avatar_url);
       }
     ).subscribe(

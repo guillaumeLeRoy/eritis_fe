@@ -5,7 +5,7 @@
       <div class="user col-lg-5">
         <!--<img src="{{(coach | async)?.avatar_url}}" alt="profile image" class="user-img circle responsive-img z-depth-2">-->
         <div class="user-img avatar z-depth-2"
-             *ngIf="(rh | async)?.avatar_url != null"
+             *ngIf="(rh | async)?.avatar_url !== null && (rh | async)?.avatar_url !== undefined"
              [style.background-image]="'url(' + (rh | async)?.avatar_url + ')'"></div>
 
         <div class="user-info">
@@ -45,8 +45,8 @@
 </div>
 
 <div class="container">
-  <!--<h4 class="text-right italic">"{{ (rh | async)?.description }}"</h4>-->
-  <!--<br>-->
+  <h4 class="text-right italic">"{{ (rh | async)?.description }}"</h4>
+  <br>
 
   <div>
     <div class="center">
@@ -101,6 +101,7 @@
             <!--class="circle responsive-img z-depth-2">-->
             <div id="avatar-preview"
                  class="avatar z-depth-2"
+                 *ngIf="(rh | async)?.avatar_url !== null && (rh | async)?.avatar_url !== undefined"
                  [style.background-image]="'url(' + (rh | async)?.avatar_url + ')'"></div>
             <!--<input id="edit_avatar_url" type="text" class="validate"-->
             <!--formControlName="avatar"-->

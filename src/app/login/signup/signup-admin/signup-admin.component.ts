@@ -62,7 +62,8 @@ export class SignupAdminComponent implements OnInit {
         this.isEmail
       ])],
       name: ['', Validators.required],
-      lastname: ['', Validators.required]
+      lastname: ['', Validators.required],
+      company: ['', Validators.required]
     });
 
     this.getListOfContractPlans();

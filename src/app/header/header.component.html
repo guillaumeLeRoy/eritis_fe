@@ -36,7 +36,7 @@
           <ul class="right hide-on-med-and-down">
             <!--<li *ngIf="canDisplayListOfCoach()"><a (click)="goToCoachs()">Liste Des Coachs</a></li>-->
 
-            <div *ngIf="!isAdmin() && !isHomePage()">
+            <div [hidden]="isAdmin() || isHomePage()">
               <li *ngIf="(isAuthenticated | async) && isUserACoach()"
                   [class.active]="router.url === '/available_meetings'"><a (click)="goToAvailableSessions()">
                 Demandes en attente</a></li>
@@ -63,6 +63,7 @@
                   <!--<img src="{{(user | async)?.avatar_url}}" alt="profile image"-->
                        <!--class="item-user-img circle responsive-img">-->
                   <div class="item-user-img avatar"
+                       *ngIf="(user | async)?.avatar_url !== null && (user | async)?.avatar_url !== undefined"
                        [style.background-image]="'url(' + (user | async)?.avatar_url + ')'"></div>
                   {{ (user | async)?.firstName}} {{ (user | async)?.lastName}}
                 </a>
@@ -99,6 +100,7 @@
                   <!--<img src="{{(user | async)?.avatar_url}}" alt="profile image"-->
                        <!--class="side-nav-user-img circle responsive-img z-depth-2">-->
                   <div class="side-nav-user-img avatar z-depth-2"
+                       *ngIf="(user | async)?.avatar_url !== null && (user | async)?.avatar_url !== undefined"
                        [style.background-image]="'url(' + (user | async)?.avatar_url + ')'"></div>
                   <div class="side-nav-user-info">
                     <h6>{{ (user | async)?.firstName}} {{ (user | async)?.lastName}}</h6>

@@ -5,7 +5,7 @@
       <div class="user col-lg-5">
         <!--<img src="{{(coach | async)?.avatar_url}}" alt="profile image" class="user-img circle responsive-img z-depth-2">-->
         <div class="user-img avatar z-depth-2"
-             *ngIf="(coach | async)?.avatar_url != null"
+             *ngIf="(coach | async)?.avatar_url !== null && (coach | async)?.avatar_url !== undefined"
              [style.background-image]="'url(' + (coach | async)?.avatar_url + ')'"></div>
 
         <div class="user-info">
