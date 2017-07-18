@@ -629,7 +629,7 @@ export class AuthService {
   }
 
 
-  updateCoacheeForId(id: string, first_name: string, last_name: string, avatarUrl: string): Observable<ApiUser> {
+  updateCoacheeForId(id: string, firstName: string, last_name: string, avatarUrl: string): Observable<ApiUser> {
     console.log("updateCoacheeForId, id", id);
 
     let body = {
