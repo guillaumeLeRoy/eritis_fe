@@ -154,7 +154,7 @@ export class RegisterCoachFormComponent implements OnInit {
     ).subscribe(
       (res: Response) => {
         console.log("onRegister success", res);
-        Materialize.toast('Votre candiature a été envoyée !', 3000, 'rounded');
+        Materialize.toast('Votre candidature a été envoyée !', 3000, 'rounded');
         this.onRegisterLoading = false;
         this.cookieService.put('COACH_REGISTER_FORM_SENT', 'true');
         this.router.navigate(['register_coach/step3']);

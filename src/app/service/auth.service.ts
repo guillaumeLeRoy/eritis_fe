@@ -632,7 +632,7 @@ export class AuthService {
     console.log("updateCoacheeForId, id", id);
 
     let body = {
-      first_name: first_name,
+      first_name: firstName,
       last_name: last_name,
       avatar_url: avatarUrl,
     };
