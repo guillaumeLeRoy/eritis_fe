@@ -10,7 +10,7 @@
 
         <div class="user-info">
           <h5>{{(coach | async)?.first_name}} {{(coach | async)?.last_name}}</h5>
-          <h6>{{(coach | async)?.email}}</h6>
+          <p *ngIf="isOwner" class="light-grey-text">{{(coach | async)?.email}}</p>
         </div>
       </div>
 

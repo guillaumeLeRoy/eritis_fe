@@ -13,7 +13,9 @@
     </div>
 
     <form [formGroup]="registerForm" (change)="saveFormValues()">
+
       <div class="row">
+        <h2 class="col-lg-12 section-form-title">Informations personnelles</h2>
 
         <div class="col-lg-6">
           <div class="row">
@@ -33,7 +35,6 @@
 
             <div class="col-lg-12">
               <label>Email</label>
-              <span><i>Apparaîtra sur le site</i></span>
 
               <input type="email" id="email" name="email" formControlName="email" placeholder="exemple@mail.com">
             </div>
@@ -76,17 +77,89 @@
               <textarea id="description" name="description" formControlName="description"
                         placeholder="Description..."></textarea>
             </div>
+          </div>
+        </div>
 
+
+
+
+
+
+
+        <h2 class="col-lg-12 section-form-title">Coordonnées de facturation</h2>
+
+        <div class="col-lg-12">
+          <div class="row">
+            <div class="col-lg-12 input-container">
+              <label>Entité</label>
+              <input type="text" id="entite" name="entite" formControlName="entite" placeholder="Nom civil, nom de l'entreprise, ...">
+            </div>
+
+            <div class="col-lg-12 input-container">
+              <label>Adresse</label>
+              <input type="text" id="adresse" name="adresse" formControlName="adresse" placeholder="Adresse">
+            </div>
+
+            <div class="col-lg-6 input-container">
+              <label>Ville</label>
+              <input type="text" id="ville" name="ville"
+                     placeholder="Ville"
+                     formControlName="ville">
+            </div>
+
+            <div class="col-lg-6 input-container">
+              <label>Code postal</label>
+              <input type="text" id="codePostal" name="codePostal"
+                     placeholder="Code postal"
+                     formControlName="codePostal">
+            </div>
+          </div>
+        </div>
+
+
+
+
+
+
+
+        <h2 class="col-lg-12 section-form-title">Formation</h2>
+
+        <div class="col-lg-12">
+          <div class="row">
             <div class="col-lg-12 input-container">
               <label>Quelle est votre formation initiale ?</label>
               <input type="text" id="formation" name="formation" formControlName="formation" placeholder="Formation">
             </div>
 
             <div class="col-lg-12 input-container">
-              <label>Quels sont vos diplômes, certifications et accréditations en coaching ?</label>
+              <label>Quels sont vos diplômes, certifications, référencements, accréditations en coaching ?</label>
               <input type="text" id="diplomas" name="diplomas"
                      placeholder="Diplômes, certifications, accréditations, ..."
                      formControlName="diplomas">
+            </div>
+          </div>
+        </div>
+
+
+
+
+        <h2 class="col-lg-12 section-form-title">Activité de coach</h2>
+
+        <div class="col-lg-12">
+          <div class="row">
+            <div class="col-lg-12 input-container">
+              <label>Quelle(s) langue(s) pratiquez vous en coaching ?</label>
+              <div class="row">
+                <div class="col-lg-4">
+                  <input type="text" id="language1" name="language1" placeholder="Langue 1" formControlName="language">
+                </div>
+                <div class="col-lg-4">
+                  <input type="text" id="language2" name="language2" placeholder="Langue 2 (facultatif)">
+                </div>
+                <div class="col-lg-4">
+                  <input type="text" id="language3" name="language3" placeholder="Langue 3 (facultatif)">
+                </div>
+              </div>
             </div>
 
             <div class="col-lg-12 input-container">
@@ -96,7 +169,7 @@
             </div>
 
             <div class="col-lg-12 input-container">
-              <label>Depuis combien de temps exercez-vous l'activité de coaching ?</label>
+              <label>Depuis combien de temps exercez-vous une activité de coaching individuel, et à quelle fréquence ?</label>
               <input type="text" id="experienceTime" name="experienceTime" placeholder="3 ans, 8 mois, ..."
                      formControlName="experienceTime">
             </div>
@@ -106,6 +179,24 @@
                 (Skype par exemple) ?</label>
               <textarea id="experienceVisio" name="experienceVisio" placeholder="Précisez..."
                         formControlName="experienceVisio"></textarea>
+            </div>
+
+            <div class="col-lg-12 input-container">
+              <label>Quelles sont vos expériences en coaching bref sur 45 minutes ?</label>
+              <textarea id="experienceBref" name="experienceBref" placeholder="Précisez..."
+                        formControlName="experienceBref"></textarea>
+            </div>
+
+            <div class="col-lg-12 input-container">
+              <label>Quelles sont les spécialités et/ou spécificités que vous utilisez lors du coaching ?</label>
+              <textarea id="specialities" name="experienceBref" placeholder="Précisez..."
+                        formControlName="experienceBref"></textarea>
+            </div>
+
+            <div class="col-lg-12 input-container">
+              <label>Donnez quelques éléments de votre parcours de développement personnel / thérapie ?</label>
+              <textarea id="therapyElements" name="experienceTime" placeholder="Précisez..."
+                        formControlName="therapyElements"></textarea>
             </div>
 
             <div class="col-lg-12 input-container">
