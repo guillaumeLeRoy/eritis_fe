@@ -105,44 +105,36 @@ export class ProfileRhComponent implements OnInit, AfterViewInit, OnDestroy {
           this.formRh.value.description,
           this.mrh.avatar_url);
       }
+    ).flatMap(
+      (rh: HR) => {
+        console.log('Upload rh success', rh);
+
+        if (this.avatarUrl != null && this.avatarUrl !== undefined) {
+          console.log("Upload avatar");
+          let params = [this.mrh.id];
+
+          let formData: FormData = new FormData();
+          formData.append('uploadFile', this.avatarUrl, this.avatarUrl.name);
+
+          let headers = new Headers();
+          headers.append('Accept', 'application/json');
+
+          return this.authService.put(AuthService.PUT_RH_PROFILE_PICT, params, formData, {headers: headers})
+            .map(res => res.json())
+            .catch(error => Observable.throw(error))
+        }
+        else{
+          return Observable.of(rh);
+        }
+      }
     ).subscribe(
-      (user: ApiUser) => {
-        this.rh.take(1).flatMap(
-          (rh: HR) => {
-            console.log("Upload avatar");
-            let params = [rh.id];
-
-            if (this.avatarUrl != null && this.avatarUrl !== undefined) {
-              let formData: FormData = new FormData();
-              formData.append('uploadFile', this.avatarUrl, this.avatarUrl.name);
-
-              let headers = new Headers();
-              headers.append('Accept', 'application/json');
-
-              return this.authService.put(AuthService.PUT_RH_PROFILE_PICT, params, formData, {headers: headers})
-                .map(res => res.json())
-                .catch(error => Observable.throw(error))
-            }
-            else{
-              return Observable.of(rh);
-            }
-          }
-        ).subscribe(
-          data => {
-            console.log('Upload avatar success', data);
-            console.log("rh updated : ", user);
-            this.updateUserLoading = false;
-            Materialize.toast('Votre profil a été modifié !', 3000, 'rounded');
-            //refresh page
-            setTimeout('', 1000);
-            window.location.reload();
-
-          }, error => {
-            console.log('Upload avatar error', error);
-            this.updateUserLoading = false;
-            Materialize.toast('Impossible de modifier votre profil', 3000, 'rounded');
-          }
-        )
+      (rh: HR) => {
+        console.log('Upload avatar success', rh);
+        this.updateUserLoading = false;
+        Materialize.toast('Votre profil a été modifié !', 3000, 'rounded');
+        //refresh page
+        setTimeout('', 1000);
+        // window.location.reload();
       },
       (error) => {
         console.log('rh update, error', error);
