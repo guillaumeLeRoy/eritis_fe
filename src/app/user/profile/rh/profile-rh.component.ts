@@ -96,12 +96,6 @@ export class ProfileRhComponent implements OnInit, AfterViewInit, OnDestroy {
 
     this.updateUserLoading = true;
 
-    let formData: FormData = new FormData();
-    formData.append('uploadFile', this.avatarUrl, this.avatarUrl.name);
-
-    let headers = new Headers();
-    headers.append('Accept', 'application/json');
-
     this.rh.last().flatMap(
       (rh: HR) => {
         console.log("submitRhProfilUpdate, rh obtained");
@@ -118,10 +112,19 @@ export class ProfileRhComponent implements OnInit, AfterViewInit, OnDestroy {
             console.log("Upload avatar");
             let params = [rh.id];
 
-            if (this.avatarUrl != null) {
+            if (this.avatarUrl != null && this.avatarUrl !== undefined) {
+              let formData: FormData = new FormData();
+              formData.append('uploadFile', this.avatarUrl, this.avatarUrl.name);
+
+              let headers = new Headers();
+              headers.append('Accept', 'application/json');
+
               return this.authService.put(AuthService.PUT_RH_PROFILE_PICT, params, formData, {headers: headers})
                 .map(res => res.json())
                 .catch(error => Observable.throw(error))
+            }
+            else{
+              return Observable.of(rh);
             }
           }
         ).subscribe(

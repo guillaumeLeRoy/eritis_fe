@@ -4,6 +4,7 @@ import {AuthService} from '../../service/auth.service';
 import {Router} from '@angular/router';
 import {Coachee} from '../../model/Coachee';
 import {Coach} from '../../model/Coach';
+import {CookieService} from "ngx-cookie";
 
 declare var $: any;
 declare var Materialize: any;
@@ -22,7 +23,7 @@ export class SigninComponent implements OnInit {
 
   private loginLoading = false;
 
-  constructor(private formBuilder: FormBuilder, private authService: AuthService, private router: Router) {
+  constructor(private formBuilder: FormBuilder, private authService: AuthService, private router: Router, private cookieService: CookieService) {
     authService.isAuthenticated().subscribe((isAuth) => console.log('onSignIn, isAuth', isAuth));
   }
 
