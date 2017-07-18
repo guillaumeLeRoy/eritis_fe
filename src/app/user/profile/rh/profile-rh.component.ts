@@ -2,14 +2,13 @@ import {AfterViewInit, ChangeDetectorRef, Component, OnDestroy, OnInit} from "@a
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {Observable} from "rxjs/Observable";
 import {Subscription} from "rxjs/Subscription";
-import {ApiUser} from "../../../model/ApiUser";
 import {HR} from "../../../model/HR";
 import {AuthService} from "../../../service/auth.service";
 import {Coach} from "app/model/Coach";
 import {Coachee} from "app/model/Coachee";
 import {ActivatedRoute, Router} from "@angular/router";
 import {CoachCoacheeService} from "../../../service/coach_coachee.service";
-import {Headers} from "@angular/http"
+import {Headers} from "@angular/http";
 
 declare var Materialize: any;
 declare var $: any;
@@ -87,7 +86,7 @@ export class ProfileRhComponent implements OnInit, AfterViewInit, OnDestroy {
     this.formRh.setValue({
       firstName: rh.first_name,
       lastName: rh.last_name,
-      description: "description"
+      description: rh.description,
     });
   }
 
@@ -121,7 +120,7 @@ export class ProfileRhComponent implements OnInit, AfterViewInit, OnDestroy {
             .map(res => res.json())
             .catch(error => Observable.throw(error))
         }
-        else{
+        else {
           return Observable.of(rh);
         }
       }

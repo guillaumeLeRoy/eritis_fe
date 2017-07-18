@@ -578,7 +578,7 @@ export class AuthService {
     console.log(json);
     let rh: HR = new HR(json.id);
     rh.email = json.email;
-    rh.description = json.descritpion;
+    rh.description = json.description;
     rh.first_name = json.first_name;
     rh.last_name = json.last_name;
     rh.start_date = json.start_date;
