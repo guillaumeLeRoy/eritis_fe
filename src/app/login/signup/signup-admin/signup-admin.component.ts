@@ -82,13 +82,13 @@ export class SignupAdminComponent implements OnInit {
       console.log("onSignUp, coach");
       this.createPotentialCoach(this.signUpForm.value.email);
     } else if (this.signUpSelectedType == SignUpType.RH) {
-      this.createPotentialRh(this.signUpForm.value.email, this.signUpForm.value.name, this.signUpForm.value.lastname);
+      this.createPotentialRh(this.signUpForm.value.email, this.signUpForm.value.name, this.signUpForm.value.lastname, this.signUpForm.value.company);
     } else {
       Materialize.toast('Vous devez sélectionner un type', 3000, 'rounded')
     }
   }
 
-  createPotentialRh(email: string, name: string, lastname: string) {
+  createPotentialRh(email: string, name: string, lastname: string, company: string) {
     console.log('createPotentialRh');
 
     this.sendLoading = true;
@@ -96,7 +96,8 @@ export class SignupAdminComponent implements OnInit {
     let body = {
       "email": email,
       "first_name": name,
-      "last_name": lastname
+      "last_name": lastname,
+      "company_name": company
     };
 
     this.adminAPIService.createPotentialRh(body).subscribe(

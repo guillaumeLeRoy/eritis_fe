@@ -103,49 +103,42 @@ export class ProfileCoacheeComponent implements OnInit, AfterViewInit, OnDestroy
           this.formCoachee.value.lastName,
           this.formCoachee.value.avatar);
       }
+    ).flatMap(
+      (coachee: Coachee) => {
+        console.log('Upload user success', coachee);
+
+        if (this.avatarUrl != null  && this.avatarUrl !== undefined) {
+          console.log("Upload avatar");
+          let params = [coachee.id];
+
+          let formData: FormData = new FormData();
+          formData.append('uploadFile', this.avatarUrl, this.avatarUrl.name);
+
+          let headers = new Headers();
+          headers.append('Accept', 'application/json');
+
+          return this.authService.put(AuthService.PUT_COACHEE_PROFILE_PICT, params, formData, {headers: headers})
+            .map(res => res.json())
+            .catch(error => Observable.throw(error))
+        }
+        else {
+          return Observable.of(coachee);
+        }
+      }
     ).subscribe(
-      (user: ApiUser) => {
-        this.coachee.take(1).flatMap(
-          (coachee: Coachee) => {
-            console.log("Upload avatar");
-            let params = [coachee.id];
-
-            if (this.avatarUrl != null  && this.avatarUrl !== undefined) {
-              let formData: FormData = new FormData();
-              formData.append('uploadFile', this.avatarUrl, this.avatarUrl.name);
-
-              let headers = new Headers();
-              headers.append('Accept', 'application/json');
-
-              return this.authService.put(AuthService.PUT_COACHEE_PROFILE_PICT, params, formData, {headers: headers})
-                .map(res => res.json())
-                .catch(error => Observable.throw(error))
-            }
-            else {
-              return Observable.of(user);
-            }
-          }
-        ).subscribe(
-          data => {
-            console.log('Upload avatar success', data);
-            console.log("coachee updated : ", user);
-            this.updateUserLoading = false;
-            Materialize.toast('Votre profil a été modifié !', 3000, 'rounded');
-            //refresh page
-            setTimeout('', 1000);
-            window.location.reload();
-          }, error => {
-            console.log('Upload avatar error', error);
-            this.updateUserLoading = false;
-            Materialize.toast('Impossible de modifier votre profil', 3000, 'rounded');
-          }
-        )
-      },
-      (error) => {
-        console.log('coachee update, error', error);
+      (coachee: Coachee) => {
+        console.log('Upload avatar success', coachee);
+        this.updateUserLoading = false;
+        Materialize.toast('Votre profil a été modifié !', 3000, 'rounded');
+        //refresh page
+        setTimeout('', 1000);
+        window.location.reload();
+      }, error => {
+        console.log('Upload avatar error', error);
         this.updateUserLoading = false;
         Materialize.toast('Impossible de modifier votre profil', 3000, 'rounded');
-      });
+      }
+    );
   }
 
   filePreview(event: any) {

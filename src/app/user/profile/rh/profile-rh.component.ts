@@ -107,8 +107,6 @@ export class ProfileRhComponent implements OnInit, AfterViewInit, OnDestroy {
       }
     ).flatMap(
       (rh: HR) => {
-        console.log('Upload rh success', rh);
-
         if (this.avatarUrl != null && this.avatarUrl !== undefined) {
           console.log("Upload avatar");
           let params = [this.mrh.id];
@@ -134,7 +132,7 @@ export class ProfileRhComponent implements OnInit, AfterViewInit, OnDestroy {
         Materialize.toast('Votre profil a été modifié !', 3000, 'rounded');
         //refresh page
         setTimeout('', 1000);
-        // window.location.reload();
+        window.location.reload();
       },
       (error) => {
         console.log('rh update, error', error);
