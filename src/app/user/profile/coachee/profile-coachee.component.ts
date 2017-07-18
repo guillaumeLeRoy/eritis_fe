@@ -95,12 +95,6 @@ export class ProfileCoacheeComponent implements OnInit, AfterViewInit, OnDestroy
 
     this.updateUserLoading = true;
 
-    let formData: FormData = new FormData();
-    formData.append('uploadFile', this.avatarUrl, this.avatarUrl.name);
-
-    let headers = new Headers();
-    headers.append('Accept', 'application/json');
-
     this.coachee.last().flatMap(
       (coachee: Coachee) => {
         console.log("submitCoacheeProfilUpdate, coachee obtained");
@@ -116,10 +110,19 @@ export class ProfileCoacheeComponent implements OnInit, AfterViewInit, OnDestroy
             console.log("Upload avatar");
             let params = [coachee.id];
 
-            if (this.avatarUrl != null) {
+            if (this.avatarUrl != null  && this.avatarUrl !== undefined) {
+              let formData: FormData = new FormData();
+              formData.append('uploadFile', this.avatarUrl, this.avatarUrl.name);
+
+              let headers = new Headers();
+              headers.append('Accept', 'application/json');
+
               return this.authService.put(AuthService.PUT_COACHEE_PROFILE_PICT, params, formData, {headers: headers})
                 .map(res => res.json())
                 .catch(error => Observable.throw(error))
+            }
+            else {
+              return Observable.of(user);
             }
           }
         ).subscribe(

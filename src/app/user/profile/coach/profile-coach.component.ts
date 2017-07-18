@@ -115,12 +115,6 @@ export class ProfileCoachComponent implements OnInit, AfterViewInit, OnDestroy {
 
     this.updateUserLoading = true;
 
-    let formData: FormData = new FormData();
-    formData.append('uploadFile', this.avatarUrl, this.avatarUrl.name);
-
-    let headers = new Headers();
-    headers.append('Accept', 'application/json');
-
     this.coach.last().flatMap(
       (coach: Coach) => {
         console.log("submitCoachProfilUpdate, coach obtained");
@@ -138,6 +132,12 @@ export class ProfileCoachComponent implements OnInit, AfterViewInit, OnDestroy {
             let params = [coach.id];
 
             if (this.avatarUrl !== null && this.avatarUrl !== undefined) {
+              let formData: FormData = new FormData();
+              formData.append('uploadFile', this.avatarUrl, this.avatarUrl.name);
+
+              let headers = new Headers();
+              headers.append('Accept', 'application/json');
+
               return this.authService.put(AuthService.PUT_COACH_PROFILE_PICT, params, formData, {headers: headers})
                 .map(res => res.json())
                 .catch(error => Observable.throw(error))
