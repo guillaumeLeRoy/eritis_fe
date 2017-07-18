@@ -37,6 +37,12 @@
   width: 100px;
 }
 
+.header-stats {
+  .row {
+    margin: 0;
+  }
+}
+
 .header-item {
   text-align: center;
 }
@@ -103,3 +109,8 @@ input[type="file"] {
   margin-right: 16px;
 }
 
+
+.section-form-title {
+  margin-top: 96px;
+  margin-bottom: 32px;
+}

@@ -2,7 +2,7 @@
   <div class="header-user-filter">
     <div class="container row">
 
-      <div class="user col-lg-12">
+      <div class="user col-lg-5">
         <!--<img src="{{(possibleCoach | async)?.avatar_url}}" alt="profile image"-->
              <!--class="user-img circle responsive-img z-depth-2">-->
         <div class="user-img avatar z-depth-2"
@@ -12,6 +12,14 @@
         <div class="user-info">
           <h5>{{(possibleCoach | async)?.first_name}} {{(possibleCoach | async)?.last_name}}</h5>
           <p class="light-grey-text">{{(possibleCoach | async)?.email}}</p>
+        </div>
+      </div>
+
+      <div class="header-stats col-lg-7">
+        <div class="row">
+          <div class="header-item col-sm-12">
+            <a target="_blank" class="btn-basic btn-blue btn-plain btn-small" [href]="(possibleCoach | async)?.linkedin_url"><i class="fa fa-linkedin" aria-hidden="true"></i></a>
+          </div>
         </div>
       </div>
 
@@ -31,16 +39,43 @@
 
   <div class="row">
 
+    <!--<div class="col-lg-12">-->
+      <!--<div class="row">-->
+        <!--<div class="col-lg-12 input-container">-->
+          <!--<label>Profil Linkedin</label>-->
+          <!--<p>-->
+            <!--<a target="_blank" [href]="(possibleCoach | async)?.linkedin_url">{{ (possibleCoach | async)?.linkedin_url }}</a>-->
+          <!--</p>-->
+          <!--<br>-->
+        <!--</div>-->
+      <!--</div>-->
+    <!--</div>-->
+
+
+
+
+
+    <h2 class="col-lg-12 section-form-title">Coordonnées de facturation</h2>
+
     <div class="col-lg-12">
       <div class="row">
         <div class="col-lg-12 input-container">
-          <label>Profil Linkedin</label>
-          <p>
-            <a target="_blank" [href]="(possibleCoach | async)?.linkedin_url">{{ (possibleCoach | async)?.linkedin_url }}</a>
-          </p>
-          <br>
+          <p>Entité</p>
+          <p>Adresse</p>
+          <p>Ville</p>
+          <p>Code postal</p>
         </div>
+      </div>
+    </div>
 
+
+
+
+
+    <h2 class="col-lg-12 section-form-title">Formation</h2>
+
+    <div class="col-lg-12">
+      <div class="row">
         <div class="col-lg-12 input-container">
           <label>Quelle est votre formation initiale ?</label>
           <p>{{ (possibleCoach | async)?.training }}</p>
@@ -50,6 +85,24 @@
         <div class="col-lg-12 input-container">
           <label>Quels sont vos diplômes, certifications et accréditations en coaching ?</label>
           <p>{{ (possibleCoach | async)?.degree }}</p>
+          <br>
+        </div>
+      </div>
+    </div>
+
+
+
+
+
+
+
+    <h2 class="col-lg-12 section-form-title">Activité de coach</h2>
+
+    <div class="col-lg-12">
+      <div class="row">
+        <div class="col-lg-12 input-container">
+          <label>Quelle(s) langue(s) pratiquez vous en coaching ?</label>
+          <p>{{ (possibleCoach | async)?.extraActivities }}</p>
           <br>
         </div>
 
@@ -70,6 +123,21 @@
             visioconférence (Skype par exemple) ?</label>
           <p>{{ (possibleCoach | async)?.coachingExperience }}</p>
           <br>
+        </div>
+
+        <div class="col-lg-12 input-container">
+          <label>Quelles sont vos expériences en coaching bref sur 45 minutes ?</label>
+          <p>Réponse</p>
+        </div>
+
+        <div class="col-lg-12 input-container">
+          <label>Quelles sont les spécialités et/ou spécificités que vous utilisez lors du coaching ?</label>
+          <p>Réponse</p>
+        </div>
+
+        <div class="col-lg-12 input-container">
+          <label>Donnez quelques éléments de votre parcours de développement personnel / thérapie ?</label>
+          <p>Réponse</p>
         </div>
 
         <div class="col-lg-12 input-container">
