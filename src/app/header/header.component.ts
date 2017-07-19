@@ -9,8 +9,6 @@ import {ApiUser} from "../model/apiUser";
 import {Notif} from "../model/Notif";
 import {CoachCoacheeService} from "../service/coach_coachee.service";
 import {Response} from "@angular/http";
-import {CookieService} from "ngx-cookie";
-import {parseCookieValue} from "@angular/platform-browser/src/browser/browser_adapter";
 
 
 declare var $: any;
@@ -26,7 +24,6 @@ export class HeaderComponent implements OnInit, OnDestroy {
   months = ['Jan', 'Feb', 'Mar', 'Avr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 
   private isAuthenticated: Observable<boolean>;
-  private isConnected = false;
   private subscription: Subscription;
 
   private mUser: Coach | Coachee | HR;
@@ -34,7 +31,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
   private notifications: Observable<Notif[]>;
 
-  constructor(private router: Router, private authService: AuthService, private coachCoacheeService: CoachCoacheeService, private cd: ChangeDetectorRef, private cookieService: CookieService) {
+  constructor(private router: Router, private authService: AuthService, private coachCoacheeService: CoachCoacheeService, private cd: ChangeDetectorRef) {
   }
 
   ngOnInit(): void {
@@ -83,11 +80,9 @@ export class HeaderComponent implements OnInit, OnDestroy {
     if (user == null) {
       this.mUser = user;
       this.isAuthenticated = Observable.of(false);
-      this.isConnected = false;
     } else {
       this.mUser = user;
       this.isAuthenticated = Observable.of(true);
-      this.isConnected = true;
       this.fetchNotificationsForUser(user);
     }
 

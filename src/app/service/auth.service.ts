@@ -112,6 +112,11 @@ export class AuthService {
     }.bind(this));
 
     console.log("ctr done");
+
+    let date = (new Date());
+    date.setHours(date.getHours() + 1);
+    console.log('COOKIE', date);
+    this.cookieService.put('ACTIVE_SESSION', 'true', {expires: date.toDateString()});
   }
 
   /*
@@ -174,10 +179,7 @@ export class AuthService {
   }
 
   getConnectedUser(): Coach | Coachee | HR {
-    if (this.cookieService.get('ACTIVE_SESSION') === 'true')
-      return this.ApiUser;
-    else
-      this.loginOut();
+    return this.ApiUser;
   }
 
   getConnectedUserObservable(): Observable<Coach | Coachee | HR> {
@@ -185,10 +187,7 @@ export class AuthService {
   }
 
   isAuthenticated(): Observable<boolean> {
-    if (this.cookieService.get('ACTIVE_SESSION') === 'true')
-      return this.isUserAuth.asObservable();
-    else
-      return Observable.of(false);
+    return this.isUserAuth.asObservable();
   }
 
   post(path: string, params: string[], body: any, options?: RequestOptionsArgs): Observable<Response> {
@@ -619,10 +618,6 @@ export class AuthService {
     let firebaseObs = PromiseObservable.create(firebasePromise);
     return firebaseObs.flatMap(
       (token: string) => {
-        let date = (new Date());
-        date.setHours(date.getHours() + 1);
-        console.log('COOKIE', date);
-        this.cookieService.put('ACTIVE_SESSION', 'true', {'expires': date});
         //user should be ok just after a sign up
         let fbUser = this.firebase.auth().currentUser;
         //now sign up in AppEngine
