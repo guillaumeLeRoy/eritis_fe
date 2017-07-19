@@ -179,6 +179,9 @@ export class AuthService {
   }
 
   getConnectedUser(): Coach | Coachee | HR {
+    if (this.ApiUser !== null)
+      if (this.cookieService.get('ACTIVE_SESSION') !== 'true')
+        this.loginOut();
     return this.ApiUser;
   }
 
@@ -517,6 +520,12 @@ export class AuthService {
             (response) => {
               let loginResponse: LoginResponse = response.json();
               console.log("signUp, loginResponse : ", loginResponse);
+
+              let date = (new Date());
+              date.setHours(date.getHours() + 1);
+              console.log('COOKIE', date);
+              this.cookieService.put('ACTIVE_SESSION', 'true', {'expires': date});
+
               // return json;
               this.isSignInOrUp = false;
               return this.onAPIuserObtained(this.parseAPIuser(loginResponse), token);
@@ -620,6 +629,10 @@ export class AuthService {
       (token: string) => {
         //user should be ok just after a sign up
         let fbUser = this.firebase.auth().currentUser;
+        let date = (new Date());
+        date.setHours(date.getHours() + 1);
+        console.log('COOKIE', date);
+        this.cookieService.put('ACTIVE_SESSION', 'true', {'expires': date});
         //now sign up in AppEngine
         this.isSignInOrUp = false;
         return this.getUserForFirebaseId(fbUser.uid, token);
