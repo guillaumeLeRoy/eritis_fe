@@ -7,6 +7,7 @@ import {Subscription} from "rxjs/Subscription";
 import {AuthService} from "../../../../service/auth.service";
 import {ActivatedRoute, Router} from "@angular/router";
 import {CoachCoacheeService} from "../../../../service/coach_coachee.service";
+import {AdminAPIService} from "../../../../service/adminAPI.service";
 
 @Component({
   selector: 'rb-profile-rh-admin',
@@ -21,7 +22,7 @@ export class ProfileRhAdminComponent implements OnInit, AfterViewInit, OnDestroy
   private mrh: HR;
   private subscriptionGetRh: Subscription;
 
-  constructor(private authService: AuthService, private cd: ChangeDetectorRef, private route: ActivatedRoute, private coachService: CoachCoacheeService, private router: Router) {
+  constructor(private cd: ChangeDetectorRef, private route: ActivatedRoute, private apiService: AdminAPIService, private router: Router) {
   }
 
   ngOnInit() {
@@ -42,7 +43,7 @@ export class ProfileRhAdminComponent implements OnInit, AfterViewInit, OnDestroy
       (params: any) => {
         let rhId = params['id'];
 
-        this.coachService.getRhForId(rhId).subscribe(
+        this.apiService.getRh(rhId).subscribe(
           (rh: HR) => {
             console.log("gotRh", rh);
 
