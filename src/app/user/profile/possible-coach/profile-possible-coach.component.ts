@@ -52,17 +52,22 @@ export class ProfilePossibleCoachComponent implements OnInit, AfterViewInit, OnD
     // this.isOwner = (user instanceof Coach) && (coach.email === user.email);
   }
 
-  sendInvite(email: string) {
-    console.log('sendInvite, email', email);
+  sendInvite() {
+    this.possibleCoach.take(1).subscribe(
+      (coach: PossibleCoach) => {
+        let email = coach.email
+        console.log('sendInvite, email', email);
 
-    this.apiService.createPotentialCoach(email).subscribe(
-      (res: any) => {
-        console.log('createPotentialCoach, res', res);
-        this.getCoach();
-        Materialize.toast('Invitation envoyée au Coach !', 3000, 'rounded');
-      }, (error) => {
-        console.log('createPotentialCoach, error', error);
-        Materialize.toast("Impossible d'ajouter le Coach", 3000, 'rounded');
+        this.apiService.createPotentialCoach(email).subscribe(
+          (res: any) => {
+            console.log('createPotentialCoach, res', res);
+            this.getCoach();
+            Materialize.toast('Invitation envoyée au Coach !', 3000, 'rounded');
+          }, (error) => {
+            console.log('createPotentialCoach, error', error);
+            Materialize.toast("Impossible d'ajouter le Coach", 3000, 'rounded');
+          }
+        );
       }
     );
   }

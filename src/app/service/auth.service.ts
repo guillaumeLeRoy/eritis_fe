@@ -12,6 +12,8 @@ import {Coachee} from "../model/Coachee";
 import {LoginResponse} from "../model/LoginResponse";
 import {HR} from "../model/HR";
 import {PotentialCoachee} from "../model/PotentialCoachee";
+import {PotentialRh} from "../model/PotentialRh";
+import {CookieService} from "ngx-cookie";
 
 @Injectable()
 export class AuthService {
@@ -52,6 +54,7 @@ export class AuthService {
   public static PUT_COACH_PROFILE_PICT = "/v1/coachs/:id/profile_picture";
 
   /* HR */
+  public static UPDATE_RH = "/v1/rhs/:id";
   public static POST_SIGN_UP_RH = "/v1/rhs";
   public static GET_COACHEES_FOR_RH = "/v1/rhs/:uid/coachees";
   public static GET_POTENTIAL_COACHEES_FOR_RH = "/v1/rhs/:uid/potentials";
@@ -60,6 +63,8 @@ export class AuthService {
   public static GET_RH_NOTIFICATIONS = "/v1/rhs/:id/notifications";
   public static PUT_RH_NOTIFICATIONS_READ = "/v1/rhs/:id/notifications/read";
   public static POST_COACHEE_OBJECTIVE = "/v1/rhs/:uidRH/coachees/:uidCoachee/objective";//create new objective for this coachee
+  public static PUT_RH_PROFILE_PICT = "/v1/rhs/:id/profile_picture";
+
 
   /* admin */
   public static GET_ADMIN = "/v1/admins/user";
@@ -99,7 +104,7 @@ export class AuthService {
 
   private ApiUser?: Coach | Coachee | HR = null;
 
-  constructor(private firebase: FirebaseService, private router: Router, private httpService: Http) {
+  constructor(private firebase: FirebaseService, private router: Router, private httpService: Http, private cookieService: CookieService) {
     firebase.auth().onAuthStateChanged(function (user) {
       console.log("onAuthStateChanged, user : " + user);
       this.onAuthStateChangedCalled = true;
@@ -107,6 +112,11 @@ export class AuthService {
     }.bind(this));
 
     console.log("ctr done");
+
+    let date = (new Date());
+    date.setHours(date.getHours() + 1);
+    console.log('COOKIE', date);
+    this.cookieService.put('ACTIVE_SESSION', 'true', {expires: date.toDateString()});
   }
 
   /*
@@ -169,6 +179,9 @@ export class AuthService {
   }
 
   getConnectedUser(): Coach | Coachee | HR {
+    if (this.ApiUser !== null)
+      if (this.cookieService.get('ACTIVE_SESSION') !== 'true')
+        this.loginOut();
     return this.ApiUser;
   }
 
@@ -291,6 +304,14 @@ export class AuthService {
     return this.httpService.get(this.generatePath(path, params)).map(
       (res: Response) => {
         return this.parsePotentialCoachee(res.json());
+      }
+    );
+  }
+
+  getPotentialRh(path: string, params: string[]): Observable<PotentialRh> {
+    return this.httpService.get(this.generatePath(path, params)).map(
+      (res: Response) => {
+        return this.parsePotentialRh(res.json());
       }
     );
   }
@@ -499,6 +520,12 @@ export class AuthService {
             (response) => {
               let loginResponse: LoginResponse = response.json();
               console.log("signUp, loginResponse : ", loginResponse);
+
+              let date = (new Date());
+              date.setHours(date.getHours() + 1);
+              console.log('COOKIE', date);
+              this.cookieService.put('ACTIVE_SESSION', 'true', {'expires': date});
+
               // return json;
               this.isSignInOrUp = false;
               return this.onAPIuserObtained(this.parseAPIuser(loginResponse), token);
@@ -556,14 +583,25 @@ export class AuthService {
     return coachee;
   }
 
-  private parseRh(json: any): HR {
+  parseRh(json: any): HR {
+    console.log(json);
     let rh: HR = new HR(json.id);
     rh.email = json.email;
+    rh.description = json.description;
     rh.first_name = json.first_name;
     rh.last_name = json.last_name;
     rh.start_date = json.start_date;
     rh.avatar_url = json.avatar_url;
     return rh;
+  }
+
+  private parsePotentialRh(json: any): PotentialRh {
+    let potentialRh: PotentialRh = new PotentialRh(json.id);
+    potentialRh.email = json.email;
+    potentialRh.firstName = json.first_name;
+    potentialRh.lastName = json.last_name;
+    potentialRh.start_date = json.create_date;
+    return potentialRh;
   }
 
   private parsePotentialCoachee(json: any): PotentialCoachee {
@@ -591,6 +629,10 @@ export class AuthService {
       (token: string) => {
         //user should be ok just after a sign up
         let fbUser = this.firebase.auth().currentUser;
+        let date = (new Date());
+        date.setHours(date.getHours() + 1);
+        console.log('COOKIE', date);
+        this.cookieService.put('ACTIVE_SESSION', 'true', {'expires': date});
         //now sign up in AppEngine
         this.isSignInOrUp = false;
         return this.getUserForFirebaseId(fbUser.uid, token);
@@ -602,15 +644,16 @@ export class AuthService {
     console.log("user loginOut");
     this.firebase.auth().signOut();
     this.updateAuthStatus(null);
+    this.cookieService.remove('ACTIVE_SESSION');
     this.router.navigate(['/welcome']);
   }
 
 
-  updateCoacheeForId(id: string, firstName: string, last_name: string, avatarUrl: string): Observable<ApiUser> {
+  updateCoacheeForId(id: string, first_name: string, last_name: string, avatarUrl: string): Observable<ApiUser> {
     console.log("updateCoacheeForId, id", id);
 
     let body = {
-      first_name: firstName,
+      first_name: first_name,
       last_name: last_name,
       avatar_url: avatarUrl,
     };
@@ -624,7 +667,7 @@ export class AuthService {
   }
 
   updateCoachForId(id: string, firstName: string, lastName: string, description: string, avatarUrl: string): Observable<ApiUser> {
-    console.log("updateCoachDisplayNameForId, id", id);
+    console.log("updateCoachForId, id", id);
 
     let body = {
       first_name: firstName,
@@ -635,6 +678,25 @@ export class AuthService {
 
     let params = [id];
     return this.put(AuthService.UPDATE_COACH, params, body).map(
+      (response: Response) => {
+        //convert to coach
+        // return this.onUserResponse(response);
+        return null;
+      });
+  }
+
+  updateRhForId(id: string, firstName: string, lastName: string, description: string, avatarUrl: string): Observable<ApiUser> {
+    console.log("updateRhForId, id", id);
+
+    let body = {
+      first_name: firstName,
+      last_name: lastName,
+      description: description,
+      avatar_url: avatarUrl,
+    };
+
+    let params = [id];
+    return this.put(AuthService.UPDATE_RH, params, body).map(
       (response: Response) => {
         //convert to coach
         // return this.onUserResponse(response);

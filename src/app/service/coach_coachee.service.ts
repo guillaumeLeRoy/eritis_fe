@@ -59,6 +59,20 @@ export class CoachCoacheeService {
       });
   }
 
+  getRhForId(rhId: string): Observable<HR> {
+    console.log("getRhForId, start request");
+
+    let params = [rhId]
+    return this.apiService.get(AuthService.GET_RH_FOR_ID, params).map(
+      (response: Response) => {
+        console.log("getRhForId, got rh", response);
+        let rh: HR = this.apiService.parseRh(response.json());
+        return rh;
+      }, (error) => {
+        console.log("getRhForId, error", error);
+      });
+  }
+
   getAllCoacheesForRh(rhId: string): Observable<Coachee[]> {
     console.log("getAllCoacheesForRh, start request");
     let param = [rhId];
@@ -96,7 +110,7 @@ export class CoachCoacheeService {
   getPotentialRh(token: string): Observable<PotentialRh> {
     console.log("getPotentialRh, start request");
     let param = [token];
-    return this.apiService.getPotentialCoachee(AuthService.GET_POTENTIAL_RH_FOR_TOKEN, param);
+    return this.apiService.getPotentialRh(AuthService.GET_POTENTIAL_RH_FOR_TOKEN, param);
   }
 
   getUsageRate(rhId: string): Observable<RhUsageRate> {

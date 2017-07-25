@@ -5,11 +5,12 @@
       <div class="user col-lg-5">
         <!--<img src="{{(coach | async)?.avatar_url}}" alt="profile image" class="user-img circle responsive-img z-depth-2">-->
         <div class="user-img avatar z-depth-2"
+             *ngIf="(coach | async)?.avatar_url != null"
              [style.background-image]="'url(' + (coach | async)?.avatar_url + ')'"></div>
 
         <div class="user-info">
           <h5>{{(coach | async)?.first_name}} {{(coach | async)?.last_name}}</h5>
-          <h6>{{(coach | async)?.email}}</h6>
+          <p class="light-grey-text">{{(coach | async)?.email}}</p>
         </div>
       </div>
 

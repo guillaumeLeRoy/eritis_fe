@@ -35,7 +35,6 @@ nav li.active a{
 nav li a:hover,
 nav li a:focus {
   color: #FFF !important;
-  font-weight: normal !important;
   opacity: 1;
 }
 
@@ -204,8 +203,9 @@ header.user-connected {
 }
 
 .header-btn .btn-basic{
-  min-width: 200px;
-  margin: 8px;
+  min-width: 170px;
+  margin: 8px 0;
+
 }
 
 .header-arrow-bottom{
@@ -266,7 +266,7 @@ rb-signin{
   font-weight: bold;
 }
 
-.notif-delete{
+nav li .notif-delete{
   padding: 0;
   text-align: center;
   a {
@@ -276,6 +276,10 @@ rb-signin{
 
 nav .notif-delete:hover {
   a {
+    color: $main-electric-blue !important;
+  }
+
+  a:hover {
     color: $main-electric-blue !important;
   }
 }

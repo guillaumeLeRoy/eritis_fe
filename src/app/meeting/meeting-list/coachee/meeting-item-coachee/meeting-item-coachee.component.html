@@ -59,6 +59,10 @@
             <span class="meeting-item-date-hour">{{ printTimeString(meeting.agreed_date.start_date) }}</span>
           </div>
 
+          <div *ngIf="!meeting.agreed_date">
+            <span>En attente...</span>
+          </div>
+
           <!--<button *ngIf="!meeting.agreed_date" class="btn-basic btn-blue btn-small" (click)="goToModifyDate(meeting.id)">-->
           <!--Modifier-->
           <!--</button>-->

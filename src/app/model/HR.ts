@@ -14,6 +14,8 @@ export class HR implements ApiUser {
 
   first_name: string;
 
+  description: string;
+
   last_name: string;
 
   start_date: string;

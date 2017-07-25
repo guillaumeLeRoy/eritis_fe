@@ -93,9 +93,9 @@ p {
 }
 
 .meeting-item-date{
-  font-size: 22px;
+  font-size: 18px;
   margin-left: 32px;
-  text-align: right;
+  text-align: center;
 }
 
 .meeting-item-body{
@@ -109,7 +109,7 @@ p {
 }
 
 .meeting-item-body-buttons {
-  padding: 16px 0;
+  padding: 12px 0;
   text-align: right;
 }
 
@@ -118,6 +118,7 @@ p {
   justify-content: space-between;
   align-content: space-between;
   padding: 24px 0;
+  font-size: 12px;
 }
 
 .meeting-review {
