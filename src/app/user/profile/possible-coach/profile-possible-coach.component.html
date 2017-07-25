@@ -182,7 +182,7 @@
       <br>
       <button class="btn-basic btn-blue btn-plain btn-small"
               *ngIf="!(possibleCoach | async)?.invite_sent"
-              (click)="sendInvite(possibleCoach.email)">Envoyer une invitation
+              (click)="sendInvite()">Envoyer une invitation
       </button>
       <button class="btn-basic btn-small"
               *ngIf="(possibleCoach | async)?.invite_sent"
