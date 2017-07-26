@@ -32,4 +32,8 @@ export class FirebaseService {
   auth(): any {
     return firebase.auth();
   }
+
+  sendPasswordResetEmail(email: string): Promise<any> {
+    return firebase.auth().sendPasswordResetEmail(email);
+  }
 }

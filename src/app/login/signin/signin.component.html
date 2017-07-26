@@ -38,6 +38,8 @@
         </div>
       </div>
 
+      <p (click)="onForgotPasswordClicked()">Mot de passe oublié?</p>
+
       <!-- sign up error div-->
       <div *ngIf="error && errorMessage != ''">
         <!-- add extra separator-->
@@ -50,6 +52,19 @@
     </form>
   </div><!--end section-->
 
-  <!--<button class="btn btn-success" (click)="goToSignUp()">First time ?</button>-->
-
+  <!-- Modal Forgot password -->
+  <div id="forgot_password_modal" class="modal">
+    <div class="action-modal-content">
+      <div class="action-modal-message">
+        <label>Veuillez saisir votre adresse mail.</label>
+        <input type="email" placeholder="Email" [(ngModel)]="forgotEmail">
+      </div>
+      <div class="action-modal-footer">
+        <button class="btn-basic btn-plain btn-small" (click)="cancelForgotPasswordModal()">Annuler</button>
+        <button class="btn-basic btn-blue btn-plain btn-small" (click)="validateForgotPasswordModal()"
+                [disabled]="!forgotEmail">Confirmer
+        </button>
+      </div>
+    </div>
+  </div>
 </div>

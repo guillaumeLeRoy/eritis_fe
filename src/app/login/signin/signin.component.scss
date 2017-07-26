@@ -9,7 +9,7 @@
   max-width: 50%;
 }*/
 
-label{
+label {
   color: $main-white-color;
   font-size: 20px;
   font-weight: 300;
@@ -21,11 +21,11 @@ input[type="password"]:focus:not([readonly]),
 input[type="email"],
 input[type="email"]:focus:not([readonly]),
 textarea,
-textarea:focus:not([readonly]){
+textarea:focus:not([readonly]) {
   background-color: rgba(255, 255, 255, .6) !important;
 }
 
-button[type="submit"]{
+button[type="submit"] {
   background-color: $main-electric-blue;
   border: none;
   border-radius: 100%;
@@ -36,21 +36,21 @@ button[type="submit"]{
   text-align: center;
 }
 
-button[type="submit"]:hover{
+button[type="submit"]:hover {
   box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.16), 0 2px 10px 0 rgba(0, 0, 0, 0.12);
 }
 
-button[type="submit"]:disabled{
+button[type="submit"]:disabled {
   opacity: .5;
 }
 
-#main_container{
+#main_container {
   width: 30%;
   margin: auto;
 }
 
-@media(max-width: 960px){
-  #main_container{
+@media(max-width: 960px) {
+  #main_container {
     width: 80%;
   }
 }
@@ -58,3 +58,10 @@ button[type="submit"]:disabled{
 .spinner-white {
   border-color: #FFF;
 }
+
+/* modal */
+.modal label,
+.modal input{
+  color: $main-dark-grey;
+}
+

@@ -1,10 +1,10 @@
-import {Component, OnInit} from '@angular/core';
-import {FormGroup, FormBuilder, Validators} from '@angular/forms';
-import {AuthService} from '../../service/auth.service';
-import {Router} from '@angular/router';
-import {Coachee} from '../../model/Coachee';
-import {Coach} from '../../model/Coach';
-import {CookieService} from "ngx-cookie";
+import {Component, OnInit} from "@angular/core";
+import {FormBuilder, FormGroup, Validators} from "@angular/forms";
+import {AuthService} from "../../service/auth.service";
+import {Router} from "@angular/router";
+import {Coachee} from "../../model/Coachee";
+import {Coach} from "../../model/Coach";
+import {FirebaseService} from "../../service/firebase.service";
 
 declare var $: any;
 declare var Materialize: any;
@@ -23,7 +23,9 @@ export class SigninComponent implements OnInit {
 
   private loginLoading = false;
 
-  constructor(private formBuilder: FormBuilder, private authService: AuthService, private router: Router, private cookieService: CookieService) {
+  private forgotEmail?: string;
+
+  constructor(private formBuilder: FormBuilder, private authService: AuthService, private router: Router, private firebase: FirebaseService) {
     authService.isAuthenticated().subscribe((isAuth) => console.log('onSignIn, isAuth', isAuth));
   }
 
@@ -50,10 +52,10 @@ export class SigninComponent implements OnInit {
         console.log('onSignIn, user obtained', user);
 
         /*if (user instanceof Coach) {
-          this.router.navigate(['/meetings']);
-        } else {
-          this.router.navigate(['/coachs'])
-        }*/
+         this.router.navigate(['/meetings']);
+         } else {
+         this.router.navigate(['/coachs'])
+         }*/
 
         /*L'utilisateur est TOUJOURS redirigé vers ses meetings*/
         this.router.navigate(['/meetings']);
@@ -73,6 +75,67 @@ export class SigninComponent implements OnInit {
 
   goToSignUp() {
     this.router.navigate(['/signup']);
+  }
+
+  onForgotPasswordClicked() {
+    console.log('onForgotPasswordClicked');
+    this.startForgotPasswordFlow();
+  }
+
+  /*************************************
+   ----------- Modal control for forgot password ------------
+   *************************************/
+
+  updateForgotPasswordModalVisibility(isVisible: boolean) {
+    if (isVisible) {
+      $('#forgot_password_modal').openModal();
+    } else {
+      $('#forgot_password_modal').closeModal();
+    }
+  }
+
+  startForgotPasswordFlow() {
+    console.log('startForgotPasswordFlow');
+    this.updateForgotPasswordModalVisibility(true);
+  }
+
+  cancelForgotPasswordModal() {
+    this.updateForgotPasswordModalVisibility(false);
+    this.forgotEmail = null;
+  }
+
+  validateForgotPasswordModal() {
+    console.log('validateForgotPasswordModal');
+
+    // make sure forgotEmail has a value
+
+    this.firebase.sendPasswordResetEmail(this.forgotEmail)
+      .then(function () {
+        console.log("sendPasswordResetEmail ");
+        Materialize.toast("Email envoyé", 3000, 'rounded');
+
+        this.cancelForgotPasswordModal();
+      }).catch(function (reason) {
+
+      /**
+       * {code: "auth/invalid-email", message: "The email address is badly formatted."}code: "auth/invalid-email"message: "The email address is badly formatted."__proto__: Error
+       *
+       * O {code: "auth/user-not-found", message: "There is no user record corresponding to this identifier. The user may have been deleted."}code: "auth/user-not-found"message: "There is no user record corresponding to this identifier. The user may have been deleted."__proto__: Error
+       */
+
+      console.log("sendPasswordResetEmail fail reason", reason);
+
+      if (reason != undefined) {
+        if (reason.code == "auth/invalid-email") {
+          Materialize.toast("L'email n'est pas correctement formatté", 3000, 'rounded');
+          return
+        } else if (reason.code == "auth/user-not-found") {
+          Materialize.toast("L'email ne correspond à aucun de nos utilisateurs", 3000, 'rounded');
+          return
+        }
+      }
+      Materialize.toast("Une erreur est survenue", 3000, 'rounded');
+    });
   }
 
 }
