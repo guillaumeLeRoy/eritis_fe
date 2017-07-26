@@ -20,6 +20,30 @@ export class Coach implements ApiUser {
 
   chat_room_url: string;
 
+  linkedin_url: string;
+
+  training: string;
+
+  degree: string;
+
+  extraActivities: string;
+
+  coachForYears: string;
+
+  coachingExperience: string;
+
+  coachingHours: string;
+
+  supervisor: string;
+
+  favoriteCoachingSituation: string;
+
+  status: string;
+
+  revenues: string;
+
+  assurance_url: string;
+
   constructor(id: string) {
     this.id = id;
   }

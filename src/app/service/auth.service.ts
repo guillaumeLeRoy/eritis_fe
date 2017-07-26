@@ -554,7 +554,7 @@ export class AuthService {
     return null;
   }
 
-  private parseCoach(json: any): Coach {
+  parseCoach(json: any): Coach {
     let coach: Coach = new Coach(json.id);
     coach.email = json.email;
     coach.first_name = json.first_name;
@@ -563,10 +563,22 @@ export class AuthService {
     coach.start_date = json.start_date;
     coach.description = json.description;
     coach.chat_room_url = json.chat_room_url;
+    coach.linkedin_url = json.linkedin_url;
+    coach.training = json.training;
+    coach.degree = json.degree;
+    coach.extraActivities = json.extraActivities;
+    coach.coachForYears = json.coachForYears;
+    coach.coachingExperience = json.coachingExperience;
+    coach.coachingHours = json.coachingHours;
+    coach.supervisor = json.supervisor;
+    coach.favoriteCoachingSituation = json.favoriteCoachingSituation;
+    coach.status = json.status;
+    coach.revenues = json.revenue;
+    coach.assurance_url = json.assurance_url;
     return coach;
   }
 
-  private parseCoachee(json: any): Coachee {
+  parseCoachee(json: any): Coachee {
     // TODO : don't really need to manually parse the received Json
     let coachee: Coachee = new Coachee(json.id);
     coachee.id = json.id;
@@ -596,7 +608,7 @@ export class AuthService {
     return rh;
   }
 
-  private parsePotentialRh(json: any): PotentialRh {
+  parsePotentialRh(json: any): PotentialRh {
     let potentialRh: PotentialRh = new PotentialRh(json.id);
     potentialRh.email = json.email;
     potentialRh.firstName = json.first_name;
@@ -605,7 +617,7 @@ export class AuthService {
     return potentialRh;
   }
 
-  private parsePotentialCoachee(json: any): PotentialCoachee {
+  parsePotentialCoachee(json: any): PotentialCoachee {
     let potentialCoachee: PotentialCoachee = new PotentialCoachee(json.id);
     potentialCoachee.email = json.email;
     potentialCoachee.start_date = json.create_date;

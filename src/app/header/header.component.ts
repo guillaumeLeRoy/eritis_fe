@@ -63,8 +63,8 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
     this.router.events.subscribe((evt) => {
       if (!(evt instanceof NavigationEnd)) {
-        console.log("headerNav USER", this.mUser);
-        console.log("headerNav COOKIE", this.cookieService.get('ACTIVE_SESSION'));
+        // console.log("headerNav USER", this.mUser);
+        // console.log("headerNav COOKIE", this.cookieService.get('ACTIVE_SESSION'));
         if (this.mUser !== null && this.cookieService.get('ACTIVE_SESSION') === undefined)
           this.onLogout();
       }
