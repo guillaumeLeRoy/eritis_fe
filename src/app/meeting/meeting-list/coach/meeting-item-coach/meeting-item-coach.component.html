@@ -66,11 +66,7 @@
     <!-- GOAL & REVIEW -->
     <div class="meeting-item-body col-md-12 col-lg-7">
       <div class="meeting-item-body-content">
-        <p>
-          <span class="black-text bold">Objectif donné par le RH</span><br>
-          <span *ngIf="meeting.coachee.last_objective != null">{{ meeting.coachee.last_objective.objective }}</span>
-          <span *ngIf="meeting.coachee.last_objective == null">n/a</span>
-        </p>
+        <p><span class="black-text bold">Contexte</span><br> {{ (context | async) }}</p>
         <br>
         <p class="meeting-item-goal">
           <span class="black-text bold">Objectif de la séance</span><br>
@@ -78,7 +74,12 @@
           <span *ngIf="!hasGoal" class="red-text">Pas encore défini...</span>
         </p>
         <br>
-        <p><span class="black-text bold">Contexte</span><br> {{ (context | async) }}</p>
+        <p>
+          <span class="black-text bold">Objectif donné par le RH</span><br>
+          <span *ngIf="meeting.coachee.last_objective != null">{{ meeting.coachee.last_objective.objective }}</span>
+          <span *ngIf="meeting.coachee.last_objective == null">n/a</span>
+        </p>
+
 
         <!--Complétées-->
         <div *ngIf="!meeting.isOpen" class="meeting-review">

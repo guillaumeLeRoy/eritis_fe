@@ -116,7 +116,8 @@ export class AuthService {
     let date = (new Date());
     date.setHours(date.getHours() + 1);
     console.log('COOKIE', date);
-    this.cookieService.put('ACTIVE_SESSION', 'true', {expires: date.toDateString()});
+    if (this.cookieService.get('ACTIVE_SESSION') === undefined)
+      this.cookieService.put('ACTIVE_SESSION', 'true', {expires: date.toDateString()});
   }
 
   /*
@@ -179,9 +180,9 @@ export class AuthService {
   }
 
   getConnectedUser(): Coach | Coachee | HR {
-    if (this.ApiUser !== null)
-      if (this.cookieService.get('ACTIVE_SESSION') !== 'true')
-        this.loginOut();
+    // if (this.ApiUser !== null)
+      // if (this.cookieService.get('ACTIVE_SESSION') !== 'true')
+        // this.loginOut();
     return this.ApiUser;
   }
 

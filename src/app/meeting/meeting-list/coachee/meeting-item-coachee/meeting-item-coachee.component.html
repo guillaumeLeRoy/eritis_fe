@@ -74,17 +74,17 @@
     <div class="meeting-item-body col-md-12 col-lg-7">
       <div class="meeting-item-body-content">
         <p>
-          <span class="black-text bold">Objectif de la séance</span><br>
-          <span *ngIf="hasGoal">{{goal | async}}</span>
-          <span *ngIf="!hasGoal" class="red-text">Veuillez définir votre objectif.</span>
+          <span class="black-text bold">Contexte de la séance</span><br>
+          <span *ngIf="hasContext">{{context | async}}</span>
+          <span *ngIf="!hasContext" class="red-text">Veuillez définir votre context.</span>
         </p>
 
         <br>
 
         <p>
-          <span class="black-text bold">Contexte de la séance</span><br>
-          <span *ngIf="hasContext">{{context | async}}</span>
-          <span *ngIf="!hasContext" class="red-text">Veuillez définir votre context.</span>
+          <span class="black-text bold">Objectif de la séance</span><br>
+          <span *ngIf="hasGoal">{{goal | async}}</span>
+          <span *ngIf="!hasGoal" class="red-text">Veuillez définir votre objectif.</span>
         </p>
 
         <div *ngIf="!meeting.isOpen" class="meeting-review">

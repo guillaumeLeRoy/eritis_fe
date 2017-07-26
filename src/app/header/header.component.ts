@@ -9,6 +9,7 @@ import {ApiUser} from "../model/apiUser";
 import {Notif} from "../model/Notif";
 import {CoachCoacheeService} from "../service/coach_coachee.service";
 import {Response} from "@angular/http";
+import {CookieService} from "ngx-cookie";
 
 
 declare var $: any;
@@ -31,7 +32,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
   private notifications: Observable<Notif[]>;
 
-  constructor(private router: Router, private authService: AuthService, private coachCoacheeService: CoachCoacheeService, private cd: ChangeDetectorRef) {
+  constructor(private router: Router, private authService: AuthService, private coachCoacheeService: CoachCoacheeService, private cd: ChangeDetectorRef, private cookieService: CookieService) {
   }
 
   ngOnInit(): void {
@@ -62,9 +63,11 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
     this.router.events.subscribe((evt) => {
       if (!(evt instanceof NavigationEnd)) {
-        return;
+        console.log("headerNav USER", this.mUser);
+        console.log("headerNav COOKIE", this.cookieService.get('ACTIVE_SESSION'));
+        if (this.mUser !== null && this.cookieService.get('ACTIVE_SESSION') === undefined)
+          this.onLogout();
       }
-      console.log('Header navigation');
       window.scrollTo(0, 0)
     });
   }
@@ -84,6 +87,10 @@ export class HeaderComponent implements OnInit, OnDestroy {
       this.mUser = user;
       this.isAuthenticated = Observable.of(true);
       this.fetchNotificationsForUser(user);
+      if (this.cookieService.get('ACTIVE_SESSION') === undefined)
+        this.onLogout();
+      else
+        console.log('onUserObtained COOKIE', this.cookieService.get('ACTIVE_SESSION'));
     }
 
     this.user = Observable.of(user);
@@ -99,6 +106,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   }
 
   onLogout() {
+    console.log("login out")
     window.scrollTo(0, 0);
     this.authService.loginOut();
   }
