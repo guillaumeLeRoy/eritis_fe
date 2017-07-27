@@ -33,7 +33,7 @@ export class AuthService {
   /* Possible coach */
   public static UPDATE_POSSIBLE_COACH = "/v1/possible_coachs";
   public static UPDATE_POSSIBLE_COACH_PICTURE = "/v1/possible_coachs/profile_picture";
-  public static UPDATE_POSSIBLE_COACH_ASSURANCE_DOC = "/v1/possible_coachs/assurance";
+  public static UPDATE_POSSIBLE_COACH_INSURANCE_DOC = "/v1/possible_coachs/insurance";
 
   /* coachee */
   public static UPDATE_COACHEE = "/v1/coachees/:id";

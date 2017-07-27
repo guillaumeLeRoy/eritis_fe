@@ -1,13 +1,16 @@
-import {Component, OnInit} from '@angular/core';
-import {FormGroup, FormBuilder, Validators} from '@angular/forms';
-import {AuthService} from '../../service/auth.service';
-import {Router} from '@angular/router';
-import {Coachee} from '../../model/Coachee';
-import {Coach} from '../../model/Coach';
+import {Component, OnInit} from "@angular/core";
+import {FormBuilder, FormGroup, Validators} from "@angular/forms";
+import {AuthService} from "../../service/auth.service";
+import {Router} from "@angular/router";
+import {Coachee} from "../../model/Coachee";
+import {Coach} from "../../model/Coach";
+import {HR} from "../../model/HR";
 import {CookieService} from "ngx-cookie";
 
 declare var $: any;
 declare var Materialize: any;
+
+declare let ga: Function;
 
 @Component({
   selector: 'rb-signin',
@@ -46,14 +49,21 @@ export class SigninComponent implements OnInit {
     this.errorMessage = '';
 
     this.authService.signIn(this.signInForm.value).subscribe(
-      (user: Coach | Coachee) => {
+      (user: Coach | Coachee | HR) => {
+
+        ga('send', 'event', {
+          eventCategory: 'signin',
+          eventLabel: 'success|userId:' + user.id,
+          eventAction: 'api response',
+        });
+
         console.log('onSignIn, user obtained', user);
 
         /*if (user instanceof Coach) {
-          this.router.navigate(['/meetings']);
-        } else {
-          this.router.navigate(['/coachs'])
-        }*/
+         this.router.navigate(['/meetings']);
+         } else {
+         this.router.navigate(['/coachs'])
+         }*/
 
         /*L'utilisateur est TOUJOURS redirigé vers ses meetings*/
         this.router.navigate(['/meetings']);
@@ -61,6 +71,12 @@ export class SigninComponent implements OnInit {
         this.loginLoading = false;
       },
       error => {
+        ga('send', 'event', {
+          eventCategory: 'signin',
+          eventLabel: 'error:' + error,
+          eventAction: 'api response',
+        });
+
         console.log('onSignIn, error obtained', error);
         Materialize.toast("Le mot de passe ou l'adresse mail est inccorect", 3000, 'rounded');
         this.loginLoading = false;
@@ -69,7 +85,6 @@ export class SigninComponent implements OnInit {
       }
     );
   }
-
 
   goToSignUp() {
     this.router.navigate(['/signup']);
