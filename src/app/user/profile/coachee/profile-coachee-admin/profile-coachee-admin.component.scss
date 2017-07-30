@@ -28,6 +28,15 @@
   align-content: center;
 }
 
+.user.rh {
+  cursor: pointer;
+}
+
+.user.rh:hover,
+.user.rh:hover h5{
+  color: $main-electric-blue !important;
+}
+
 .user-info{
   margin-left: 16px;
 }

@@ -47,6 +47,28 @@
   </h5>
   <br>
 
+
+  <div class="row">
+    <h2 class="col-lg-12 section-form-title">RH</h2>
+
+    <div class="col-lg-12">
+      <div class="row" *ngIf="(coachee | async)?.associatedRh != null && (coachee | async)?.associatedRh !== undefined">
+        <div class="user rh col-lg-12" (click)="goToRhProfile()">
+          <div class="user-img avatar z-depth-2"
+               *ngIf="(coachee | async)?.associatedRh.avatar_url != null"
+               [style.background-image]="'url(' + (coachee | async)?.associatedRh.avatar_url + ')'"></div>
+
+          <div class="user-info">
+            <h5 class="black-text">{{(coachee | async)?.associatedRh.first_name}} {{(coachee | async)?.associatedRh.last_name}}</h5>
+            <p>{{(coachee | async)?.associatedRh.email}}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+
   <div>
     <!--<div class="center">-->
       <!--<button class="btn-basic btn-plain btn-blue btn-small center" (click)="goToCoacheesAdmin()">Retourner aux coachees</button>-->
