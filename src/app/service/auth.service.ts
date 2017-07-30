@@ -613,6 +613,7 @@ export class AuthService {
     rh.last_name = json.last_name;
     rh.start_date = json.start_date;
     rh.avatar_url = json.avatar_url;
+    rh.company_name = json.company_name;
     return rh;
   }
 

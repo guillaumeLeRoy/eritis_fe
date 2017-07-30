@@ -16,6 +16,7 @@
         <div class="user-info">
           <h5>{{(coachee | async)?.first_name}} {{(coachee | async)?.last_name}}</h5>
           <p class="light-grey-text">{{(coachee | async)?.email}}</p>
+          <p class="italic">{{(coach | async)?.associatedRh.company_name}}</p>
         </div>
       </div>
 
