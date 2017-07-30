@@ -574,7 +574,15 @@ export class AuthService {
     coach.favoriteCoachingSituation = json.favoriteCoachingSituation;
     coach.status = json.status;
     coach.revenues = json.revenue;
-    coach.assurance_url = json.assurance_url;
+    coach.insurance_url = json.insurance_url;
+    coach.invoice_address = json.invoice_address;
+    coach.invoice_city = json.invoice_city;
+    coach.invoice_entity = json.invoice_entity;
+    coach.invoice_postcode = json.invoice_postcode;
+    coach.languages = json.languages;
+    coach.experienceShortSession = json.experienceShortSession;
+    coach.coachingSpecifics = json.coachingSpecifics;
+    coach.therapyElements = json.therapyElements;
     return coach;
   }
 

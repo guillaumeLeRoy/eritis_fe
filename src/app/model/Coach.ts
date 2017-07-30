@@ -34,6 +34,8 @@ export class Coach implements ApiUser {
 
   coachingHours: string;
 
+  coachingSpecifics : string;
+
   supervisor: string;
 
   favoriteCoachingSituation: string;
@@ -42,7 +44,22 @@ export class Coach implements ApiUser {
 
   revenues: string;
 
-  assurance_url: string;
+  insurance_url: string;
+
+  invoice_address: string;
+
+  invoice_city: string;
+
+  invoice_entity: string;
+
+  invoice_postcode: string;
+
+  languages: string;
+
+  therapyElements: string;
+
+  experienceShortSession: string;
+
 
   constructor(id: string) {
     this.id = id;

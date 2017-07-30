@@ -59,6 +59,7 @@ export class AdminAPIService {
     let params = [id];
     return this.get(AuthService.ADMIN_GET_COACH, params).map(
       (res: Response) => {
+        console.log('getCoach', res.json());
         let coach: Coach = this.authService.parseCoach(res.json());
         return coach;
       }
