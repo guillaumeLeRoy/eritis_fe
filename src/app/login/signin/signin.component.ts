@@ -1,14 +1,14 @@
-import {Component, OnInit} from "@angular/core";
-import {FormBuilder, FormGroup, Validators} from "@angular/forms";
-import {AuthService} from "../../service/auth.service";
-import {Router} from "@angular/router";
-import {Coachee} from "../../model/Coachee";
-import {Coach} from "../../model/Coach";
+import {Component, OnInit} from '@angular/core';
+import {FormGroup, FormBuilder, Validators} from '@angular/forms';
+import {AuthService} from '../../service/auth.service';
+import {Router} from '@angular/router';
+import {Coachee} from '../../model/Coachee';
+import {Coach} from '../../model/Coach';
 import {HR} from "../../model/HR";
-import {CookieService} from "ngx-cookie";
 
 declare var $: any;
 declare var Materialize: any;
+declare var ga: any;
 
 declare let ga: Function;
 
@@ -26,7 +26,7 @@ export class SigninComponent implements OnInit {
 
   private loginLoading = false;
 
-  constructor(private formBuilder: FormBuilder, private authService: AuthService, private router: Router, private cookieService: CookieService) {
+  constructor(private formBuilder: FormBuilder, private authService: AuthService, private router: Router) {
     authService.isAuthenticated().subscribe((isAuth) => console.log('onSignIn, isAuth', isAuth));
   }
 
@@ -37,9 +37,17 @@ export class SigninComponent implements OnInit {
       email: ['', [Validators.required, Validators.pattern('[a-z0-9!#$%&\'*+/=?^_`{|}~-]+(?:.[a-z0-9!#$%&\'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?')]],
       password: ['', Validators.required],
     });
+
+    ga('send', 'signin component init');
   }
 
   onSignIn() {
+
+    ga('send', 'event', {
+      eventCategory: 'signin',
+      eventLabel: 'start',
+      eventAction: 'click',
+    });
 
     // Activate spinner loader
     this.loginLoading = true;
