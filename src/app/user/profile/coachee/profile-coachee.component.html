@@ -3,6 +3,10 @@
     <div class="container row">
 
       <div class="user col-lg-7">
+        <button class="btn-back" (click)="goToMeetings()">
+          <i class="material-icons">keyboard_arrow_left</i>
+        </button>
+
         <!--<img src="{{(coachee | async)?.avatar_url}}" alt="profile image"-->
              <!--class="user-img circle responsive-img z-depth-2">-->
         <div class="user-img avatar z-depth-2"
@@ -12,6 +16,7 @@
         <div class="user-info">
           <h5>{{(coachee | async)?.first_name}} {{(coachee | async)?.last_name}}</h5>
           <p class="light-grey-text">{{(coachee | async)?.email}}</p>
+          <p class="italic">{{(coach | async)?.associatedRh.company_name}}</p>
         </div>
       </div>
 
@@ -24,10 +29,10 @@
             <!--<p class="header-item-title">Expérience</p>-->
           <!--</div>-->
 
-          <div class="header-item col-sm-12">
-            <div class="header-item-number"><span>6</span></div>
-            <p class="header-item-title">Séances réalisées</p>
-          </div>
+          <!--<div class="header-item col-sm-12">-->
+            <!--<div class="header-item-number"><span>6</span></div>-->
+            <!--<p class="header-item-title">Séances réalisées</p>-->
+          <!--</div>-->
         </div>
       </div>
 
@@ -44,13 +49,10 @@
   <br>
 
   <div>
-    <div class="center" *ngIf="!isAdmin">
-      <button class="btn-basic btn-plain btn-blue btn-small center" (click)="goToMeetings()">Retourner au tableau de bord</button>
-    </div>
-    <div class="center" *ngIf="isAdmin">
-      <button class="btn-basic btn-plain btn-blue btn-small center" (click)="goToCoacheesAdmin()">Retourner aux coachees</button>
-    </div>
-    <br>
+    <!--<div class="center">-->
+      <!--<button class="btn-basic btn-plain btn-blue btn-small center" (click)="goToMeetings()">Retourner au tableau de bord</button>-->
+    <!--</div>-->
+    <!--<br>-->
 
     <!--<form>-->
     <!--<div class="row">-->

@@ -2,7 +2,7 @@
   Le taux total d'utilisation de vos collaborateurs est de <span class="blue-text">{{(rhUsageRate | async)?.usage_rate}}%</span>
 </h3>
 <p class="text-right">
-  <span class="blue-text">Cliquez</span> ici pour ajouter un collaborateur
+  <span class="blue-text">Cliquez</span> ici pour ajouter un manager
   <a class="btn-floating btn-large waves-effect waves-light add-meeting-btn"
      (click)="addPotentialCoacheeModalVisibility(true)">
     <i class="material-icons">add</i>
@@ -11,7 +11,7 @@
 
 
 <div class="row">
-  <h4 class="col-lg-12 black-text">Collaborateurs</h4>
+  <h4 class="col-lg-12 black-text">Managers</h4>
   <div class="card collection col-lg-12">
 
     <div *ngIf="hasCollaborators">
@@ -24,14 +24,14 @@
     </div>
 
     <div *ngIf="!hasCollaborators" class="collection-item text-center">
-      <h5 class="no-meeting">Vos collaborateurs apparaîtront ici</h5>
+      <h5 class="no-meeting">Vos managers apparaîtront ici</h5>
     </div>
 
   </div><!--end card-->
 </div><!--end row-->
 
 <div class="row">
-  <h4 class="col-lg-12 black-text">Collaborateurs invités en attente</h4>
+  <h4 class="col-lg-12 black-text">Managers invités en attente</h4>
   <div class="card collection col-lg-12">
 
     <div *ngIf="hasPotentialCollaborators">
@@ -43,7 +43,7 @@
     </div>
 
     <div *ngIf="!hasPotentialCollaborators" class="collection-item text-center">
-      <h5 class="no-meeting">Vos collaborateurs en attente de validation apparaîtront ici</h5>
+      <h5 class="no-meeting">Vos managers en attente de validation apparaîtront ici</h5>
     </div>
 
   </div><!--end card-->
@@ -53,7 +53,7 @@
 <div id="add_potential_coachee_modal" class="modal">
   <div class="action-modal-content">
     <div class="action-modal-message">
-      <label>Veuillez saisir l'adresse mail du collaborateur. Un mail lui sera envoyé pour finaliser son
+      <label>Veuillez saisir l'adresse mail du manager. Un mail lui sera envoyé pour finaliser son
         inscription.</label>
       <input type="email" placeholder="Email" id="potential_mail" [(ngModel)]="potentialCoacheeEmail">
       <select [(ngModel)]="selectedPlan"

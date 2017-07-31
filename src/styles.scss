@@ -194,6 +194,28 @@ a.btn-small {
   color: #FFF !important;
 }
 
+.btn-back,
+.btn-back:focus,
+.btn-back:active {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: -35px;
+  background: transparent;
+  border: none;
+  opacity: .9;
+  transition: .3s;
+
+  .material-icons {
+    font-size: 40px;
+  }
+}
+
+.btn-back:hover {
+  opacity: 1;
+  transform: translateX(-5px);
+}
+
 .black-text{
   color: $main-dark-grey !important;
 }

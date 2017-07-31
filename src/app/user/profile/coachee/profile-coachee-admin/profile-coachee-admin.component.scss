@@ -26,6 +26,24 @@
   display: flex;
   align-items: center;
   align-content: center;
+
+  h5 {
+    margin: 0;
+  }
+
+  p {
+    margin-bottom: 0;
+    margin-top: 4px;
+  }
+}
+
+.user.rh {
+  cursor: pointer;
+}
+
+.user.rh:hover,
+.user.rh:hover h5{
+  color: $main-electric-blue !important;
 }
 
 .user-info{

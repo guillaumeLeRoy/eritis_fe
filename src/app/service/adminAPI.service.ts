@@ -12,7 +12,7 @@ import {PossibleCoach} from "../model/PossibleCoach";
 @Injectable()
 export class AdminAPIService {
 
-  constructor(private httpService: Http) {
+  constructor(private httpService: Http, private authService: AuthService) {
     console.log("ctr done");
   }
 
@@ -59,7 +59,8 @@ export class AdminAPIService {
     let params = [id];
     return this.get(AuthService.ADMIN_GET_COACH, params).map(
       (res: Response) => {
-        let coach: Coach = res.json();
+        console.log('getCoach', res.json());
+        let coach: Coach = this.authService.parseCoach(res.json());
         return coach;
       }
     );

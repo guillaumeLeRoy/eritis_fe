@@ -4,9 +4,9 @@
   pour ce mois
 </h3>
 <h5 class="italic text-right" *ngIf="(user | async)?.last_objective != null">
-  Objectif de votre RH: "{{(user | async).last_objective.objective}}"</h5>
+  Objectif fixé avec votre RH: "{{(user | async).last_objective.objective}}"</h5>
 <h5 class="italic text-right" *ngIf="(user | async)?.last_objective == null">
-  Vous n'avez pas encore d'objectif personnel</h5>
+  Vous n'avez pas encore d'objectif fixé avec votre RH</h5>
 <p class="text-right" *ngIf="(user | async)?.availableSessionsCount > 0">
   <span class="blue-text">Cliquez</span> ici pour planifier une nouvelle séance
   <a class="btn-floating btn-large waves-effect waves-light add-meeting-btn" (click)="goToDate()">

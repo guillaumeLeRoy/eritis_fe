@@ -33,7 +33,7 @@ export class AuthService {
   /* Possible coach */
   public static UPDATE_POSSIBLE_COACH = "/v1/possible_coachs";
   public static UPDATE_POSSIBLE_COACH_PICTURE = "/v1/possible_coachs/profile_picture";
-  public static UPDATE_POSSIBLE_COACH_ASSURANCE_DOC = "/v1/possible_coachs/assurance";
+  public static UPDATE_POSSIBLE_COACH_INSURANCE_DOC = "/v1/possible_coachs/insurance";
 
   /* coachee */
   public static UPDATE_COACHEE = "/v1/coachees/:id";
@@ -116,7 +116,8 @@ export class AuthService {
     let date = (new Date());
     date.setHours(date.getHours() + 1);
     console.log('COOKIE', date);
-    this.cookieService.put('ACTIVE_SESSION', 'true', {expires: date.toDateString()});
+    if (this.cookieService.get('ACTIVE_SESSION') === undefined)
+      this.cookieService.put('ACTIVE_SESSION', 'true', {expires: date.toDateString()});
   }
 
   /*
@@ -179,9 +180,9 @@ export class AuthService {
   }
 
   getConnectedUser(): Coach | Coachee | HR {
-    if (this.ApiUser !== null)
-      if (this.cookieService.get('ACTIVE_SESSION') !== 'true')
-        this.loginOut();
+    // if (this.ApiUser !== null)
+      // if (this.cookieService.get('ACTIVE_SESSION') !== 'true')
+        // this.loginOut();
     return this.ApiUser;
   }
 
@@ -553,7 +554,7 @@ export class AuthService {
     return null;
   }
 
-  private parseCoach(json: any): Coach {
+  parseCoach(json: any): Coach {
     let coach: Coach = new Coach(json.id);
     coach.email = json.email;
     coach.first_name = json.first_name;
@@ -562,10 +563,30 @@ export class AuthService {
     coach.start_date = json.start_date;
     coach.description = json.description;
     coach.chat_room_url = json.chat_room_url;
+    coach.linkedin_url = json.linkedin_url;
+    coach.training = json.training;
+    coach.degree = json.degree;
+    coach.extraActivities = json.extraActivities;
+    coach.coachForYears = json.coachForYears;
+    coach.coachingExperience = json.coachingExperience;
+    coach.coachingHours = json.coachingHours;
+    coach.supervisor = json.supervisor;
+    coach.favoriteCoachingSituation = json.favoriteCoachingSituation;
+    coach.status = json.status;
+    coach.revenues = json.revenue;
+    coach.insurance_url = json.insurance_url;
+    coach.invoice_address = json.invoice_address;
+    coach.invoice_city = json.invoice_city;
+    coach.invoice_entity = json.invoice_entity;
+    coach.invoice_postcode = json.invoice_postcode;
+    coach.languages = json.languages;
+    coach.experienceShortSession = json.experienceShortSession;
+    coach.coachingSpecifics = json.coachingSpecifics;
+    coach.therapyElements = json.therapyElements;
     return coach;
   }
 
-  private parseCoachee(json: any): Coachee {
+  parseCoachee(json: any): Coachee {
     // TODO : don't really need to manually parse the received Json
     let coachee: Coachee = new Coachee(json.id);
     coachee.id = json.id;
@@ -592,10 +613,11 @@ export class AuthService {
     rh.last_name = json.last_name;
     rh.start_date = json.start_date;
     rh.avatar_url = json.avatar_url;
+    rh.company_name = json.company_name;
     return rh;
   }
 
-  private parsePotentialRh(json: any): PotentialRh {
+  parsePotentialRh(json: any): PotentialRh {
     let potentialRh: PotentialRh = new PotentialRh(json.id);
     potentialRh.email = json.email;
     potentialRh.firstName = json.first_name;
@@ -604,7 +626,7 @@ export class AuthService {
     return potentialRh;
   }
 
-  private parsePotentialCoachee(json: any): PotentialCoachee {
+  parsePotentialCoachee(json: any): PotentialCoachee {
     let potentialCoachee: PotentialCoachee = new PotentialCoachee(json.id);
     potentialCoachee.email = json.email;
     potentialCoachee.start_date = json.create_date;

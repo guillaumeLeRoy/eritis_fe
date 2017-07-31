@@ -38,25 +38,25 @@ export class RegisterCoachFormComponent implements OnInit {
 
     this.registerForm = this.formBuilder.group({
       email: ['', [Validators.required, Validators.pattern('[a-z0-9!#$%&\'*+/=?^_`{|}~-]+(?:.[a-z0-9!#$%&\'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?')]],
-      name: ['', Validators.required],
-      surname: ['', Validators.required],
+      firstname: ['', Validators.required],
+      lastname: ['', Validators.required],
       avatar: [''],
       linkedin: [''],
       description: ['', Validators.required],
-      entite: ['', Validators.required],
-      adresse: ['', Validators.required],
-      codePostal: ['', Validators.required],
-      ville: ['', Validators.required],
+      invoice_entity: ['', Validators.required],
+      invoice_address: ['', Validators.required],
+      invoice_postcode: ['', Validators.required],
+      invoice_city: ['', Validators.required],
       formation: ['', Validators.required],
-      diplomas: ['', Validators.required],
+      degree: ['', Validators.required],
       otherActivities: ['', Validators.required],
       lang1: ['', Validators.required],
       lang2: [''],
       lang3: [''],
       experienceTime: ['', Validators.required],
       experienceVisio: ['', Validators.required],
-      experienceBref: ['', Validators.required],
-      specialities: ['', Validators.required],
+      experienceShortSession: ['', Validators.required],
+      coachingSpecifics: ['', Validators.required],
       therapyElements: ['', Validators.required],
       coachingHours: ['', Validators.required],
       supervision: ['', Validators.required],
@@ -94,25 +94,25 @@ export class RegisterCoachFormComponent implements OnInit {
     if (cookie !== null && cookie !== undefined) {
       this.registerForm = this.formBuilder.group({
         email: [cookie['email'], [Validators.required, Validators.pattern('[a-z0-9!#$%&\'*+/=?^_`{|}~-]+(?:.[a-z0-9!#$%&\'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?')]],
-        name: [cookie['name'], Validators.required],
-        surname: [cookie['surname'], Validators.required],
+        firstname: [cookie['firstname'], Validators.required],
+        lastname: [cookie['lastname'], Validators.required],
         avatar: [cookie['avatar']],
         linkedin: [cookie['linkedin']],
         description: [cookie['description'], Validators.required],
-        entite: [cookie['entite'], Validators.required],
-        adresse: [cookie['adresse'], Validators.required],
-        codePostal: [cookie['codePostal'], Validators.required],
-        ville: [cookie['ville'], Validators.required],
+        invoice_entity: [cookie['invoice_entity'], Validators.required],
+        invoice_address: [cookie['invoice_address'], Validators.required],
+        invoice_postcode: [cookie['invoice_postcode'], Validators.required],
+        invoice_city: [cookie['invoice_city'], Validators.required],
         formation: [cookie['formation'], Validators.required],
-        diplomas: [cookie['diplomas'], Validators.required],
+        degree: [cookie['degree'], Validators.required],
         otherActivities: [cookie['otherActivities'], Validators.required],
         lang1: [cookie['lang1'], Validators.required],
         lang2: [cookie['lang2']],
         lang3: [cookie['lang3']],
         experienceTime: [cookie['experienceTime'], Validators.required],
         experienceVisio: [cookie['experienceVisio'], Validators.required],
-        experienceBref: [cookie['experienceBref'], Validators.required],
-        specialities: [cookie['specialities'], Validators.required],
+        experienceShortSession: [cookie['experienceShortSession'], Validators.required],
+        coachingSpecifics: [cookie['coachingSpecifics'], Validators.required],
         therapyElements: [cookie['therapyElements'], Validators.required],
         coachingHours: [cookie['coachingHours'], Validators.required],
         supervision: [cookie['supervision'], Validators.required],
@@ -168,8 +168,8 @@ export class RegisterCoachFormComponent implements OnInit {
       }
     ).flatMap(
       (res: Response) => {
-        console.log("onRegister upadateAssurance");
-        return this.updatePossibleCoachAssuranceDoc();
+        console.log("onRegister upadateinsurance");
+        return this.updatePossibleCoachinsuranceDoc();
       }
     ).subscribe(
       (res: Response) => {
@@ -203,24 +203,31 @@ export class RegisterCoachFormComponent implements OnInit {
 
     let body = {
       'email': this.registerForm.value.email,
-      'first_name': this.registerForm.value.name,
-      'last_name': this.registerForm.value.surname,
+      'first_name': this.registerForm.value.firstname,
+      'last_name': this.registerForm.value.lastname,
       'linkedin_url': this.registerForm.value.linkedin,
-      'assurance_url': this.registerForm.value.insurance,
       'description': this.registerForm.value.description,
       'training': this.registerForm.value.formation,
-      'degree': this.registerForm.value.diplomas,
+      'degree': this.registerForm.value.degree,
       'extraActivities': this.registerForm.value.otherActivities,
       'coachForYears': this.registerForm.value.experienceTime,
       'coachingExperience': this.registerForm.value.experienceVisio,
+      'experienceShortSession': this.registerForm.value.experienceShortSession,
+      'coachingSpecifics': this.registerForm.value.coachingSpecifics,
+      'therapyElements': this.registerForm.value.therapyElements,
       'coachingHours': this.registerForm.value.coachingHours,
       'supervisor': this.registerForm.value.supervision,
       'favoriteCoachingSituation': this.registerForm.value.preferedCoaching,
       'status': this.registerForm.value.status,
-      'revenue': this.registerForm.value.ca1 + "_" + this.registerForm.value.ca2 + "_" + this.registerForm.value.ca2,
-    }
+      'revenues': this.registerForm.value.ca1 + "_" + this.registerForm.value.ca2 + "_" + this.registerForm.value.ca2,
+      'invoice_entity': this.registerForm.value.invoice_entity,
+      'invoice_address': this.registerForm.value.invoice_address,
+      'invoice_city': this.registerForm.value.invoice_city,
+      'invoice_postcode': this.registerForm.value.invoice_postcode,
+      'languages': this.registerForm.value.lang1 + "_" + this.registerForm.value.lang2 + "_" + this.registerForm.value.lang3,
+    };
 
-    let params = []
+    let params = [];
     return this.authService.putNotAuth(AuthService.UPDATE_POSSIBLE_COACH, params, body).map(
       response => {
         let res = response.json();
@@ -259,8 +266,8 @@ export class RegisterCoachFormComponent implements OnInit {
     }
   }
 
-  private updatePossibleCoachAssuranceDoc(): Observable<Response> {
-    console.log('updatePossibleCoachAssuranceDoc');
+  private updatePossibleCoachinsuranceDoc(): Observable<Response> {
+    console.log('updatePossibleCoachinsuranceDoc');
 
     if (this.insuranceUrl !== undefined) {
       let formData: FormData = new FormData();
@@ -271,13 +278,13 @@ export class RegisterCoachFormComponent implements OnInit {
       headers.append('Accept', 'application/json');
 
       let params = [];
-      return this.authService.putNotAuth(AuthService.UPDATE_POSSIBLE_COACH_ASSURANCE_DOC, params, formData, {headers: headers}).map(
+      return this.authService.putNotAuth(AuthService.UPDATE_POSSIBLE_COACH_INSURANCE_DOC, params, formData, {headers: headers}).map(
         response => {
           let res = response.json();
-          console.log('updatePossibleCoachAssuranceDoc success', res);
+          console.log('updatePossibleCoachinsuranceDoc success', res);
           return res;
         }, error => {
-          console.log('updatePossibleCoachAssuranceDoc error', error);
+          console.log('updatePossibleCoachinsuranceDoc error', error);
         }
       );
     } else {

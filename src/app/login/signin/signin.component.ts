@@ -8,7 +8,7 @@ import {HR} from "../../model/HR";
 
 declare var $: any;
 declare var Materialize: any;
-declare var ga: any;
+declare let ga: Function;
 
 @Component({
   selector: 'rb-signin',
@@ -59,9 +59,8 @@ export class SigninComponent implements OnInit {
 
         ga('send', 'event', {
           eventCategory: 'signin',
-          eventLabel: 'success',
+          eventLabel: 'success|userId:' + user.id,
           eventAction: 'api response',
-          eventValue: 'userId ' + user.id
         });
 
         console.log('onSignIn, user obtained', user);
@@ -78,12 +77,10 @@ export class SigninComponent implements OnInit {
         this.loginLoading = false;
       },
       error => {
-
         ga('send', 'event', {
           eventCategory: 'signin',
-          eventLabel: 'error',
+          eventLabel: 'error:' + error,
           eventAction: 'api response',
-          eventValue: error
         });
 
         console.log('onSignIn, error obtained', error);
@@ -94,10 +91,4 @@ export class SigninComponent implements OnInit {
       }
     );
   }
-
-
-  goToSignUp() {
-    this.router.navigate(['/signup']);
-  }
-
 }
