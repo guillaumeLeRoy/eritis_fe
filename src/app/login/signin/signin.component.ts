@@ -8,8 +8,6 @@ import {HR} from "../../model/HR";
 
 declare var $: any;
 declare var Materialize: any;
-declare var ga: any;
-
 declare let ga: Function;
 
 @Component({
@@ -93,9 +91,4 @@ export class SigninComponent implements OnInit {
       }
     );
   }
-
-  goToSignUp() {
-    this.router.navigate(['/signup']);
-  }
-
 }
