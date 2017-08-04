@@ -3,6 +3,10 @@
     <div class="container row">
 
       <div class="user col-lg-5">
+        <button class="btn-back" (click)="goToMeetings()">
+          <i class="material-icons">keyboard_arrow_left</i>
+        </button>
+
         <!--<img src="{{(coach | async)?.avatar_url}}" alt="profile image" class="user-img circle responsive-img z-depth-2">-->
         <div class="user-img avatar z-depth-2"
              *ngIf="(rh | async)?.avatar_url !== null && (rh | async)?.avatar_url !== undefined"
@@ -11,6 +15,7 @@
         <div class="user-info">
           <h5>{{(rh | async)?.first_name}} {{(rh | async)?.last_name}}</h5>
           <p class="light-grey-text">{{(rh | async)?.email}}</p>
+          <p class="italic">{{(rh | async)?.company_name}}</p>
         </div>
       </div>
 
@@ -48,10 +53,10 @@
   <br>
 
   <div>
-    <div class="center">
-      <button class="btn-basic btn-plain btn-blue btn-small center" (click)="goToMeetings()">Retourner au tableau de bord</button>
-    </div>
-    <br>
+    <!--<div class="center">-->
+      <!--<button class="btn-basic btn-plain btn-blue btn-small center" (click)="goToMeetings()">Retourner au tableau de bord</button>-->
+    <!--</div>-->
+    <!--<br>-->
 
     <!--<form>-->
     <!--<div class="row">-->

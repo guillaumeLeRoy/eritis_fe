@@ -20,6 +20,8 @@ export class HR implements ApiUser {
 
   start_date: string;
 
+  company_name: string;
+
   constructor(id: string) {
     this.id = id;
   }

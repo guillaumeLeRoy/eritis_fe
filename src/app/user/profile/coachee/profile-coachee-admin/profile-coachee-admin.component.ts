@@ -4,6 +4,7 @@ import {Subscription} from "rxjs/Subscription";
 import {Coachee} from "../../../../model/Coachee";
 import {ActivatedRoute, Router} from "@angular/router";
 import {AdminAPIService} from "../../../../service/adminAPI.service";
+import {HR} from "../../../../model/HR";
 
 @Component({
   selector: 'rb-profile-coachee-admin',
@@ -13,6 +14,7 @@ import {AdminAPIService} from "../../../../service/adminAPI.service";
 export class ProfileCoacheeAdminComponent implements OnInit, AfterViewInit, OnDestroy {
 
   private coachee: Observable<Coachee>;
+  private rhId: string;
   private subscriptionGetCoachee: Subscription;
 
   constructor(private router: Router, private cd: ChangeDetectorRef, private apiService: AdminAPIService, private route: ActivatedRoute) {
@@ -32,6 +34,7 @@ export class ProfileCoacheeAdminComponent implements OnInit, AfterViewInit, OnDe
           (coachee: Coachee) => {
             console.log("gotCoachee", coachee);
             this.coachee = Observable.of(coachee);
+            this.rhId = coachee.associatedRh.id;
             this.cd.detectChanges();
           }
         );
@@ -42,6 +45,10 @@ export class ProfileCoacheeAdminComponent implements OnInit, AfterViewInit, OnDe
   goToCoacheesAdmin() {
     window.scrollTo(0, 0);
     this.router.navigate(['admin/coachees-list']);
+  }
+
+  goToRhProfile() {
+    this.router.navigate(['admin/profile/rh', this.rhId])
   }
 
   ngAfterViewInit(): void {

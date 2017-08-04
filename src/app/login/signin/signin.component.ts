@@ -5,9 +5,11 @@ import {Router} from "@angular/router";
 import {Coachee} from "../../model/Coachee";
 import {Coach} from "../../model/Coach";
 import {FirebaseService} from "../../service/firebase.service";
+import {HR} from "../../model/HR";
 
 declare var $: any;
 declare var Materialize: any;
+declare let ga: Function;
 
 @Component({
   selector: 'rb-signin',
@@ -36,9 +38,17 @@ export class SigninComponent implements OnInit {
       email: ['', [Validators.required, Validators.pattern('[a-z0-9!#$%&\'*+/=?^_`{|}~-]+(?:.[a-z0-9!#$%&\'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?')]],
       password: ['', Validators.required],
     });
+
+    ga('send', 'signin component init');
   }
 
   onSignIn() {
+
+    ga('send', 'event', {
+      eventCategory: 'signin',
+      eventLabel: 'start',
+      eventAction: 'click',
+    });
 
     // Activate spinner loader
     this.loginLoading = true;
@@ -48,7 +58,14 @@ export class SigninComponent implements OnInit {
     this.errorMessage = '';
 
     this.authService.signIn(this.signInForm.value).subscribe(
-      (user: Coach | Coachee) => {
+      (user: Coach | Coachee | HR) => {
+
+        ga('send', 'event', {
+          eventCategory: 'signin',
+          eventLabel: 'success|userId:' + user.id,
+          eventAction: 'api response',
+        });
+
         console.log('onSignIn, user obtained', user);
 
         /*if (user instanceof Coach) {
@@ -63,6 +80,12 @@ export class SigninComponent implements OnInit {
         this.loginLoading = false;
       },
       error => {
+        ga('send', 'event', {
+          eventCategory: 'signin',
+          eventLabel: 'error:' + error,
+          eventAction: 'api response',
+        });
+
         console.log('onSignIn, error obtained', error);
         Materialize.toast("Le mot de passe ou l'adresse mail est inccorect", 3000, 'rounded');
         this.loginLoading = false;
@@ -71,7 +94,6 @@ export class SigninComponent implements OnInit {
       }
     );
   }
-
 
   goToSignUp() {
     this.router.navigate(['/signup']);
@@ -137,5 +159,4 @@ export class SigninComponent implements OnInit {
       Materialize.toast("Une erreur est survenue", 3000, 'rounded');
     });
   }
-
 }

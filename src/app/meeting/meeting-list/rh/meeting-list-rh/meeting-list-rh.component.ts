@@ -193,10 +193,10 @@ export class MeetingListRhComponent implements OnInit, AfterViewInit, OnDestroy 
           (res: PotentialCoachee) => {
             console.log('postPotentialCoachee, res', res);
             this.onRefreshRequested();
-            Materialize.toast('Collaborateur ajouté !', 3000, 'rounded');
+            Materialize.toast('Manager ajouté !', 3000, 'rounded');
           }, (error) => {
             console.log('postPotentialCoachee, error', error);
-            Materialize.toast("Impossible d'ajouter le collaborateur", 3000, 'rounded');
+            Materialize.toast("Impossible d'ajouter le manager", 3000, 'rounded');
           }
         );
       }
