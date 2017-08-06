@@ -75,43 +75,6 @@ export class RegisterCoachFormComponent implements OnInit {
 
     });
 
-    /*
-     Email             string `json:"email"`
-     FirstName         string `json:"first_name"`
-     LastName          string `json:"last_name"`
-     LinkedinUrl       string `json:"linkedin_url"`
-     Description       string `json:"description"`
-     MobilePhoneNumber string `json:"mobile_phone_number"`
-     Languages         string `json:"languages"`
-
-     Career          string `json:"career"`
-     ExtraActivities string `json:"extraActivities"`
-     Degree          string `json:"degree"`
-
-     ExperienceCoaching       string `json:"experience_coaching"`
-     ExperienceRemoteCoaching string `json:"experience_remote_coaching"`
-     ExperienceShortSession   string `json:"experienceShortSession"`
-     CoachingSpecifics        string `json:"coachingSpecifics"`
-     Supervisor               string `json:"supervisor"`
-     TherapyElements          string `json:"therapyElements"`
-
-     RevenuesLastThreeYears      string `json:"revenues_last_3_years"` //revenues for last 3 years
-     PercentageCoachingInRevenue string `json:"percentage_coaching_in_revenue"`
-     LegalStatus                 string `json:"legal_status"`
-
-     InvoiceEntity      string `json:"invoice_entity"`
-     InvoiceSiretNumber string `json:"invoice_siret_number"`
-     InvoiceAddress     string `json:"invoice_address"`
-     InvoiceCity        string `json:"invoice_city"`
-     InvoicePostcode    string `json:"invoice_postcode"`
-
-     AvatarURL     string `json:"avatar_url"`
-     InsuranceUrl  string `json:"insurance_url"`
-     InvoiceRIBurl string `json:"invoice_rib_url"`
-
-     InviteSent bool   `json:"invite_sent"`
-     */
-
     this.getSavedFormValues();
   }
 
@@ -133,41 +96,48 @@ export class RegisterCoachFormComponent implements OnInit {
   // }
 
   private getSavedFormValues() {
-    //   let cookie = this.cookieService.getObject('COACH_REGISTER_FORM_VALUES');
-    //   console.log("getSavedFormValues", cookie);
-    //   if (cookie !== null && cookie !== undefined) {
-    //     this.registerForm = this.formBuilder.group({
-    //       email: [cookie['email'], [Validators.required, Validators.pattern('[a-z0-9!#$%&\'*+/=?^_`{|}~-]+(?:.[a-z0-9!#$%&\'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?')]],
-    //       firstname: [cookie['firstname'], Validators.required],
-    //       lastname: [cookie['lastname'], Validators.required],
-    //       avatar: [cookie['avatar']],
-    //       linkedin: [cookie['linkedin']],
-    //       description: [cookie['description'], Validators.required],
-    //       invoice_entity: [cookie['invoice_entity'], Validators.required],
-    //       invoice_address: [cookie['invoice_address'], Validators.required],
-    //       invoice_postcode: [cookie['invoice_postcode'], Validators.required],
-    //       invoice_city: [cookie['invoice_city'], Validators.required],
-    //       formation: [cookie['formation'], Validators.required],
-    //       degree: [cookie['degree'], Validators.required],
-    //       otherActivities: [cookie['otherActivities'], Validators.required],
-    //       lang1: [cookie['lang1'], Validators.required],
-    //       lang2: [cookie['lang2']],
-    //       lang3: [cookie['lang3']],
-    //       experienceTime: [cookie['experienceTime'], Validators.required],
-    //       experienceVisio: [cookie['experienceVisio'], Validators.required],
-    //       experienceShortSession: [cookie['experienceShortSession'], Validators.required],
-    //       coachingSpecifics: [cookie['coachingSpecifics'], Validators.required],
-    //       therapyElements: [cookie['therapyElements'], Validators.required],
-    //       coachingHours: [cookie['coachingHours'], Validators.required],
-    //       supervision: [cookie['supervision'], Validators.required],
-    //       preferedCoaching: [cookie['preferedCoaching'], Validators.required],
-    //       status: [cookie['status'], Validators.required],
-    //       ca1: [cookie['ca1'], Validators.required],
-    //       ca2: [cookie['ca2'], Validators.required],
-    //       ca3: [cookie['ca3'], Validators.required],
-    //       insurance: [cookie['insurance']]
-    //     });
-    //   }
+    let cookie = this.cookieService.getObject('COACH_REGISTER_FORM_VALUES');
+    console.log("getSavedFormValues", cookie);
+    if (cookie !== null && cookie !== undefined) {
+      this.registerForm = this.formBuilder.group({
+        email: [cookie['email'], [Validators.required, Validators.pattern('[a-z0-9!#$%&\'*+/=?^_`{|}~-]+(?:.[a-z0-9!#$%&\'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?')]],
+        firstname: [cookie['firstname'], Validators.required],
+        lastname: [cookie['lastname'], Validators.required],
+        avatar: [cookie['avatar']],
+        linkedin_url: [cookie['linkedin_url']],
+        description: [cookie['description'], Validators.required],
+        phoneNumber: [cookie['phoneNumber'], Validators.required],
+        lang1: [cookie['lang1'], Validators.required],
+        lang2: [cookie['lang2']],
+        lang3: [cookie['lang3']],
+
+        career: [cookie['career'], Validators.required],
+        degree: [cookie['degree'], Validators.required],
+        extraActivities: [cookie['extraActivities'], Validators.required],
+
+        coachingExperience: [cookie['coachingExperience'], Validators.required],
+        remoteCoachingExperience: [cookie['remoteCoachingExperience'], Validators.required],
+        experienceShortSession: [cookie['experienceShortSession'], Validators.required],
+        coachingSpecifics: [cookie['coachingSpecifics'], Validators.required],
+        supervision: [cookie['supervision'], Validators.required],
+        therapyElements: [cookie['therapyElements'], Validators.required],
+
+        ca1: [cookie['ca1'], Validators.required],
+        ca2: [cookie['ca2'], Validators.required],
+        ca3: [cookie['ca3'], Validators.required],
+        percentageCoachingInRevenue: [cookie['percentageCoachingInRevenue']],
+        legalStatus: [cookie['legalStatus'], Validators.required],
+
+        invoice_entity: [cookie['invoice_entity'], Validators.required],
+        invoice_siret_number: [cookie['invoice_siret_number'], Validators.required],
+        invoice_address: [cookie['invoice_address'], Validators.required],
+        invoice_postcode: [cookie['invoice_postcode'], Validators.required],
+        invoice_city: [cookie['invoice_city'], Validators.required],
+
+        insurance_document: [cookie['insurance_document']]
+
+      });
+    }
   }
 
   saveFormValues() {
@@ -249,26 +219,30 @@ export class RegisterCoachFormComponent implements OnInit {
       'email': this.registerForm.value.email,
       'first_name': this.registerForm.value.firstname,
       'last_name': this.registerForm.value.lastname,
-      'linkedin_url': this.registerForm.value.linkedin,
       'description': this.registerForm.value.description,
-      'training': this.registerForm.value.formation,
+      'mobile_phone_number': this.registerForm.value.phoneNumber,
+      'languages': this.registerForm.value.lang1 + "_" + this.registerForm.value.lang2 + "_" + this.registerForm.value.lang3,
+      'linkedin_url': this.registerForm.value.linkedin_url,
+
+      'career': this.registerForm.value.career,
+      'extraActivities': this.registerForm.value.extraActivities,
       'degree': this.registerForm.value.degree,
-      'extraActivities': this.registerForm.value.otherActivities,
-      'coachForYears': this.registerForm.value.experienceTime,
-      'coachingExperience': this.registerForm.value.experienceVisio,
+
+      'experience_coaching': this.registerForm.value.coachingExperience,
+      'experience_remote_coaching': this.registerForm.value.remoteCoachingExperience,
       'experienceShortSession': this.registerForm.value.experienceShortSession,
       'coachingSpecifics': this.registerForm.value.coachingSpecifics,
-      'therapyElements': this.registerForm.value.therapyElements,
-      'coachingHours': this.registerForm.value.coachingHours,
       'supervisor': this.registerForm.value.supervision,
-      'favoriteCoachingSituation': this.registerForm.value.preferedCoaching,
-      'status': this.registerForm.value.status,
-      'revenues': this.registerForm.value.ca1 + "_" + this.registerForm.value.ca2 + "_" + this.registerForm.value.ca2,
+      'therapyElements': this.registerForm.value.therapyElements,
+      'legal_status': this.registerForm.value.legalStatus,
+      'revenues_last_3_years': this.registerForm.value.ca1 + "_" + this.registerForm.value.ca2 + "_" + this.registerForm.value.ca2,
+      'percentage_coaching_in_revenue': this.registerForm.value.percentageCoachingInRevenue,
+
       'invoice_entity': this.registerForm.value.invoice_entity,
+      'invoice_siret_number': this.registerForm.value.invoice_siret_number,
       'invoice_address': this.registerForm.value.invoice_address,
       'invoice_city': this.registerForm.value.invoice_city,
       'invoice_postcode': this.registerForm.value.invoice_postcode,
-      'languages': this.registerForm.value.lang1 + "_" + this.registerForm.value.lang2 + "_" + this.registerForm.value.lang3,
     };
 
     let params = [];

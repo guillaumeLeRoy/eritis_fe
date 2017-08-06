@@ -8,7 +8,7 @@
         </button>
 
         <!--<img src="{{(possibleCoach | async)?.avatar_url}}" alt="profile image"-->
-             <!--class="user-img circle responsive-img z-depth-2">-->
+        <!--class="user-img circle responsive-img z-depth-2">-->
         <div class="user-img avatar z-depth-2"
              *ngIf="(possibleCoach | async)?.avatar_url != null"
              [style.background-image]="'url(' + (possibleCoach | async)?.avatar_url + ')'"></div>
@@ -28,143 +28,145 @@
 </div>
 
 <div class="container">
-  <h4 class="text-right italic">"{{ (possibleCoach | async)?.description }}"</h4>
-  <br>
-
-  <!--<div class="center">-->
-    <!--<button class="btn-basic btn-plain btn-blue btn-small center" (click)="goToPossibleCoachsAdmin()">Retourner aux demandes de coach</button>-->
-  <!--</div>-->
-
-  <!--<br><br>-->
 
   <div class="row">
 
-    <div class="center col-lg-12">
-      <a target="_blank" class="btn-basic btn-blue btn-plain btn-small" [href]="(possibleCoach | async)?.linkedin_url"><i class="fa fa-linkedin" aria-hidden="true"></i></a>
-      <br><br>
-    </div>
-
-    <h2 class="col-lg-12 section-form-title">Coordonnées de facturation</h2>
-
     <div class="col-lg-12">
+
       <div class="row">
-        <div class="col-lg-12 input-container">
-          <p class="black-text">{{ (possibleCoach | async)?.invoice_entity }}</p>
-          <p class="black-text">{{ (possibleCoach | async)?.invoice_address }}</p>
-          <p class="black-text">{{ (possibleCoach | async)?.invoice_city }}</p>
-          <p class="black-text">{{ (possibleCoach | async)?.invoice_postcode }}</p>
+        <div class="col-lg-12">
+          <label>Description</label>
+          <p>{{ (possibleCoach | async)?.description }}</p>
         </div>
       </div>
-    </div>
 
-
-
-
-
-    <h2 class="col-lg-12 section-form-title">Formation</h2>
-
-    <div class="col-lg-12">
       <div class="row">
-        <div class="col-lg-12 input-container">
-          <label>Quelle est votre formation initiale ?</label>
-          <p>{{ (possibleCoach | async)?.training }}</p>
-          <br>
-        </div>
-
-        <div class="col-lg-12 input-container">
-          <label>Quels sont vos diplômes, certifications et accréditations en coaching ?</label>
-          <p>{{ (possibleCoach | async)?.degree }}</p>
-          <br>
+        <div class="center col-lg-12">
+          <a target="_blank" class="btn-basic btn-blue btn-plain btn-small"
+             [href]="(possibleCoach | async)?.linkedin_url"><i class="fa fa-linkedin" aria-hidden="true"></i></a>
         </div>
       </div>
-    </div>
 
-
-
-
-
-
-
-    <h2 class="col-lg-12 section-form-title">Activité de coach</h2>
-
-    <div class="col-lg-12">
       <div class="row">
-        <div class="col-lg-12 input-container">
-          <label>Quelle(s) langue(s) pratiquez vous en coaching ?</label>
+        <div class="col-lg-12">
+          <label>Langue(s) pratiquée(s) en coaching ?</label>
           <p>{{ (possibleCoach | async)?.languages }}</p>
-          <br>
         </div>
+      </div>
 
-        <div class="col-lg-12 input-container">
-          <label>Exercez-vous d'autres activités que le coaching ?</label>
+      <div class="row">
+        <div class="col-lg-12">
+          <label>Quelques éléments de parcours professionnel?</label>
+          <p>{{ (possibleCoach | async)?.career }}</p>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-lg-12">
+          <label>Quelles activités exercez-vous autres que le coaching individuel ?</label>
           <p>{{ (possibleCoach | async)?.extraActivities }}</p>
-          <br>
         </div>
+      </div>
 
-        <div class="col-lg-12 input-container">
-          <label>Depuis combien de temps exercez-vous l'activité de coaching ?</label>
-          <p>{{ (possibleCoach | async)?.coachForYears }}</p>
-          <br>
+      <div class="row">
+        <div class="col-lg-12">
+          <label>Vos diplômes, certifications, référencements, accréditations dans le domaine du coaching ?</label>
+          <p>{{ (possibleCoach | async)?.degree }}</p>
         </div>
+      </div>
 
-        <div class="col-lg-12 input-container">
-          <label>Quelles sont vos expériences en coaching individuel et en coaching individuel via
-            visioconférence (Skype par exemple) ?</label>
-          <p>{{ (possibleCoach | async)?.coachingExperience }}</p>
-          <br>
+      <div class="row">
+        <div class="col-lg-12">
+          <label>Depuis combien de temps exercez-vous une activité de coaching individuel, et combien d’heures
+            avez-vous déjà réalisées ?</label>
+          <p>{{ (possibleCoach | async)?.experience_coaching }}</p>
+
         </div>
+      </div>
 
-        <div class="col-lg-12 input-container">
-          <label>Quelles sont vos expériences en coaching bref sur 45 minutes ?</label>
+      <div class="row">
+        <div class="col-lg-12">
+          <label>Quelles sont vos expériences en coaching à distance, visio, skype ?</label>
+          <p>{{ (possibleCoach | async)?.experience_remote_coaching }}</p>
+
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-lg-12">
+          <label>Quelles sont vos expériences en coaching bref sur 45 minutes ?</label>
           <p>{{ (possibleCoach | async)?.experienceShortSession }}</p>
-        </div>
 
-        <div class="col-lg-12 input-container">
-          <label>Quelles sont les spécialités et/ou spécificités que vous utilisez lors du coaching ?</label>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-lg-12">
+          <label>Des spécialités, des spécificités dans les situations de coaching que vous réalisez?</label>
           <p>{{ (possibleCoach | async)?.coachingSpecifics }}</p>
-        </div>
 
-        <div class="col-lg-12 input-container">
-          <label>Donnez quelques éléments de votre parcours de développement personnel / thérapie ?</label>
-          <p>{{ (possibleCoach | async)?.therapyElements }}</p>
         </div>
+      </div>
 
-        <div class="col-lg-12 input-container">
-          <label>Combien d'heures de coaching individuel avez-vous déjà réalisé ?</label>
-          <p>{{ (possibleCoach | async)?.coachingHours }}</p>
-          <br>
-        </div>
-
-        <div class="col-lg-12 input-container">
+      <div class="row">
+        <div class="col-lg-12">
           <label>Quel est votre dispositif de supervision ?</label>
           <p>{{ (possibleCoach | async)?.supervisor }}</p>
-          <br>
-        </div>
 
-        <div class="col-lg-12 input-container">
-          <label>Quels types ou situations de coaching privilégiez-vous ?</label>
-          <p>{{ (possibleCoach | async)?.favoriteCoachingSituation}}</p>
-          <br>
         </div>
+      </div>
 
-        <div class="col-lg-12 input-container">
-          <label>Quel est votre statut ?</label>
-          <p>{{ (possibleCoach | async)?.status }}</p>
-          <br>
+      <div class="row">
+        <div class="col-lg-12">
+          <label>Quelques éléments de votre parcours de développement personnel/ thérapie ?</label>
+          <p>{{ (possibleCoach | async)?.therapyElements }}</p>
+
         </div>
+      </div>
 
-        <div class="col-lg-12 input-container">
+
+      <div class="row">
+        <div class="col-lg-12">
           <label>Quel est votre chiffre d'affaires sur les 3 dernières années ?</label>
-          <p>{{ (possibleCoach | async)?.revenues }}</p>
-          <br>
+          <p>{{ (possibleCoach | async)?.revenues_last_3_years }}</p>
         </div>
+      </div>
 
-        <div class="col-lg-12 input-container">
+      <div class="row">
+        <div class="col-lg-12">
+          <label>Quelle est la part de votre CA en coaching individuel ?</label>
+          <p>{{ (possibleCoach | async)?.percentage_coaching_in_revenue }}</p>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-lg-12">
+          <label>Quel est votre statut juridique?</label>
+          <p>{{ (possibleCoach | async)?.legal_status }}</p>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-lg-12">
           <label>Avez-vous une copie de votre assurance RC Pro ?</label><br>
           <p><a [href]="(possibleCoach | async)?.assurance_url">Contrat d'assurance</a></p>
           <br>
         </div>
       </div>
+
+      <h2 class="row section-form-title">Coordonnées de facturation</h2>
+
+      <div class="row">
+        <div class="col-lg-12 input-container">
+          <p class="black-text">{{ (possibleCoach | async)?.invoice_entity }}</p>
+          <p class="black-text">{{ (possibleCoach | async)?.invoice_siret_number }}</p>
+          <p class="black-text">{{ (possibleCoach | async)?.invoice_address }}</p>
+          <p class="black-text">{{ (possibleCoach | async)?.invoice_city }}</p>
+          <p class="black-text">{{ (possibleCoach | async)?.invoice_postcode }}</p>
+        </div>
+      </div>
+
+
     </div>
 
     <div class=" col-lg-12 text-center input-container">
