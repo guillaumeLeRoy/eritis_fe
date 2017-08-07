@@ -5,11 +5,6 @@
 
     <div class="form-save-buttons">
       <p>Les réponses que vous rentrez sont sauvegardées, vous pouvez donc revenir à ce formulaire ultérieurement.</p>
-      <!--<button class="btn-basic btn-plain btn-small btn-blue"-->
-              <!--(click)="autoCompleteForm()" -->
-              <!--[disabled]="!hasSavedValues">Auto-compléter</button>-->
-      <!--<button class="btn-basic btn-blue btn-plain btn-small"-->
-              <!--(click)="saveFormValues()">Enregistrer</button>-->
     </div>
 
     <form [formGroup]="registerForm" (change)="saveFormValues()">
@@ -18,25 +13,39 @@
         <h2 class="col-lg-12 section-form-title">Informations personnelles</h2>
 
         <div class="col-lg-6">
+
           <div class="row">
             <div class="col-lg-12">
-              <label for="lastname">Nom</label>
+              <label for="lastname">Votre nom</label>
               <span><i>Apparaîtra sur le site</i></span>
-              <input type="text" id="lastname" name="lastname" formControlName="lastname" placeholder="Nom">
+              <input type="text" id="lastname" name="lastname" formControlName="lastname" placeholder="Votre nom">
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-lg-12">
+              <label for="firstname">Votre prénom</label>
+              <span><i>Apparaîtra sur le site</i></span>
+              <input type="text" id="firstname" name="firstname" formControlName="firstname" placeholder="Votre prénom">
             </div>
 
-            <div class="col-lg-12">
-              <label for="firstname">Prénom</label>
-              <span><i>Apparaîtra sur le site</i></span>
-              <input type="text" id="firstname" name="firstname" formControlName="firstname" placeholder="Prénom">
-            </div>
+          </div>
 
+          <div class="row">
             <div class="col-lg-12">
-              <label>Email</label>
-
+              <label>Votre addresse email</label>
               <input type="email" id="email" name="email" formControlName="email" placeholder="exemple@mail.com">
             </div>
           </div>
+
+          <div class="row">
+            <div class="col-lg-12">
+              <label>Votre téléphone portable</label>
+              <input type="email" id="phoneNumber" name="phoneNumber" formControlName="phoneNumber"
+                     placeholder="06 ...">
+            </div>
+          </div>
+
         </div>
 
         <div class="col-lg-6">
@@ -44,16 +53,12 @@
           <span><i>Apparaîtra sur le site</i></span>
 
           <div class="avatar-container">
-            <!--<img alt="profile image"-->
-                 <!--id="avatar-preview"-->
-                 <!--class="circle responsive-img z-depth-2"-->
-                 <!--*ngIf="avatarUrl != null">-->
             <div id="avatar-preview"
                  class="avatar z-depth-2"
                  [style.background-image]="'url(' + registerForm.value.avatar + ')'"
                  *ngIf="avatarUrl != null"></div>
             <div class="input-file-container">
-              <button class="btn-basic btn-blue btn-plain btn-small file-upload-buton">Choisir un fichier</button>
+              <button class="btn-basic btn-blue btn-plain btn-small file-upload-button">Choisir un fichier</button>
               <input type="file"
                      id="upload-avatar-input"
                      accept=".jpg,.png"
@@ -63,164 +68,127 @@
         </div>
 
         <div class="col-lg-12">
-          <div class="row">
-            <div class="col-lg-12 input-container">
-              <label>Profil Linkedin</label>
-              <input type="url" id="linkedin" name="linkedin" formControlName="linkedin" placeholder="http://...">
-            </div>
 
-            <div class="col-lg-12 input-container">
-              <label>Décrivez-vous en trois lignes</label>
+          <div class="row">
+            <div class="col-lg-12">
+              <label>Décrivez-vous en quelques lignes</label>
               <span><i>Apparaîtra sur le site</i></span>
               <textarea id="description" name="description" formControlName="description"
                         placeholder="Description..."></textarea>
             </div>
           </div>
-        </div>
 
-
-
-
-
-
-
-        <h2 class="col-lg-12 section-form-title">Coordonnées de facturation</h2>
-
-        <div class="col-lg-12">
           <div class="row">
-            <div class="col-lg-12 input-container">
-              <label>Entité</label>
-              <input type="text" id="invoice_entity" name="invoice_entity" formControlName="invoice_entity" placeholder="Nom civil, nom de l'entreprise, ...">
-            </div>
-
-            <div class="col-lg-12 input-container">
-              <label>Adresse</label>
-              <input type="text" id="invoice_address" name="invoice_address" formControlName="invoice_address" placeholder="Adresse">
-            </div>
-
-            <div class="col-lg-6 input-container">
-              <label>Ville</label>
-              <input type="text" id="invoice_city" name="invoice_city"
-                     placeholder="Ville"
-                     formControlName="invoice_city">
-            </div>
-
-            <div class="col-lg-6 input-container">
-              <label>Code postal</label>
-              <input type="text" id="invoice_postcode" name="invoice_postcode"
-                     placeholder="Code postal"
-                     formControlName="invoice_postcode">
+            <div class="col-lg-12">
+              <label>Lien vers votre profil Linkedin</label>
+              <input type="url" id="linkedin_url" name="linkedin_url" formControlName="linkedin_url"
+                     placeholder="https://...">
             </div>
           </div>
-        </div>
 
-
-
-
-
-
-
-        <h2 class="col-lg-12 section-form-title">Formation</h2>
-
-        <div class="col-lg-12">
           <div class="row">
-            <div class="col-lg-12 input-container">
-              <label>Quelle est votre formation initiale ?</label>
-              <input type="text" id="formation" name="formation" formControlName="formation" placeholder="Formation">
-            </div>
-
-            <div class="col-lg-12 input-container">
-              <label>Quels sont vos diplômes, certifications, référencements, accréditations en coaching ?</label>
-              <input type="text" id="degree" name="degree"
-                     placeholder="Diplômes, certifications, accréditations, ..."
-                     formControlName="degree">
-            </div>
-          </div>
-        </div>
-
-
-
-
-        <h2 class="col-lg-12 section-form-title">Activité de coach</h2>
-
-        <div class="col-lg-12">
-          <div class="row">
-            <div class="col-lg-12 input-container">
-              <label>Quelle(s) langue(s) pratiquez vous en coaching ?</label>
+            <div class="col-lg-12">
+              <label>Langue(s) pratiquée(s) en coaching ?</label>
               <div class="row">
                 <div class="col-lg-4">
                   <input type="text" id="lang1" name="lang1" placeholder="Langue 1" formControlName="lang1">
                 </div>
                 <div class="col-lg-4">
-                  <input type="text" id="lang2" name="lang2" placeholder="Langue 2 (facultatif)" formControlName="lang2">
+                  <input type="text" id="lang2" name="lang2" placeholder="Langue 2 (facultatif)"
+                         formControlName="lang2">
                 </div>
                 <div class="col-lg-4">
-                  <input type="text" id="lang3" name="lang3" placeholder="Langue 3 (facultatif)" formControlName="lang3">
+                  <input type="text" id="lang3" name="lang3" placeholder="Langue 3 (facultatif)"
+                         formControlName="lang3">
                 </div>
               </div>
             </div>
+          </div>
 
-            <div class="col-lg-12 input-container">
-              <label>Exercez-vous d'autres activités que le coaching ?</label>
-              <input type="text" id="otherActivities" name="otherActivities" placeholder="Si oui, précisez"
-                     formControlName="otherActivities">
+        </div>
+
+        <!-- coach activity -->
+
+        <h2 class="col-lg-12 section-form-title">Votre activité de coach</h2>
+
+        <div class="col-lg-12">
+
+          <div class="row">
+            <div class="col-lg-12">
+              <label>Quelques éléments de parcours professionnel?</label>
+              <input type="text" id="career" name="career" formControlName="career">
             </div>
+          </div>
 
-            <div class="col-lg-12 input-container">
-              <label>Depuis combien de temps exercez-vous une activité de coaching individuel, et à quelle fréquence ?</label>
-              <input type="text" id="experienceTime" name="experienceTime" placeholder="3 ans, 8 mois, ..."
-                     formControlName="experienceTime">
+          <div class="row">
+            <div class="col-lg-12">
+              <label>Quelles activités exercez-vous autres que le coaching individuel ?</label>
+              <input type="text" id="extraActivities" name="extraActivities"
+                     formControlName="extraActivities">
             </div>
+          </div>
 
-            <div class="col-lg-12 input-container">
-              <label>Quelles sont vos expériences en coaching individuel et en coaching individuel via visioconférence
-                (Skype par exemple) ?</label>
-              <textarea id="experienceVisio" name="experienceVisio" placeholder="Précisez..."
-                        formControlName="experienceVisio"></textarea>
+          <div class="row">
+            <div class="col-lg-12">
+              <label>Vos diplômes, certifications, référencements, accréditations dans le domaine du coaching ?</label>
+              <input type="text" id="degree" name="degree"
+                     placeholder="Diplômes, certifications, accréditations, ..."
+                     formControlName="degree">
             </div>
+          </div>
 
-            <div class="col-lg-12 input-container">
-              <label>Quelles sont vos expériences en coaching bref sur 45 minutes ?</label>
+          <div class="row">
+            <div class="col-lg-12">
+              <label>Depuis combien de temps exercez-vous une activité de coaching individuel, et combien d’heures
+                avez-vous déjà réalisées ?</label>
+              <input type="text" id="coachingExperience" name="coachingExperience" placeholder="3 ans, 8 mois, ..."
+                     formControlName="coachingExperience">
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-lg-12">
+              <label>Quelles sont vos expériences en coaching à distance, visio, skype ?</label>
+              <input type="text" id="remoteCoachingExperience" name="remoteCoachingExperience"
+                     placeholder="3 ans, 8 mois, ..."
+                     formControlName="remoteCoachingExperience">
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-lg-12">
+              <label>Quelles sont vos expériences en coaching bref sur 45 minutes ?</label>
               <textarea id="experienceShortSession" name="experienceShortSession" placeholder="Précisez..."
                         formControlName="experienceShortSession"></textarea>
             </div>
+          </div>
 
-            <div class="col-lg-12 input-container">
-              <label>Quelles sont les spécialités et/ou spécificités que vous utilisez lors du coaching ?</label>
+          <div class="row">
+            <div class="col-lg-12">
+              <label>Des spécialités, des spécificités dans les situations de coaching que vous réalisez?</label>
               <textarea id="coachingSpecifics" name="coachingSpecifics" placeholder="Précisez..."
                         formControlName="coachingSpecifics"></textarea>
             </div>
+          </div>
 
-            <div class="col-lg-12 input-container">
-              <label>Donnez quelques éléments de votre parcours de développement personnel / thérapie ?</label>
-              <textarea id="therapyElements" name="therapyElements" placeholder="Précisez..."
-                        formControlName="therapyElements"></textarea>
-            </div>
-
-            <div class="col-lg-12 input-container">
-              <label>Combien d'heures de coaching individuel avez-vous déjà réalisé ?</label>
-              <input type="text" id="coachingHours" name="coachingHours" placeholder="10h, 75h, ..."
-                     formControlName="coachingHours">
-            </div>
-
-            <div class="col-lg-12 input-container">
+          <div class="row">
+            <div class="col-lg-12">
               <label>Quel est votre dispositif de supervision ?</label>
               <input type="text" id="supervision" name="supervision" placeholder="Précisez..."
                      formControlName="supervision">
             </div>
+          </div>
 
-            <div class="col-lg-12 input-container">
-              <label>Quels types ou situations de coaching privilégiez-vous ?</label>
-              <textarea id="preferedCoaching" name="preferedCoaching" placeholder="Précisez..."
-                        formControlName="preferedCoaching"></textarea>
+          <div class="row">
+            <div class="col-lg-12">
+              <label>Quelques éléments de votre parcours de développement personnel/ thérapie ?</label>
+              <input type="text" id="therapyElements" name="therapyElements" placeholder="Précisez..."
+                     formControlName="therapyElements">
             </div>
+          </div>
 
-            <div class="col-lg-12 input-container">
-              <label>Quel est votre statut ?</label>
-              <input type="text" id="status" name="status" placeholder="Statut" formControlName="status">
-            </div>
-
-            <div class="col-lg-12 input-container">
+          <div class="row">
+            <div class="col-lg-12">
               <label>Quel est votre chiffre d'affaires sur les 3 dernières années ?</label>
               <div class="row">
                 <div class="col-lg-4">
@@ -234,22 +202,94 @@
                 </div>
               </div>
             </div>
+          </div>
 
-            <div class="col-lg-12 input-container">
+          <div class="row">
+            <div class="col-lg-12">
+              <label>Quelle est la part de votre CA en coaching individuel ?</label>
+              <input type="text" id="percentageCoachingInRevenue" name="percentageCoachingInRevenue" placeholder="%s"
+                     formControlName="percentageCoachingInRevenue">
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-lg-12">
+              <label>Quel est votre statut juridique?</label>
+              <input type="text" id="legalStatus" name="legalStatus" placeholder="Statut juridique"
+                     formControlName="legalStatus">
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-lg-12">
               <label>Avez-vous une copie de votre assurance RC Pro ?</label><br>
               Si vous disposez pas d'une copie dans l'immédiat, merci de nous la faire parvenir a l'adresse suivante:
               diana@eritis.co.uk (nécessaire pour finaliser l'inscription).
               <div class="input-file-container">
                 <span class="bold" *ngIf="insuranceUrl != null">{{insuranceUrl.name}} </span>
-                <button class="btn-basic btn-blue btn-plain btn-small file-upload-buton">Choisir un fichier</button>
+                <button class="btn-basic btn-blue btn-plain btn-small file-upload-button">Choisir un fichier</button>
                 <input type="file"
                        accept=".pdf"
-                       formControlName="insurance"
+                       formControlName="insurance_document"
                        (change)="filePreview($event, 'insurance')">
               </div>
             </div>
           </div>
         </div>
+
+
+        <!-- coach activity END -->
+
+        <!-- Invoice -->
+
+        <h2 class="col-lg-12 section-form-title">Coordonnées de facturation pour que nous puissions vous régler par
+          virement
+        </h2>
+
+        <div class="col-lg-12">
+          <div class="row">
+            <div class="col-lg-12">
+              <label>Entité</label>
+              <input type="text" id="invoice_entity" name="invoice_entity" formControlName="invoice_entity"
+                     placeholder="Nom civil, nom de l'entreprise, ...">
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-lg-12">
+              <label>N° Siret</label>
+              <input type="text" id="invoice_siret_number" name="invoice_siret_number"
+                     formControlName="invoice_siret_number"
+                     placeholder="Votre numéro Siret">
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-lg-12">
+              <label>Adresse</label>
+              <input type="text" id="invoice_address" name="invoice_address" formControlName="invoice_address"
+                     placeholder="Adresse">
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-lg-6">
+              <label>Ville</label>
+              <input type="text" id="invoice_city" name="invoice_city"
+                     placeholder="Ville"
+                     formControlName="invoice_city">
+            </div>
+
+            <div class="col-lg-6">
+              <label>Code postal</label>
+              <input type="text" id="invoice_postcode" name="invoice_postcode"
+                     placeholder="Code postal"
+                     formControlName="invoice_postcode">
+            </div>
+          </div>
+
+        </div><!-- invoice END -->
+
 
         <div class=" col-lg-12 text-center input-container">
           <button class="btn-basic btn-plain btn-small btn-blue"
@@ -275,6 +315,8 @@
         </div>
 
       </div><!--end row>-->
+
     </form>
+
   </div>
 </div>

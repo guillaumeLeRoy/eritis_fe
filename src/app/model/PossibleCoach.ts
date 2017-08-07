@@ -4,18 +4,7 @@
 
 /**
  * Created by guillaume on 01/02/2017.
- *
- * [{"Key":"ahFkZXZ-ZXJpdGlzLWJlLWdscnJHCxINUG9zc2libGVDb2FjaCI0Zmd1NkJ5eUZscW1ZY2FmUEloUjhaZnNWdTNjRFBUeDFlQVo2REhqNVE4YzZEdEVrcWZnPQw",
-  "Email":"","FirstName":"","LastName":"","LinkedinUrl":"","Description":"","Training":"","Degree":"",
-  "ExtraActivities":"","CoachForYears":"","CoachingExperience":"","CoachingHours":"","Supervisor":"",
-  "FavoriteCoachingSituation":"","Status":"","Revenue":"","AvatarURL":"","AssuranceUrl":""}
- ,{"Key":"ahFkZXZ-ZXJpdGlzLWJlLWdscnJbCxINUG9zc2libGVDb2FjaCJIaEdJQWJqN2hqRzQzSFZsUUlsMnlvTGFudE5vSHk0ejNjOTQzYjlEVEpPX1hGd3RfUHpGN2dNWHlqUmlhXzk1ZUtTajlWQT09DA",
-  "Email":"fokzokfopkopzvz@gmail.com","FirstName":"vzeopcopczk","LastName":"fkoczk","LinkedinUrl":"","Description":"","Training":"","Degree":"","ExtraActivities":"",
-  "CoachForYears":"","CoachingExperience":"","CoachingHours":"","Supervisor":"","FavoriteCoachingSituation":"","Status":"","Revenue":"","AvatarURL":"","AssuranceUrl":""},
- {"Key":"ahFkZXZ-ZXJpdGlzLWJlLWdscnJTCxINUG9zc2libGVDb2FjaCJAaUJQSzBUNGtZb3E4NG5iOWczdmNmdGpHWDdMN2dFNlhsTmlITkVEbXpKZTNiS1pVNElYRXdSSXpnSXBCb0NCSQw","Email":"",
-   "FirstName":"","LastName":"","LinkedinUrl":"","Description":"","Training":"","Degree":"","ExtraActivities":"","CoachForYears":"","CoachingExperience":"","CoachingHours":"",
-   ``"Supervisor":"","FavoriteCoachingSituation":"","Status":"","Revenue":"","AvatarURL":"","AssuranceUrl":""}]
- */
+ * */
 export class PossibleCoach {
 
   id: string;
@@ -28,35 +17,49 @@ export class PossibleCoach {
 
   last_name: string;
 
+  mobile_phone_number: string;
+
   linkedin_url: string;
 
   description: string;
 
-  training: string;
+  career: string;
 
   degree: string;
 
   extraActivities: string;
 
-  coachForYears: string;
 
-  coachingExperience: string;
+  experience_coaching: string;
 
-  coachingHours: string;
+  experience_remote_coaching: string;
+
+  experienceShortSession: string;
 
   supervisor: string;
 
-  favoriteCoachingSituation: string;
+  coachingSpecifics: string;
 
-  status: string;
+  therapyElements: string;
 
-  revenues: string;
+  legal_status: string;
+
+  revenues_last_3_years: string;
+
+  percentage_coaching_in_revenue: string;
 
   avatar_url: string;
 
-  assurance_url: string;
+  insurance_url: string;
 
   invite_sent: boolean;
+
+
+  invoice_entity: string;
+  invoice_siret_number: string;
+  invoice_address: string;
+  invoice_city: string;
+  invoice_postcode: string;
 
 }
 
