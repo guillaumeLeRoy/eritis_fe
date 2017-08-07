@@ -186,7 +186,7 @@ export class AuthService {
     return this.ApiUser;
   }
 
-  getConnectedUserObservable(): Observable<Coach | Coachee | HR> {
+  getConnectedUserObservable(): Observable<ApiUser> {
     return this.ApiUserSubject.asObservable();
   }
 

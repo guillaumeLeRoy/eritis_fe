@@ -24,7 +24,7 @@ export class AvailableMeetingsComponent implements OnInit {
   private hasAvailableMeetings = false;
 
   private connectedUserSubscription: Subscription;
-  private user: Observable<Coach>;
+  private user: Observable<ApiUser>;
 
   private selectedDate: string;
   private selectedHour: number;
