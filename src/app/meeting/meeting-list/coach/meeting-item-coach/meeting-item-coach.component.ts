@@ -39,7 +39,7 @@ export class MeetingItemCoachComponent implements OnInit, AfterViewInit {
   months = ['Jan', 'Feb', 'Mar', 'Avr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 
   private coachee: Coachee;
-  private user: Observable<Coach>;
+  private user: Observable<ApiUser>;
 
   private goal: Observable<string>;
   private context: Observable<string>;

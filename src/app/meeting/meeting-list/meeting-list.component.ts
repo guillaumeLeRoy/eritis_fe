@@ -61,7 +61,7 @@ export class MeetingListComponent implements OnInit, AfterViewInit, OnDestroy {
     return user instanceof HR;
   }
 
-  private onUserObtained(user: ApiUser) {
+  private onUserObtained(user: Coach | Coachee | HR) {
     console.log('onUserObtained, user : ', user);
     if (user) {
       this.user = Observable.of(user);

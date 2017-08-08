@@ -186,7 +186,7 @@ export class AuthService {
     return this.ApiUser;
   }
 
-  getConnectedUserObservable(): Observable<Coach | Coachee | HR> {
+  getConnectedUserObservable(): Observable<ApiUser> {
     return this.ApiUserSubject.asObservable();
   }
 
@@ -333,17 +333,19 @@ export class AuthService {
       } else {
         console.log("getConnectedApiUser, wait for change state");
 
-        return this.ApiUserSubject.map(
-          (apiUser: ApiUser) => {
-            if (apiUser) {
-              console.log("getConnectedApiUser, got event, with user");
-              return apiUser;
-            } else {
-              console.log("getConnectedApiUser, got event, no user after state change");
-              return Observable.throw('No user after state changed');
-            }
-          }
-        );
+        return this.ApiUserSubject.asObservable();
+        
+        // .map(
+        //   (apiUser: ApiUser) => {
+        //     if (apiUser) {
+        //       console.log("getConnectedApiUser, got event, with user");
+        //       return apiUser;
+        //     } else {
+        //       console.log("getConnectedApiUser, got event, no user after state change");
+        //       return Observable.throw('No user after state changed');
+        //     }
+        //   }
+        // );
       }
     }
   }

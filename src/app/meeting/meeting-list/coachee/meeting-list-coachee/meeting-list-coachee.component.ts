@@ -22,7 +22,7 @@ declare var Materialize: any;
 })
 export class MeetingListCoacheeComponent implements OnInit, AfterViewInit, OnDestroy {
 
-  private user: Observable<Coach | Coachee | HR>;
+  private user: Observable<ApiUser>;
 
   private meetings: Observable<Meeting[]>;
   private meetingsOpened: Observable<Meeting[]>;

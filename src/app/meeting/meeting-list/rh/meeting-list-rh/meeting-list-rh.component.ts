@@ -22,7 +22,7 @@ declare var Materialize: any;
 })
 export class MeetingListRhComponent implements OnInit, AfterViewInit, OnDestroy {
 
-  private user: Observable<Coach | Coachee | HR>;
+  private user: Observable<ApiUser>;
 
   private coachees: Observable<Coachee[]>;
   private potentialCoachees: Observable<PotentialCoachee[]>;
@@ -81,7 +81,7 @@ export class MeetingListRhComponent implements OnInit, AfterViewInit, OnDestroy 
     }
   }
 
-  private onUserObtained(user: ApiUser) {
+  private onUserObtained(user: Coach | Coachee | HR) {
     console.log('onUserObtained, user : ', user);
     if (user) {
 
