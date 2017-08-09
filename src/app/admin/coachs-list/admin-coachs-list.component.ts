@@ -6,7 +6,6 @@ import {AdminAPIService} from "../../service/adminAPI.service";
 
 declare var Materialize: any;
 
-
 @Component({
   selector: 'er-admin-coachs-list',
   templateUrl: './admin-coachs-list.component.html',
@@ -17,11 +16,14 @@ export class AdminCoachsListComponent implements OnInit, AfterViewInit, OnDestro
   private coachs: Observable<Array<Coach>>;
   private getAllCoachsSub: Subscription;
 
+  loading  = true;
+
   constructor(private apiService: AdminAPIService, private cd: ChangeDetectorRef) {
   }
 
   ngOnInit() {
     window.scrollTo(0, 0);
+    this.loading = true;
   }
 
   ngAfterViewInit(): void {
@@ -42,6 +44,7 @@ export class AdminCoachsListComponent implements OnInit, AfterViewInit, OnDestro
 
         this.coachs = Observable.of(coachs);
         this.cd.detectChanges();
+        this.loading = false;
       }
     );
   }

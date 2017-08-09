@@ -22,6 +22,8 @@ declare var Materialize: any;
 })
 export class MeetingListCoacheeComponent implements OnInit, AfterViewInit, OnDestroy {
 
+  loading = true;
+
   private user: Observable<ApiUser>;
 
   private meetings: Observable<Meeting[]>;
@@ -48,6 +50,7 @@ export class MeetingListCoacheeComponent implements OnInit, AfterViewInit, OnDes
 
   ngOnInit() {
     console.log('ngOnInit');
+    this.loading = true;
   }
 
   ngAfterViewInit(): void {
@@ -96,6 +99,7 @@ export class MeetingListCoacheeComponent implements OnInit, AfterViewInit, OnDes
         this.getOpenedMeetings();
         this.getClosedMeetings();
         this.cd.detectChanges();
+        this.loading = false;
       }
     );
   }
