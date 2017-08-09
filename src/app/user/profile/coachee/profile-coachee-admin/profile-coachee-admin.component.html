@@ -40,7 +40,15 @@
   </div>
 </div>
 
-<div class="container">
+<div *ngIf="loading">
+  <div class="loader-wraper">
+    <div class="progress">
+      <div class="indeterminate"></div>
+    </div>
+  </div>
+</div>
+
+<div class="container" [hidden]="loading">
   <h4 class="text-right"><span class="blue-text">{{(coachee | async)?.plan.sessions_count}}</span> séances / mois</h4>
   <h5 class="text-right italic" *ngIf="(coachee | async)?.last_objective == null">Aucun objectif personnel défini</h5>
   <h5 class="text-right italic" *ngIf="(coachee | async)?.last_objective != null">

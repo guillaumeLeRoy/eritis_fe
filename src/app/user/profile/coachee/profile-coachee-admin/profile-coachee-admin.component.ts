@@ -17,11 +17,14 @@ export class ProfileCoacheeAdminComponent implements OnInit, AfterViewInit, OnDe
   private rhId: string;
   private subscriptionGetCoachee: Subscription;
 
+  loading: boolean = true;
+
   constructor(private router: Router, private cd: ChangeDetectorRef, private apiService: AdminAPIService, private route: ActivatedRoute) {
   }
 
   ngOnInit() {
     window.scrollTo(0, 0);
+    this.loading = true;
     this.getCoachee();
   }
 
@@ -36,6 +39,7 @@ export class ProfileCoacheeAdminComponent implements OnInit, AfterViewInit, OnDe
             this.coachee = Observable.of(coachee);
             this.rhId = coachee.associatedRh.id;
             this.cd.detectChanges();
+            this.loading = false;
           }
         );
       }

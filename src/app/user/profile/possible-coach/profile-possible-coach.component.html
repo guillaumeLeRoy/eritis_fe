@@ -27,7 +27,15 @@
   </div>
 </div>
 
-<div class="container">
+<div *ngIf="loading">
+  <div class="loader-wraper">
+    <div class="progress">
+      <div class="indeterminate"></div>
+    </div>
+  </div>
+</div>
+
+<div class="container" [hidden]="loading">
 
   <div class="row">
 
