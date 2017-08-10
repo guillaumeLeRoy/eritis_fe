@@ -14,7 +14,7 @@
   <h4 class="col-lg-12 black-text">Managers</h4>
   <div class="card collection col-lg-12">
 
-    <div *ngIf="!loading1">
+    <div *ifLoader="loading1">
       <div *ngIf="hasCollaborators">
         <div class="collection-item has-collaborator" *ngFor="let coachee of coachees | async">
           <rb-meeting-item-rh [coachee]="coachee"
@@ -29,19 +29,7 @@
       </div>
     </div>
 
-    <div class="preloader-wrapper active" *ngIf="loading1">
-      <div class="spinner-layer spinner-blue-only">
-        <div class="circle-clipper left">
-          <div class="circle"></div>
-        </div>
-        <div class="gap-patch">
-          <div class="circle"></div>
-        </div>
-        <div class="circle-clipper right">
-          <div class="circle"></div>
-        </div>
-      </div>
-    </div>
+    <loader-spinner></loader-spinner>
 
   </div><!--end card-->
 </div><!--end row-->
@@ -50,7 +38,7 @@
   <h4 class="col-lg-12 black-text">Managers invités en attente</h4>
   <div class="card collection col-lg-12">
 
-    <div *ngIf="!loading2">
+    <div *ifLoader="loading2">
       <div *ngIf="hasPotentialCollaborators">
         <div class="collection-item" *ngFor="let potentialCoachee of potentialCoachees | async">
           <rb-meeting-item-rh [potentialCoachee]="potentialCoachee"
@@ -64,19 +52,7 @@
       </div>
     </div>
 
-    <div class="preloader-wrapper active" *ngIf="loading2">
-      <div class="spinner-layer spinner-blue-only">
-        <div class="circle-clipper left">
-          <div class="circle"></div>
-        </div>
-        <div class="gap-patch">
-          <div class="circle"></div>
-        </div>
-        <div class="circle-clipper right">
-          <div class="circle"></div>
-        </div>
-      </div>
-    </div>
+    <loader-spinner></loader-spinner>
 
   </div><!--end card-->
 </div><!--end row-->

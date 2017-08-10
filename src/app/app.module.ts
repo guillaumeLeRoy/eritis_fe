@@ -58,6 +58,9 @@ import { ProfilePossibleCoachComponent } from './user/profile/possible-coach/pro
 import { ProfileCoacheeAdminComponent } from './user/profile/coachee/profile-coachee-admin/profile-coachee-admin.component';
 import { ProfileRhAdminComponent } from './user/profile/rh/profile-rh-admin/profile-rh-admin.component';
 import {CookieModule} from "ngx-cookie";
+import { LoaderSpinnerComponent } from './loader/loader-spinner/loader-spinner.component';
+import {IfDirective} from "./shared/if.directive";
+import {SharedModule} from "./shared/shared.module";
 
 @NgModule({
   declarations: [
@@ -100,7 +103,8 @@ import {CookieModule} from "ngx-cookie";
     ProfileCoachAdminComponent,
     ProfilePossibleCoachComponent,
     ProfileCoacheeAdminComponent,
-    ProfileRhAdminComponent
+    ProfileRhAdminComponent,
+    LoaderSpinnerComponent
   ],
   imports: [
     BrowserAnimationsModule,
@@ -113,7 +117,8 @@ import {CookieModule} from "ngx-cookie";
     NgbModule.forRoot(),
     SliderModule,
     Ng2PageScrollModule.forRoot(),
-    CookieModule.forRoot()
+    CookieModule.forRoot(),
+    SharedModule
   ],
   providers: [DataService, LogService, AuthService, AuthGuard, CoachCoacheeService, MeetingsService, FirebaseService, AdminAPIService],
   bootstrap: [AppComponent]

@@ -33,7 +33,7 @@
   <h4 class="col-lg-12 black-text">&Agrave; venir</h4>
   <div class="card collection col-lg-12">
 
-    <div *ngIf="!loading">
+    <div *ifLoader="loading">
       <div *ngIf="hasOpenedMeeting">
         <div class="collection-item" *ngFor="let meeting of meetingsOpened | async">
           <rb-meeting-item-coach [meeting]="meeting"
@@ -49,19 +49,7 @@
       </div>
     </div>
 
-    <div class="preloader-wrapper active" *ngIf="loading">
-      <div class="spinner-layer spinner-blue-only">
-        <div class="circle-clipper left">
-          <div class="circle"></div>
-        </div>
-        <div class="gap-patch">
-          <div class="circle"></div>
-        </div>
-        <div class="circle-clipper right">
-          <div class="circle"></div>
-        </div>
-      </div>
-    </div>
+    <loader-spinner></loader-spinner>
 
   </div><!--end card-->
 </div><!--end row-->
@@ -70,7 +58,7 @@
   <h4 class="col-lg-12 black-text">Complétées</h4>
   <div class="card collection col-lg-12">
 
-    <div *ngIf="!loading">
+    <div *ifLoader="loading">
       <div *ngIf="hasClosedMeeting">
         <div class="collection-item" *ngFor="let meeting of meetingsClosed | async">
           <rb-meeting-item-coach [meeting]="meeting"
@@ -85,19 +73,7 @@
       </div>
     </div>
 
-    <div class="preloader-wrapper active" *ngIf="loading">
-      <div class="spinner-layer spinner-blue-only">
-        <div class="circle-clipper left">
-          <div class="circle"></div>
-        </div>
-        <div class="gap-patch">
-          <div class="circle"></div>
-        </div>
-        <div class="circle-clipper right">
-          <div class="circle"></div>
-        </div>
-      </div>
-    </div>
+    <loader-spinner></loader-spinner>
 
   </div><!--end card-->
 </div><!--end row-->

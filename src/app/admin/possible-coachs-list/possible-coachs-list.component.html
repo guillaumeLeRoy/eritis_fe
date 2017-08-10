@@ -2,7 +2,8 @@
   <h3 class="col-lg-12 black-text">Demandes d'inscription</h3>
 
   <div class="col-lg-12 card collection">
-    <div *ngIf="!loading">
+
+    <div *ifLoader="loading">
       <div *ngIf="(possibleCoachs | async) != null  && (possibleCoachs | async).length > 0">
         <div class="collection-item" *ngFor="let coach of possibleCoachs | async">
           <rb-possible-coach-item [coach]="coach"
@@ -15,19 +16,7 @@
       </div>
     </div>
 
-    <div class="preloader-wrapper active" *ngIf="loading">
-      <div class="spinner-layer spinner-blue-only">
-        <div class="circle-clipper left">
-          <div class="circle"></div>
-        </div>
-        <div class="gap-patch">
-          <div class="circle"></div>
-        </div>
-        <div class="circle-clipper right">
-          <div class="circle"></div>
-        </div>
-      </div>
-    </div>
+    <loader-spinner></loader-spinner>
 
   </div>
 </div> <!--end row-->

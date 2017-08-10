@@ -7,7 +7,7 @@
         <h4 class="col-lg-12 black-text">Demandes en attente</h4>
         <div class="card collection col-lg-12">
 
-          <div *ngIf="!loading">
+          <div *ifLoader="loading">
             <div *ngIf="hasAvailableMeetings">
               <div class="collection-item" *ngFor="let meeting of availableMeetings | async">
                 <rb-meeting-item-coach [meeting]="meeting"
@@ -21,19 +21,7 @@
             </div>
           </div>
 
-          <div class="preloader-wrapper active" *ngIf="loading">
-            <div class="spinner-layer spinner-blue-only">
-              <div class="circle-clipper left">
-                <div class="circle"></div>
-              </div>
-              <div class="gap-patch">
-                <div class="circle"></div>
-              </div>
-              <div class="circle-clipper right">
-                <div class="circle"></div>
-              </div>
-            </div>
-          </div>
+          <loader-spinner></loader-spinner>
 
           <!--<button (click)="onSelectMeetingBtnClicked(meeting)">Select</button>-->
 

@@ -2,7 +2,7 @@
   <h3 class="col-lg-12 black-text">Nos coachees</h3>
 
   <div class="col-lg-12 card collection">
-    <div *ngIf="!loading">
+    <div *ifLoader="loading">
       <div *ngIf="(coachees | async) != null && (coachees | async).length > 0">
         <div class="collection-item" *ngFor="let coachee of coachees | async">
           <rb-coachee-item [coachee]="coachee"></rb-coachee-item>
@@ -14,19 +14,7 @@
       </div>
     </div>
 
-    <div class="preloader-wrapper active" *ngIf="loading">
-      <div class="spinner-layer spinner-blue-only">
-        <div class="circle-clipper left">
-          <div class="circle"></div>
-        </div>
-        <div class="gap-patch">
-          <div class="circle"></div>
-        </div>
-        <div class="circle-clipper right">
-          <div class="circle"></div>
-        </div>
-      </div>
-    </div>
+    <loader-spinner></loader-spinner>
 
   </div>
 

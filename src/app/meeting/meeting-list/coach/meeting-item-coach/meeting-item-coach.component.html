@@ -1,20 +1,8 @@
 <div class="meeting-item col-lg-12" [class.closed]="!meeting.isOpen" [class.unbooked]="!meeting.agreed_date">
 
-  <div class="preloader-wrapper active" *ngIf="loading">
-    <div class="spinner-layer spinner-blue-only">
-      <div class="circle-clipper left">
-        <div class="circle"></div>
-      </div>
-      <div class="gap-patch">
-        <div class="circle"></div>
-      </div>
-      <div class="circle-clipper right">
-        <div class="circle"></div>
-      </div>
-    </div>
-  </div>
+  <loader-spinner></loader-spinner>
 
-  <div class="row" *ngIf="!loading">
+  <div class="row" *ifLoader="loading">
 
     <!-- COACHEE -->
     <div class="meeting-item-header col-md-12 col-lg-5">
