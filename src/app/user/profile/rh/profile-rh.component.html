@@ -48,15 +48,7 @@
   </div>
 </div>
 
-<div *ngIf="loading">
-  <div class="loader-wraper">
-    <div class="progress">
-      <div class="indeterminate"></div>
-    </div>
-  </div>
-</div>
-
-<div class="container" [hidden]="loading">
+<div class="container" *ifLoader="loading">
   <h4 class="text-right italic">"{{ (rh | async)?.description }}"</h4>
   <br>
 

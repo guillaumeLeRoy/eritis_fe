@@ -1,7 +1,5 @@
 <div class="meeting-item col-lg-12" [class.closed]="!meeting.isOpen" [class.unbooked]="!meeting.agreed_date">
 
-  <loader-spinner></loader-spinner>
-
   <div class="row" *ifLoader="loading">
 
     <!-- COACHEE -->

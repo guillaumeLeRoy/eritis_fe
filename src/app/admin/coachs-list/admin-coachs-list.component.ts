@@ -19,10 +19,6 @@ export class AdminCoachsListComponent implements OnInit, AfterViewInit, OnDestro
 
   loading  = true;
 
-  switch(){
-    this.loading = !this.loading;
-  }
-
   constructor(private apiService: AdminAPIService, private cd: ChangeDetectorRef) {
   }
 
