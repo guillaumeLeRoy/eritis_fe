@@ -3,13 +3,14 @@ import {Observable} from "rxjs/Observable";
 import {Coach} from "../../model/Coach";
 import {Subscription} from "rxjs/Subscription";
 import {AdminAPIService} from "../../service/adminAPI.service";
+import {LoaderSpinnerComponent} from "../../loader/loader-spinner/loader-spinner.component";
 
 declare var Materialize: any;
 
 @Component({
   selector: 'er-admin-coachs-list',
   templateUrl: './admin-coachs-list.component.html',
-  styleUrls: ['./admin-coachs-list.component.scss']
+  styleUrls: ['./admin-coachs-list.component.scss'],
 })
 export class AdminCoachsListComponent implements OnInit, AfterViewInit, OnDestroy {
 
