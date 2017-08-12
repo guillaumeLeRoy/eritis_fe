@@ -1,4 +1,4 @@
-import {Component, ElementRef, OnInit} from '@angular/core';
+import {Component, OnInit} from "@angular/core";
 
 @Component({
   selector: 'loader-spinner',
@@ -7,7 +7,8 @@ import {Component, ElementRef, OnInit} from '@angular/core';
 })
 export class LoaderSpinnerComponent implements OnInit {
 
-  constructor(public elRef: ElementRef) { }
+  constructor() {
+  }
 
   ngOnInit() {
   }
