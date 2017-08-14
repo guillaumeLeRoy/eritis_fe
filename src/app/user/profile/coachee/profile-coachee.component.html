@@ -1,4 +1,4 @@
-<div class="header-user">
+<div class="header-user" [ngsReveal]="{scale:1, origin: 'top', distance:'200px', duration: 500}">
   <div class="header-user-filter">
     <div class="container row">
 
@@ -40,7 +40,7 @@
   </div>
 </div>
 
-<div class="container">
+<div class="container" [ngsReveal]="{scale:1, opacity:0, distance:0, duration: 1000}">
   <h4 class="text-right"><span class="blue-text">{{(coachee | async)?.plan.sessions_count}}</span> séances / mois</h4>
   <h5 class="text-right italic" *ngIf="(coachee | async)?.last_objective == null">Aucun objectif personnel défini</h5>
   <h5 class="text-right italic" *ngIf="(coachee | async)?.last_objective != null">
