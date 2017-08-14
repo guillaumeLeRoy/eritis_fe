@@ -46,13 +46,14 @@
   }
 }
 
-#main_container {
+#signin_container {
   width: 30%;
   margin: auto;
+  display: none;
 }
 
 @media(max-width: 960px) {
-  #main_container {
+  #signin_container {
     width: 80%;
   }
 }

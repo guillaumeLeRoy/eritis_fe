@@ -4,7 +4,10 @@
     <div class="container">
       <h2 class="text-center black-text section_title presentation_title">Construisez le coaching qui correspond à vos
         besoins</h2>
-      <div class="row">
+      <div class="row"
+           [ngsRevealSet]="{viewFactor: 1}"
+           [ngsSelector]="'.presentation_item'"
+           [ngsInterval]="200">
         <div class="col-sm-12 col-lg-4">
           <div class="presentation_item text-center">
             <img src="assets/img/todos.svg" class="desc_icon"/>
@@ -46,7 +49,10 @@
         <div class="small-line"></div>
       </div>
 
-      <div class="row">
+      <div class="row"
+           [ngsRevealSet]="{viewFactor: .8, duration: 500, origin: 'left', distance: '50px', opacity: 0}"
+           [ngsSelector]="'.coach_description'"
+           [ngsInterval]="500">
         <div class="col-sm-12 col-lg-4 coach_description">
           <img class="coach_img"
                src="https://static.wixstatic.com/media/04261a_d639816d3928429d8a34a774be2c77c2~mv2.png/v1/fill/w_298,h_298,al_c,usm_0.66_1.00_0.01/04261a_d639816d3928429d8a34a774be2c77c2~mv2.png">
@@ -106,7 +112,8 @@
 <footer class="footer section" id="contact">
   <div class="container">
     <div class="row">
-      <div class="col-sm-12 col-lg-5">
+      <div class="col-sm-12 col-lg-5"
+           [ngsReveal]="{scale: 1, distance: 0, opacity: 0, duration: 1000}">
         <div class="black-text address">
           <h3>Eritis</h3>
           <p>
@@ -115,7 +122,8 @@
           </p>
         </div>
       </div>
-      <div class="col-sm-12 col-lg-7">
+      <div class="col-sm-12 col-lg-7"
+           [ngsReveal]="{origin: 'right', distance: '200px', opacity: 0}">
         <form [formGroup]="contactForm" (ngSubmit)="onContactSubmit()">
           <div class="input_field">
             <label for="name">Nom</label>

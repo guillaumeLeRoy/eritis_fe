@@ -1,5 +1,5 @@
 <div [class.container]="!isOnProfile()">
-  <div [hidden]="isOnProfile()">
+  <div [hidden]="isOnProfile()" [ngsReveal]="{distance: '100px', origin: 'right', duration: 300, delay: 200}">
     <h3 class="text-right">Espace admin
       <span class="text-right italic blue-text admin-name" *ngIf="(admin | async)?.email != null">{{ (admin | async)?.email }}</span>
       <span class="text-right italic blue-text admin-name" *ngIf="(admin | async)?.email == null">non identifié</span>
