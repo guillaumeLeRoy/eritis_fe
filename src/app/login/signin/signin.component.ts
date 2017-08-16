@@ -88,7 +88,7 @@ export class SigninComponent implements OnInit {
         });
 
         console.log('onSignIn, error obtained', error);
-        Materialize.toast("Le mot de passe ou l'adresse mail est inccorect", 3000, 'rounded');
+        Materialize.toast("Le mot de passe ou l'adresse mail est incorrect", 3000, 'rounded');
         this.loginLoading = false;
         //this.error = true;
         //this.errorMessage = error;

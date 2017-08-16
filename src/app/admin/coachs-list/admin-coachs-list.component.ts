@@ -3,7 +3,6 @@ import {Observable} from "rxjs/Observable";
 import {Coach} from "../../model/Coach";
 import {Subscription} from "rxjs/Subscription";
 import {AdminAPIService} from "../../service/adminAPI.service";
-import {LoaderSpinnerComponent} from "../../loader/loader-spinner/loader-spinner.component";
 
 declare var Materialize: any;
 
@@ -17,7 +16,7 @@ export class AdminCoachsListComponent implements OnInit, AfterViewInit, OnDestro
   private coachs: Observable<Array<Coach>>;
   private getAllCoachsSub: Subscription;
 
-  loading  = true;
+  loading = true;
 
   constructor(private apiService: AdminAPIService, private cd: ChangeDetectorRef) {
   }
