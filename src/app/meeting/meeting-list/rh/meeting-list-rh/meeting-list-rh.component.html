@@ -1,57 +1,60 @@
-<h3 class="text-right welcome-message">Bonjour {{ (user | async)?.first_name}},<br>
-  Le taux total d'utilisation de vos collaborateurs est de <span class="blue-text">{{(rhUsageRate | async)?.usage_rate}}%</span>
-</h3>
-<p class="text-right">
-  <span class="blue-text">Cliquez</span> ici pour ajouter un manager
-  <a class="btn-floating btn-large waves-effect waves-light add-meeting-btn"
-     (click)="addPotentialCoacheeModalVisibility(true)">
-    <i class="material-icons">add</i>
-  </a>
-</p>
+<div [ngsReveal]="{distance: '100px', origin: 'right', duration: 1000, delay: 200}">
+  <h3 class="text-right welcome-message">Bonjour {{ (user | async)?.first_name}},<br>
+    Le taux total d'utilisation de vos collaborateurs est de <span class="blue-text">{{(rhUsageRate | async)?.usage_rate}}%</span>
+  </h3>
+  <p class="text-right">
+    <span class="blue-text">Cliquez</span> ici pour ajouter un manager
+    <a class="btn-floating btn-large waves-effect waves-light add-meeting-btn"
+       (click)="addPotentialCoacheeModalVisibility(true)">
+      <i class="material-icons">add</i>
+    </a>
+  </p>
+</div>
 
+<div [ngsReveal]="{origin: 'left', distance: '100px', scale: 1, delay: 200, duration: 1000}">
+  <div class="row">
+    <h4 class="col-lg-12 black-text">Managers</h4>
+    <div class="card collection col-lg-12">
 
-<div class="row">
-  <h4 class="col-lg-12 black-text">Managers</h4>
-  <div class="card collection col-lg-12">
+      <div *ifLoader="loading1">
+        <div *ngIf="hasCollaborators">
+          <div class="collection-item has-collaborator" *ngFor="let coachee of coachees | async">
+            <rb-meeting-item-rh [coachee]="coachee"
+                                [potentialCoachee]="null"
+                                (onUpdateObjectiveBtnClick)="startAddNewObjectiveFlow($event)">
+            </rb-meeting-item-rh>
+          </div>
+        </div>
 
-    <div *ifLoader="loading1">
-      <div *ngIf="hasCollaborators">
-        <div class="collection-item has-collaborator" *ngFor="let coachee of coachees | async">
-          <rb-meeting-item-rh [coachee]="coachee"
-                              [potentialCoachee]="null"
-                              (onUpdateObjectiveBtnClick)="startAddNewObjectiveFlow($event)">
-          </rb-meeting-item-rh>
+        <div *ngIf="!hasCollaborators" class="collection-item text-center">
+          <h5 class="no-meeting">Vos managers apparaîtront ici</h5>
         </div>
       </div>
 
-      <div *ngIf="!hasCollaborators" class="collection-item text-center">
-        <h5 class="no-meeting">Vos managers apparaîtront ici</h5>
-      </div>
-    </div>
+    </div><!--end card-->
+  </div><!--end row-->
 
-  </div><!--end card-->
-</div><!--end row-->
+  <div class="row">
+    <h4 class="col-lg-12 black-text">Managers invités en attente</h4>
+    <div class="card collection col-lg-12">
 
-<div class="row">
-  <h4 class="col-lg-12 black-text">Managers invités en attente</h4>
-  <div class="card collection col-lg-12">
+      <div *ifLoader="loading2">
+        <div *ngIf="hasPotentialCollaborators">
+          <div class="collection-item" *ngFor="let potentialCoachee of potentialCoachees | async">
+            <rb-meeting-item-rh [potentialCoachee]="potentialCoachee"
+                                [coachee]="null">
+            </rb-meeting-item-rh>
+          </div>
+        </div>
 
-    <div *ifLoader="loading2">
-      <div *ngIf="hasPotentialCollaborators">
-        <div class="collection-item" *ngFor="let potentialCoachee of potentialCoachees | async">
-          <rb-meeting-item-rh [potentialCoachee]="potentialCoachee"
-                              [coachee]="null">
-          </rb-meeting-item-rh>
+        <div *ngIf="!hasPotentialCollaborators" class="collection-item text-center">
+          <h5 class="no-meeting">Vos managers en attente de validation apparaîtront ici</h5>
         </div>
       </div>
 
-      <div *ngIf="!hasPotentialCollaborators" class="collection-item text-center">
-        <h5 class="no-meeting">Vos managers en attente de validation apparaîtront ici</h5>
-      </div>
-    </div>
-
-  </div><!--end card-->
-</div><!--end row-->
+    </div><!--end card-->
+  </div><!--end row-->
+</div>
 
 
 

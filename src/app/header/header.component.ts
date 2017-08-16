@@ -20,8 +20,6 @@ declare var $: any;
   styleUrls: ['./header.component.scss']
 })
 export class HeaderComponent implements OnInit, OnDestroy {
-  private loginActivated = false;
-
   months = ['Jan', 'Feb', 'Mar', 'Avr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 
   private isAuthenticated: Observable<boolean>;
@@ -97,8 +95,8 @@ export class HeaderComponent implements OnInit, OnDestroy {
     this.cd.detectChanges();
   }
 
-  activateLogin() {
-    this.loginActivated = true;
+  toggleLoginStatus() {
+    $('#signin_container').slideToggle('slow');
   }
 
   ngOnDestroy(): void {

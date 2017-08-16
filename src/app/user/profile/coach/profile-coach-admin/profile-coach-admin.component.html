@@ -1,4 +1,4 @@
-<div class="header-user">
+<div class="header-user" [ngsReveal]="{scale:1, origin: 'top', distance:'200px', duration: 500}">
   <div class="header-user-filter">
     <div class="container row">
 
@@ -48,7 +48,7 @@
   </div>
 </div>
 
-<div class="container" *ifLoader="loading">
+<div class="container" *ifLoader="loading" [ngsReveal]="{scale:1, opacity:0, distance:0, duration: 1000}">
   <h4 class="text-right italic">"{{ (coach | async)?.description }}"</h4>
   <br>
 

@@ -1,9 +1,83 @@
-<header *ngIf="isSigningUp()" class="page-topbar user-connected">
+<header *ngIf="isHomePage()"
+        class="z-depth-2"
+        [ngsReveal]="{scale:1, origin: 'top', distance:'200px', duration: 500}">
+  <div class="navbar">
+    <nav>
+      <div class="navbar-color">
+        <div class="col s12">
+          <a (click)="goToHome()" class="brand-logo center"><img
+            src="assets/img/logo-eritis-new.png" alt="Eritis"></a>
+
+          <a (click)="goToHome()" class="brand-logo brand-logo-phone center hide-on-large-only"><img
+            src="assets/img/logo-eritis-new.png" alt="Eritis"></a>
+
+          <ul class="right hide-on-med-and-down">
+            <div>
+              <li [class.active]="router.url === '/admin/coachs-list'">
+                <a (click)="goToRegisterCoach()">Devenir coach Eritis</a></li>
+            </div>
+          </ul>
+        </div>
+      </div>
+    </nav>
+  </div>
+
+  <div class="welcome-header">
+    <div class="container">
+      <h1 class="header-title"
+          [ngsReveal]="{scale:0, duration: 500, delay: 500}">
+        Atteignez vos objectifs</h1>
+      <h3 class="header-subtitle ultra-light-grey-text"
+          [ngsReveal]="{distance: 0, scale: 1, opacity: 0, duration: 2000, delay: 1000}">
+        Séances de coaching individuel avec un coach certifié</h3>
+
+      <div class="row hide-on-small-and-down">
+        <div class="header-btn col-xs-12 col-sm-6">
+          <a pageScroll href="#coach_section" class="btn-basic btn-small right">En savoir plus</a>
+        </div>
+        <div class="header-btn col-xs-12 col-sm-6">
+          <button class="btn-basic btn-plain btn-connexion btn-small left" (click)="toggleLoginStatus()"><i class="material-icons">perm_identity</i>
+            Connexion
+          </button>
+        </div>
+      </div>
+
+      <div class="row hide-on-med-and-up">
+        <div class="header-btn col-xs-12 col-sm-6">
+          <a pageScroll href="#coach_section" class="btn-basic btn-small">En savoir plus</a>
+        </div>
+        <div class="header-btn col-xs-12 col-sm-6">
+          <button class="btn-basic btn-plain btn-connexion btn-small" (click)="toggleLoginStatus()"><i
+            class="material-icons">perm_identity</i>
+            Connexion
+          </button>
+        </div>
+      </div>
+
+      <rb-signin></rb-signin>
+
+      <a pageScroll href="#presentation" class="header-arrow-bottom"><i class="fa fa-angle-down"
+                                                                        aria-hidden="true"></i></a>
+    </div>
+  </div>
+</header>
+
+
+
+
+
+
+<header *ngIf="isSigningUp()"
+        class="page-topbar user-connected"
+        [ngsReveal]="{scale:1, origin: 'top', distance:'200px', duration: 500}">
   <div class="navbar navbar-fixed">
     <nav>
       <div class="navbar-color navbar-fixed z-depth-2">
         <div class="col s12">
           <a (click)="goToHome()" class="brand-logo center"><img
+            src="assets/img/logo-eritis-new.png" alt="Eritis"></a>
+
+          <a (click)="goToHome()" class="brand-logo brand-logo-phone center hide-on-large-only"><img
             src="assets/img/logo-eritis-new.png" alt="Eritis"></a>
         </div>
       </div>
@@ -11,9 +85,15 @@
   </div>
 </header>
 
+
+
+
+
+
 <header id="header" class="page-topbar"
         [class.user-connected]="(isAuthenticated | async) || isAdmin()"
-        [hidden]="isSigningUp()">
+        [hidden]="isSigningUp() || isHomePage()"
+        [ngsReveal]="{scale:1, origin: 'top', distance:'200px', duration: 500, delay: 200, reset: true}">
   <div class="navbar" [class.navbar-fixed]="(isAuthenticated | async) || isAdmin()"
        [class.z-depth-2]="!(isAuthenticated | async) && !isAdmin()">
     <nav>
@@ -155,43 +235,6 @@
         </div>
       </div>
     </nav>
-
-
-    <div class="welcome-header" *ngIf="isHomePage()">
-      <div class="container">
-        <h1 class="header-title">Atteignez vos objectifs</h1>
-        <h3 class="header-subtitle ultra-light-grey-text">Séances de coaching individuel avec un coach certifié</h3>
-
-        <div class="row hide-on-small-and-down">
-          <div class="header-btn col-xs-12 col-sm-6">
-            <a pageScroll href="#coach_section" class="btn-basic btn-small right">En savoir plus</a>
-          </div>
-          <div class="header-btn col-xs-12 col-sm-6">
-            <button class="btn-basic btn-plain btn-connexion btn-small left" (click)="activateLogin()"><i class="material-icons">perm_identity</i>
-              Connexion
-            </button>
-          </div>
-        </div>
-
-        <div class="row hide-on-med-and-up">
-          <div class="header-btn col-xs-12 col-sm-6">
-            <a pageScroll href="#coach_section" class="btn-basic btn-small">En savoir plus</a>
-          </div>
-          <div class="header-btn col-xs-12 col-sm-6">
-            <button class="btn-basic btn-plain btn-connexion btn-small" (click)="activateLogin()"><i
-              class="material-icons">perm_identity</i>
-              Connexion
-            </button>
-          </div>
-        </div>
-
-        <rb-signin [hidden]="!loginActivated"></rb-signin>
-
-        <a pageScroll href="#presentation" class="header-arrow-bottom"><i class="fa fa-angle-down"
-                                                                          aria-hidden="true"></i></a>
-      </div>
-    </div>
-
 
   </div><!--end navbar-fixed-->
 

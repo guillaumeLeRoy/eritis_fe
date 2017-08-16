@@ -1,4 +1,4 @@
-<div class="header-user">
+<div class="header-user" [ngsReveal]="{scale:1, origin: 'top', distance:'200px', duration: 500}">
   <div class="header-user-filter">
     <div class="container row">
 
@@ -24,8 +24,8 @@
       <div class="header-stats col-lg-7">
         <div class="row">
           <!--<div class="header-item col-sm-4">-->
-            <!--<div class="header-item-number"><span>{{(rh | async)?.score}}</span><span class="indice"> / 5</span></div>-->
-            <!--<p class="header-item-title">Moyenne</p>-->
+          <!--<div class="header-item-number"><span>{{(rh | async)?.score}}</span><span class="indice"> / 5</span></div>-->
+          <!--<p class="header-item-title">Moyenne</p>-->
           <!--</div>-->
 
           <!--<div class="header-item col-sm-3">-->
@@ -34,13 +34,13 @@
           <!--</div>-->
 
           <!--<div class="header-item col-sm-4">-->
-            <!--<div class="header-item-number"><span>6</span></div>-->
-            <!--<p class="header-item-title">Séances réalisées</p>-->
+          <!--<div class="header-item-number"><span>6</span></div>-->
+          <!--<p class="header-item-title">Séances réalisées</p>-->
           <!--</div>-->
 
           <!--<div class="header-item col-sm-4">-->
-            <!--<div class="header-item-number"><span>3</span></div>-->
-            <!--<p class="header-item-title">Personnes coachées</p>-->
+          <!--<div class="header-item-number"><span>3</span></div>-->
+          <!--<p class="header-item-title">Personnes coachées</p>-->
           <!--</div>-->
         </div>
       </div>
@@ -48,13 +48,13 @@
   </div>
 </div>
 
-<div class="container" *ifLoader="loading">
-  <h4 class="text-right italic">"{{ (rh | async)?.description }}"</h4>
+<div class="container" *ifLoader="loading" [ngsReveal]="{scale:1, opacity:0, distance:0, duration: 1000}">
+  <h4 class="text-right italic">{{ (rh | async)?.description }}</h4>
   <br>
 
   <div>
     <!--<div class="center">-->
-      <!--<button class="btn-basic btn-plain btn-blue btn-small center" (click)="goToMeetings()">Retourner au tableau de bord</button>-->
+    <!--<button class="btn-basic btn-plain btn-blue btn-small center" (click)="goToMeetings()">Retourner au tableau de bord</button>-->
     <!--</div>-->
     <!--<br>-->
 

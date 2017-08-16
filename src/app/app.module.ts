@@ -58,6 +58,7 @@ import {ProfilePossibleCoachComponent} from "./user/profile/possible-coach/profi
 import {ProfileCoacheeAdminComponent} from "./user/profile/coachee/profile-coachee-admin/profile-coachee-admin.component";
 import {ProfileRhAdminComponent} from "./user/profile/rh/profile-rh-admin/profile-rh-admin.component";
 import {CookieModule} from "ngx-cookie";
+import {NgsRevealModule} from "ng-scrollreveal";
 import {LoaderSpinnerComponent} from "./loader/loader-spinner/loader-spinner.component";
 import {SharedModule} from "./shared/shared.module";
 
@@ -117,6 +118,7 @@ import {SharedModule} from "./shared/shared.module";
     SliderModule,
     Ng2PageScrollModule.forRoot(),
     CookieModule.forRoot(),
+    NgsRevealModule.forRoot(),
     SharedModule
   ],
   providers: [DataService, LogService, AuthService, AuthGuard, CoachCoacheeService, MeetingsService, FirebaseService, AdminAPIService],

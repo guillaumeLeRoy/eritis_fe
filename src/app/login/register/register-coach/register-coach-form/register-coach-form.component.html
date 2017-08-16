@@ -1,5 +1,5 @@
-<div class="container">
-  <div id="registerForm">
+<div class="container" [ngsReveal]="{origin: 'left', distance: '100px', scale: 1, delay: 200, duration: 1000}">
+  <div id="registerForm" [ngsRevealSet]="{distance:0, opacity:0}" [ngsSelector]="'.input-container, .section-form-title'">
 
     <h1 class="black-text text-center">Formulaire d'inscription</h1>
 
@@ -15,7 +15,7 @@
         <div class="col-lg-6">
 
           <div class="row">
-            <div class="col-lg-12">
+            <div class="col-lg-12 input-container">
               <label for="lastname">Votre nom</label>
               <span><i>Apparaîtra sur le site</i></span>
               <input type="text" id="lastname" name="lastname" formControlName="lastname" placeholder="Votre nom">
@@ -23,7 +23,7 @@
           </div>
 
           <div class="row">
-            <div class="col-lg-12">
+            <div class="col-lg-12 input-container">
               <label for="firstname">Votre prénom</label>
               <span><i>Apparaîtra sur le site</i></span>
               <input type="text" id="firstname" name="firstname" formControlName="firstname" placeholder="Votre prénom">
@@ -32,14 +32,14 @@
           </div>
 
           <div class="row">
-            <div class="col-lg-12">
+            <div class="col-lg-12 input-container">
               <label>Votre adresse email</label>
               <input type="email" id="email" name="email" formControlName="email" placeholder="exemple@mail.com">
             </div>
           </div>
 
           <div class="row">
-            <div class="col-lg-12">
+            <div class="col-lg-12 input-container">
               <label>Votre téléphone portable</label>
               <input type="email" id="phoneNumber" name="phoneNumber" formControlName="phoneNumber"
                      placeholder="06 ...">
@@ -48,11 +48,11 @@
 
         </div>
 
-        <div class="col-lg-6">
+        <div class="col-lg-6 input-container">
           <label>Photo de profil</label>
           <span><i>Apparaîtra sur le site</i></span>
 
-          <div class="avatar-container">
+          <div class="avatar-container input-container">
             <div id="avatar-preview"
                  class="avatar z-depth-2"
                  [style.background-image]="'url(' + registerForm.value.avatar + ')'"
@@ -70,7 +70,7 @@
         <div class="col-lg-12">
 
           <div class="row">
-            <div class="col-lg-12">
+            <div class="col-lg-12 input-container">
               <label>Décrivez-vous en quelques lignes</label>
               <span><i>Apparaîtra sur le site</i></span>
               <textarea id="description" name="description" formControlName="description"
@@ -79,7 +79,7 @@
           </div>
 
           <div class="row">
-            <div class="col-lg-12">
+            <div class="col-lg-12 input-container">
               <label>Lien vers votre profil Linkedin</label>
               <input type="url" id="linkedin_url" name="linkedin_url" formControlName="linkedin_url"
                      placeholder="https://...">
@@ -87,7 +87,7 @@
           </div>
 
           <div class="row">
-            <div class="col-lg-12">
+            <div class="col-lg-12 input-container">
               <label>Langue(s) pratiquée(s) en coaching ?</label>
               <div class="row">
                 <div class="col-lg-4">
@@ -114,14 +114,14 @@
         <div class="col-lg-12">
 
           <div class="row">
-            <div class="col-lg-12">
+            <div class="col-lg-12 input-container">
               <label>Quelques éléments de parcours professionnel?</label>
               <textarea type="text" id="career" name="career" formControlName="career"></textarea>
             </div>
           </div>
 
           <div class="row">
-            <div class="col-lg-12">
+            <div class="col-lg-12 input-container">
               <label>Quelles activités exercez-vous autres que le coaching individuel ?</label>
               <textarea type="text" id="extraActivities" name="extraActivities"
                      formControlName="extraActivities"></textarea>
@@ -129,7 +129,7 @@
           </div>
 
           <div class="row">
-            <div class="col-lg-12">
+            <div class="col-lg-12 input-container">
               <label>Vos diplômes, certifications, référencements, accréditations dans le domaine du coaching ?</label>
               <textarea type="text" id="degree" name="degree"
                      placeholder="Diplômes, certifications, accréditations, ..."
@@ -138,7 +138,7 @@
           </div>
 
           <div class="row">
-            <div class="col-lg-12">
+            <div class="col-lg-12 input-container">
               <label>Depuis combien de temps exercez-vous une activité de coaching individuel, et combien d’heures
                 avez-vous déjà réalisées ?</label>
               <textarea type="text" id="coachingExperience" name="coachingExperience" placeholder="3 ans, 8 mois, ..."
@@ -147,7 +147,7 @@
           </div>
 
           <div class="row">
-            <div class="col-lg-12">
+            <div class="col-lg-12 input-container">
               <label>Quelles sont vos expériences en coaching à distance, visio, skype ?</label>
               <textarea type="text" id="remoteCoachingExperience" name="remoteCoachingExperience"
                      placeholder="3 ans, 8 mois, ..."
@@ -156,7 +156,7 @@
           </div>
 
           <div class="row">
-            <div class="col-lg-12">
+            <div class="col-lg-12 input-container">
               <label>Quelles sont vos expériences en coaching bref sur 45 minutes ?</label>
               <textarea id="experienceShortSession" name="experienceShortSession" placeholder="Précisez..."
                         formControlName="experienceShortSession"></textarea>
@@ -164,7 +164,7 @@
           </div>
 
           <div class="row">
-            <div class="col-lg-12">
+            <div class="col-lg-12 input-container">
               <label>Des spécialités, des spécificités dans les situations de coaching que vous réalisez?</label>
               <textarea id="coachingSpecifics" name="coachingSpecifics" placeholder="Précisez..."
                         formControlName="coachingSpecifics"></textarea>
@@ -172,7 +172,7 @@
           </div>
 
           <div class="row">
-            <div class="col-lg-12">
+            <div class="col-lg-12 input-container">
               <label>Quel est votre dispositif de supervision ?</label>
               <textarea type="text" id="supervision" name="supervision" placeholder="Précisez..."
                      formControlName="supervision"></textarea>
@@ -180,7 +180,7 @@
           </div>
 
           <div class="row">
-            <div class="col-lg-12">
+            <div class="col-lg-12 input-container">
               <label>Quelques éléments de votre parcours de développement personnel/ thérapie ?</label>
               <textarea type="text" id="therapyElements" name="therapyElements" placeholder="Précisez..."
                      formControlName="therapyElements"></textarea>
@@ -188,7 +188,7 @@
           </div>
 
           <div class="row">
-            <div class="col-lg-12">
+            <div class="col-lg-12 input-container">
               <label>Quel est votre chiffre d'affaires sur les 3 dernières années ?</label>
               <div class="row">
                 <div class="col-lg-4">
@@ -205,7 +205,7 @@
           </div>
 
           <div class="row">
-            <div class="col-lg-12">
+            <div class="col-lg-12 input-container">
               <label>Quelle est la part de votre CA en coaching individuel ?</label>
               <input type="text" id="percentageCoachingInRevenue" name="percentageCoachingInRevenue" placeholder="%s"
                      formControlName="percentageCoachingInRevenue">
@@ -213,7 +213,7 @@
           </div>
 
           <div class="row">
-            <div class="col-lg-12">
+            <div class="col-lg-12 input-container">
               <label>Quel est votre statut juridique?</label>
               <input type="text" id="legalStatus" name="legalStatus" placeholder="Statut juridique"
                      formControlName="legalStatus">
@@ -221,7 +221,7 @@
           </div>
 
           <div class="row">
-            <div class="col-lg-12">
+            <div class="col-lg-12 input-container">
               <label>Avez-vous une copie de votre assurance RC Pro ?</label><br>
               Si vous disposez pas d'une copie dans l'immédiat, merci de nous la faire parvenir a l'adresse suivante:
               diana@eritis.co.uk (nécessaire pour finaliser l'inscription).
@@ -248,7 +248,7 @@
 
         <div class="col-lg-12">
           <div class="row">
-            <div class="col-lg-12">
+            <div class="col-lg-12 input-container">
               <label>Entité</label>
               <input type="text" id="invoice_entity" name="invoice_entity" formControlName="invoice_entity"
                      placeholder="Nom civil, nom de l'entreprise, ...">
@@ -256,7 +256,7 @@
           </div>
 
           <div class="row">
-            <div class="col-lg-12">
+            <div class="col-lg-12 input-container">
               <label>N° Siret</label>
               <input type="text" id="invoice_siret_number" name="invoice_siret_number"
                      formControlName="invoice_siret_number"
@@ -265,7 +265,7 @@
           </div>
 
           <div class="row">
-            <div class="col-lg-12">
+            <div class="col-lg-12 input-container">
               <label>Adresse</label>
               <input type="text" id="invoice_address" name="invoice_address" formControlName="invoice_address"
                      placeholder="Adresse">
@@ -273,14 +273,14 @@
           </div>
 
           <div class="row">
-            <div class="col-lg-6">
+            <div class="col-lg-6 input-container">
               <label>Ville</label>
               <input type="text" id="invoice_city" name="invoice_city"
                      placeholder="Ville"
                      formControlName="invoice_city">
             </div>
 
-            <div class="col-lg-6">
+            <div class="col-lg-6 input-container">
               <label>Code postal</label>
               <input type="text" id="invoice_postcode" name="invoice_postcode"
                      placeholder="Code postal"
