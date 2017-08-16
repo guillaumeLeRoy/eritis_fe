@@ -2,16 +2,20 @@
   <h3 class="col-lg-12 black-text">Demandes d'inscription</h3>
 
   <div class="col-lg-12 card collection">
-    <div *ngIf="(possibleCoachs | async) != null  && (possibleCoachs | async).length > 0">
-      <div class="collection-item" *ngFor="let coach of possibleCoachs | async">
-        <rb-possible-coach-item [coach]="coach"
-                                (coachAdded)="updateList()"></rb-possible-coach-item>
+
+    <div *ifLoader="loading">
+      <div *ngIf="(possibleCoachs | async) != null  && (possibleCoachs | async).length > 0">
+        <div class="collection-item" *ngFor="let coach of possibleCoachs | async">
+          <rb-possible-coach-item [coach]="coach"
+                                  (coachAdded)="updateList()"></rb-possible-coach-item>
+        </div>
+      </div>
+
+      <div class="text-center" *ngIf="(possibleCoachs | async) == null  || (possibleCoachs | async).length < 1">
+        <p class="no-meeting">Les Demandes apparaîtront ici</p>
       </div>
     </div>
 
-    <div class="text-center" *ngIf="(possibleCoachs | async) == null  || (possibleCoachs | async).length < 1">
-      <p class="no-meeting">Les Demandes apparaîtront ici</p>
-    </div>
   </div>
 </div> <!--end row-->
 

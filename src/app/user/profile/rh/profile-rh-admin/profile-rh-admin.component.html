@@ -48,7 +48,7 @@
   </div>
 </div>
 
-<div class="container">
+<div class="container" *ifLoader="loading">
   <h4 class="text-right italic">"{{ (rh | async)?.description }}"</h4>
   <br>
 

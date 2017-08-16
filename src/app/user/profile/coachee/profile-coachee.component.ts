@@ -33,11 +33,15 @@ export class ProfileCoacheeComponent implements OnInit, AfterViewInit, OnDestroy
 
   private updateUserLoading = false;
 
+  loading: boolean = true;
+
   constructor(private authService: AuthService, private router: Router, private cd: ChangeDetectorRef, private formBuilder: FormBuilder, private coachService: CoachCoacheeService, private route: ActivatedRoute) {
   }
 
   ngOnInit() {
     window.scrollTo(0, 0);
+
+    this.loading = true;
 
     this.formCoachee = this.formBuilder.group({
       firstName: ['', Validators.required],
@@ -65,6 +69,7 @@ export class ProfileCoacheeComponent implements OnInit, AfterViewInit, OnDestroy
             this.user = Observable.of(user);
             this.isOwner = (user instanceof Coachee) && (coachee.email === user.email);
             this.cd.detectChanges();
+            this.loading = false;
           }
         );
       }

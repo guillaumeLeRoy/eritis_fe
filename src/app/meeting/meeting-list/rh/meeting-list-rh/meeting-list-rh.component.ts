@@ -22,6 +22,9 @@ declare var Materialize: any;
 })
 export class MeetingListRhComponent implements OnInit, AfterViewInit, OnDestroy {
 
+  loading1 = true;
+  loading2 = true;
+
   private user: Observable<ApiUser>;
 
   private coachees: Observable<Coachee[]>;
@@ -58,6 +61,8 @@ export class MeetingListRhComponent implements OnInit, AfterViewInit, OnDestroy 
 
   ngOnInit() {
     console.log('ngOnInit');
+    this.loading1 = true;
+    this.loading2 = true;
   }
 
   ngAfterViewInit(): void {
@@ -107,6 +112,7 @@ export class MeetingListRhComponent implements OnInit, AfterViewInit, OnDestroy 
         this.coachees = Observable.of(coachees);
         if (coachees !== null && coachees.length > 0) this.hasCollaborators = true;
         this.cd.detectChanges();
+        this.loading1 = false;
       }
     );
   }
@@ -119,6 +125,7 @@ export class MeetingListRhComponent implements OnInit, AfterViewInit, OnDestroy 
         this.potentialCoachees = Observable.of(coachees);
         if (coachees !== null && coachees.length > 0) this.hasPotentialCollaborators = true;
         this.cd.detectChanges();
+        this.loading2 = false;
       }
     );
   }

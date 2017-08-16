@@ -34,11 +34,15 @@ export class ProfileRhComponent implements OnInit, AfterViewInit, OnDestroy {
 
   private updateUserLoading = false;
 
+  loading: boolean = true;
+
   constructor(private authService: AuthService, private formBuilder: FormBuilder, private cd: ChangeDetectorRef, private route: ActivatedRoute, private coachService: CoachCoacheeService, private router: Router) {
   }
 
   ngOnInit() {
     window.scrollTo(0, 0);
+
+    this.loading = true;
 
     this.formRh = this.formBuilder.group({
       firstName: ['', Validators.required],
@@ -73,9 +77,10 @@ export class ProfileRhComponent implements OnInit, AfterViewInit, OnDestroy {
             this.user = Observable.of(user);
             this.isOwner = (user instanceof HR) && (rh.email === user.email);
             this.cd.detectChanges();
-
+            this.loading = false;
           }, (error) => {
             console.log('getRh, error', error);
+            this.loading = false;
           }
         );
       }

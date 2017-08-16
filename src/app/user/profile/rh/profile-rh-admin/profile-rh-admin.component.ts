@@ -22,12 +22,14 @@ export class ProfileRhAdminComponent implements OnInit, AfterViewInit, OnDestroy
   private mrh: HR;
   private subscriptionGetRh: Subscription;
 
+  loading: boolean = true;
+
   constructor(private cd: ChangeDetectorRef, private route: ActivatedRoute, private apiService: AdminAPIService, private router: Router) {
   }
 
   ngOnInit() {
     window.scrollTo(0, 0);
-
+    this.loading = true;
     this.getRh();
   }
 
@@ -50,9 +52,10 @@ export class ProfileRhAdminComponent implements OnInit, AfterViewInit, OnDestroy
             this.mrh = rh;
             this.rh = Observable.of(rh);
             this.cd.detectChanges();
-
+            this.loading = false;
           }, (error) => {
             console.log('getRh, error', error);
+            this.loading = false;
           }
         );
       }

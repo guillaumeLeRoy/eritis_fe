@@ -7,16 +7,18 @@
         <h4 class="col-lg-12 black-text">Demandes en attente</h4>
         <div class="card collection col-lg-12">
 
-          <div *ngIf="hasAvailableMeetings">
-            <div class="collection-item" *ngFor="let meeting of availableMeetings | async">
-              <rb-meeting-item-coach [meeting]="meeting"
-                                     (onValidateDateBtnClick)="openCoachValidateMeetingModal($event)">
-              </rb-meeting-item-coach>
+          <div *ifLoader="loading">
+            <div *ngIf="hasAvailableMeetings">
+              <div class="collection-item" *ngFor="let meeting of availableMeetings | async">
+                <rb-meeting-item-coach [meeting]="meeting"
+                                       (onValidateDateBtnClick)="openCoachValidateMeetingModal($event)">
+                </rb-meeting-item-coach>
+              </div>
             </div>
-          </div>
 
-          <div *ngIf="!hasAvailableMeetings" class="collection-item text-center">
-            <h5 class="no-meeting">Les demandes disponibles apparaîtront ici</h5>
+            <div *ngIf="!hasAvailableMeetings" class="collection-item text-center">
+              <h5 class="no-meeting">Les demandes disponibles apparaîtront ici</h5>
+            </div>
           </div>
 
           <!--<button (click)="onSelectMeetingBtnClicked(meeting)">Select</button>-->

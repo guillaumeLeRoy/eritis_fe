@@ -17,11 +17,14 @@ export class PossibleCoachsListComponent implements OnInit, AfterViewInit, OnDes
   private possibleCoachs: Observable<Array<Coach>>;
   private getAllPossibleCoachsSub: Subscription;
 
+  loading = true;
+
   constructor(private apiService: AdminAPIService, private cd: ChangeDetectorRef) {
   }
 
   ngOnInit() {
     window.scrollTo(0, 0);
+    this.loading = true;
   }
 
   ngAfterViewInit(): void {
@@ -46,6 +49,7 @@ export class PossibleCoachsListComponent implements OnInit, AfterViewInit, OnDes
 
         this.possibleCoachs = Observable.of(coachs);
         this.cd.detectChanges();
+        this.loading = false;
       }
     );
   }
