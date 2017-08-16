@@ -14,11 +14,14 @@ export class RhsListComponent implements OnInit, AfterViewInit, OnDestroy {
   private rhs: Observable<Array<HR>>;
   private getAllrhsSub: Subscription;
 
+  loading = true;
+
   constructor(private apiService: AdminAPIService, private cd: ChangeDetectorRef) {
   }
 
   ngOnInit() {
     window.scrollTo(0, 0);
+    this.loading = true;
   }
 
   ngAfterViewInit(): void {
@@ -39,6 +42,7 @@ export class RhsListComponent implements OnInit, AfterViewInit, OnDestroy {
 
         this.rhs = Observable.of(rhs);
         this.cd.detectChanges();
+        this.loading = false;
       }
     );
   }

@@ -27,7 +27,7 @@
   </div>
 </div>
 
-<div class="container" [ngsReveal]="{scale:1, opacity:0, distance:0, duration: 1000}">
+<div class="container" *ifLoader="loading" [ngsReveal]="{scale:1, opacity:0, distance:0, duration: 1000}">
 
   <div class="row">
 

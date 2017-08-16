@@ -30,11 +30,14 @@ export class AvailableMeetingsComponent implements OnInit {
   private selectedHour: number;
   private selectedMeeting: Meeting;
 
+  loading = true;
+
   constructor(private authService: AuthService, private meetingService: MeetingsService, private cd: ChangeDetectorRef, private router: Router) {
   }
 
   ngOnInit() {
     this.onRefreshRequested();
+    this.loading = true;
   }
 
   onRefreshRequested() {
@@ -74,6 +77,7 @@ export class AvailableMeetingsComponent implements OnInit {
         this.availableMeetings = Observable.of(meetings);
         if (meetings != null && meetings.length > 0) this.hasAvailableMeetings = true;
         this.cd.detectChanges();
+        this.loading = false;
       }
     );
   }

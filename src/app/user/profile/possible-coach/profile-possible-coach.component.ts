@@ -17,11 +17,16 @@ export class ProfilePossibleCoachComponent implements OnInit, AfterViewInit, OnD
   private possibleCoach: Observable<PossibleCoach>;
   private subscriptionGetCoach: Subscription;
 
+  loading: boolean = true;
+
   constructor(private apiService: AdminAPIService, private router: Router, private cd: ChangeDetectorRef, private route: ActivatedRoute) {
   }
 
   ngOnInit() {
     window.scrollTo(0, 0);
+
+    this.loading = true;
+
     this.getCoach();
   }
 
@@ -38,9 +43,10 @@ export class ProfilePossibleCoachComponent implements OnInit, AfterViewInit, OnD
 
             this.possibleCoach = Observable.of(possibleCoach);
             this.cd.detectChanges();
-
+            this.loading = false;
           }, (error) => {
             console.log('getCoach, error', error);
+            this.loading = false;
           }
         );
       }

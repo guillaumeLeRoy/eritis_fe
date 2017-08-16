@@ -14,11 +14,14 @@ export class CoacheesListComponent implements OnInit, AfterViewInit, OnDestroy {
   private coachees: Observable<Array<Coachee>>;
   private getAllCoacheesSub: Subscription;
 
+  loading = true;
+
   constructor(private apiService: AdminAPIService, private cd: ChangeDetectorRef) {
   }
 
   ngOnInit() {
     window.scrollTo(0, 0);
+    this.loading = true;
   }
 
   ngAfterViewInit(): void {
@@ -45,6 +48,7 @@ export class CoacheesListComponent implements OnInit, AfterViewInit, OnDestroy {
         }
         this.coachees = Observable.of(notAssociatedCoachees);
         this.cd.detectChanges();
+        this.loading = false;
       }
     );
   }

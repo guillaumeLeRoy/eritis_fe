@@ -18,11 +18,14 @@ export class ProfileCoachAdminComponent implements OnInit, AfterViewInit, OnDest
   private coach: Observable<Coach>;
   private subscriptionGetCoach: Subscription;
 
+  loading: boolean = true;
+
   constructor(private apiService: AdminAPIService, private router: Router, private cd: ChangeDetectorRef, private route: ActivatedRoute) {
   }
 
   ngOnInit() {
     window.scrollTo(0, 0);
+    this.loading = true;
     this.getCoach();
   }
 
@@ -36,6 +39,7 @@ export class ProfileCoachAdminComponent implements OnInit, AfterViewInit, OnDest
             console.log("gotCoach", coach);
             this.coach = Observable.of(coach);
             this.cd.detectChanges();
+            this.loading = false;
           }
         );
       }

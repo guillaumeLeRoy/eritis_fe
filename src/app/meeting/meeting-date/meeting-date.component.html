@@ -24,7 +24,7 @@
                           [disabled]="isEditingPotentialDate">
           </ngb-datepicker>
 
-          <template #customDay let-date="date" let-currentMonth="currentMonth" let-selected="selected" let-disabled="disabled">
+          <ng-template #customDay let-date="date" let-currentMonth="currentMonth" let-selected="selected" let-disabled="disabled">
             <span class="custom-day"
                   [class.has-potential-date]="hasPotentialDate(date)"
                   [class.bg-primary]="selected"
@@ -32,7 +32,7 @@
                   [class.text-muted]="disabled">
               {{ date.day }}
             </span>
-          </template>
+          </ng-template>
 
           <div id="potential-dates" class="text-left" *ngIf="dateModel && hasPotentialDate(dateModel)">
             <p>Disponibilités ajoutées</p>

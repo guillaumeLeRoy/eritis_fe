@@ -409,3 +409,30 @@ ngb-datepicker .btn-link:hover{
   display: inline-block;
   vertical-align: middle;
 }
+
+loader-spinner {
+  display: flex;
+  justify-content: center;
+}
+
+.preloader-wrapper {
+  margin: 32px auto;
+}
+
+.loader-wraper {
+  width: 100%;
+  position: absolute;
+  top: 50%;
+  margin-top: -3px;
+}
+
+.progress {
+  background-color: $main-light-grey;
+  width: 50%;
+  height: 6px;
+  margin: auto;
+
+  .indeterminate {
+    background-color: $main-electric-blue;
+  }
+}

@@ -21,16 +21,18 @@
     <h4 class="col-lg-12 black-text">&Agrave; venir</h4>
     <div class="card collection col-lg-12">
 
-      <div *ngIf="hasOpenedMeeting">
-        <div class="collection-item" *ngFor="let meeting of meetingsOpened | async">
-          <rb-meeting-item-coachee [meeting]="meeting"
-                                   (cancelMeetingTimeEvent)="openCoacheeDeleteMeetingModal($event)">
-          </rb-meeting-item-coachee>
+      <div *ifLoader="loading">
+        <div *ngIf="hasOpenedMeeting">
+          <div class="collection-item" *ngFor="let meeting of meetingsOpened | async">
+            <rb-meeting-item-coachee [meeting]="meeting"
+                                     (cancelMeetingTimeEvent)="openCoacheeDeleteMeetingModal($event)">
+            </rb-meeting-item-coachee>
+          </div>
         </div>
-      </div>
 
-      <div *ngIf="!hasOpenedMeeting" class="collection-item text-center">
-        <p class="no-meeting">Vos séances à venir apparaîtront ici</p>
+        <div *ngIf="!hasOpenedMeeting" class="collection-item text-center">
+          <p class="no-meeting">Vos séances à venir apparaîtront ici</p>
+        </div>
       </div>
 
     </div><!--end card-->
@@ -40,17 +42,19 @@
     <h4 class="col-lg-12 black-text">Complétées</h4>
     <div class="card collection col-lg-12">
 
-      <div *ngIf="hasClosedMeeting">
-        <div class="collection-item" *ngFor="let meeting of meetingsClosed | async">
-          <rb-meeting-item-coachee [meeting]="meeting"
-                                   (cancelMeetingTimeEvent)="openCoacheeDeleteMeetingModal($event)"
-                                   (onRateSessionBtnClickedEmitter)="openRateSessionModal($event)">
-          </rb-meeting-item-coachee>
+      <div *ifLoader="loading">
+        <div *ngIf="hasClosedMeeting">
+          <div class="collection-item" *ngFor="let meeting of meetingsClosed | async">
+            <rb-meeting-item-coachee [meeting]="meeting"
+                                     (cancelMeetingTimeEvent)="openCoacheeDeleteMeetingModal($event)"
+                                     (onRateSessionBtnClickedEmitter)="openRateSessionModal($event)">
+            </rb-meeting-item-coachee>
+          </div>
         </div>
-      </div>
 
-      <div *ngIf="!hasClosedMeeting" class="collection-item text-center">
-        <p class="no-meeting">Vos séances complétées apparaîtront ici</p>
+        <div *ngIf="!hasClosedMeeting" class="collection-item text-center">
+          <p class="no-meeting">Vos séances complétées apparaîtront ici</p>
+        </div>
       </div>
 
     </div><!--end card-->

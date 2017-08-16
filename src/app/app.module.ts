@@ -40,25 +40,27 @@ import {SignupCoachComponent} from "./login/signup/signup-coach/signup-coach.com
 import {SignupRhComponent} from "./login/signup/signup-rh/signup-rh.component";
 import {AvailableMeetingsComponent} from "./meeting/meeting-list/coach/available-meetings/available-meetings.component";
 import {AdminCoachsListComponent} from "./admin/coachs-list/admin-coachs-list.component";
-import { CoacheesListComponent } from './admin/coachees-list/coachees-list.component';
-import { RhsListComponent } from './admin/rhs-list/rhs-list.component';
-import { MeetingListCoachComponent } from './meeting/meeting-list/coach/meeting-list-coach/meeting-list-coach.component';
-import { MeetingListCoacheeComponent } from './meeting/meeting-list/coachee/meeting-list-coachee/meeting-list-coachee.component';
-import { MeetingListRhComponent } from './meeting/meeting-list/rh/meeting-list-rh/meeting-list-rh.component';
-import { CoacheeItemComponent } from './admin/coachees-list/coachee-item/coachee-item.component';
-import { RhItemComponent } from './admin/rhs-list/rh-item/rh-item.component';
-import { RegisterCoachComponent } from './login/register/register-coach/register-coach.component';
-import { CodeDeontologieComponent } from './login/register/register-coach/code-deontologie/code-deontologie.component';
-import { RegisterCoachFormComponent } from './login/register/register-coach/register-coach-form/register-coach-form.component';
-import { RegisterCoachMessageComponent } from './login/register/register-coach/register-coach-message/register-coach-message.component';
-import { PossibleCoachsListComponent } from './admin/possible-coachs-list/possible-coachs-list.component';
-import { PossibleCoachItemComponent } from './admin/possible-coachs-list/possible-coach-item/possible-coach-item.component';
-import { ProfileCoachAdminComponent } from './user/profile/coach/profile-coach-admin/profile-coach-admin.component';
-import { ProfilePossibleCoachComponent } from './user/profile/possible-coach/profile-possible-coach.component';
-import { ProfileCoacheeAdminComponent } from './user/profile/coachee/profile-coachee-admin/profile-coachee-admin.component';
-import { ProfileRhAdminComponent } from './user/profile/rh/profile-rh-admin/profile-rh-admin.component';
+import {CoacheesListComponent} from "./admin/coachees-list/coachees-list.component";
+import {RhsListComponent} from "./admin/rhs-list/rhs-list.component";
+import {MeetingListCoachComponent} from "./meeting/meeting-list/coach/meeting-list-coach/meeting-list-coach.component";
+import {MeetingListCoacheeComponent} from "./meeting/meeting-list/coachee/meeting-list-coachee/meeting-list-coachee.component";
+import {MeetingListRhComponent} from "./meeting/meeting-list/rh/meeting-list-rh/meeting-list-rh.component";
+import {CoacheeItemComponent} from "./admin/coachees-list/coachee-item/coachee-item.component";
+import {RhItemComponent} from "./admin/rhs-list/rh-item/rh-item.component";
+import {RegisterCoachComponent} from "./login/register/register-coach/register-coach.component";
+import {CodeDeontologieComponent} from "./login/register/register-coach/code-deontologie/code-deontologie.component";
+import {RegisterCoachFormComponent} from "./login/register/register-coach/register-coach-form/register-coach-form.component";
+import {RegisterCoachMessageComponent} from "./login/register/register-coach/register-coach-message/register-coach-message.component";
+import {PossibleCoachsListComponent} from "./admin/possible-coachs-list/possible-coachs-list.component";
+import {PossibleCoachItemComponent} from "./admin/possible-coachs-list/possible-coach-item/possible-coach-item.component";
+import {ProfileCoachAdminComponent} from "./user/profile/coach/profile-coach-admin/profile-coach-admin.component";
+import {ProfilePossibleCoachComponent} from "./user/profile/possible-coach/profile-possible-coach.component";
+import {ProfileCoacheeAdminComponent} from "./user/profile/coachee/profile-coachee-admin/profile-coachee-admin.component";
+import {ProfileRhAdminComponent} from "./user/profile/rh/profile-rh-admin/profile-rh-admin.component";
 import {CookieModule} from "ngx-cookie";
 import {NgsRevealModule} from "ng-scrollreveal";
+import {LoaderSpinnerComponent} from "./loader/loader-spinner/loader-spinner.component";
+import {SharedModule} from "./shared/shared.module";
 
 @NgModule({
   declarations: [
@@ -101,7 +103,8 @@ import {NgsRevealModule} from "ng-scrollreveal";
     ProfileCoachAdminComponent,
     ProfilePossibleCoachComponent,
     ProfileCoacheeAdminComponent,
-    ProfileRhAdminComponent
+    ProfileRhAdminComponent,
+    LoaderSpinnerComponent
   ],
   imports: [
     BrowserAnimationsModule,
@@ -115,7 +118,8 @@ import {NgsRevealModule} from "ng-scrollreveal";
     SliderModule,
     Ng2PageScrollModule.forRoot(),
     CookieModule.forRoot(),
-    NgsRevealModule.forRoot()
+    NgsRevealModule.forRoot(),
+    SharedModule
   ],
   providers: [DataService, LogService, AuthService, AuthGuard, CoachCoacheeService, MeetingsService, FirebaseService, AdminAPIService],
   bootstrap: [AppComponent]
