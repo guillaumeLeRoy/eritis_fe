@@ -297,3 +297,17 @@ a.button-collapse {
 .side-nav-items li a {
   color: $main-dark-grey !important;
 }
+
+#signin {
+  display: none;
+}
+
+/* modal */
+.modal label,
+.modal input{
+  color: $main-dark-grey;
+}
+
+#forgot_password_modal {
+  height: 230px;
+}
