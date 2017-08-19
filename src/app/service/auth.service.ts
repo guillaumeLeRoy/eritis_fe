@@ -159,7 +159,7 @@ export class AuthService {
     return obs.map(
       (res: Response) => {
         console.log("fetchCoachee, obtained from API : ", res);
-        let coachee = this.parseCoachee(res.json());
+        let coachee = AuthService.parseCoachee(res.json());
         this.onAPIuserObtained(coachee, this.ApiUser.firebaseToken);
         return coachee;
       }
@@ -181,8 +181,8 @@ export class AuthService {
 
   getConnectedUser(): Coach | Coachee | HR {
     // if (this.ApiUser !== null)
-      // if (this.cookieService.get('ACTIVE_SESSION') !== 'true')
-        // this.loginOut();
+    // if (this.cookieService.get('ACTIVE_SESSION') !== 'true')
+    // this.loginOut();
     return this.ApiUser;
   }
 
@@ -334,7 +334,7 @@ export class AuthService {
         console.log("getConnectedApiUser, wait for change state");
 
         return this.ApiUserSubject.asObservable();
-        
+
         // .map(
         //   (apiUser: ApiUser) => {
         //     if (apiUser) {
@@ -548,7 +548,7 @@ export class AuthService {
     } else if (response.coachee) {
       let coachee = response.coachee;
       //coachee
-      return this.parseCoachee(coachee);
+      return AuthService.parseCoachee(coachee);
     } else if (response.rh) {
       let rh = response.rh;
       return this.parseRh(rh);
@@ -588,7 +588,7 @@ export class AuthService {
     return coach;
   }
 
-  parseCoachee(json: any): Coachee {
+  static parseCoachee(json: any): Coachee {
     // TODO : don't really need to manually parse the received Json
     let coachee: Coachee = new Coachee(json.id);
     coachee.id = json.id;
@@ -601,6 +601,8 @@ export class AuthService {
     coachee.contractPlan = json.plan;
     coachee.availableSessionsCount = json.available_sessions_count;
     coachee.updateAvailableSessionCountDate = json.update_sessions_count_date;
+    coachee.sessionsDoneMonthCount = json.sessions_done_month_count;
+    coachee.sessionsDoneTotalCount = json.sessions_done_total_count;
     coachee.associatedRh = json.associatedRh;
     coachee.last_objective = json.last_objective;
     return coachee;

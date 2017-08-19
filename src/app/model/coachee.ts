@@ -26,7 +26,7 @@ export class Coachee implements ApiUser {
   contractPlan: ContractPlan;
 
   /**
-   * Number of available sessions
+   * Number of available sessions this month
    */
   availableSessionsCount: number;
 
@@ -34,6 +34,16 @@ export class Coachee implements ApiUser {
    * Date when the number of available sessions was updated
    */
   updateAvailableSessionCountDate: string;
+
+  /**
+   * Number of sessions done this month
+   */
+  sessionsDoneMonthCount: number;
+
+  /**
+   * Number of sessions done since the beginning
+   */
+  sessionsDoneTotalCount: number;
 
   /**
    * HR associated with this user.
