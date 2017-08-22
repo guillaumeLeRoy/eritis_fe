@@ -605,6 +605,7 @@ export class AuthService {
     coachee.sessionsDoneTotalCount = json.sessions_done_total_count;
     coachee.associatedRh = json.associatedRh;
     coachee.last_objective = json.last_objective;
+    coachee.plan = json.plan;
     return coachee;
   }
 

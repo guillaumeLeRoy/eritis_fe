@@ -3,6 +3,7 @@ import {Coach} from "./Coach";
 import {ContractPlan} from "./ContractPlan";
 import {HR} from "./HR";
 import {CoacheeObjective} from "./CoacheeObjective";
+import {Plan} from "./Plan";
 export class Coachee implements ApiUser {
 
   /**
@@ -54,6 +55,11 @@ export class Coachee implements ApiUser {
    * Last objective defined by HR
    */
   last_objective: CoacheeObjective;
+
+  /**
+   * Business plan ( how many available sessions per month )
+   */
+  plan: Plan;
 
 
   constructor(id: string) {
