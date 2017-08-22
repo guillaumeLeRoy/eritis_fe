@@ -6,7 +6,7 @@ import {Subscription} from "rxjs/Subscription";
 import {ContractPlan} from "../../../../model/ContractPlan";
 import {Coachee} from "../../../../model/Coachee";
 import {Coach} from "../../../../model/Coach";
-import {RhUsageRate} from "../../../../model/UsageRate";
+import {HRUsageRate} from "../../../../model/HRUsageRate";
 import {HR} from "../../../../model/HR";
 import {PotentialCoachee} from "../../../../model/PotentialCoachee";
 import {ApiUser} from "../../../../model/ApiUser";
@@ -41,7 +41,7 @@ export class MeetingListRhComponent implements OnInit, AfterViewInit, OnDestroy 
 
   potentialCoacheeEmail?;
 
-  private rhUsageRate: Observable<RhUsageRate>;
+  private HrUsageRate: Observable<HRUsageRate>;
 
   /**
    * Used in Objective modal.
@@ -143,9 +143,9 @@ export class MeetingListRhComponent implements OnInit, AfterViewInit, OnDestroy 
 
   private getUsageRate(rhId: string) {
     this.coachCoacheeService.getUsageRate(rhId).subscribe(
-      (rate: RhUsageRate) => {
+      (rate: HRUsageRate) => {
         console.log("getUsageRate, rate : ", rate);
-        this.rhUsageRate = Observable.of(rate);
+        this.HrUsageRate = Observable.of(rate);
       }
     );
   }

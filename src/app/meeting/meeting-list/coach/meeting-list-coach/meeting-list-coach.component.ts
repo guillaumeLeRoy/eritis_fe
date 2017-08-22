@@ -7,7 +7,7 @@ import {Meeting} from "../../../../model/Meeting";
 import {Subscription} from "rxjs/Subscription";
 import {Coachee} from "../../../../model/Coachee";
 import {Coach} from "../../../../model/Coach";
-import {RhUsageRate} from "../../../../model/UsageRate";
+import {HRUsageRate} from "../../../../model/HRUsageRate";
 import {HR} from "../../../../model/HR";
 import {ApiUser} from "../../../../model/ApiUser";
 
@@ -40,7 +40,7 @@ export class MeetingListCoachComponent implements OnInit, AfterViewInit, OnDestr
 
   private meetingToCancel: Meeting;
 
-  private rhUsageRate: Observable<RhUsageRate>;
+  private rhUsageRate: Observable<HRUsageRate>;
 
   /**
    * Used in the modal to close a session.
@@ -184,7 +184,7 @@ export class MeetingListCoachComponent implements OnInit, AfterViewInit, OnDestr
 
   private getUsageRate(rhId: string) {
     this.coachCoacheeService.getUsageRate(rhId).subscribe(
-      (rate: RhUsageRate) => {
+      (rate: HRUsageRate) => {
         console.log("getUsageRate, rate : ", rate);
         this.rhUsageRate = Observable.of(rate);
       }

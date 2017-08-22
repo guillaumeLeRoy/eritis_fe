@@ -3,6 +3,7 @@ import {Coach} from "./Coach";
 import {ContractPlan} from "./ContractPlan";
 import {HR} from "./HR";
 import {CoacheeObjective} from "./CoacheeObjective";
+import {Plan} from "./Plan";
 export class Coachee implements ApiUser {
 
   /**
@@ -26,7 +27,7 @@ export class Coachee implements ApiUser {
   contractPlan: ContractPlan;
 
   /**
-   * Number of available sessions
+   * Number of available sessions this month
    */
   availableSessionsCount: number;
 
@@ -34,6 +35,16 @@ export class Coachee implements ApiUser {
    * Date when the number of available sessions was updated
    */
   updateAvailableSessionCountDate: string;
+
+  /**
+   * Number of sessions done this month
+   */
+  sessionsDoneMonthCount: number;
+
+  /**
+   * Number of sessions done since the beginning
+   */
+  sessionsDoneTotalCount: number;
 
   /**
    * HR associated with this user.
@@ -44,6 +55,11 @@ export class Coachee implements ApiUser {
    * Last objective defined by HR
    */
   last_objective: CoacheeObjective;
+
+  /**
+   * Business plan ( how many available sessions per month )
+   */
+  plan: Plan;
 
 
   constructor(id: string) {
