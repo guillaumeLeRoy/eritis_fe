@@ -12,7 +12,7 @@
 .header-signin {
   label {
     color: $main-white-color;
-    font-size: 20px;
+    font-size: 13px;
     font-weight: 300;
     opacity: .6;
   }
@@ -49,7 +49,7 @@
 #signin_container {
   width: 30%;
   margin: auto;
-  display: none;
+  //display: none;
 }
 
 @media(max-width: 960px) {
