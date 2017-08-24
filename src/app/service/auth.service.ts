@@ -117,7 +117,8 @@ export class AuthService {
     date.setHours(date.getHours() + 1);
     console.log('COOKIE', date);
     if (this.cookieService.get('ACTIVE_SESSION') === undefined)
-      this.cookieService.put('ACTIVE_SESSION', 'true', {expires: date.toDateString()});
+      if (this.cookieService.get('ACCEPTS_COOKIES') !== undefined)
+        this.cookieService.put('ACTIVE_SESSION', 'true', {expires: date.toDateString()});
   }
 
   /*
@@ -527,7 +528,8 @@ export class AuthService {
               let date = (new Date());
               date.setHours(date.getHours() + 1);
               console.log('COOKIE', date);
-              this.cookieService.put('ACTIVE_SESSION', 'true', {'expires': date});
+              if (this.cookieService.get('ACCEPTS_COOKIES') !== undefined)
+                this.cookieService.put('ACTIVE_SESSION', 'true', {'expires': date});
 
               // return json;
               this.isSignInOrUp = false;
@@ -659,7 +661,8 @@ export class AuthService {
         let date = (new Date());
         date.setHours(date.getHours() + 1);
         console.log('COOKIE', date);
-        this.cookieService.put('ACTIVE_SESSION', 'true', {'expires': date});
+        if (this.cookieService.get('ACCEPTS_COOKIES') !== undefined)
+          this.cookieService.put('ACTIVE_SESSION', 'true', {'expires': date});
         //now sign up in AppEngine
         this.isSignInOrUp = false;
         return this.getUserForFirebaseId(fbUser.uid, token);

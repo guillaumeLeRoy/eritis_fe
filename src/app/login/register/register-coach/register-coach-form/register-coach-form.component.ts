@@ -143,7 +143,8 @@ export class RegisterCoachFormComponent implements OnInit {
   saveFormValues() {
     let date = (new Date());
     date.setFullYear(2030);
-    this.cookieService.putObject('COACH_REGISTER_FORM_VALUES', this.registerForm.value, {expires: date.toDateString()});
+    if (this.cookieService.get('ACCEPTS_COOKIES') !== undefined)
+      this.cookieService.putObject('COACH_REGISTER_FORM_VALUES', this.registerForm.value, {expires: date.toDateString()});
   }
 
   filePreview(event: any, type: string) {
@@ -190,7 +191,8 @@ export class RegisterCoachFormComponent implements OnInit {
         console.log("onRegister success", res);
         Materialize.toast('Votre candidature a été envoyée !', 3000, 'rounded');
         this.onRegisterLoading = false;
-        this.cookieService.put('COACH_REGISTER_FORM_SENT', 'true');
+        if (this.cookieService.get('ACCEPTS_COOKIES') !== undefined)
+          this.cookieService.put('COACH_REGISTER_FORM_SENT', 'true');
         this.router.navigate(['register_coach/step3']);
       }, (error) => {
         console.log('onRegister error', error);
