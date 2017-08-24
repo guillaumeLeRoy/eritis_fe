@@ -25,12 +25,14 @@ import {ProfileCoachAdminComponent} from "./user/profile/coach/profile-coach-adm
 import {ProfilePossibleCoachComponent} from "./user/profile/possible-coach/profile-possible-coach.component";
 import {ProfileCoacheeAdminComponent} from "app/user/profile/coachee/profile-coachee-admin/profile-coachee-admin.component";
 import {ProfileRhAdminComponent} from "./user/profile/rh/profile-rh-admin/profile-rh-admin.component";
+import {CookiePolicyComponent} from "./cookie-policy/cookie-policy.component";
 
 const APP_ROUTES: Routes = [
   {path: '', redirectTo: '/welcome', pathMatch: 'full'},
   {path: 'welcome', component: WelcomeComponent},
   {path: 'chat', component: ChatComponent},
   {path: 'signin', component: SigninComponent},
+  {path: 'cookie-policy', component: CookiePolicyComponent},
   {path: 'register_coach/step1', component: RegisterCoachComponent},
   {path: 'register_coach/code_deontologie', component: CodeDeontologieComponent},
   {path: 'register_coach/step2', component: RegisterCoachFormComponent},
