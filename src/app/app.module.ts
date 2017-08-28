@@ -64,6 +64,7 @@ import {SharedModule} from "./shared/shared.module";
 import { FooterComponent } from './footer/footer.component';
 import { LegalNoticeComponent } from './legal-notice/legal-notice.component';
 import { TermsOfUseComponent } from './terms-of-use/terms-of-use.component';
+import { CookiePolicyComponent } from './cookie-policy/cookie-policy.component';
 
 @NgModule({
   declarations: [
@@ -110,7 +111,8 @@ import { TermsOfUseComponent } from './terms-of-use/terms-of-use.component';
     LoaderSpinnerComponent,
     FooterComponent,
     LegalNoticeComponent,
-    TermsOfUseComponent
+    TermsOfUseComponent,
+    CookiePolicyComponent
   ],
   imports: [
     BrowserAnimationsModule,

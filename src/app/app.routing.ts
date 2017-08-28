@@ -27,6 +27,7 @@ import {ProfileCoacheeAdminComponent} from "app/user/profile/coachee/profile-coa
 import {ProfileRhAdminComponent} from "./user/profile/rh/profile-rh-admin/profile-rh-admin.component";
 import {LegalNoticeComponent} from "./legal-notice/legal-notice.component";
 import {TermsOfUseComponent} from "./terms-of-use/terms-of-use.component";
+import {CookiePolicyComponent} from "./cookie-policy/cookie-policy.component";
 
 const APP_ROUTES: Routes = [
   {path: '', redirectTo: '/welcome', pathMatch: 'full'},
@@ -34,7 +35,8 @@ const APP_ROUTES: Routes = [
   {path: 'chat', component: ChatComponent},
   {path: 'signin', component: SigninComponent},
   {path: 'legal-notice', component: LegalNoticeComponent},
-  {path: 'terl*ms-of-use', component: TermsOfUseComponent},
+  {path: 'terms-of-use', component: TermsOfUseComponent},
+  {path: 'cookie-policy', component: CookiePolicyComponent},
   {path: 'register_coach/step1', component: RegisterCoachComponent},
   {path: 'register_coach/code_deontologie', component: CodeDeontologieComponent},
   {path: 'register_coach/step2', component: RegisterCoachFormComponent},

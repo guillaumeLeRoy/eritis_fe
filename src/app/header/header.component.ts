@@ -56,6 +56,12 @@ export class HeaderComponent implements OnInit, OnDestroy {
       this.router.navigate(['/']);
     }
 
+
+    // Cookie Headband
+    if (this.cookieService.get('ACCEPTS_COOKIES') !== undefined)
+      this.hideCookieHeadband();
+
+
     // this.connectedUser = this.authService.getConnectedUserObservable();
     this.subscription = this.authService.getConnectedUserObservable().subscribe(
       (user: Coach | Coachee | HR) => {
@@ -133,7 +139,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
       console.log('goToHomeAdmin');
       this.navigateAdminHome();
     }
-    if (this.isSigningUp()) {
+    else {
       console.log('goToWelcomePage');
       this.goToWelcomePage();
     }
@@ -331,6 +337,12 @@ export class HeaderComponent implements OnInit, OnDestroy {
   navigateToPossibleCoachsList() {
     console.log("navigateToPossibleCoachsList")
     this.router.navigate(['admin/possible_coachs-list']);
+  }
+
+
+  hideCookieHeadband() {
+    $('#cookie_headband').fadeOut();
+    this.cookieService.put('ACCEPTS_COOKIES', 'true');
   }
 
 

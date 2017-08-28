@@ -35,7 +35,8 @@ export class RegisterCoachComponent implements OnInit {
 
   setAcceptedConditions() {
     console.log('Coach register accept conditions');
-    this.cookieService.put('COACH_REGISTER_CONDITIONS_ACCEPTED', 'true');
+    if (this.cookieService.get('ACCEPTS_COOKIES') !== undefined)
+      this.cookieService.put('COACH_REGISTER_CONDITIONS_ACCEPTED', 'true');
   }
 
   deleteAcceptedConditions() {
