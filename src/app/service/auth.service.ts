@@ -76,6 +76,7 @@ export class AuthService {
   public static ADMIN_GET_RH = "/v1/admins/rhs/:id";
   public static ADMIN_GET_POSSIBLE_COACHS = "/v1/admins/possible_coachs";
   public static ADMIN_GET_POSSIBLE_COACH = "/v1/admins/possible_coachs/:id";
+  public static ADMIN_PUT_COACH_PROFILE_PICT = "/v1/admins/coachs/:id/profile_picture";
 
   /* Meeting */
   public static POST_MEETING = "/v1/meetings";
@@ -563,6 +564,8 @@ export class AuthService {
     coach.last_name = json.last_name;
     coach.avatar_url = json.avatar_url;
     coach.start_date = json.start_date;
+    coach.score = json.score;
+    coach.sessionsCount = json.sessions_count;
     coach.description = json.description;
     coach.chat_room_url = json.chat_room_url;
     coach.linkedin_url = json.linkedin_url;
