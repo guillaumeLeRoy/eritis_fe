@@ -1,0 +1,14 @@
+@import "../../saas/variables";
+
+footer {
+  padding: 32px 0;
+  background-color: $main-dark-grey;
+
+  .container {
+    padding: 0;
+  }
+
+  a {
+    color: $main-white-color !important;
+  }
+}
