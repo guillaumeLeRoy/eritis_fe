@@ -52,15 +52,29 @@
            [style.background-image]="'url(' + avatarFile + ')'"
            *ngIf="avatarFile != null"></div>
       <div class="input-file-container">
-        <button class="btn-basic btn-blue btn-plain btn-small file-upload-button">Choisir une image</button>
+        <button class="btn-basic btn-blue btn-plain btn-small file-upload-button" *ngIf="!avatarLoading">Choisir une image</button>
         <input type="file"
                id="upload-avatar-input"
                accept=".jpg,.png"
                (change)="previewPicture($event)">
 
-        <button class="btn-basic btn-blue btn-plain btn-small" *ngIf="avatarFile != null"
+        <button class="btn-basic btn-blue btn-plain btn-small" *ngIf="avatarFile != null && !avatarLoading"
                 (click)="uploadAvatarPicture()">Utiliser cette image
         </button>
+
+        <div class="preloader-wrapper active" *ngIf="avatarFile != null && avatarLoading">
+          <div class="spinner-layer spinner-blue-only">
+            <div class="circle-clipper left">
+              <div class="circle"></div>
+            </div>
+            <div class="gap-patch">
+              <div class="circle"></div>
+            </div>
+            <div class="circle-clipper right">
+              <div class="circle"></div>
+            </div>
+          </div>
+        </div>
 
       </div>
     </div>

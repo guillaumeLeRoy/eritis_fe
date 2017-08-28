@@ -18,8 +18,9 @@ export class ProfileCoachAdminComponent implements OnInit, AfterViewInit, OnDest
   private coach: Observable<Coach>;
   private subscriptionGetCoach: Subscription;
 
-  loading: boolean = true;
+  private loading: boolean = true;
 
+  private avatarLoading = false;
   private avatarFile: File;
 
 
@@ -100,6 +101,7 @@ export class ProfileCoachAdminComponent implements OnInit, AfterViewInit, OnDest
 
     if (this.avatarFile !== null && this.avatarFile !== undefined) {
       console.log("Upload avatar");
+      this.avatarLoading = true;
 
       this.coach.last().flatMap(
         (coach: Coach) => {
@@ -109,10 +111,11 @@ export class ProfileCoachAdminComponent implements OnInit, AfterViewInit, OnDest
         (res: any) => {
           // refresh page
           console.log("Upload avatar, DONE, res : " + res);
-
+          this.avatarLoading = false;
           window.location.reload();
         }, (error) => {
           Materialize.toast('Impossible de modifier votre photo', 3000, 'rounded');
+          this.avatarLoading = false;
         }
       );
 
