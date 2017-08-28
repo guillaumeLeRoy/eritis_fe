@@ -62,9 +62,9 @@ import {NgsRevealModule} from "ng-scrollreveal";
 import {LoaderSpinnerComponent} from "./loader/loader-spinner/loader-spinner.component";
 import {SharedModule} from "./shared/shared.module";
 import { FooterComponent } from './footer/footer.component';
-import { LegalNoticeComponent } from './legal-notice/legal-notice.component';
-import { TermsOfUseComponent } from './terms-of-use/terms-of-use.component';
-import { CookiePolicyComponent } from './cookie-policy/cookie-policy.component';
+import { LegalNoticeComponent } from './legals/legal-notice/legal-notice.component';
+import { TermsOfUseComponent } from './legals/terms-of-use/terms-of-use.component';
+import { CookiePolicyComponent } from './legals/cookie-policy/cookie-policy.component';
 
 @NgModule({
   declarations: [

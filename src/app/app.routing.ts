@@ -25,9 +25,9 @@ import {ProfileCoachAdminComponent} from "./user/profile/coach/profile-coach-adm
 import {ProfilePossibleCoachComponent} from "./user/profile/possible-coach/profile-possible-coach.component";
 import {ProfileCoacheeAdminComponent} from "app/user/profile/coachee/profile-coachee-admin/profile-coachee-admin.component";
 import {ProfileRhAdminComponent} from "./user/profile/rh/profile-rh-admin/profile-rh-admin.component";
-import {LegalNoticeComponent} from "./legal-notice/legal-notice.component";
-import {TermsOfUseComponent} from "./terms-of-use/terms-of-use.component";
-import {CookiePolicyComponent} from "./cookie-policy/cookie-policy.component";
+import {LegalNoticeComponent} from "./legals/legal-notice/legal-notice.component";
+import {TermsOfUseComponent} from "./legals/terms-of-use/terms-of-use.component";
+import {CookiePolicyComponent} from "./legals/cookie-policy/cookie-policy.component";
 
 const APP_ROUTES: Routes = [
   {path: '', redirectTo: '/welcome', pathMatch: 'full'},
