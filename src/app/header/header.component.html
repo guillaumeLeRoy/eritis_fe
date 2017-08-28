@@ -5,7 +5,7 @@
     <nav>
       <div class="navbar-color">
         <div class="col s12">
-          <a (click)="goToHome()" class="brand-logo center"><img
+          <a (click)="goToHome()" class="brand-logo center hide-on-med-and-down"><img
             src="assets/img/logo-eritis-new.png" alt="Eritis"></a>
 
           <a (click)="goToHome()" class="brand-logo brand-logo-phone center hide-on-large-only"><img
@@ -287,3 +287,21 @@
   </li>
   <li class="profil-item collection-item text-right" (click)="onLogout()">Déconnexion</li>
 </ul>
+
+
+
+
+
+
+
+
+
+
+<div id="cookie_headband" class="z-depth-2">
+  <div>
+    <p>Ce site utilise des cookies <a [routerLink]="'cookie-policy'">En savoir plus</a></p>
+  </div>
+  <div>
+    <button class="btn-basic btn-small btn-plain btn-blue" (click)="hideCookieHeadband()">OK</button>
+  </div>
+</div>
