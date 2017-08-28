@@ -147,7 +147,7 @@ export class AuthService {
     return obs.map(
       (res: Response) => {
         console.log("fetchCoach, obtained from API : ", res);
-        let coach = this.parseCoach(res.json());
+        let coach = AuthService.parseCoach(res.json());
         this.onAPIuserObtained(coach, this.ApiUser.firebaseToken);
         return coach;
       }
@@ -173,7 +173,7 @@ export class AuthService {
     return obs.map(
       (res: Response) => {
         console.log("fetchRh, obtained from API : ", res);
-        let rh = this.parseRh(res.json());
+        let rh = AuthService.parseRh(res.json());
         this.onAPIuserObtained(rh, this.ApiUser.firebaseToken);
         return rh;
       }
@@ -545,19 +545,19 @@ export class AuthService {
     if (response.coach) {
       let coach = response.coach;
       //coach
-      return this.parseCoach(coach);
+      return AuthService.parseCoach(coach);
     } else if (response.coachee) {
       let coachee = response.coachee;
       //coachee
       return AuthService.parseCoachee(coachee);
     } else if (response.rh) {
       let rh = response.rh;
-      return this.parseRh(rh);
+      return AuthService.parseRh(rh);
     }
     return null;
   }
 
-  parseCoach(json: any): Coach {
+  static parseCoach(json: any): Coach {
     let coach: Coach = new Coach(json.id);
     coach.email = json.email;
     coach.first_name = json.first_name;
@@ -612,7 +612,7 @@ export class AuthService {
     return coachee;
   }
 
-  parseRh(json: any): HR {
+  static parseRh(json: any): HR {
     console.log(json);
     let rh: HR = new HR(json.id);
     rh.email = json.email;

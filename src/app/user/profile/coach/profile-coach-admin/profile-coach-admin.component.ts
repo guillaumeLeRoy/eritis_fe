@@ -110,6 +110,7 @@ export class ProfileCoachAdminComponent implements OnInit, AfterViewInit, OnDest
           // refresh page
           console.log("Upload avatar, DONE, res : " + res);
 
+          window.location.reload();
         }, (error) => {
           Materialize.toast('Impossible de modifier votre photo', 3000, 'rounded');
         }
