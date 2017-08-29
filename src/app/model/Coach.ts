@@ -16,6 +16,10 @@ export class Coach implements ApiUser {
 
   start_date: string;
 
+  score: string;
+
+  sessionsCount: string;
+
   description: string;
 
   chat_room_url: string;
@@ -59,7 +63,6 @@ export class Coach implements ApiUser {
   therapyElements: string;
 
   experienceShortSession: string;
-
 
   constructor(id: string) {
     this.id = id;

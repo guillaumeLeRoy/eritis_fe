@@ -1,5 +1,5 @@
 import {Injectable} from "@angular/core";
-import {Http, Response} from "@angular/http";
+import {Http, RequestOptionsArgs, Response} from "@angular/http";
 import {Observable} from "rxjs/Observable";
 import {environment} from "../../environments/environment";
 import {Coach} from "../model/Coach";
@@ -8,6 +8,7 @@ import {AuthService} from "./auth.service";
 import {Admin} from "../model/Admin";
 import {HR} from "../model/HR";
 import {PossibleCoach} from "../model/PossibleCoach";
+import {Headers} from "@angular/http";
 
 @Injectable()
 export class AdminAPIService {
@@ -60,7 +61,7 @@ export class AdminAPIService {
     return this.get(AuthService.ADMIN_GET_COACH, params).map(
       (res: Response) => {
         console.log('getCoach', res.json());
-        let coach: Coach = this.authService.parseCoach(res.json());
+        let coach: Coach = AuthService.parseCoach(res.json());
         return coach;
       }
     );
@@ -123,12 +124,25 @@ export class AdminAPIService {
     );
   }
 
+  updateCoachProfilePicture(coachId: string, avatarFile: File): Observable<string> {
+    let params = [coachId];
+
+    let formData: FormData = new FormData();
+    formData.append('uploadFile', avatarFile, avatarFile.name);
+
+    let headers = new Headers();
+    headers.append('Accept', 'application/json');
+
+    return this.put(AuthService.ADMIN_PUT_COACH_PROFILE_PICT, params, formData, {headers: headers})
+      .map(res => res.json());
+  }
+
   private post(path: string, params: string[], body: any): Observable<Response> {
     return this.httpService.post(this.generatePath(path, params), body)
   }
 
-  private put(path: string, params: string[], body: any): Observable<Response> {
-    return this.httpService.put(this.generatePath(path, params), body)
+  private put(path: string, params: string[], body: any, options?: RequestOptionsArgs): Observable<Response> {
+    return this.httpService.put(this.generatePath(path, params), body, options)
   }
 
   private get(path: string, params: string[]): Observable<Response> {

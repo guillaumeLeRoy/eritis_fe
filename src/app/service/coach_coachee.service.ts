@@ -38,7 +38,7 @@ export class CoachCoacheeService {
     return this.apiService.get(AuthService.GET_COACH_FOR_ID, params).map(
       (response: Response) => {
         console.log("getCoachForId, got coach", response);
-        let coach: Coach = response.json();
+        let coach: Coach = AuthService.parseCoach(response.json());
         return coach;
       }, (error) => {
         console.log("getCoachForId, error", error);
@@ -66,7 +66,7 @@ export class CoachCoacheeService {
     return this.apiService.get(AuthService.GET_RH_FOR_ID, params).map(
       (response: Response) => {
         console.log("getRhForId, got rh", response);
-        let rh: HR = this.apiService.parseRh(response.json());
+        let rh: HR = AuthService.parseRh(response.json());
         return rh;
       }, (error) => {
         console.log("getRhForId, error", error);

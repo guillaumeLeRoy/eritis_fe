@@ -76,6 +76,7 @@ export class AuthService {
   public static ADMIN_GET_RH = "/v1/admins/rhs/:id";
   public static ADMIN_GET_POSSIBLE_COACHS = "/v1/admins/possible_coachs";
   public static ADMIN_GET_POSSIBLE_COACH = "/v1/admins/possible_coachs/:id";
+  public static ADMIN_PUT_COACH_PROFILE_PICT = "/v1/admins/coachs/:id/profile_picture";
 
   /* Meeting */
   public static POST_MEETING = "/v1/meetings";
@@ -147,7 +148,7 @@ export class AuthService {
     return obs.map(
       (res: Response) => {
         console.log("fetchCoach, obtained from API : ", res);
-        let coach = this.parseCoach(res.json());
+        let coach = AuthService.parseCoach(res.json());
         this.onAPIuserObtained(coach, this.ApiUser.firebaseToken);
         return coach;
       }
@@ -173,7 +174,7 @@ export class AuthService {
     return obs.map(
       (res: Response) => {
         console.log("fetchRh, obtained from API : ", res);
-        let rh = this.parseRh(res.json());
+        let rh = AuthService.parseRh(res.json());
         this.onAPIuserObtained(rh, this.ApiUser.firebaseToken);
         return rh;
       }
@@ -546,25 +547,27 @@ export class AuthService {
     if (response.coach) {
       let coach = response.coach;
       //coach
-      return this.parseCoach(coach);
+      return AuthService.parseCoach(coach);
     } else if (response.coachee) {
       let coachee = response.coachee;
       //coachee
       return AuthService.parseCoachee(coachee);
     } else if (response.rh) {
       let rh = response.rh;
-      return this.parseRh(rh);
+      return AuthService.parseRh(rh);
     }
     return null;
   }
 
-  parseCoach(json: any): Coach {
+  static parseCoach(json: any): Coach {
     let coach: Coach = new Coach(json.id);
     coach.email = json.email;
     coach.first_name = json.first_name;
     coach.last_name = json.last_name;
     coach.avatar_url = json.avatar_url;
     coach.start_date = json.start_date;
+    coach.score = json.score;
+    coach.sessionsCount = json.sessions_count;
     coach.description = json.description;
     coach.chat_room_url = json.chat_room_url;
     coach.linkedin_url = json.linkedin_url;
@@ -611,7 +614,7 @@ export class AuthService {
     return coachee;
   }
 
-  parseRh(json: any): HR {
+  static parseRh(json: any): HR {
     console.log(json);
     let rh: HR = new HR(json.id);
     rh.email = json.email;

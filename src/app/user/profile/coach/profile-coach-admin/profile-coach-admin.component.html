@@ -7,7 +7,6 @@
           <i class="material-icons">keyboard_arrow_left</i>
         </button>
 
-        <!--<img src="{{(coach | async)?.avatar_url}}" alt="profile image" class="user-img circle responsive-img z-depth-2">-->
         <div class="user-img avatar z-depth-2"
              *ngIf="(coach | async)?.avatar_url != null"
              [style.background-image]="'url(' + (coach | async)?.avatar_url + ')'"></div>
@@ -22,25 +21,17 @@
 
       <div class="header-stats col-lg-7">
         <div class="row">
-          <div class="header-item col-sm-12">
-            <div class="header-item-number"><span>{{(coach | async)?.score}}</span><span class="indice"> / 5</span></div>
+          <div class="header-item col-sm-12 col-lg-6">
+            <div class="header-item-number"><span>{{(coach | async)?.score}}</span><span class="indice"> / 5</span>
+            </div>
             <p class="header-item-title">Moyenne</p>
           </div>
 
-          <!--<div class="header-item col-sm-3">-->
-          <!--<div class="header-item-number"><span>10</span><span class="indice">mois</span></div>-->
-          <!--<p class="header-item-title">Expérience</p>-->
-          <!--</div>-->
+          <div class="header-item col-sm-12 col-lg-6">
+            <div class="header-item-number"><span>{{(coach | async)?.sessionsCount}}</span></div>
+            <p class="header-item-title">séances réalisées</p>
+          </div>
 
-          <!--<div class="header-item col-sm-4">-->
-            <!--<div class="header-item-number"><span>6</span></div>-->
-            <!--<p class="header-item-title">Séances réalisées</p>-->
-          <!--</div>-->
-
-          <!--<div class="header-item col-sm-4">-->
-            <!--<div class="header-item-number"><span>3</span></div>-->
-            <!--<p class="header-item-title">Personnes coachées</p>-->
-          <!--</div>-->
         </div>
       </div>
 
@@ -52,16 +43,53 @@
   <h4 class="text-right italic">"{{ (coach | async)?.description }}"</h4>
   <br>
 
+  <!--change picture >-->
+  <div class="col-lg-6 input-container">
+    <label>Photo de profil</label>
+    <div class="avatar-container input-container">
+      <div id="avatar-preview"
+           class="avatar z-depth-2"
+           [style.background-image]="'url(' + avatarFile + ')'"
+           *ngIf="avatarFile != null"></div>
+      <div class="input-file-container">
+        <button class="btn-basic btn-blue btn-plain btn-small file-upload-button" *ngIf="!avatarLoading">Choisir une image</button>
+        <input type="file"
+               id="upload-avatar-input"
+               accept=".jpg,.png"
+               (change)="previewPicture($event)">
+
+        <button class="btn-basic btn-blue btn-plain btn-small" *ngIf="avatarFile != null && !avatarLoading"
+                (click)="uploadAvatarPicture()">Utiliser cette image
+        </button>
+
+        <div class="preloader-wrapper active" *ngIf="avatarFile != null && avatarLoading">
+          <div class="spinner-layer spinner-blue-only">
+            <div class="circle-clipper left">
+              <div class="circle"></div>
+            </div>
+            <div class="gap-patch">
+              <div class="circle"></div>
+            </div>
+            <div class="circle-clipper right">
+              <div class="circle"></div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+  <!--change picture end >-->
+
   <div>
-    <!--<div class="center">-->
-      <!--<button class="btn-basic btn-plain btn-blue btn-small center" (click)="goToCoachsAdmin()">Retourner aux coachs</button>-->
-    <!--</div>-->
+
     <br>
 
     <div class="row">
 
       <div class="center col-lg-12">
-        <a target="_blank" class="btn-basic btn-blue btn-plain btn-small" [href]="(coach | async)?.linkedin_url"><i class="fa fa-linkedin" aria-hidden="true"></i></a>
+        <a target="_blank" class="btn-basic btn-blue btn-plain btn-small" [href]="(coach | async)?.linkedin_url"><i
+          class="fa fa-linkedin" aria-hidden="true"></i></a>
         <br><br>
       </div>
 
@@ -77,9 +105,6 @@
           </div>
         </div>
       </div>
-
-
-
 
 
       <h2 class="col-lg-12 section-form-title">Formation</h2>
@@ -99,11 +124,6 @@
           </div>
         </div>
       </div>
-
-
-
-
-
 
 
       <h2 class="col-lg-12 section-form-title">Activité de coach</h2>
@@ -182,7 +202,7 @@
 
           <div class="col-lg-12 input-container">
             <label>Avez-vous une copie de votre assurance RC Pro ?</label><br>
-            <p><a [href]="(coach | async)?.assurance_url">Contrat d'assurance</a></p>
+            <p><a [href]="(coach | async)?.insurance_url">Contrat d'assurance</a></p>
             <br>
           </div>
         </div>
