@@ -13,8 +13,13 @@ html, body{
   overflow-x: hidden;
 }
 
+html {
+  height: 100%;
+}
+
 body{
   background-color: $main-white-color;
+  position: relative;
 }
 
 /* make sure containers are below the navbar */
