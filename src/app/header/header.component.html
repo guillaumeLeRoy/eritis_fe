@@ -297,7 +297,7 @@
 
 
 
-<div id="cookie_headband" class="z-depth-2">
+<div id="cookie_headband" class="z-depth-2" *ngIf="showCookiesMessage">
   <div>
     <p>Ce site utilise des cookies <a [routerLink]="'cookie-policy'">En savoir plus</a></p>
   </div>

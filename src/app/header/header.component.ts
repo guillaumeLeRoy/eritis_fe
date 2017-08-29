@@ -35,6 +35,8 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
   private forgotEmail?: string;
 
+  private showCookiesMessage = false;
+
   constructor(private router: Router, private authService: AuthService, private coachCoacheeService: CoachCoacheeService, private cd: ChangeDetectorRef, private cookieService: CookieService, private firebase: FirebaseService) {
   }
 
@@ -56,12 +58,6 @@ export class HeaderComponent implements OnInit, OnDestroy {
       this.router.navigate(['/']);
     }
 
-
-    // Cookie Headband
-    if (this.cookieService.get('ACCEPTS_COOKIES') !== undefined)
-      this.hideCookieHeadband();
-
-
     // this.connectedUser = this.authService.getConnectedUserObservable();
     this.subscription = this.authService.getConnectedUserObservable().subscribe(
       (user: Coach | Coachee | HR) => {
@@ -79,6 +75,10 @@ export class HeaderComponent implements OnInit, OnDestroy {
       }
       window.scrollTo(0, 0)
     });
+
+
+    // Cookie Headband
+    this.showCookiesMessage = this.cookieService.get('ACCEPTS_COOKIES') === undefined;
   }
 
   private onUserObtained(user: Coach | Coachee | HR) {

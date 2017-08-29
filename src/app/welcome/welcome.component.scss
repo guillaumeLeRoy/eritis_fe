@@ -94,7 +94,8 @@ rb-signin{
 
 #coach_section {
   display: inline-block;
-  background-image: linear-gradient(to top, #46b0ff, #0073cf);
+  background-color: $main-electric-blue;
+  //background-image: linear-gradient(to top, #46b0ff, #0073cf);
   box-shadow: 0 8px 12px 0 rgba(0, 0, 0, 0.5);
   text-align: center;
   color: $main-white-color;
@@ -113,6 +114,7 @@ rb-signin{
 
 .coach_section_subtitle {
   margin: 0;
+  color: $main-ultra-light-grey;
 }
 
 .coach_description {
