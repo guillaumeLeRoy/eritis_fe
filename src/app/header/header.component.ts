@@ -23,7 +23,7 @@ declare var Materialize: any;
   styleUrls: ['./header.component.scss']
 })
 export class HeaderComponent implements OnInit, OnDestroy {
-  months = ['Jan', 'Feb', 'Mar', 'Avr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+  months = ['Janvier', 'Février', 'Mars', 'Avril', 'Mai', 'Juin', 'Juillet', 'Août', 'Septembre', 'Octobre', 'Novembre', 'Décembre'];
 
   private isAuthenticated: Observable<boolean>;
   private subscription: Subscription;
@@ -278,7 +278,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   }
 
   printDateString(date: string) {
-    return this.getDate(date) + ' - ' + this.getHours(date) + ':' + this.getMinutes(date);
+    return this.getDate(date) + ' - ' + this.getHours(date) + 'h' + this.getMinutes(date);
   }
 
   getHours(date: string) {
@@ -289,6 +289,8 @@ export class HeaderComponent implements OnInit, OnDestroy {
     let m = (new Date(date)).getMinutes();
     if (m === 0)
       return '00';
+    if (m < 10)
+      return '0' + m;
     return m;
   }
 
