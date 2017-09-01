@@ -118,6 +118,7 @@ export class AvailableMeetingsComponent implements OnInit {
             console.log("confirmPotentialDate, response", meeting);
             this.onRefreshRequested();
             Materialize.toast('Meeting validé !', 3000, 'rounded')
+            window.location.reload();
           }, (error) => {
             console.log('get potentials dates error', error);
             Materialize.toast('Erreur lors de la validation du meeting', 3000, 'rounded')

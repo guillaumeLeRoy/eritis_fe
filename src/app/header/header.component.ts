@@ -12,6 +12,8 @@ import {Response} from "@angular/http";
 import {CookieService} from "ngx-cookie";
 import {PromiseObservable} from "rxjs/observable/PromiseObservable";
 import {FirebaseService} from "../service/firebase.service";
+import {MeetingsService} from "../service/meetings.service";
+import {Meeting} from "../model/meeting";
 
 
 declare var $: any;
@@ -35,9 +37,11 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
   private forgotEmail?: string;
 
+  private hasAvailableMeetings = false;
+
   private showCookiesMessage = false;
 
-  constructor(private router: Router, private authService: AuthService, private coachCoacheeService: CoachCoacheeService, private cd: ChangeDetectorRef, private cookieService: CookieService, private firebase: FirebaseService) {
+  constructor(private router: Router, private meetingService: MeetingsService, private authService: AuthService, private coachCoacheeService: CoachCoacheeService, private cd: ChangeDetectorRef, private cookieService: CookieService, private firebase: FirebaseService) {
   }
 
   ngOnInit(): void {
@@ -100,6 +104,9 @@ export class HeaderComponent implements OnInit, OnDestroy {
         this.onLogout();
       else
         console.log('onUserObtained COOKIE', this.cookieService.get('ACTIVE_SESSION'));
+
+      if (this.isUserACoach())
+        this.getAvailableMeetings();
     }
 
     this.user = Observable.of(user);
@@ -246,7 +253,16 @@ export class HeaderComponent implements OnInit, OnDestroy {
     } else {
       return true;
     }
+  }
 
+
+  private getAvailableMeetings() {
+    this.meetingService.getAvailableMeetings().subscribe(
+      (meetings: Meeting[]) => {
+        console.log('got getAvailableMeetings', meetings);
+        if (meetings != null && meetings.length > 0) this.hasAvailableMeetings = true;
+      }
+    );
   }
 
   private fetchNotificationsForUser(user: ApiUser) {
