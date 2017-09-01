@@ -7,8 +7,6 @@
           <i class="material-icons">keyboard_arrow_left</i>
         </button>
 
-        <!--<img src="{{(possibleCoach | async)?.avatar_url}}" alt="profile image"-->
-        <!--class="user-img circle responsive-img z-depth-2">-->
         <div class="user-img avatar z-depth-2"
              *ngIf="(possibleCoach | async)?.avatar_url != null"
              [style.background-image]="'url(' + (possibleCoach | async)?.avatar_url + ')'"></div>
@@ -149,7 +147,7 @@
       <div class="row">
         <div class="col-lg-12">
           <label>Avez-vous une copie de votre assurance RC Pro ?</label><br>
-          <p><a [href]="(possibleCoach | async)?.assurance_url">Contrat d'assurance</a></p>
+          <p><a [href]="(possibleCoach | async)?.insurance_url">Contrat d'assurance</a></p>
           <br>
         </div>
       </div>

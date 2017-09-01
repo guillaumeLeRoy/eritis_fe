@@ -1,11 +1,9 @@
 import {AfterViewInit, ChangeDetectorRef, Component, EventEmitter, Input, OnInit, Output} from "@angular/core";
 import {Coachee} from "../../../../model/Coachee";
 import {PotentialCoachee} from "../../../../model/PotentialCoachee";
-import {CoachCoacheeService} from "../../../../service/coach_coachee.service";
 import {Meeting} from "../../../../model/Meeting";
 import {Observable} from "rxjs/Observable";
 import {MeetingsService} from "../../../../service/meetings.service";
-import {RhUsageRate} from "app/model/UsageRate";
 import {MeetingReview} from "../../../../model/MeetingReview";
 import {Router} from "@angular/router";
 
@@ -42,21 +40,15 @@ export class MeetingItemRhComponent implements OnInit, AfterViewInit {
   private hasBookedMeeting = false;
   private goals = {};
 
-  private coacheeUsageRate: Observable<RhUsageRate>;
-
-  // private coacheeUsageRate: Observable<RhUsageRate>;
-
-  constructor(private meetingsService: MeetingsService, private coachCoacheeService: CoachCoacheeService, private cd: ChangeDetectorRef, private router: Router) {
+  constructor(private meetingsService: MeetingsService, private cd: ChangeDetectorRef, private router: Router) {
   }
 
   ngOnInit(): void {
     console.log('ngOnInit, coachee : ', this.coachee);
 
     if (this.coachee != null) {
-      this.getUsageRate(this.coachee.id);
       this.getAllMeetingsForCoachee(this.coachee.id);
     }
-
   }
 
   ngAfterViewInit(): void {
@@ -131,26 +123,8 @@ export class MeetingItemRhComponent implements OnInit, AfterViewInit {
       });
   }
 
-  private getUsageRate(rhId: string) {
-    this.coachCoacheeService.getUsageRate(rhId).subscribe(
-      (rate: RhUsageRate) => {
-        console.log("getUsageRate, rate : ", rate);
-        this.coacheeUsageRate = Observable.of(rate);
-      }
-    );
-  }
-
   onClickAddObjectiveBtn() {
     this.onUpdateObjectiveBtnClick.emit(this.coachee.id);
   }
-
-  // private getUsageRate(rhId: string) {
-  //   this.coachCoacheeService.getUsageRate(rhId).subscribe(
-  //     (rate: RhUsageRate) => {
-  //       console.log("getUsageRate, rate : ", rate);
-  //       this.coacheeUsageRate = Observable.of(rate);
-  //     }
-  //   );
-  // }
 
 }

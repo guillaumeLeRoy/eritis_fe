@@ -61,6 +61,10 @@ import {CookieModule} from "ngx-cookie";
 import {NgsRevealModule} from "ng-scrollreveal";
 import {LoaderSpinnerComponent} from "./loader/loader-spinner/loader-spinner.component";
 import {SharedModule} from "./shared/shared.module";
+import { FooterComponent } from './footer/footer.component';
+import { LegalNoticeComponent } from './legals/legal-notice/legal-notice.component';
+import { TermsOfUseComponent } from './legals/terms-of-use/terms-of-use.component';
+import { CookiePolicyComponent } from './legals/cookie-policy/cookie-policy.component';
 
 @NgModule({
   declarations: [
@@ -104,7 +108,11 @@ import {SharedModule} from "./shared/shared.module";
     ProfilePossibleCoachComponent,
     ProfileCoacheeAdminComponent,
     ProfileRhAdminComponent,
-    LoaderSpinnerComponent
+    LoaderSpinnerComponent,
+    FooterComponent,
+    LegalNoticeComponent,
+    TermsOfUseComponent,
+    CookiePolicyComponent
   ],
   imports: [
     BrowserAnimationsModule,

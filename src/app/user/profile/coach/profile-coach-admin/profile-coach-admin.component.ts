@@ -4,9 +4,9 @@ import {AdminAPIService} from "../../../../service/adminAPI.service";
 import {Subscription} from "rxjs/Subscription";
 import {Observable} from "rxjs/Observable";
 import {Coach} from "../../../../model/Coach";
-import {CoachCoacheeService} from "app/service/coach_coachee.service";
 
 declare var Materialize: any;
+declare var $: any;
 
 @Component({
   selector: 'er-profile-coach-admin',
@@ -18,9 +18,13 @@ export class ProfileCoachAdminComponent implements OnInit, AfterViewInit, OnDest
   private coach: Observable<Coach>;
   private subscriptionGetCoach: Subscription;
 
-  loading: boolean = true;
+  private loading: boolean = true;
 
-  constructor(private apiService: AdminAPIService, private router: Router, private cd: ChangeDetectorRef, private route: ActivatedRoute) {
+  private avatarLoading = false;
+  private avatarFile: File;
+
+
+  constructor(private apiService: AdminAPIService, private router: Router, private cd: ChangeDetectorRef, private route: ActivatedRoute, private adminAPIService: AdminAPIService) {
   }
 
   ngOnInit() {
@@ -74,6 +78,47 @@ export class ProfileCoachAdminComponent implements OnInit, AfterViewInit, OnDest
     if (this.subscriptionGetCoach) {
       console.log("Unsubscribe coach");
       this.subscriptionGetCoach.unsubscribe();
+    }
+  }
+
+  previewPicture(event: any) {
+    console.log('filePreview', event.target.files[0]);
+
+    this.avatarFile = event.target.files[0];
+
+    if (event.target.files && event.target.files[0]) {
+      let reader = new FileReader();
+
+      reader.onload = function (e: any) {
+        $('#avatar-preview').css('background-image', 'url(' + e.target.result + ')');
+      }
+
+      reader.readAsDataURL(event.target.files[0]);
+    }
+  }
+
+  uploadAvatarPicture() {
+
+    if (this.avatarFile !== null && this.avatarFile !== undefined) {
+      console.log("Upload avatar");
+      this.avatarLoading = true;
+
+      this.coach.last().flatMap(
+        (coach: Coach) => {
+          return this.adminAPIService.updateCoachProfilePicture(coach.id, this.avatarFile);
+        }
+      ).subscribe(
+        (res: any) => {
+          // refresh page
+          console.log("Upload avatar, DONE, res : " + res);
+          this.avatarLoading = false;
+          window.location.reload();
+        }, (error) => {
+          Materialize.toast('Impossible de modifier votre photo', 3000, 'rounded');
+          this.avatarLoading = false;
+        }
+      );
+
     }
   }
 }

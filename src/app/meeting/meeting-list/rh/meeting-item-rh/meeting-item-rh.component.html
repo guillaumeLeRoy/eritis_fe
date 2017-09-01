@@ -24,7 +24,7 @@
           <div class="meeting-item-date">
             <div class="meeting-item-date-date">
               <span class="usage-title">Utilisation: </span>
-              <span class="blue-text">{{ (coacheeUsageRate | async)?.usage_rate}}%</span>
+              <span class="blue-text">{{ coachee.sessionsDoneMonthCount }}</span> sessions ce mois-ci
             </div>
           </div>
         </div>
@@ -94,7 +94,8 @@
 
           <!-- PLAN -->
           <div class="meeting-item-date">
-            <span class="meeting-item-date-date"><span class="blue-text">{{ potentialCoachee.plan.sessions_count }}</span> séances</span>
+            <span class="meeting-item-date-date"><span
+              class="blue-text">{{ potentialCoachee.plan.sessions_count }}</span> séances</span>
           </div>
         </div>
       </div>

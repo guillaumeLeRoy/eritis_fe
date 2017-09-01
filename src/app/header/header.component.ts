@@ -35,6 +35,8 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
   private forgotEmail?: string;
 
+  private showCookiesMessage = false;
+
   constructor(private router: Router, private authService: AuthService, private coachCoacheeService: CoachCoacheeService, private cd: ChangeDetectorRef, private cookieService: CookieService, private firebase: FirebaseService) {
   }
 
@@ -73,6 +75,10 @@ export class HeaderComponent implements OnInit, OnDestroy {
       }
       window.scrollTo(0, 0)
     });
+
+
+    // Cookie Headband
+    this.showCookiesMessage = this.cookieService.get('ACCEPTS_COOKIES') === undefined;
   }
 
   private onUserObtained(user: Coach | Coachee | HR) {
@@ -133,7 +139,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
       console.log('goToHomeAdmin');
       this.navigateAdminHome();
     }
-    if (this.isSigningUp()) {
+    else {
       console.log('goToWelcomePage');
       this.goToWelcomePage();
     }
@@ -331,6 +337,12 @@ export class HeaderComponent implements OnInit, OnDestroy {
   navigateToPossibleCoachsList() {
     console.log("navigateToPossibleCoachsList")
     this.router.navigate(['admin/possible_coachs-list']);
+  }
+
+
+  hideCookieHeadband() {
+    $('#cookie_headband').fadeOut();
+    this.cookieService.put('ACCEPTS_COOKIES', 'true');
   }
 
 

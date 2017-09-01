@@ -1,6 +1,8 @@
 <div [ngsReveal]="{distance: '100px', origin: 'right', duration: 1000, delay: 200}">
   <h3 class="text-right welcome-message">Bonjour {{ (user | async)?.first_name}},<br>
-    Le taux total d'utilisation de vos collaborateurs est de <span class="blue-text">{{(rhUsageRate | async)?.usage_rate}}%</span>
+    Ce mois-ci <span class="blue-text">{{(HrUsageRate | async)?.sessions_done_month_count}}</span> séances on été
+    réalisées
+    pour {{(HrUsageRate | async)?.available_sessions_count}} séances possibles
   </h3>
   <p class="text-right">
     <span class="blue-text">Cliquez</span> ici pour ajouter un manager
@@ -55,9 +57,6 @@
     </div><!--end card-->
   </div><!--end row-->
 </div>
-
-
-
 
 
 <!-- Modal RH add Coachee -->

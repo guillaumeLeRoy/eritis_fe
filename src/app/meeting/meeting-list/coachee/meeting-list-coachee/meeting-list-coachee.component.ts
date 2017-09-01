@@ -8,8 +8,7 @@ import {Meeting} from "../../../../model/Meeting";
 import {Subscription} from "rxjs/Subscription";
 import {Coachee} from "../../../../model/Coachee";
 import {Coach} from "../../../../model/Coach";
-import {RhUsageRate} from "../../../../model/UsageRate";
-import {HR} from "../../../../model/HR";
+import {HRUsageRate} from "../../../../model/HRUsageRate";
 import {ApiUser} from "../../../../model/ApiUser";
 
 declare var $: any;
@@ -39,10 +38,10 @@ export class MeetingListCoacheeComponent implements OnInit, AfterViewInit, OnDes
 
   private meetingToCancel: Meeting;
 
-  private rhUsageRate: Observable<RhUsageRate>;
+  private rhUsageRate: Observable<HRUsageRate>;
 
   private rateSessionMeetingId: string
-  private sessionRate ='0';
+  private sessionRate = '0';
   private sessionPreRate = '0';
 
   constructor(private router: Router, private meetingsService: MeetingsService, private coachCoacheeService: CoachCoacheeService, private authService: AuthService, private cd: ChangeDetectorRef) {
@@ -171,7 +170,7 @@ export class MeetingListCoacheeComponent implements OnInit, AfterViewInit, OnDes
 
   private getUsageRate(rhId: string) {
     this.coachCoacheeService.getUsageRate(rhId).subscribe(
-      (rate: RhUsageRate) => {
+      (rate: HRUsageRate) => {
         console.log("getUsageRate, rate : ", rate);
         this.rhUsageRate = Observable.of(rate);
       }

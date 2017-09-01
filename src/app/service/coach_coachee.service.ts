@@ -6,7 +6,7 @@ import {Response} from "@angular/http";
 import {AuthService} from "./auth.service";
 import {PotentialCoachee} from "../model/PotentialCoachee";
 import {Coachee} from "../model/Coachee";
-import {RhUsageRate} from "../model/UsageRate";
+import {HRUsageRate} from "../model/HRUsageRate";
 import {PotentialCoach} from "../model/PotentialCoach";
 import {PotentialRh} from "../model/PotentialRh";
 import {Notif} from "../model/Notif";
@@ -38,9 +38,9 @@ export class CoachCoacheeService {
     return this.apiService.get(AuthService.GET_COACH_FOR_ID, params).map(
       (response: Response) => {
         console.log("getCoachForId, got coach", response);
-        let coach: Coach = response.json();
+        let coach: Coach = AuthService.parseCoach(response.json());
         return coach;
-      },(error) => {
+      }, (error) => {
         console.log("getCoachForId, error", error);
       });
   }
@@ -66,7 +66,7 @@ export class CoachCoacheeService {
     return this.apiService.get(AuthService.GET_RH_FOR_ID, params).map(
       (response: Response) => {
         console.log("getRhForId, got rh", response);
-        let rh: HR = this.apiService.parseRh(response.json());
+        let rh: HR = AuthService.parseRh(response.json());
         return rh;
       }, (error) => {
         console.log("getRhForId, error", error);
@@ -78,9 +78,14 @@ export class CoachCoacheeService {
     let param = [rhId];
     return this.apiService.get(AuthService.GET_COACHEES_FOR_RH, param).map(
       (response: Response) => {
-        let json: Coachee[] = response.json();
-        console.log("getAllCoacheesForRh, response json : ", json);
-        return json;
+        let json: any[] = response.json();
+
+        let coachees: Coachee[] = new Array;
+        for (let jsonCoachee of json) {
+          coachees.push(AuthService.parseCoachee(jsonCoachee));
+        }
+        console.log("getAllCoacheesForRh, coachees : ", coachees);
+        return coachees;
       });
   }
 
@@ -113,12 +118,12 @@ export class CoachCoacheeService {
     return this.apiService.getPotentialRh(AuthService.GET_POTENTIAL_RH_FOR_TOKEN, param);
   }
 
-  getUsageRate(rhId: string): Observable<RhUsageRate> {
+  getUsageRate(rhId: string): Observable<HRUsageRate> {
     console.log("getUsageRate, start request");
     let param = [rhId];
     return this.apiService.get(AuthService.GET_USAGE_RATE_FOR_RH, param).map(
       (response: Response) => {
-        let json: RhUsageRate = response.json();
+        let json: HRUsageRate = response.json();
         console.log("getUsageRate, response json : ", json);
         return json;
       });
@@ -141,7 +146,7 @@ export class CoachCoacheeService {
     let path = AuthService.GET_COACHEE_NOTIFICATIONS;
     if (user instanceof Coach) {
       path = AuthService.GET_COACH_NOTIFICATIONS;
-    } else if (user instanceof  HR) {
+    } else if (user instanceof HR) {
       path = AuthService.GET_RH_NOTIFICATIONS;
     }
 
@@ -161,7 +166,7 @@ export class CoachCoacheeService {
     let path = AuthService.PUT_COACHEE_NOTIFICATIONS_READ;
     if (user instanceof Coach) {
       path = AuthService.PUT_COACH_NOTIFICATIONS_READ;
-    } else if (user instanceof  HR) {
+    } else if (user instanceof HR) {
       path = AuthService.PUT_RH_NOTIFICATIONS_READ;
     }
 
