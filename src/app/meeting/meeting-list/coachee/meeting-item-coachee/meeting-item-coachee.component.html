@@ -28,10 +28,13 @@
 
           <div *ngIf="(potentialDates | async) != null">
             <span class="meeting-item-coach-name">Un coach vous sera bientôt attribué</span>
-            
-            <div class="meeting-item-coach-name">Vous avez renseigné les dates suivantes</div>
+
+            <h5>Vous avez renseigné les dates suivantes</h5>
+
             <div *ngFor="let date of (potentialDates | async)">
-              <div>{{date.start_date}}</div>
+              <div>Le {{ meetingDateToString(date)}}, entre
+                {{printTimeString(date.start_date) }} - {{printTimeString(date.end_date) }}
+              </div>
             </div>
           </div>
 

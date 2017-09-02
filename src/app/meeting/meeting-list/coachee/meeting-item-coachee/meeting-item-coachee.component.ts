@@ -6,6 +6,7 @@ import {MeetingReview} from "../../../../model/MeetingReview";
 import {MeetingDate} from "../../../../model/MeetingDate";
 import {Router} from "@angular/router";
 import {MeetingsService} from "../../../../service/meetings.service";
+import {Utils} from "../../../../utils/Utils";
 
 declare var $: any;
 declare var Materialize: any;
@@ -104,19 +105,12 @@ export class MeetingItemCoacheeComponent implements OnInit {
     );
   }
 
+  meetingDateToString(date: MeetingDate): string {
+    return Utils.meetingDateToString(date);
+  }
+
   printTimeString(date: string) {
-    return this.getHours(date) + ':' + this.getMinutes(date);
-  }
-
-  getHours(date: string) {
-    return (new Date(date)).getHours();
-  }
-
-  getMinutes(date: string) {
-    let m = (new Date(date)).getMinutes();
-    if (m === 0)
-      return '00';
-    return m;
+    return Utils.dateToString(date);
   }
 
   getDate(date: string) {

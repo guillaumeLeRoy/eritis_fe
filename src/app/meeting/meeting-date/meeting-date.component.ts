@@ -7,6 +7,7 @@ import {MeetingDate} from "../../model/MeetingDate";
 import {ActivatedRoute, Router} from "@angular/router";
 import {MeetingReview} from "../../model/MeetingReview";
 import {MeetingsService} from "../../service/meetings.service";
+import {Utils} from "../../utils/Utils";
 
 declare var Materialize: any;
 
@@ -164,8 +165,8 @@ export class MeetingDateComponent implements OnInit, OnDestroy {
     //find the potentialDate we want to modify
     for (let potential of this.potentialDatesArray) {
       if (potential.id === potentialDateId) {
-        let startTime = this.getHours(potential.start_date);
-        let endTime = this.getHours(potential.end_date);
+        let startTime = Utils.getHours(potential.start_date);
+        let endTime = Utils.getHours(potential.end_date);
         //switch to edit mode
         this.isEditingPotentialDate = true;
         this.mEditingPotentialTimeId = potentialDateId;
@@ -175,32 +176,11 @@ export class MeetingDateComponent implements OnInit, OnDestroy {
     }
   }
 
-  printTimeDate(date: string): string {
-    let d = new Date(date);
-    return "" + d.getDate() + " " + d.getMonth() + 1 + " " + d.getFullYear();
-  }
-
-  printTimeNumber(hour: number) {
+  printTimeNumber(hour: number): string {
     if (hour === Math.round(hour))
       return hour + ':00'
     else
       return Math.round(hour) - 1 + ':30'
-  }
-
-  printTimeString(date: string) {
-    return this.getHours(date) + ':' + this.getMinutes(date);
-  }
-
-  getHours(date: string): number {
-    return (new Date(date)).getHours();
-  }
-
-  getMinutes(date: string): number {
-    let m = (new Date(date)).getMinutes();
-    if (m === 0) {
-      return 0;
-    }
-    return m;
   }
 
   resetValues() {
@@ -209,14 +189,21 @@ export class MeetingDateComponent implements OnInit, OnDestroy {
     this.timeRange = [10, 18];
   }
 
-  dateToString(date: NgbDateStruct) {
+  printTimeString(date: string): string {
+    return Utils.dateToString(date);
+  }
+
+  meetingDateToString(date: MeetingDate): string {
+    return Utils.meetingDateToString(date);
+  }
+
+  dateToString(date: NgbDateStruct): string {
     let newDate = new Date(this.dateModel.year, this.dateModel.month - 1, this.dateModel.day);
     return this.days[newDate.getDay()] + ' ' + date.day + ' ' + this.months[newDate.getMonth()];
   }
 
-  stringToDate(date: string): any {
-    let d = new Date(date);
-    return {day: d.getDate(), month: d.getMonth() + 1, year: d.getFullYear()};
+  stringToDate(date: string): NgbDateStruct {
+    return Utils.stringToDate(date);
   }
 
   compareDates(date1: NgbDateStruct, date2: NgbDateStruct) {
