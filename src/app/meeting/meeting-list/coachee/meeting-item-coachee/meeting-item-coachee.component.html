@@ -9,9 +9,6 @@
         <div class="meeting-item-coach has-coach" *ngIf="meeting.coach"
              (click)="goToCoachProfile(meeting.coach.id)">
           <div>
-            <!-- image coach-->
-            <!--<img class="meeting-item-coach-avatar circle img-responsive" alt="coach"-->
-                 <!--[src]="meeting.coach.avatar_url">-->
             <div class="meeting-item-coach-avatar avatar"
                  [style.background-image]="'url(' + meeting.coach.avatar_url + ')'"></div>
           </div>
@@ -31,6 +28,11 @@
 
           <div *ngIf="(potentialDates | async) != null">
             <span class="meeting-item-coach-name">Un coach vous sera bientôt attribué</span>
+            
+            <div class="meeting-item-coach-name">Vous avez renseigné les dates suivantes</div>
+            <div *ngFor="let date of (potentialDates | async)">
+              <div>{{date.start_date}}</div>
+            </div>
           </div>
 
           <div *ngIf="(potentialDates | async) == null">
@@ -49,9 +51,6 @@
             <span>En attente...</span>
           </div>
 
-          <!--<button *ngIf="!meeting.agreed_date" class="btn-basic btn-blue btn-small" (click)="goToModifyDate(meeting.id)">-->
-          <!--Modifier-->
-          <!--</button>-->
         </div>
       </div>
     </div>
@@ -62,7 +61,7 @@
         <p>
           <span class="black-text bold">Contexte de la séance</span><br>
           <span *ngIf="hasContext">{{context | async}}</span>
-          <span *ngIf="!hasContext" class="red-text">Veuillez définir votre context.</span>
+          <span *ngIf="!hasContext" class="red-text">Veuillez définir votre contexte.</span>
         </p>
 
         <br>

@@ -1,11 +1,10 @@
-import {Component, OnInit, ChangeDetectorRef, OnDestroy} from '@angular/core';
-import {NgbDateStruct} from '@ng-bootstrap/ng-bootstrap';
-import {ApiUser} from '../../model/ApiUser';
-import {CoachCoacheeService} from '../../service/coach_coachee.service';
-import {AuthService} from '../../service/auth.service';
-import {Observable, Subscription} from 'rxjs';
-import {MeetingDate} from '../../model/MeetingDate';
-import {ActivatedRoute, Router} from '@angular/router';
+import {ChangeDetectorRef, Component, OnDestroy, OnInit} from "@angular/core";
+import {NgbDateStruct} from "@ng-bootstrap/ng-bootstrap";
+import {ApiUser} from "../../model/ApiUser";
+import {AuthService} from "../../service/auth.service";
+import {Observable, Subscription} from "rxjs";
+import {MeetingDate} from "../../model/MeetingDate";
+import {ActivatedRoute, Router} from "@angular/router";
 import {MeetingReview} from "../../model/MeetingReview";
 import {MeetingsService} from "../../service/meetings.service";
 
@@ -176,6 +175,11 @@ export class MeetingDateComponent implements OnInit, OnDestroy {
     }
   }
 
+  printTimeDate(date: string): string {
+    let d = new Date(date);
+    return "" + d.getDate() + " " + d.getMonth() + 1 + " " + d.getFullYear();
+  }
+
   printTimeNumber(hour: number) {
     if (hour === Math.round(hour))
       return hour + ':00'
@@ -187,14 +191,15 @@ export class MeetingDateComponent implements OnInit, OnDestroy {
     return this.getHours(date) + ':' + this.getMinutes(date);
   }
 
-  getHours(date: string) {
+  getHours(date: string): number {
     return (new Date(date)).getHours();
   }
 
-  getMinutes(date: string) {
+  getMinutes(date: string): number {
     let m = (new Date(date)).getMinutes();
-    if (m === 0)
-      return '00';
+    if (m === 0) {
+      return 0;
+    }
     return m;
   }
 
@@ -209,7 +214,7 @@ export class MeetingDateComponent implements OnInit, OnDestroy {
     return this.days[newDate.getDay()] + ' ' + date.day + ' ' + this.months[newDate.getMonth()];
   }
 
-  stringToDate(date: string) {
+  stringToDate(date: string): any {
     let d = new Date(date);
     return {day: d.getDate(), month: d.getMonth() + 1, year: d.getFullYear()};
   }
@@ -232,7 +237,7 @@ export class MeetingDateComponent implements OnInit, OnDestroy {
     let newDate = new Date(date.year, date.month - 1, date.day);
     // TODO add this to block next month days
     // TODO date.month !== current.month ||
-    return (newDate.getDay() === 6 || newDate.getDay() === 0 || date.year < now.getFullYear() || (date.month < now.getMonth()+1 && date.year <= now.getFullYear()) || (date.year <= now.getFullYear() && date.month == now.getMonth()+1 && date.day < now.getDate()));
+    return (newDate.getDay() === 6 || newDate.getDay() === 0 || date.year < now.getFullYear() || (date.month < now.getMonth() + 1 && date.year <= now.getFullYear()) || (date.year <= now.getFullYear() && date.month == now.getMonth() + 1 && date.day < now.getDate()));
   }
 
   /**
