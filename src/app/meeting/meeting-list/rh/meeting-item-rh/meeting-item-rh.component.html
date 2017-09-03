@@ -8,8 +8,6 @@
         <div>
           <div class="meeting-item-coach has-coach" (click)="goToCoacheeProfile(coachee.id)">
             <div>
-              <!-- image coachee -->
-              <!--<img class="meeting-item-coach-avatar circle img-responsive" alt="coachee" [src]="coachee.avatar_url">-->
               <div class="meeting-item-coach-avatar avatar"
                    [style.background-image]="'url(' + coachee.avatar_url + ')'"></div>
             </div>
@@ -61,7 +59,7 @@
             <div *ngFor="let meeting of (meetings | async)">
               <div class="row">
                 <div class=" col-md-3">
-                  <span class="meeting-list-date">{{ printDateString(meeting.agreed_date.start_date) }}</span>
+                  <span class="meeting-list-date">Pour le {{ printDateString(meeting.agreed_date.start_date) }}</span>
                 </div>
                 <div class="col-md-9">
                   <span class="black-text bold">Objectif de la séance: </span>
@@ -69,6 +67,32 @@
                 </div>
               </div>
               <br>
+
+              <div class="row">
+                <div class=" col-md-12">
+                  <span class="black-text bold">Note donnée : </span>
+
+                  <div class="ratebar center">
+                    <div class="rate-star" [class.selected]="sessionRates[meeting.id] > 0">
+                      <i class="material-icons star">star</i>
+                    </div>
+                    <div class="rate-star" [class.selected]="sessionRates[meeting.id] > 1">
+                      <i class="material-icons star">star</i>
+                    </div>
+                    <div class="rate-star" [class.selected]="sessionRates[meeting.id] > 2">
+                      <i class="material-icons star">star</i>
+                    </div>
+                    <div class="rate-star" [class.selected]="sessionRates[meeting.id] > 3">
+                      <i class="material-icons star">star</i>
+                    </div>
+                    <div class="rate-star" [class.selected]="sessionRates[meeting.id] > 4">
+                      <i class="material-icons star">star</i>
+                    </div>
+                  </div>
+
+                </div>
+              </div>
+
             </div><!--enf ngFor-->
           </div><!--end ngIf-->
         </div>

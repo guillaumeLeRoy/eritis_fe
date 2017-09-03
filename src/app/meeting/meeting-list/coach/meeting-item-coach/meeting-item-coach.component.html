@@ -5,26 +5,10 @@
     <!-- COACHEE -->
     <div class="meeting-item-header col-md-12 col-lg-5">
       <div>
-        <!--<div class="meeting-item-coach">-->
-        <!--<div>-->
-        <!--&lt;!&ndash; image coach&ndash;&gt;-->
-        <!--<img *ngIf="meeting.coachee" class="meeting-item-coach-avatar circle img-responsive" alt="coachee"-->
-        <!--[src]="meeting.coachee.avatar_url">-->
-        <!--<img *ngIf="!meeting.coachee" class="meeting-item-coach-avatar circle img-responsive" alt="coachee"-->
-        <!--src="https://s-media-cache-ak0.pinimg.com/originals/af/25/49/af25490494d3338afef00869c59fdd37.png">-->
-        <!--</div>-->
-
-        <!--<div>-->
-        <!--<p class="meeting-item-coach-name black-text bold" *ngIf="meeting.coachee">{{ meeting.coachee.display_name }}</p>-->
-        <!--<p class="italic">Company name</p>-->
-        <!--</div>-->
-        <!--</div>&lt;!&ndash;end meeting-item-coach&ndash;&gt;-->
 
         <div class="meeting-item-coach has-coach" (click)="goToCoacheeProfile(meeting.coachee.id)">
           <div>
             <!-- image coachee-->
-            <!--<img class="meeting-item-coach-avatar circle img-responsive" alt="coach"-->
-                 <!--[src]="meeting.coachee.avatar_url">-->
             <div class="meeting-item-coach-avatar avatar"
                  [style.background-image]="'url(' + meeting.coachee.avatar_url + ')'"></div>
           </div>
@@ -74,8 +58,33 @@
             <p><span class="black-text bold">Avec quoi êtes vous reparti ? </span><br>{{ reviewNextStep }}</p>
             <br>
             <p><span class="black-text bold">En quoi la séance a-t-elle été utile ? </span><br>{{ reviewValue }}</p>
-
           </div>
+          <br>
+          <div *ngIf="hasRate">
+            <p><span class="black-text bold">Vous avez reçu la note de :</span></p>
+
+            <br>
+
+            <div class="ratebar center">
+              <div class="rate-star" [class.selected]="sessionRate > 0">
+                <i class="material-icons star">star</i>
+              </div>
+              <div class="rate-star" [class.selected]="sessionRate > 1">
+                <i class="material-icons star">star</i>
+              </div>
+              <div class="rate-star" [class.selected]="sessionRate > 2">
+                <i class="material-icons star">star</i>
+              </div>
+              <div class="rate-star" [class.selected]="sessionRate > 3">
+                <i class="material-icons star">star</i>
+              </div>
+              <div class="rate-star" [class.selected]="sessionRate > 4">
+                <i class="material-icons star">star</i>
+              </div>
+            </div>
+          </div> <!--rate end-->
+
+
         </div><!--end meeting-review-->
 
         <!--Demandes disponibles-->
@@ -108,21 +117,12 @@
                   </option>
                 </select>
               </div>
-              <!--<div>-->
-              <!--<button type="submit" class="btn-basic btn-blue btn-small"-->
-              <!--[disabled]="!selectedDate || !selectedHour"-->
-              <!--(click)="openCoachValidateMeetingModal()">Devenir coach-->
-              <!--</button>-->
-              <!--</div>-->
             </form>
           </div>
         </div><!--end meeting-review-->
       </div>
 
       <div class="meeting-item-body-buttons" *ngIf="meeting.isOpen">
-        <!--<button class="btn-basic btn-plain btn-blue btn-small"-->
-        <!--(click)="toggleShowDetails()">DETAIL-->
-        <!--</button>-->
         <button type="submit" class="btn-basic btn-blue btn-plain btn-small"
                 *ngIf="!meeting.agreed_date"
                 [disabled]="!selectedDate || !selectedHour"
@@ -133,11 +133,6 @@
                 *ngIf="meeting.agreed_date"
                 (click)="onCloseMeetingBtnClick()">Clore
         </button>
-        <!--<button class="btn-basic btn-cancel"-->
-        <!--*ngIf="meeting.agreed_date"-->
-        <!--(click)="openModal()">-->
-        <!--<i class="material-icons">clear</i>-->
-        <!--</button>-->
       </div>
     </div><!--end meeting-item-body-->
 
@@ -145,107 +140,3 @@
 
 </div><!--end meeting-item-->
 
-
-<!--
-<div class="card">
-  <div class="card-content">
-    <span class="card-title">Vous avez été choisi par {{ coachee.display_name }} pour une séance.</span>
-
-
-    &lt;!&ndash; Meeting is closed&ndash;&gt;
-    <div *ngIf="!meeting.isOpen">
-      <h4>Meeting is now closed</h4>
-    </div>
-
-    &lt;!&ndash; Meeting is open &ndash;&gt;
-    <div *ngIf="meeting.isOpen">
-      <div class="col s12" *ngIf="meeting.agreed_date == null">
-
-        &lt;!&ndash; no potential dates selected&ndash;&gt;
-        <div class="section" *ngIf="(potentialDates | async)== null">
-          <h5>Votre coachee doit d'abord indiquer ses préférences horaires</h5>
-        </div>
-
-        &lt;!&ndash; some potential dates selected&ndash;&gt;
-        <div class="section" *ngIf="(potentialDates | async)!= null">
-          <h5>Votre coachee a indiqué ses préférences horaires</h5>
-
-          &lt;!&ndash; list of potential dates &ndash;&gt;
-          <div *ngFor="let date of potentialDates | async">
-            <h6>Possible date</h6>
-            <p>Le : {{date.start_date | date}}</p>
-            <p>De : {{date.start_date | date:'shortTime'}}</p>
-            <p>A : {{date.end_date | date:'shortTime'}}</p>
-
-            <button class="btn cyan waves-effect waves-light right" (click)="confirmPotentialDate(date)">
-              Confirmer cette date
-              <i class="mdi-content-send right"></i>
-            </button>
-
-          </div>
-        </div>
-
-      </div>
-
-      <div class="col s12" *ngIf="meeting.agreed_date ">
-        <h5>Votre meeting est le : {{meeting.agreed_date.start_date | date}} à {{meeting.agreed_date.start_date | date:'shortTime'}} </h5>
-      </div>
-
-    </div>
-
-
-    &lt;!&ndash; check if you have some reviews&ndash;&gt;
-    <div class="container" *ngIf="(hasSomeReviews | async)">
-
-      <h4>Comments</h4>
-
-      &lt;!&ndash; list of reviews &ndash;&gt;
-      <div *ngFor="let review of reviews | async">
-
-        <div class="card">
-          <div class="card-content">
-            <span class="card-title">Meeting Review</span>
-            <div class="list-group-item-text">at : {{review.date}}</div>
-            <div class="list-group-item-text">comment : {{review.comment}}</div>
-            <div class="list-group-item-text">score : {{review.score}}</div>
-          </div>
-        </div>
-      </div>
-
-    </div>
-    &lt;!&ndash; /reviews&ndash;&gt;
-
-    &lt;!&ndash; Display Close Form is the Meeting is still open &ndash;&gt;
-    <div *ngIf="meeting.isOpen" class="card">
-
-      <div class="card-content">
-
-        <h5>Close this meeting</h5>
-
-        <form [formGroup]="closeMeetingForm" (ngSubmit)="submitCloseMeetingForm()">
-
-          <div class="form-group">
-            <label for="recap">Résumé du meeting</label>
-            <input
-              type="text"
-              id="recap"
-              class="form-control"
-              formControlName="recap">
-          </div>
-
-          &lt;!&ndash;<button type="submit" class="btn btn-success">Envoyer</button>&ndash;&gt;
-          &lt;!&ndash;<button type="submit" class="btn btn-success" [disabled]="!closeMeetingForm.valid">Envoyer</button>&ndash;&gt;
-          <button class="btn cyan waves-effect waves-light right" type="submit" name="action">
-            Fermer le meeting
-            <i class="mdi-content-send right"></i>
-          </button>
-        </form>
-      </div>
-    </div>
-
-
-  </div>
-
-
-</div>
--->

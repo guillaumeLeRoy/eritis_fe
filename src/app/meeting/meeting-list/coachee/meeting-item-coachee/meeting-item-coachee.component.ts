@@ -55,7 +55,7 @@ export class MeetingItemCoacheeComponent implements OnInit {
   private hasSessionUtility: boolean;
 
   /**
-   * Coach rate given by coache
+   * Coach rate given by coachee
    */
   private sessionRate: string;
   private hasRate: boolean;

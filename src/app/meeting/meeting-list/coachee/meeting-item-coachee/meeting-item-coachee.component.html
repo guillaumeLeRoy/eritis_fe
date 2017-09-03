@@ -83,6 +83,35 @@
             <p><span class="black-text bold">En quoi la séance a-t-elle été utile ? </span><br>{{ sessionUtility }}</p>
           </div>
         </div><!--end meeting-review-->
+
+        <br>
+
+        <!--rate -->
+        <div *ngIf="!meeting.isOpen && hasRate">
+          <p><span class="black-text bold">Vous avez donné la note de :</span></p>
+
+          <br>
+
+          <div class="ratebar center">
+            <div class="rate-star" [class.selected]="sessionRate > 0">
+              <i class="material-icons star">star</i>
+            </div>
+            <div class="rate-star" [class.selected]="sessionRate > 1">
+              <i class="material-icons star">star</i>
+            </div>
+            <div class="rate-star" [class.selected]="sessionRate > 2">
+              <i class="material-icons star">star</i>
+            </div>
+            <div class="rate-star" [class.selected]="sessionRate > 3">
+              <i class="material-icons star">star</i>
+            </div>
+            <div class="rate-star" [class.selected]="sessionRate > 4">
+              <i class="material-icons star">star</i>
+            </div>
+          </div>
+
+        </div> <!--rate end-->
+
       </div>
 
       <div class="meeting-item-body-buttons" *ngIf="meeting.isOpen">
@@ -99,6 +128,8 @@
       <div class="meeting-item-body-buttons" *ngIf="!meeting.isOpen && !hasRate">
         <button class="btn-basic btn-plain btn-blue btn-small" (click)="rateSession()">NOTER</button>
       </div>
+
+
     </div><!--end meeting-item-body-->
 
   </div><!--end row-->

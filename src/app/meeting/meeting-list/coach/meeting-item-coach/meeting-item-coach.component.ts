@@ -65,6 +65,12 @@ export class MeetingItemCoachComponent implements OnInit, AfterViewInit {
 
   private connectedUserSubscription: Subscription;
 
+  /**
+   * Coach rate given by coachee
+   */
+  private sessionRate: string;
+  private hasRate: boolean;
+
   constructor(private authService: AuthService, private meetingService: MeetingsService, private cd: ChangeDetectorRef, private router: Router) {
     $('select').material_select();
   }
@@ -86,6 +92,7 @@ export class MeetingItemCoachComponent implements OnInit, AfterViewInit {
     this.getContext();
     this.getReviewValue();
     this.getReviewNextStep();
+    this.getSessionReviewTypeRate();
     this.loadMeetingPotentialTimes();
     this.loadPotentialDays();
     $('select').material_select();
@@ -231,6 +238,26 @@ export class MeetingItemCoachComponent implements OnInit, AfterViewInit {
       });
   }
 
+  private getSessionReviewTypeRate() {
+    this.loading = true;
+
+    this.meetingService.getSessionReviewRate(this.meeting.id).subscribe(
+      (reviews: MeetingReview[]) => {
+        console.log("getSessionReviewTypeRate, got rate : ", reviews);
+        if (reviews != null)
+          this.sessionRate = reviews[0].value;
+        else
+          this.sessionRate = null;
+
+        this.cd.detectChanges();
+        this.hasRate = (this.sessionRate != null);
+        this.loading = false;
+      },
+      (error) => {
+        console.log('getSessionReviewTypeRate error', error);
+        //this.displayErrorPostingReview = true;
+      });
+  }
 
   private loadPotentialDays() {
     console.log("loadPotentialDays");

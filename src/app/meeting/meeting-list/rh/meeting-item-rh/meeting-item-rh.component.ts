@@ -39,6 +39,7 @@ export class MeetingItemRhComponent implements OnInit, AfterViewInit {
   private meetings: Observable<Meeting[]>;
   private hasBookedMeeting = false;
   private goals = {};
+  private sessionRates = {};
 
   constructor(private meetingsService: MeetingsService, private cd: ChangeDetectorRef, private router: Router) {
   }
@@ -97,7 +98,10 @@ export class MeetingItemRhComponent implements OnInit, AfterViewInit {
             bookedMeetings.push(meeting);
             this.hasBookedMeeting = true;
 
+            // get goal
             this.getGoal(meeting.id);
+            //get rate
+            this.getSessionReviewTypeRate(meeting.id);
           }
         }
 
@@ -115,10 +119,25 @@ export class MeetingItemRhComponent implements OnInit, AfterViewInit {
         if (reviews != null)
           this.goals[meetingId] = reviews[0].value;
         else
-          this.goals[meetingId] = 'n/a';
+          this.goals[meetingId] = 'Non renseigné';
       },
       (error) => {
         console.log('getMeetingGoal error', error);
+        //this.displayErrorPostingReview = true;
+      });
+  }
+
+  private getSessionReviewTypeRate(meetingId: string) {
+    this.meetingsService.getSessionReviewRate(meetingId).subscribe(
+      (reviews: MeetingReview[]) => {
+        console.log("getSessionReviewTypeRate, got rate : ", reviews);
+        if (reviews != null)
+          this.sessionRates[meetingId] = reviews[0].value;
+        else
+          this.sessionRates = 'Inconnu';
+      },
+      (error) => {
+        console.log('getSessionReviewTypeRate error', error);
         //this.displayErrorPostingReview = true;
       });
   }
