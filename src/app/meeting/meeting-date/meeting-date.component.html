@@ -33,23 +33,6 @@
             </span>
           </ng-template>
 
-          <div id="potential-dates" class="text-left" *ngIf="dateModel && hasPotentialDate(dateModel)">
-            <p>Disponibilités ajoutées</p>
-            <!-- list of potential dates -->
-            <div class="potential-date" *ngFor="let date of potentialDates | async">
-              <div class="potential-date-content" *ngIf="compareDates(stringToDate(date.start_date), dateModel)">
-                <div class="blue-point"></div>
-                <p class="potential-date-timeslot">{{ printTimeString(date.start_date) }} - {{
-                  printTimeString(date.end_date) }}</p>
-                <a class="modify-timeslot"
-                   (click)="modifyPotentialDate(date.id)"><i
-                  class="material-icons">create</i></a>
-                <a class="delete-timeslot"
-                   (click)="unbookAdate(date.id)"><i
-                  class="material-icons">delete_sweep</i></a>
-              </div><!--end ngIf-->
-            </div><!--end potential-date-->
-          </div><!--end potential-dates-->
         </div><!--end datepicker-container-->
       </div>
 
@@ -95,6 +78,14 @@
       <div *ngFor="let potentialDate of potentialDatesArray">
         <div>Le {{ meetingDateToString(potentialDate)}}, entre
           {{printTimeString(potentialDate.start_date) }} - {{printTimeString(potentialDate.end_date) }}
+
+
+          <a class="modify-timeslot"
+             (click)="modifyPotentialDate(potentialDate.id)"><i
+            class="material-icons">create</i></a>
+          <a class="delete-timeslot"
+             (click)="unbookAdate(potentialDate.id)"><i
+            class="material-icons">delete_sweep</i></a>
         </div>
       </div>
 
