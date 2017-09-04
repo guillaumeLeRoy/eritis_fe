@@ -28,14 +28,6 @@
 
           <div *ngIf="(potentialDates | async) != null">
             <span class="meeting-item-coach-name">Un coach vous sera bientôt attribué</span>
-
-            <h5>Vous avez renseigné les dates suivantes</h5>
-
-            <div *ngFor="let date of (potentialDates | async)">
-              <div>Le {{ meetingDateToString(date)}}, entre
-                {{printTimeString(date.start_date) }} - {{printTimeString(date.end_date) }}
-              </div>
-            </div>
           </div>
 
           <div *ngIf="(potentialDates | async) == null">
@@ -46,8 +38,8 @@
         <!-- DATE -->
         <div class="meeting-item-date">
           <div *ngIf="meeting.agreed_date">
-            <span class="meeting-item-date-date">{{ getDate(meeting.agreed_date.start_date) }}</span>
-            <span class="meeting-item-date-hour">{{ printTimeString(meeting.agreed_date.start_date) }}</span>
+            <span class="meeting-item-date-date">{{ dateToString(meeting.agreed_date.start_date) }}</span><br>
+            <span class="meeting-item-date-hour blue-text">{{ printTimeString(meeting.agreed_date.start_date) }}</span>
           </div>
 
           <div *ngIf="!meeting.agreed_date">
@@ -75,6 +67,14 @@
           <span *ngIf="!hasGoal" class="red-text">Veuillez définir votre objectif.</span>
         </p>
 
+        <p *ngIf="!meeting.coach"><span class="black-text bold"><br>Disponibilités</span><br>
+          <span *ngFor="let date of (potentialDates | async)">
+            {{ dateToString(date.start_date)}}
+            <span class="bold">{{ printTimeString(date.start_date) }} - {{ printTimeString(date.end_date) }}</span><br>
+          </span>
+        </p>
+
+
         <div *ngIf="!meeting.isOpen" class="meeting-review">
           <div *ngIf="hasSessionResult && hasSessionUtility">
             <br>
@@ -84,15 +84,11 @@
           </div>
         </div><!--end meeting-review-->
 
-        <br>
-
         <!--rate -->
         <div *ngIf="!meeting.isOpen && hasRate">
-          <p><span class="black-text bold">Vous avez donné la note de :</span></p>
+          <p><span class="black-text bold"><br>Vous avez donné la note de :</span></p>
 
-          <br>
-
-          <div class="ratebar center">
+          <div class="ratebar ratebar-mini">
             <div class="rate-star" [class.selected]="sessionRate > 0">
               <i class="material-icons star">star</i>
             </div>

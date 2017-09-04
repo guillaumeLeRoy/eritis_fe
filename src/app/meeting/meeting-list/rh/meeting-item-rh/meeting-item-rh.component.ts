@@ -6,6 +6,7 @@ import {Observable} from "rxjs/Observable";
 import {MeetingsService} from "../../../../service/meetings.service";
 import {MeetingReview} from "../../../../model/MeetingReview";
 import {Router} from "@angular/router";
+import {Utils} from "../../../../utils/Utils";
 
 
 declare var $: any;
@@ -58,23 +59,12 @@ export class MeetingItemRhComponent implements OnInit, AfterViewInit {
     // this.fetchConnectedUser();
   }
 
-  printDateString(date: string) {
-    return this.getDate(date);
+  dateToString(date: string): string {
+    return Utils.dateToString(date);
   }
 
-  getHours(date: string) {
-    return (new Date(date)).getHours();
-  }
-
-  getMinutes(date: string) {
-    let m = (new Date(date)).getMinutes();
-    if (m === 0)
-      return '00';
-    return m;
-  }
-
-  getDate(date: string): string {
-    return (new Date(date)).getDate() + ' ' + this.months[(new Date(date)).getMonth()] + ' ' + (new Date(date)).getFullYear();
+  dateToStringShort(date: string): string {
+    return Utils.dateToStringShort(date);
   }
 
   goToCoacheeProfile(coacheeId: String) {

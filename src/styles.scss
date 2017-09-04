@@ -450,17 +450,28 @@ loader-spinner {
   -moz-user-select: none;
   -ms-user-select: none;
   user-select: none;
+  cursor: pointer;
 }
 
 .rate-star {
   display: inline-block;
-  cursor: pointer;
+
+ .star {
+   color: $main-ultra-light-grey;
+   font-size: 60px;
+   padding: 0 16px;
+ }
 }
 
-.rate-star .star {
-  color: $main-ultra-light-grey;
-  font-size: 60px;
-  padding: 0 16px;
+.ratebar-mini {
+  cursor: default;
+}
+
+.ratebar-mini .rate-star {
+  .star {
+    font-size: 30px;
+    padding: 0;
+  }
 }
 
 .rate-star.pre-selected .star {

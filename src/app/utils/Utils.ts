@@ -1,5 +1,6 @@
 import {MeetingDate} from "../model/MeetingDate";
 import {NgbDateStruct} from "@ng-bootstrap/ng-bootstrap";
+import {print} from "util";
 /**
  * Created by guillaume on 02/09/2017.
  */
@@ -8,23 +9,62 @@ export class Utils {
   public static months = ['Janvier', 'Février', 'Mars', 'Avril', 'Mai', 'Juin', 'Juillet', 'Août', 'Septembre', 'Octobre', 'Novembre', 'Décembre'];
   public static days = ['Dimanche', 'Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi'];
 
-  static meetingDateToString(date: MeetingDate): string {
-    let ngbDate = this.stringToDate(date.start_date);
-    return this.ngbDateStructToString(ngbDate);
+
+
+  /*Dates*/
+
+  /* Return a string displaying date from a string date */
+  static dateToString(date: string): string {
+    let ngbDate = this.stringToNgbDate(date);
+    return this.ngbDateToString(ngbDate);
   }
 
-  static ngbDateStructToString(date: NgbDateStruct): string {
+  static dateToStringShort(date: string): string {
+    let ngbDate = this.stringToNgbDate(date);
+    return this.ngbDateToStringShort(ngbDate);
+  }
+
+  /* Return a string from a ngbDateStruct */
+  static ngbDateToString(date: NgbDateStruct): string {
     let newDate = new Date(date.year, date.month - 1, date.day);
-    return this.days[newDate.getDay()] + ' ' + newDate.getDay() + ' ' + this.months[newDate.getMonth()];
+    return this.printDate(newDate);
   }
 
-  static stringToDate(date: string): NgbDateStruct {
+  static ngbDateToStringShort(date: NgbDateStruct): string {
+    let newDate = new Date(date.year, date.month - 1, date.day);
+    return this.printDateShort(newDate);
+  }
+
+
+  static printDate(date: Date) {
+    return this.days[date.getDay()] + ' ' + date.getDay() + ' ' + this.months[date.getMonth()];
+  }
+
+  static printDateShort(date: Date) {
+    return date.getDay() + ' ' + this.months[date.getMonth()];
+  }
+
+  /* Return a NgbDateStruct from a string date */
+  static stringToNgbDate(date: string): NgbDateStruct {
     let d = new Date(date);
     return {day: d.getDate(), month: d.getMonth() + 1, year: d.getFullYear()};
   }
 
-  static dateToString(date: string): string {
-    return this.getHours(date) + ':' + this.getMinutes(date);
+  /* Return a string displaying time from date string*/
+  static timeToString(date: string): string {
+    return this.getHours(date) + 'h' + this.getMinutes(date);
+  }
+
+  /* Return a string displaying time from integer*/
+  static timeIntToString(hour: number): string {
+    if (hour === Math.round(hour))
+      return hour + 'h00'
+    else
+      return Math.round(hour) - 1 + 'h30'
+  }
+
+  static getDate(date: string): string {
+    return (new Date(date)).getDate() + ' ' + this.months[(new Date(date)).getMonth()];
   }
 
   static getHours(date: string): number {

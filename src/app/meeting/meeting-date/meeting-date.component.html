@@ -4,7 +4,7 @@
                   (meetingContext)="onContextValueUpdated($event)"></er-pre-meeting>
 
   <br><br>
-  <h4 class="header-date-picker">Indiquez vos disponiblités grâce au calendrier ci-dessous.
+  <h4 class="header-date-picker black-text">Indiquez vos disponiblités grâce au calendrier ci-dessous.
     <br>Cliquez sur terminer lorsque vous avez validé toutes vos plages disponibles.</h4>
 
   <!--Input Date Picker-->
@@ -38,8 +38,8 @@
 
       <div class="col-sm-12 col-lg-7">
         <div>
-          <h5 *ngIf="dateModel">{{ dateToString(dateModel) }}</h5>
-          <h2 class="plage-horaire">{{ printTimeNumber(timeRange[0]) }} - {{ printTimeNumber(timeRange[1]) }}</h2>
+          <h5 *ngIf="dateModel">{{ ngbDateToString(dateModel) }}</h5>
+          <h2 class="plage-horaire">{{ timeIntToString(timeRange[0]) }} - {{ timeIntToString(timeRange[1]) }}</h2>
         </div>
 
         <p-slider [(ngModel)]="timeRange" [style]="{'width':'200px'}" [range]="true" [min]="8" [max]="20"></p-slider>
@@ -73,11 +73,14 @@
 
   <div class="row">
     <div class="col-lg-12">
-      <h5>Vous pouvez modifier les plages validées ci-dessous</h5>
+      <h4 class="black-text">Vous pouvez modifier les plages validées ci-dessous</h4>
 
       <div *ngFor="let potentialDate of potentialDatesArray">
-        <div>Le {{ meetingDateToString(potentialDate)}}, entre
-          {{printTimeString(potentialDate.start_date) }} - {{printTimeString(potentialDate.end_date) }}
+        <div class="potential-date-line">
+          <div class="blue-point"></div>
+
+          {{ dateToString(potentialDate.start_date)}}
+          <span class="bold black-text">{{ timeToString(potentialDate.start_date) }} - {{ timeToString(potentialDate.end_date) }}</span>
 
 
           <a class="modify-timeslot"

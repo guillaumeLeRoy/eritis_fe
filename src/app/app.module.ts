@@ -23,7 +23,7 @@ import {NgbModule} from "@ng-bootstrap/ng-bootstrap";
 import {MeetingsService} from "./service/meetings.service";
 import {MeetingListComponent} from "./meeting/meeting-list/meeting-list.component";
 import {MeetingItemCoacheeComponent} from "./meeting/meeting-list/coachee/meeting-item-coachee/meeting-item-coachee.component";
-import {PreMeetingComponent} from "./meeting/meeting-list/coachee/pre-meeting/pre-meeting.component";
+import {PreMeetingComponent} from "./meeting/meeting-date/pre-meeting/pre-meeting.component";
 import {ProfileCoachComponent} from "./user/profile/coach/profile-coach.component";
 import {ProfileCoacheeComponent} from "./user/profile/coachee/profile-coachee.component";
 import {MeetingItemCoachComponent} from "./meeting/meeting-list/coach/meeting-item-coach/meeting-item-coach.component";

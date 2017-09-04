@@ -14,14 +14,14 @@
 
             <div>
               <p class="meeting-item-coach-name black-text bold">{{ coachee.first_name}} {{ coachee.last_name}}</p>
-              <span class="italic">Inscrit le {{ printDateString(coachee.start_date) }}</span>
+              <span class="italic">Inscrit le {{ dateToStringShort(coachee.start_date) }}</span>
             </div>
           </div>
 
           <!--USAGE-->
           <div class="meeting-item-date">
             <div class="meeting-item-date-date">
-              <span class="usage-title">Utilisation: </span>
+              <!--<span class="usage-title">Utilisation</span><br>-->
               <span class="blue-text">{{ coachee.sessionsDoneMonthCount }}</span> sessions ce mois-ci
             </div>
           </div>

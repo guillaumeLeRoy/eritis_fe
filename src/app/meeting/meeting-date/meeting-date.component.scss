@@ -76,6 +76,12 @@
   height: 20px;
   border-radius: 100%;
   margin-right: 8px;
+  display: inline-block;
+  vertical-align: middle;
+}
+
+.potential-date-line {
+  margin: 16px 0;
 }
 
 .potential-date-timeslot{

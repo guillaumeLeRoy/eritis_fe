@@ -10,6 +10,8 @@ import {AuthService} from "../../../../service/auth.service";
 import {ApiUser} from "../../../../model/ApiUser";
 import {Subscription} from "rxjs/Subscription";
 import {Router} from "@angular/router";
+import {Utils} from "../../../../utils/Utils";
+import {NgbDateStruct} from "@ng-bootstrap/ng-bootstrap";
 
 declare var $: any;
 declare var Materialize: any;
@@ -283,8 +285,8 @@ export class MeetingItemCoachComponent implements OnInit, AfterViewInit {
     let hours = [];
 
     for (let date of this.potentialDatesArray) {
-      if (this.getDate(date.start_date) === this.getDate(selected)) {
-        for (let _i = this.getHours(date.start_date); _i < this.getHours(date.end_date); _i++) {
+      if (Utils.getDate(date.start_date) === Utils.getDate(selected)) {
+        for (let _i = Utils.getHours(date.start_date); _i < Utils.getHours(date.end_date); _i++) {
           hours.push(_i);
         }
       }
@@ -295,27 +297,16 @@ export class MeetingItemCoachComponent implements OnInit, AfterViewInit {
     console.log("potentialHours", hours);
   }
 
-  printTimeNumber(hour: number) {
-    return hour + ':00'
+  dateToString(date: string): string {
+    return Utils.dateToString(date);
   }
 
-  printTimeString(date: string) {
-    return this.getHours(date) + ':' + this.getMinutes(date);
+  timeToString(date: string) {
+    return Utils.timeToString(date);
   }
 
-  getHours(date: string) {
-    return (new Date(date)).getHours();
-  }
-
-  getMinutes(date: string) {
-    let m = (new Date(date)).getMinutes();
-    if (m === 0)
-      return '00';
-    return m;
-  }
-
-  getDate(date: string): string {
-    return (new Date(date)).getDate() + ' ' + this.months[(new Date(date)).getMonth()];
+  timeIntToString(hour: number) {
+    return Utils.timeIntToString(hour);
   }
 
   goToCoacheeProfile(coacheeId: String) {

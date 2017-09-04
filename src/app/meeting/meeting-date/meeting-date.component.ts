@@ -176,35 +176,31 @@ export class MeetingDateComponent implements OnInit, OnDestroy {
     }
   }
 
-  printTimeNumber(hour: number): string {
-    if (hour === Math.round(hour))
-      return hour + ':00'
-    else
-      return Math.round(hour) - 1 + ':30'
-  }
-
   resetValues() {
     this.mEditingPotentialTimeId = null;
     this.isEditingPotentialDate = false;
     this.timeRange = [10, 18];
   }
 
-  printTimeString(date: string): string {
+  timeToString(date: string): string {
+    return Utils.timeToString(date);
+  }
+
+  timeIntToString(hour: number) {
+    return Utils.timeIntToString(hour);
+  }
+
+  dateToString(date: string): string {
     return Utils.dateToString(date);
   }
 
-  meetingDateToString(date: MeetingDate): string {
-    return Utils.meetingDateToString(date);
+  ngbDateToString(date: NgbDateStruct): string {
+    return Utils.ngbDateToString(date);
   }
-
-  dateToString(date: NgbDateStruct): string {
-    let newDate = new Date(this.dateModel.year, this.dateModel.month - 1, this.dateModel.day);
-    return this.days[newDate.getDay()] + ' ' + date.day + ' ' + this.months[newDate.getMonth()];
-  }
-
   stringToDate(date: string): NgbDateStruct {
-    return Utils.stringToDate(date);
+    return Utils.stringToNgbDate(date);
   }
+
 
   compareDates(date1: NgbDateStruct, date2: NgbDateStruct) {
     return (date1.year === date2.year) && (date1.month === date2.month) && (date1.day === date2.day);

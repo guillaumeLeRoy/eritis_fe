@@ -105,12 +105,12 @@ export class MeetingItemCoacheeComponent implements OnInit {
     );
   }
 
-  meetingDateToString(date: MeetingDate): string {
-    return Utils.meetingDateToString(date);
+  dateToString(date: string): string {
+    return Utils.dateToString(date);
   }
 
   printTimeString(date: string) {
-    return Utils.dateToString(date);
+    return Utils.timeToString(date);
   }
 
   getDate(date: string) {
