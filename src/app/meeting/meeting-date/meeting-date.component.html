@@ -7,6 +7,8 @@
   <h4 class="header-date-picker black-text">Indiquez vos disponiblités grâce au calendrier ci-dessous.
     <br>Cliquez sur terminer lorsque vous avez validé toutes vos plages disponibles.</h4>
 
+  <!--<datepicker-fr></datepicker-fr>-->
+
   <!--Input Date Picker-->
   <div id="input-date-picker">
     <div class="row text-center">
@@ -17,6 +19,7 @@
                           (navigate)="date = $event.next"
                           navigation="arrows"
                           minDate="{{ dateModel }}"
+                          langugae="fr"
                           [dayTemplate]="customDay"
                           [markDisabled]="isDisabled"
                           [disabled]="isEditingPotentialDate">
