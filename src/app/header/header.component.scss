@@ -15,6 +15,20 @@ nav{
 
 nav li{
   background-color: transparent;
+  position: relative;
+}
+
+nav li.has-notif:after {
+  content: "";
+  display: inline-block;
+  width: 4px;
+  height: 4px;
+  border-radius: 100%;
+  background-color: white;
+  position: relative;
+  bottom: 50px;
+  left: 50%;
+  margin-left: -2px;
 }
 
 nav li a{
@@ -42,6 +56,10 @@ nav li a:focus {
 .side-nav li a:focus,
 .side-nav li.active a{
   color: $main-electric-blue !important;
+}
+
+.side-nav li.active {
+  background-color: transparent !important;
 }
 
 .navbar-fixed,
@@ -79,6 +97,7 @@ nav li a:focus {
   background-color: rgba(255, 255, 255, 1);
   color: $main-dark-grey;
   max-width: 80%;
+  z-index: 10000;
  }
 
 .side-nav-header {
@@ -125,7 +144,7 @@ nav li a:focus {
 header{
   background-image: url("../../assets/img/eritis-mountain-bg-2.jpg");
   background-attachment: fixed;
-  background-position: center;
+  background-position: top;
   background-size: cover;
 }
 

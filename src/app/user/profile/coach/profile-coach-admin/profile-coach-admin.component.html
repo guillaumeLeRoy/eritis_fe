@@ -55,7 +55,7 @@
         <button class="btn-basic btn-blue btn-plain btn-small file-upload-button" *ngIf="!avatarLoading">Choisir une image</button>
         <input type="file"
                id="upload-avatar-input"
-               accept=".jpg,.png"
+               accept=".jpeg,.jpg,.png"
                (change)="previewPicture($event)">
 
         <button class="btn-basic btn-blue btn-plain btn-small" *ngIf="avatarFile != null && !avatarLoading"

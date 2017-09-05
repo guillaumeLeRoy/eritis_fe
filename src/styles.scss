@@ -331,6 +331,7 @@ ngb-datepicker-month-view{
 ngb-datepicker .ngb-dp-header{
   height: 60px;
   border: none !important;
+  background-color: $main-blue-filter;
 }
 
 ngb-datepicker .ngb-dp-month-name{
@@ -440,4 +441,46 @@ loader-spinner {
   .indeterminate {
     background-color: $main-electric-blue;
   }
+}
+
+.ratebar {
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  cursor: pointer;
+}
+
+.rate-star {
+  display: inline-block;
+
+ .star {
+   color: $main-ultra-light-grey;
+   font-size: 60px;
+   padding: 0 16px;
+ }
+}
+
+.ratebar-mini {
+  cursor: default;
+}
+
+.ratebar-mini .rate-star {
+  .star {
+    font-size: 30px;
+    padding: 0;
+  }
+}
+
+.rate-star.pre-selected .star {
+  color: $main-electric-blue;
+  opacity: .6;
+}
+
+.rate-star.selected .star,
+.rate-star.selected:hover .star {
+  color: $main-electric-blue;
+  opacity: 1;
 }

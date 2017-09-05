@@ -138,12 +138,16 @@
 
             <div [hidden]="isAdmin() || isHomePage()">
               <li *ngIf="(isAuthenticated | async) && isUserACoach()"
-                  [class.active]="router.url === '/available_meetings'"><a (click)="goToAvailableSessions()">
-                Demandes en attente</a></li>
+                  [class.has-notif]="hasAvailableMeetings"
+                  [class.active]="router.url === '/available_meetings'">
+                <a (click)="goToAvailableSessions()">
+                Demandes en attente</a>
+              </li>
 
-              <li *ngIf="(isAuthenticated | async)" [class.active]="router.url === '/meetings'"><a
-                (click)="goToMeetings()">
-                Tableau de bord</a></li>
+              <li *ngIf="(isAuthenticated | async)" [class.active]="router.url === '/meetings'">
+                <a (click)="goToMeetings()">
+                  Tableau de bord</a>
+              </li>
 
               <!--<li *ngIf="(isAuthenticated | async) && isUserACoach()"><a (click)="goToProfile()">Profil</a></li>-->
 
@@ -191,66 +195,7 @@
           </ul>
 
 
-          <!-- Side Nav -->
-          <ul class="side-nav" id="side-nav">
 
-            <div class="side-nav-header" *ngIf="(isAuthenticated | async) || isAdmin()">
-              <div>
-                <div class="side-nav-header-container z-depth-1" *ngIf="!isAdmin()">
-                  <!--<img src="{{(user | async)?.avatar_url}}" alt="profile image"-->
-                       <!--class="side-nav-user-img circle responsive-img z-depth-2">-->
-                  <div class="side-nav-user-img avatar z-depth-2"
-                       *ngIf="(user | async)?.avatar_url !== null && (user | async)?.avatar_url !== undefined"
-                       [style.background-image]="'url(' + (user | async)?.avatar_url + ')'"></div>
-                  <div class="side-nav-user-info">
-                    <h6>{{ (user | async)?.first_name}} {{ (user | async)?.last_name}}</h6>
-                    <span>{{(user | async)?.email}}</span>
-                  </div>
-                </div>
-
-                <div class="side-nav-header-container z-depth-1" *ngIf="isAdmin()">
-                  <h3>Admin</h3>
-                </div>
-              </div>
-            </div>
-
-            <!--<li *ngIf="canDisplayListOfCoach()"><a (click)="goToCoachs()">Liste Des Coachs</a></li>-->
-
-            <!--<li *ngIf="(isAuthenticated | async)"><a (click)="goToMeetings()">Vos meetings</a></li>-->
-            <div class="side-nav-items" *ngIf="!isAdmin()">
-              <li *ngIf="(isAuthenticated | async) && isUserACoach()"
-                  [class.active]="router.url === '/available_meetings'"><a (click)="goToAvailableSessions()">Séances
-                disponibles</a></li>
-
-              <li *ngIf="(isAuthenticated | async)" [class.active]="router.url === '/meetings'"><a
-                (click)="goToMeetings()">Tableau de bord</a></li>
-
-              <!--<li [hidden]="!(isAuthenticated | async)">-->
-              <!--<a class="dropdown-button" data-activates="notifs"><i class="material-icons">notifications</i></a>-->
-              <!--<div class="notif-count">0</div>-->
-              <!--</li>-->
-
-              <li *ngIf="(isAuthenticated | async)"
-                  [class.active]="isEditingProfile()">
-                <a (click)="goToProfile()">Modifier mon profil</a></li>
-
-              <li *ngIf="(isAuthenticated | async)"><a (click)="onLogout()">Déconnexion</a></li>
-            </div>
-
-            <div class="side-nav-items" *ngIf="isAdmin()">
-              <li [class.active]="router.url === '/admin/coachs-list'">
-                <a (click)="navigateToCoachsList()">Nos Coachs</a></li>
-              <li [class.active]="router.url === '/admin/coachees-list'">
-                <a (click)="navigateToCoacheesList()">Nos Coachees</a></li>
-              <li [class.active]="router.url === '/admin/rhs-list'">
-                <a (click)="navigateToRhsList()">Nos Rhs</a></li>
-              <li [class.active]="router.url === '/admin/possible_coachs-list'">
-                <a (click)="navigateToPossibleCoachsList()">Demandes d'inscription</a></li>
-              <li>
-                <a (click)="goToWelcomePage()">Quitter</a></li>
-            </div>
-
-          </ul>
 
         </div>
       </div>
@@ -269,6 +214,80 @@
   <!--</div>-->
 
 </header>
+
+
+
+
+
+
+
+
+<!-- Side Nav -->
+<ul class="side-nav" id="side-nav">
+
+  <div class="side-nav-header" *ngIf="(isAuthenticated | async) || isAdmin()">
+    <div>
+      <div class="side-nav-header-container z-depth-1" *ngIf="!isAdmin()">
+        <!--<img src="{{(user | async)?.avatar_url}}" alt="profile image"-->
+        <!--class="side-nav-user-img circle responsive-img z-depth-2">-->
+        <div class="side-nav-user-img avatar z-depth-2"
+             *ngIf="(user | async)?.avatar_url !== null && (user | async)?.avatar_url !== undefined"
+             [style.background-image]="'url(' + (user | async)?.avatar_url + ')'"></div>
+        <div class="side-nav-user-info">
+          <h6>{{ (user | async)?.first_name}} {{ (user | async)?.last_name}}</h6>
+          <span>{{(user | async)?.email}}</span>
+        </div>
+      </div>
+
+      <div class="side-nav-header-container z-depth-1" *ngIf="isAdmin()">
+        <h3>Admin</h3>
+      </div>
+    </div>
+  </div>
+
+  <!--<li *ngIf="canDisplayListOfCoach()"><a (click)="goToCoachs()">Liste Des Coachs</a></li>-->
+
+  <!--<li *ngIf="(isAuthenticated | async)"><a (click)="goToMeetings()">Vos meetings</a></li>-->
+  <div class="side-nav-items" *ngIf="!isAdmin()">
+    <li *ngIf="(isAuthenticated | async) && isUserACoach()"
+        [class.active]="router.url === '/available_meetings'"><a (click)="goToAvailableSessions()">Séances
+      disponibles</a></li>
+
+    <li *ngIf="(isAuthenticated | async)" [class.active]="router.url === '/meetings'"><a
+      (click)="goToMeetings()">Tableau de bord</a></li>
+
+    <!--<li [hidden]="!(isAuthenticated | async)">-->
+    <!--<a class="dropdown-button" data-activates="notifs"><i class="material-icons">notifications</i></a>-->
+    <!--<div class="notif-count">0</div>-->
+    <!--</li>-->
+
+    <li *ngIf="(isAuthenticated | async)"
+        [class.active]="isEditingProfile()">
+      <a (click)="goToProfile()">Modifier mon profil</a></li>
+
+    <li *ngIf="(isAuthenticated | async)"><a (click)="onLogout()">Déconnexion</a></li>
+  </div>
+
+  <div class="side-nav-items" *ngIf="isAdmin()">
+    <li [class.active]="router.url === '/admin/coachs-list'">
+      <a (click)="navigateToCoachsList()">Nos Coachs</a></li>
+    <li [class.active]="router.url === '/admin/coachees-list'">
+      <a (click)="navigateToCoacheesList()">Nos Coachees</a></li>
+    <li [class.active]="router.url === '/admin/rhs-list'">
+      <a (click)="navigateToRhsList()">Nos Rhs</a></li>
+    <li [class.active]="router.url === '/admin/possible_coachs-list'">
+      <a (click)="navigateToPossibleCoachsList()">Demandes d'inscription</a></li>
+    <li>
+      <a (click)="goToWelcomePage()">Quitter</a></li>
+  </div>
+
+</ul>
+
+
+
+
+
+
 
 <ul id="notifs" class="dropdown-content dropdown-notifs collection">
   <li class="notif-item collection-item" *ngIf="(notifications | async) == null">Vous n'avez pas de notification</li>

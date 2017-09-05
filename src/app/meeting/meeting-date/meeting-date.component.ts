@@ -1,20 +1,55 @@
-import {Component, OnInit, ChangeDetectorRef, OnDestroy} from '@angular/core';
-import {NgbDateStruct} from '@ng-bootstrap/ng-bootstrap';
-import {ApiUser} from '../../model/ApiUser';
-import {CoachCoacheeService} from '../../service/coach_coachee.service';
-import {AuthService} from '../../service/auth.service';
-import {Observable, Subscription} from 'rxjs';
-import {MeetingDate} from '../../model/MeetingDate';
-import {ActivatedRoute, Router} from '@angular/router';
+import {ChangeDetectorRef, Component, Injectable, OnDestroy, OnInit} from "@angular/core";
+import {NgbDatepickerI18n, NgbDateStruct} from "@ng-bootstrap/ng-bootstrap";
+import {ApiUser} from "../../model/ApiUser";
+import {AuthService} from "../../service/auth.service";
+import {Observable, Subscription} from "rxjs";
+import {MeetingDate} from "../../model/MeetingDate";
+import {ActivatedRoute, Router} from "@angular/router";
 import {MeetingReview} from "../../model/MeetingReview";
 import {MeetingsService} from "../../service/meetings.service";
+import {Utils} from "../../utils/Utils";
 
 declare var Materialize: any;
+
+const I18N_VALUES = {
+  'fr': {
+    weekdays: ['Lu', 'Ma', 'Me', 'Je', 'Ve', 'Sa', 'Di'],
+    months: Utils.months
+  }
+  // other languages you would support
+};
+
+// Define a service holding the language. You probably already have one if your app is i18ned. Or you could also
+// use the Angular LOCALE_ID value
+@Injectable()
+export class I18n {
+  language = 'fr';
+}
+
+// Define custom service providing the months and weekdays translations
+@Injectable()
+export class CustomDatepickerI18n extends NgbDatepickerI18n {
+
+  constructor(private _i18n: I18n) {
+    super();
+  }
+
+  getWeekdayShortName(weekday: number): string {
+    return I18N_VALUES[this._i18n.language].weekdays[weekday - 1];
+  }
+  getMonthShortName(month: number): string {
+    return I18N_VALUES[this._i18n.language].months[month - 1];
+  }
+  getMonthFullName(month: number): string {
+    return this.getMonthShortName(month);
+  }
+}
 
 @Component({
   selector: 'rb-meeting-date',
   templateUrl: './meeting-date.component.html',
-  styleUrls: ['./meeting-date.component.scss']
+  styleUrls: ['./meeting-date.component.scss'],
+  providers: [I18n, {provide: NgbDatepickerI18n, useClass: CustomDatepickerI18n}] // define custom NgbDatepickerI18n provider
 })
 export class MeetingDateComponent implements OnInit, OnDestroy {
 
@@ -165,8 +200,8 @@ export class MeetingDateComponent implements OnInit, OnDestroy {
     //find the potentialDate we want to modify
     for (let potential of this.potentialDatesArray) {
       if (potential.id === potentialDateId) {
-        let startTime = this.getHours(potential.start_date);
-        let endTime = this.getHours(potential.end_date);
+        let startTime = Utils.getHours(potential.start_date);
+        let endTime = Utils.getHours(potential.end_date);
         //switch to edit mode
         this.isEditingPotentialDate = true;
         this.mEditingPotentialTimeId = potentialDateId;
@@ -176,43 +211,31 @@ export class MeetingDateComponent implements OnInit, OnDestroy {
     }
   }
 
-  printTimeNumber(hour: number) {
-    if (hour === Math.round(hour))
-      return hour + ':00'
-    else
-      return Math.round(hour) - 1 + ':30'
-  }
-
-  printTimeString(date: string) {
-    return this.getHours(date) + ':' + this.getMinutes(date);
-  }
-
-  getHours(date: string) {
-    return (new Date(date)).getHours();
-  }
-
-  getMinutes(date: string) {
-    let m = (new Date(date)).getMinutes();
-    if (m === 0)
-      return '00';
-    return m;
-  }
-
   resetValues() {
     this.mEditingPotentialTimeId = null;
     this.isEditingPotentialDate = false;
     this.timeRange = [10, 18];
   }
 
-  dateToString(date: NgbDateStruct) {
-    let newDate = new Date(this.dateModel.year, this.dateModel.month - 1, this.dateModel.day);
-    return this.days[newDate.getDay()] + ' ' + date.day + ' ' + this.months[newDate.getMonth()];
+  timeToString(date: string): string {
+    return Utils.timeToString(date);
   }
 
-  stringToDate(date: string) {
-    let d = new Date(date);
-    return {day: d.getDate(), month: d.getMonth() + 1, year: d.getFullYear()};
+  timeIntToString(hour: number) {
+    return Utils.timeIntToString(hour);
   }
+
+  dateToString(date: string): string {
+    return Utils.dateToString(date);
+  }
+
+  ngbDateToString(date: NgbDateStruct): string {
+    return Utils.ngbDateToString(date);
+  }
+  stringToDate(date: string): NgbDateStruct {
+    return Utils.stringToNgbDate(date);
+  }
+
 
   compareDates(date1: NgbDateStruct, date2: NgbDateStruct) {
     return (date1.year === date2.year) && (date1.month === date2.month) && (date1.day === date2.day);
@@ -232,7 +255,7 @@ export class MeetingDateComponent implements OnInit, OnDestroy {
     let newDate = new Date(date.year, date.month - 1, date.day);
     // TODO add this to block next month days
     // TODO date.month !== current.month ||
-    return (newDate.getDay() === 6 || newDate.getDay() === 0 || date.year < now.getFullYear() || (date.month < now.getMonth()+1 && date.year <= now.getFullYear()) || (date.year <= now.getFullYear() && date.month == now.getMonth()+1 && date.day < now.getDate()));
+    return (newDate.getDay() === 6 || newDate.getDay() === 0 || date.year < now.getFullYear() || (date.month < now.getMonth() + 1 && date.year <= now.getFullYear()) || (date.year <= now.getFullYear() && date.month == now.getMonth() + 1 && date.day < now.getDate()));
   }
 
   /**

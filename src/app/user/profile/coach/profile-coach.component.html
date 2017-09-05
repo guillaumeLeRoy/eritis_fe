@@ -47,7 +47,7 @@
 
   <div>
     <!--<div class="center">-->
-      <!--<button class="btn-basic btn-plain btn-blue btn-small center" (click)="goToMeetings()">Retourner au tableau de bord</button>-->
+    <!--<button class="btn-basic btn-plain btn-blue btn-small center" (click)="goToMeetings()">Retourner au tableau de bord</button>-->
     <!--</div>-->
     <!--<br>-->
 
@@ -94,8 +94,8 @@
           <label>Photo de profil</label>
           <div class="row avatar-container">
             <!--<img [src]="formCoach.value.avatar" alt="profile image"-->
-                 <!--id="avatar-preview"-->
-                 <!--class="circle responsive-img z-depth-2">-->
+            <!--id="avatar-preview"-->
+            <!--class="circle responsive-img z-depth-2">-->
             <div id="avatar-preview"
                  class="avatar z-depth-2"
                  [style.background-image]="'url(' + (coach | async)?.avatar_url + ')'"></div>
@@ -106,7 +106,7 @@
               <button class="btn-basic btn-blue btn-plain btn-small file-upload-buton">Choisir un fichier</button>
               <input type="file"
                      id="upload-avatar-input"
-                     accept=".jpg,.png"
+                     accept=".jpeg,.jpg,.png"
                      (change)="filePreview($event)">
             </div>
           </div>

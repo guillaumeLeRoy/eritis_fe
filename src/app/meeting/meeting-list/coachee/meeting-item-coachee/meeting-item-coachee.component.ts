@@ -6,6 +6,7 @@ import {MeetingReview} from "../../../../model/MeetingReview";
 import {MeetingDate} from "../../../../model/MeetingDate";
 import {Router} from "@angular/router";
 import {MeetingsService} from "../../../../service/meetings.service";
+import {Utils} from "../../../../utils/Utils";
 
 declare var $: any;
 declare var Materialize: any;
@@ -54,7 +55,7 @@ export class MeetingItemCoacheeComponent implements OnInit {
   private hasSessionUtility: boolean;
 
   /**
-   * Coach rate given by coache
+   * Coach rate given by coachee
    */
   private sessionRate: string;
   private hasRate: boolean;
@@ -104,19 +105,12 @@ export class MeetingItemCoacheeComponent implements OnInit {
     );
   }
 
+  dateToString(date: string): string {
+    return Utils.dateToString(date);
+  }
+
   printTimeString(date: string) {
-    return this.getHours(date) + ':' + this.getMinutes(date);
-  }
-
-  getHours(date: string) {
-    return (new Date(date)).getHours();
-  }
-
-  getMinutes(date: string) {
-    let m = (new Date(date)).getMinutes();
-    if (m === 0)
-      return '00';
-    return m;
+    return Utils.timeToString(date);
   }
 
   getDate(date: string) {

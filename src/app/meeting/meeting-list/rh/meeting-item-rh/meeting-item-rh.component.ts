@@ -6,6 +6,7 @@ import {Observable} from "rxjs/Observable";
 import {MeetingsService} from "../../../../service/meetings.service";
 import {MeetingReview} from "../../../../model/MeetingReview";
 import {Router} from "@angular/router";
+import {Utils} from "../../../../utils/Utils";
 
 
 declare var $: any;
@@ -39,6 +40,7 @@ export class MeetingItemRhComponent implements OnInit, AfterViewInit {
   private meetings: Observable<Meeting[]>;
   private hasBookedMeeting = false;
   private goals = {};
+  private sessionRates = {};
 
   constructor(private meetingsService: MeetingsService, private cd: ChangeDetectorRef, private router: Router) {
   }
@@ -57,23 +59,12 @@ export class MeetingItemRhComponent implements OnInit, AfterViewInit {
     // this.fetchConnectedUser();
   }
 
-  printDateString(date: string) {
-    return this.getDate(date);
+  dateToString(date: string): string {
+    return Utils.dateToString(date);
   }
 
-  getHours(date: string) {
-    return (new Date(date)).getHours();
-  }
-
-  getMinutes(date: string) {
-    let m = (new Date(date)).getMinutes();
-    if (m === 0)
-      return '00';
-    return m;
-  }
-
-  getDate(date: string): string {
-    return (new Date(date)).getDate() + ' ' + this.months[(new Date(date)).getMonth()] + ' ' + (new Date(date)).getFullYear();
+  dateToStringShort(date: string): string {
+    return Utils.dateToStringShort(date);
   }
 
   goToCoacheeProfile(coacheeId: String) {
@@ -97,7 +88,10 @@ export class MeetingItemRhComponent implements OnInit, AfterViewInit {
             bookedMeetings.push(meeting);
             this.hasBookedMeeting = true;
 
+            // get goal
             this.getGoal(meeting.id);
+            //get rate
+            this.getSessionReviewTypeRate(meeting.id);
           }
         }
 
@@ -115,10 +109,25 @@ export class MeetingItemRhComponent implements OnInit, AfterViewInit {
         if (reviews != null)
           this.goals[meetingId] = reviews[0].value;
         else
-          this.goals[meetingId] = 'n/a';
+          this.goals[meetingId] = 'Non renseigné';
       },
       (error) => {
         console.log('getMeetingGoal error', error);
+        //this.displayErrorPostingReview = true;
+      });
+  }
+
+  private getSessionReviewTypeRate(meetingId: string) {
+    this.meetingsService.getSessionReviewRate(meetingId).subscribe(
+      (reviews: MeetingReview[]) => {
+        console.log("getSessionReviewTypeRate, got rate : ", reviews);
+        if (reviews != null)
+          this.sessionRates[meetingId] = reviews[0].value;
+        else
+          this.sessionRates = 'Inconnu';
+      },
+      (error) => {
+        console.log('getSessionReviewTypeRate error', error);
         //this.displayErrorPostingReview = true;
       });
   }
@@ -127,4 +136,7 @@ export class MeetingItemRhComponent implements OnInit, AfterViewInit {
     this.onUpdateObjectiveBtnClick.emit(this.coachee.id);
   }
 
+  printDateString(date: string): string {
+    return Utils.getDate(date);
+  }
 }
