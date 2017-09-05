@@ -37,11 +37,11 @@ export class Utils {
 
 
   static printDate(date: Date) {
-    return this.days[date.getDay()] + ' ' + date.getDay() + ' ' + this.months[date.getMonth()];
+    return this.days[date.getDay()] + ' ' + date.getDate() + ' ' + this.months[date.getMonth()];
   }
 
   static printDateShort(date: Date) {
-    return date.getDay() + ' ' + this.months[date.getMonth()];
+    return date.getDate() + ' ' + this.months[date.getMonth()];
   }
 
   /* Return a NgbDateStruct from a string date */
