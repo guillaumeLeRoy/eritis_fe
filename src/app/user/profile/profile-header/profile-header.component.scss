@@ -1,0 +1,87 @@
+@import "../../../../saas/variables";
+
+.header-user{
+  background-image: url("../../../../assets/img/eritis-mountain-bg-2.jpg");
+  background-attachment: scroll;
+  background-position: center;
+  background-size: cover;
+  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.5);
+  margin-top: 60px;
+}
+
+.header-user-filter{
+  background-color: $main-blue-filter;
+  color: $main-white-color;
+}
+
+.header-user .container {
+  padding: 64px 0;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.user {
+  display: flex;
+  align-items: center;
+  align-content: center;
+
+  h5 {
+    margin: 0;
+  }
+
+  p {
+    margin-bottom: 0;
+    margin-top: 4px;
+  }
+}
+
+.user-info{
+  margin-left: 16px;
+}
+
+.user-img{
+  height: 100px;
+  width: 100px;
+}
+
+.header-item {
+  text-align: center;
+  width: 50% !important;
+}
+
+.header-item-number {
+  margin: 0;
+  font-size: 40px;
+  font-weight: 500;
+}
+
+.header-item-number .indice {
+  font-size: 18px;
+  font-weight: 400;
+}
+
+.header-item-title {
+  margin: 0;
+  color: $main-ultra-light-grey;
+}
+
+.gap {
+  height: 64px;
+}
+
+.user-mobile {
+  display: inline-block;
+
+  .user-info {
+    margin: 0;
+  }
+
+  .user-img{
+    display: inline-block;
+    height: 90px;
+    width: 90px;
+    margin-bottom: 16px;
+  }
+}
