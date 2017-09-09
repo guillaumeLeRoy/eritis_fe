@@ -7,5 +7,5 @@ export interface User {
   /*
     Only for a Coachee
    */
-  contractPlanId?: string;
+  contractPlanId?: number;
 }
