@@ -1,4 +1,4 @@
-import {AfterViewInit, ChangeDetectorRef, Component, OnDestroy, OnInit} from "@angular/core";
+import {AfterViewInit, ChangeDetectorRef, Component, Input, OnDestroy, OnInit} from "@angular/core";
 import {MeetingsService} from "../../../../service/meetings.service";
 import {CoachCoacheeService} from "../../../../service/coach_coachee.service";
 import {AuthService} from "../../../../service/auth.service";
@@ -23,7 +23,15 @@ export class MeetingListCoacheeComponent implements OnInit, AfterViewInit, OnDes
 
   loading = true;
 
-  private user: Observable<ApiUser>;
+  @Input()
+  mUser: Coachee;
+
+  @Input()
+  isAdmin: boolean = false;
+
+  private user: Observable<Coachee>;
+
+  // private user: Observable<ApiUser>;
 
   private meetings: Observable<Meeting[]>;
   private meetingsOpened: Observable<Meeting[]>;
@@ -50,38 +58,38 @@ export class MeetingListCoacheeComponent implements OnInit, AfterViewInit, OnDes
   ngOnInit() {
     console.log('ngOnInit');
     this.loading = true;
+    this.user = Observable.of(this.mUser);
   }
 
   ngAfterViewInit(): void {
     console.log('ngAfterViewInit');
-
     this.onRefreshRequested();
   }
 
   onRefreshRequested() {
-    let user = this.authService.getConnectedUser();
-    console.log('onRefreshRequested, user : ', user);
-    if (user == null) {
-      this.connectedUserSubscription = this.authService.getConnectedUserObservable().subscribe(
-        (user: Coachee) => {
-          console.log('onRefreshRequested, getConnectedUser');
-          this.onUserObtained(user);
-        }
-      );
-    } else {
-      this.onUserObtained(user);
-    }
+    // let user = this.authService.getConnectedUser();
+    // console.log('onRefreshRequested, user : ', user);
+    // if (user == null) {
+    //   this.connectedUserSubscription = this.authService.getConnectedUserObservable().subscribe(
+    //     (user: Coachee) => {
+    //       console.log('onRefreshRequested, getConnectedUser');
+    //       this.onUserObtained(user);
+    //     }
+    //   );
+    // } else {
+      this.onUserObtained(this.mUser);
+    // }
   }
 
-  private onUserObtained(user: ApiUser) {
+  private onUserObtained(user: Coachee) {
     console.log('onUserObtained, user : ', user);
     if (user) {
 
-      if (user instanceof Coachee) {
+      // if (user instanceof Coachee) {
         // coachee
         console.log('get a coachee');
         this.getAllMeetingsForCoachee(user.id);
-      }
+      // }
 
       this.user = Observable.of(user);
       this.cd.detectChanges();
@@ -98,6 +106,9 @@ export class MeetingListCoacheeComponent implements OnInit, AfterViewInit, OnDes
         this.getOpenedMeetings();
         this.getClosedMeetings();
         this.cd.detectChanges();
+        this.loading = false;
+      }, (error) => {
+        console.log('got meetings for coachee ERROR', error);
         this.loading = false;
       }
     );
@@ -166,15 +177,6 @@ export class MeetingListCoacheeComponent implements OnInit, AfterViewInit, OnDes
       }
       this.meetingsClosed = Observable.of(closed);
     }
-  }
-
-  private getUsageRate(rhId: string) {
-    this.coachCoacheeService.getUsageRate(rhId).subscribe(
-      (rate: HRUsageRate) => {
-        console.log("getUsageRate, rate : ", rate);
-        this.rhUsageRate = Observable.of(rate);
-      }
-    );
   }
 
   ngOnDestroy(): void {

@@ -6,7 +6,7 @@
 
       <!-- welcome message for coachee -->
       <div *ngIf="isUserACoachee((user | async))">
-        <rb-meeting-list-coachee></rb-meeting-list-coachee>
+        <rb-coachee-dashboard></rb-coachee-dashboard>
       </div>
 
       <!-- welcome message for coach -->

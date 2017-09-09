@@ -50,7 +50,7 @@
 
 
   <div class="row">
-    <h2 class="col-lg-12 section-form-title">RH</h2>
+    <h4 class="col-lg-12 section-form-title black-text">RH</h4>
 
     <div class="col-lg-12">
       <div class="row" *ngIf="(coachee | async)?.associatedRh != null && (coachee | async)?.associatedRh !== undefined">
@@ -69,8 +69,14 @@
   </div>
 
 
+  <rb-meeting-list-coachee [mUser]="(coachee | async)"
+                           [isAdmin]="true"
+                           *ngIf="(coachee | async)">
+  </rb-meeting-list-coachee>
 
-  <div>
+
+
+  <!--<div>-->
     <!--<div class="center">-->
       <!--<button class="btn-basic btn-plain btn-blue btn-small center" (click)="goToCoacheesAdmin()">Retourner aux coachees</button>-->
     <!--</div>-->
@@ -87,5 +93,5 @@
     <!--<button class="btn-basic btn-plain btn-blue right">Envoyer</button>-->
     <!--</div>-->
     <!--</form>-->
-  </div>
+  <!--</div>-->
 </div>

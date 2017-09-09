@@ -65,6 +65,9 @@ import { FooterComponent } from './footer/footer.component';
 import { LegalNoticeComponent } from './legals/legal-notice/legal-notice.component';
 import { TermsOfUseComponent } from './legals/terms-of-use/terms-of-use.component';
 import { CookiePolicyComponent } from './legals/cookie-policy/cookie-policy.component';
+import { CoachDashboardComponent } from './meeting/meeting-list/coach/coach-dashboard/coach-dashboard.component';
+import { CoacheeDashboardComponent } from './meeting/meeting-list/coachee/coachee-dashboard/coachee-dashboard.component';
+import { RhDashboardComponent } from './meeting/meeting-list/rh/rh-dashboard/rh-dashboard.component';
 
 @NgModule({
   declarations: [
@@ -112,7 +115,10 @@ import { CookiePolicyComponent } from './legals/cookie-policy/cookie-policy.comp
     FooterComponent,
     LegalNoticeComponent,
     TermsOfUseComponent,
-    CookiePolicyComponent
+    CookiePolicyComponent,
+    CoachDashboardComponent,
+    CoacheeDashboardComponent,
+    RhDashboardComponent
   ],
   imports: [
     BrowserAnimationsModule,
