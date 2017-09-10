@@ -130,11 +130,11 @@ export class MeetingsService {
    * @param endDate
    * @returns {Observable<R>}
    */
-  addPotentialDateToMeeting(meetingId: string, startDate: number, endDate: number): Observable<MeetingDate> {
+  addPotentialDateToMeeting(meetingId: string, startDate: string, endDate: string): Observable<MeetingDate> {
     console.log("addPotentialDateToMeeting, meeting id : %s, startDate : %s, endDate : %s", meetingId, startDate, endDate);
     let body = {
-      start_date: startDate.toString(),
-      end_date: endDate.toString(),
+      start_date: startDate,
+      end_date: endDate,
     };
     let param = [meetingId];
     return this.apiService.post(AuthService.POST_MEETING_POTENTIAL_DATE, param, body).map((response: Response) => {

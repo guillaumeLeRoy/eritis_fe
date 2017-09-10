@@ -11,3 +11,10 @@ export class MeetingDate {
     this.id = id;
   }
 }
+
+export class TempMeetingDate {
+  start_date: Date
+  end_date: Date
+
+
+}
