@@ -71,9 +71,10 @@ export class Utils {
 
   static getMinutes(date: string): string {
     let m = (new Date(date)).getMinutes();
-    if (m === 0) {
+    if (m === 0)
       return '00';
-    }
+    if (m < 10)
+      return '0' + m;
     return m.toString();
   }
 

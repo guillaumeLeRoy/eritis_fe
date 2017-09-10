@@ -111,3 +111,23 @@ input[type="file"] {
   width: 150px;
   margin-right: 16px;
 }
+
+
+@media (max-width: 991px) {
+  .avatar-container {
+    flex-direction: column;
+    align-content: center;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .input-file-container {
+    text-align: center;
+  }
+
+  #avatar-preview {
+    height: 120px;
+    width: 120px;
+    margin-right: 0;
+  }
+}

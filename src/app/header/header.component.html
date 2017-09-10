@@ -94,7 +94,7 @@
     <nav>
       <div class="navbar-color navbar-fixed z-depth-2">
         <div class="col s12">
-          <a (click)="goToHome()" class="brand-logo center"><img
+          <a (click)="goToHome()" class="brand-logo center hide-on-med-and-down "><img
             src="assets/img/logo-eritis-new.png" alt="Eritis"></a>
 
           <a (click)="goToHome()" class="brand-logo brand-logo-phone center hide-on-large-only"><img
@@ -230,10 +230,13 @@
       <div class="side-nav-header-container z-depth-1" *ngIf="!isAdmin()">
         <!--<img src="{{(user | async)?.avatar_url}}" alt="profile image"-->
         <!--class="side-nav-user-img circle responsive-img z-depth-2">-->
-        <div class="side-nav-user-img avatar z-depth-2"
-             *ngIf="(user | async)?.avatar_url !== null && (user | async)?.avatar_url !== undefined"
-             [style.background-image]="'url(' + (user | async)?.avatar_url + ')'"></div>
-        <div class="side-nav-user-info">
+        <div class="text-center">
+          <div class="side-nav-user-img avatar z-depth-2"
+               *ngIf="(user | async)?.avatar_url !== null && (user | async)?.avatar_url !== undefined"
+               [style.background-image]="'url(' + (user | async)?.avatar_url + ')'"></div>
+        </div>
+
+        <div class="side-nav-user-info text-center">
           <h6>{{ (user | async)?.first_name}} {{ (user | async)?.last_name}}</h6>
           <span>{{(user | async)?.email}}</span>
         </div>
