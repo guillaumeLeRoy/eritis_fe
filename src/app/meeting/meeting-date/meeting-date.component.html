@@ -82,8 +82,8 @@
         <div class="potential-date-line">
           <div class="blue-point"></div>
 
-          {{ dateToString(potentialDate.start_date)}}
-          <span class="bold black-text">{{ timeToString(potentialDate.start_date) }} - {{ timeToString(potentialDate.end_date) }}</span>
+          {{ timestampToString(potentialDate.start_date)}}
+          <span class="bold black-text">{{ getHoursAndMinutesFromTimestamp(potentialDate.start_date) }} - {{ getHoursAndMinutesFromTimestamp(potentialDate.end_date) }}</span>
 
 
           <a class="modify-timeslot"

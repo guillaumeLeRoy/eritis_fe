@@ -4,8 +4,8 @@
 
 export class MeetingDate {
   id: string
-  start_date: string
-  end_date: string
+  start_date: number
+  end_date: number
 
   constructor(id: string) {
     this.id = id;

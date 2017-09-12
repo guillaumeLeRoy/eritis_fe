@@ -110,7 +110,7 @@ export class MeetingItemCoacheeComponent implements OnInit {
   }
 
   printTimeString(date: string) {
-    return Utils.timeToString(date);
+    return Utils.getHoursAndMinutesFromDate(date);
   }
 
   getDate(date: string) {

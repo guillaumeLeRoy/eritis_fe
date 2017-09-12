@@ -1,4 +1,3 @@
-///<reference path="../../model/MeetingDate.ts"/>
 import {ChangeDetectorRef, Component, Injectable, OnDestroy, OnInit} from "@angular/core";
 import {NgbDatepickerI18n, NgbDateStruct} from "@ng-bootstrap/ng-bootstrap";
 import {ApiUser} from "../../model/ApiUser";
@@ -73,8 +72,6 @@ export class MeetingDateComponent implements OnInit, OnDestroy {
   private potentialDatesArray: Array<MeetingDate>;
   private potentialDates: Observable<MeetingDate[]>;
 
-  private hasPotentialDates = false;
-
   private displayErrorBookingDate = false;
   private connectedUser: Observable<ApiUser>;
   private subscriptionConnectUser: Subscription;
@@ -99,7 +96,11 @@ export class MeetingDateComponent implements OnInit, OnDestroy {
     this.route.params.subscribe(
       (params: any) => {
         this.meetingId = params['meetingId'];
-        this.loadMeetingPotentialTimes(this.meetingId);
+        console.log("route param, meetingId : " + this.meetingId);
+
+        if (this.meetingId != undefined) {
+          this.loadMeetingPotentialTimes(this.meetingId);
+        }
       }
     );
 
@@ -149,16 +150,24 @@ export class MeetingDateComponent implements OnInit, OnDestroy {
 
     let minDate: Date = new Date(this.dateModel.year, this.dateModel.month - 1, this.dateModel.day, this.timeRange[0], 0);
     let maxDate = new Date(this.dateModel.year, this.dateModel.month - 1, this.dateModel.day, this.timeRange[1], 0);
-    let timestampMin: number = +minDate.getTime().toFixed(0) / 1000;
-    let timestampMax: number = +maxDate.getTime().toFixed(0) / 1000;
+
+    // let timestampMin: number = +minDate.getTime().toFixed(0) / 1000;
+    // let timestampMax: number = +maxDate.getTime().toFixed(0) / 1000;
 
     if (this.isEditingPotentialDate) {
 
-      this.mEditingPotentialTime.start_date = minDate.valueOf().toString();//TODO verify getTime et valueOf return the same value
-      this.mEditingPotentialTime.end_date = maxDate.valueOf().toString();
+      // this.mEditingPotentialTime.start_date = minDate.valueOf().toString();//TODO verify getTime et valueOf return the same value
+      // this.mEditingPotentialTime.end_date = maxDate.valueOf().toString();
+
+      this.mEditingPotentialTime.start_date = minDate.valueOf();
+      this.mEditingPotentialTime.end_date = maxDate.valueOf();
 
       this.potentialDates = Observable.of(this.potentialDatesArray);
       this.cd.detectChanges();
+
+      //reset progress bar values
+      this.resetValues();
+      Materialize.toast('Plage modifiée !', 3000, 'rounded')
 
       //   // just update potential date
       //   this.meetingService.updatePotentialTime(this.mEditingPotentialTimeId, timestampMin, timestampMax).subscribe(
@@ -180,11 +189,26 @@ export class MeetingDateComponent implements OnInit, OnDestroy {
     } else {
 
       let dateToSave = new MeetingDate("");//no id for now
-      dateToSave.start_date = minDate.valueOf().toString();//TODO verify getTime et valueOf return the same value
-      dateToSave.end_date = maxDate.valueOf().toString();
+      // dateToSave.start_date = minDate.valueOf().toString();//TODO verify getTime et valueOf return the same value
+      // dateToSave.end_date = maxDate.valueOf().toString();
 
-      console.log('bookOrUpdateADate, timestampMin : ', timestampMin);
-      console.log('bookOrUpdateADate,  dateToSave.start_date : ', dateToSave.start_date);
+      dateToSave.start_date = minDate.valueOf();//TODO verify getTime et valueOf return the same value
+      dateToSave.end_date = maxDate.valueOf();
+
+      // dateToSave.start_date = timestampMin.toString();//TODO verify getTime et valueOf return the same value
+      // dateToSave.end_date = timestampMax.toString();
+
+      // console.log('bookOrUpdateADate, timestampMin : ', timestampMin);
+      // console.log('bookOrUpdateADate,  dateToSave.start_date : ', dateToSave.start_date);
+      //
+      // let date = new Date(timestampMin);
+      // console.log('bookOrUpdateADate, date min : ', date);
+      //
+      // date = new Date(minDate.valueOf());
+      // console.log('bookOrUpdateADate, date min : ', date);
+
+      // dateToSave.start_date = minDate.toDateString();//TODO verify getTime et valueOf return the same value
+      // dateToSave.end_date = maxDate.toDateString();
 
       this.addPotentialDate(dateToSave);
 
@@ -235,29 +259,29 @@ export class MeetingDateComponent implements OnInit, OnDestroy {
 
   modifyPotentialDate(meetingDate: MeetingDate) {
     console.log('modifyPotentialDate, meetingDate', meetingDate);
+    //switch to edit mode
+    this.isEditingPotentialDate = true;
+    this.mEditingPotentialTime = meetingDate;
+    // position time selector
+    let startTime = Utils.getHoursFromTimestamp(meetingDate.start_date);
+    let endTime = Utils.getHoursFromTimestamp(meetingDate.end_date);
+    this.updateTimeSelector(startTime, endTime);
+    // correctly position the date on the calendar
+    this.dateModel = Utils.timestampToNgbDate(meetingDate.start_date);
+  }
 
-    //find the potentialDate we want to modify
-    for (let potential of this.potentialDatesArray) {
-      if (potential === meetingDate) {
-        let startTime = Utils.getHours(potential.start_date);
-        let endTime = Utils.getHours(potential.end_date);
-        //switch to edit mode
-        this.isEditingPotentialDate = true;
-        this.mEditingPotentialTime = meetingDate;
-        this.timeRange = [startTime, endTime];
-        break;
-      }
-    }
+  private updateTimeSelector(minHour: number, maxHour: number) {
+    this.timeRange = [minHour, maxHour];
   }
 
   resetValues() {
     this.mEditingPotentialTime = null;
     this.isEditingPotentialDate = false;
-    this.timeRange = [10, 18];
+    this.updateTimeSelector(10, 18);
   }
 
-  timeToString(date: string): string {
-    return Utils.timeToString(date);
+  getHoursAndMinutesFromTimestamp(timestamp: number): string {
+    return Utils.getHoursAndMinutesFromTimestamp(timestamp);
   }
 
   timeIntToString(hour: number) {
@@ -268,12 +292,20 @@ export class MeetingDateComponent implements OnInit, OnDestroy {
     return Utils.dateToString(date);
   }
 
+  timestampToString(timestamp: number): string {
+    return Utils.timestampToString(timestamp);
+  }
+
   ngbDateToString(date: NgbDateStruct): string {
     return Utils.ngbDateToString(date);
   }
 
-  stringToDate(date: string): NgbDateStruct {
-    return Utils.stringToNgbDate(date);
+  // stringToDate(date: string): NgbDateStruct {
+  //   return Utils.stringToNgbDate(date);
+  // }
+
+  timestampToNgbDateStruct(timestamp: number): NgbDateStruct {
+    return Utils.timestampToNgbDate(timestamp);
   }
 
   compareDates(date1: NgbDateStruct, date2: NgbDateStruct) {
@@ -282,7 +314,7 @@ export class MeetingDateComponent implements OnInit, OnDestroy {
 
   hasPotentialDate(date: NgbDateStruct) {
     for (let i in this.potentialDatesArray) {
-      if (this.compareDates(this.stringToDate(this.potentialDatesArray[i].start_date), date)) {
+      if (this.compareDates(this.timestampToNgbDateStruct(this.potentialDatesArray[i].start_date), date)) {
         return true;
       }
     }
@@ -307,7 +339,6 @@ export class MeetingDateComponent implements OnInit, OnDestroy {
         console.log('loadMeetingPotentialTimes : ', dates);
         if (dates != null) {
           //clear array
-          if (dates.length > 0) this.hasPotentialDates = true;
           this.potentialDatesArray = new Array<MeetingDate>();
           //add received dates
           this.potentialDatesArray.push(...dates);
@@ -321,7 +352,6 @@ export class MeetingDateComponent implements OnInit, OnDestroy {
   }
 
   private addPotentialDate(date: MeetingDate) {
-    this.potentialDatesArray = new Array<MeetingDate>();
     //add received dates
     this.potentialDatesArray.push(date);
     this.potentialDates = Observable.of(this.potentialDatesArray);
@@ -330,8 +360,7 @@ export class MeetingDateComponent implements OnInit, OnDestroy {
 
   /* Call this method to check if all required params are correctly set. */
   canFinish(): boolean {
-    let canFinish = this.meetingGoal != null && this.meetingContext != null && this.dateModel != null && this.hasPotentialDates;
-    // console.log('canFinish : ', canFinish);
+    let canFinish = this.meetingGoal != null && this.meetingContext != null && this.potentialDatesArray.length > 0;
     return canFinish;
   }
 
@@ -387,7 +416,7 @@ export class MeetingDateComponent implements OnInit, OnDestroy {
   }
 
   private addMeetingDateToMeeting(meetingId: string, meetingDate: MeetingDate): Observable<MeetingDate> {
-    return this.meetingService.addPotentialDateToMeeting(meetingId, meetingDate.start_date, meetingDate.end_date);
+    return this.meetingService.addPotentialDateToMeeting(meetingId, meetingDate.start_date.toString(), meetingDate.end_date.toString());
 
     // .subscribe(
     //   (meetingDate: MeetingDate) => {

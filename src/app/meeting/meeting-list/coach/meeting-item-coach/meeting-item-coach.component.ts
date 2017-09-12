@@ -11,7 +11,6 @@ import {ApiUser} from "../../../../model/ApiUser";
 import {Subscription} from "rxjs/Subscription";
 import {Router} from "@angular/router";
 import {Utils} from "../../../../utils/Utils";
-import {NgbDateStruct} from "@ng-bootstrap/ng-bootstrap";
 
 declare var $: any;
 declare var Materialize: any;
@@ -285,8 +284,9 @@ export class MeetingItemCoachComponent implements OnInit, AfterViewInit {
     let hours = [];
 
     for (let date of this.potentialDatesArray) {
-      if (Utils.getDate(date.start_date) === Utils.getDate(selected)) {
-        for (let _i = Utils.getHours(date.start_date); _i < Utils.getHours(date.end_date); _i++) {
+      // TODO could be improved
+      if (Utils.getDayAndMonthFromTimestamp(date.start_date) === Utils.getDate(selected)) {
+        for (let _i = Utils.getHoursFromTimestamp(date.start_date); _i < Utils.getHoursFromTimestamp(date.end_date); _i++) {
           hours.push(_i);
         }
       }
@@ -302,7 +302,7 @@ export class MeetingItemCoachComponent implements OnInit, AfterViewInit {
   }
 
   timeToString(date: string) {
-    return Utils.timeToString(date);
+    return Utils.getHoursAndMinutesFromDate(date);
   }
 
   timeIntToString(hour: number) {

@@ -1,13 +1,12 @@
 import {ChangeDetectorRef, Component, OnInit} from "@angular/core";
 import {Observable} from "rxjs/Observable";
-import {Meeting} from '../../../../model/Meeting';
-import {MeetingsService} from '../../../../service/meetings.service';
+import {Meeting} from "../../../../model/Meeting";
+import {MeetingsService} from "../../../../service/meetings.service";
 import {AuthService} from "../../../../service/auth.service";
 import {Subscription} from "rxjs/Subscription";
 import {Coach} from "../../../../model/Coach";
 import {ApiUser} from "../../../../model/ApiUser";
 import {Router} from "@angular/router";
-import {MeetingDate} from "../../../../model/MeetingDate";
 
 declare var $: any;
 declare var Materialize: any;
@@ -107,28 +106,29 @@ export class AvailableMeetingsComponent implements OnInit {
     let timestampMin: number = +minDate.getTime().toFixed(0) / 1000;
     let timestampMax: number = +maxDate.getTime().toFixed(0) / 1000;
 
+    //tODO uncomment this
     // create new date
-    this.meetingService.addPotentialDateToMeeting(meetingId, timestampMin, timestampMax).subscribe(
-      (meetingDate: MeetingDate) => {
-        console.log('addPotentialDateToMeeting, meetingDate : ', meetingDate);
-
-        // validate date
-        this.meetingService.setFinalDateToMeeting(meetingId, meetingDate.id).subscribe(
-          (meeting: Meeting) => {
-            console.log("confirmPotentialDate, response", meeting);
-            this.onRefreshRequested();
-            Materialize.toast('Meeting validé !', 3000, 'rounded')
-            window.location.reload();
-          }, (error) => {
-            console.log('get potentials dates error', error);
-            Materialize.toast('Erreur lors de la validation du meeting', 3000, 'rounded')
-          }
-        );
-      },
-      (error) => {
-        console.log('addPotentialDateToMeeting error', error);
-      }
-    );
+    // this.meetingService.addPotentialDateToMeeting(meetingId, timestampMin, timestampMax).subscribe(
+    //   (meetingDate: MeetingDate) => {
+    //     console.log('addPotentialDateToMeeting, meetingDate : ', meetingDate);
+    //
+    //     // validate date
+    //     this.meetingService.setFinalDateToMeeting(meetingId, meetingDate.id).subscribe(
+    //       (meeting: Meeting) => {
+    //         console.log("confirmPotentialDate, response", meeting);
+    //         this.onRefreshRequested();
+    //         Materialize.toast('Meeting validé !', 3000, 'rounded')
+    //         window.location.reload();
+    //       }, (error) => {
+    //         console.log('get potentials dates error', error);
+    //         Materialize.toast('Erreur lors de la validation du meeting', 3000, 'rounded')
+    //       }
+    //     );
+    //   },
+    //   (error) => {
+    //     console.log('addPotentialDateToMeeting error', error);
+    //   }
+    // );
   }
 
   onSubmitValidateMeeting() {
@@ -138,7 +138,7 @@ export class AvailableMeetingsComponent implements OnInit {
           (meeting: Meeting) => {
             console.log('on meeting associated : ', meeting);
             //navigate to dashboard
-            this.confirmPotentialDate(meeting.id);
+            this.confirmPotentialDate(meeting.id);//TODO use flatmap instead
             this.coachValidateModalVisibility(false);
           }
         );
