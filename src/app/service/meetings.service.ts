@@ -145,6 +145,22 @@ export class MeetingsService {
   }
 
   /**
+   * Add this date as a Potential Date for the given meeting
+   * @param meetingId
+   * @returns {Observable<R>}
+   */
+  addPotentialDatesToMeeting(meetingId: string, dates: Array<MeetingDate>): Observable<MeetingDate> {
+    console.log("addPotentialDatesToMeeting");
+    let body = dates.toString();
+    let param = [meetingId];
+    return this.apiService.post(AuthService.PUT_MEETING_POTENTIALS_DATE, param, body).map((response: Response) => {
+      let json: MeetingDate = response.json();
+      console.log("getCoachForId, response json : ", json);
+      return json;
+    });
+  }
+
+  /**
    * Fetch all potential dates for the given meeting
    * @param meetingId
    * @returns {Observable<R>}

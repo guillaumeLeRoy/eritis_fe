@@ -370,7 +370,9 @@ export class MeetingDateComponent implements OnInit, OnDestroy {
     console.log('finish, meetingGoal : ', this.meetingGoal);
     console.log('finish, meetingContext : ', this.meetingContext);
 
-    //save GOAL and CONTEXT
+    // create meeting
+    // save GOAL and CONTEXT
+    // save meeting dates
     this.getOrCreateMeeting()
       .flatMap(
         (meetingId: string) => {
@@ -382,7 +384,7 @@ export class MeetingDateComponent implements OnInit, OnDestroy {
             )
             .flatMap(
               (meetingReview: MeetingReview) => {
-                return this.addMeetingDateToMeeting(meetingId, this.mEditingPotentialTime);
+                return this.addMeetingDatesToMeeting(meetingId, this.potentialDatesArray);
               }
             );
         }
@@ -415,26 +417,30 @@ export class MeetingDateComponent implements OnInit, OnDestroy {
     this.meetingContext = context;
   }
 
-  private addMeetingDateToMeeting(meetingId: string, meetingDate: MeetingDate): Observable<MeetingDate> {
-    return this.meetingService.addPotentialDateToMeeting(meetingId, meetingDate.start_date.toString(), meetingDate.end_date.toString());
-
-    // .subscribe(
-    //   (meetingDate: MeetingDate) => {
-    //     console.log('addPotentialDateToMeeting, meetingDate : ', meetingDate);
-    //     this.potentialDatesArray.push(meetingDate);
-    //     // Reload potential times
-    //     console.log('reload potential times');
-    //     // Reload potential times
-    //     this.loadMeetingPotentialTimes(this.meetingId);
-    //     //reset progress bar values
-    //     this.resetValues();
-    //     Materialize.toast('Plage ajoutée !', 3000, 'rounded')
-    //   },
-    //   (error) => {
-    //     console.log('addPotentialDateToMeeting error', error);
-    //     this.displayErrorBookingDate = true;
-    //     Materialize.toast("Erreur lors de l'ajout", 3000, 'rounded')
-    //   }
-    // );
+  private addMeetingDatesToMeeting(meetingId: string, meetingDates: Array<MeetingDate>): Observable<MeetingDate> {
+    return this.meetingService.addPotentialDatesToMeeting(meetingId, meetingDates);
   }
+
+  // private addMeetingDateToMeeting(meetingId: string, meetingDate: MeetingDate): Observable<MeetingDate> {
+  //   return this.meetingService.addPotentialDateToMeeting(meetingId, meetingDate.start_date.toString(), meetingDate.end_date.toString());
+
+  // .subscribe(
+  //   (meetingDate: MeetingDate) => {
+  //     console.log('addPotentialDateToMeeting, meetingDate : ', meetingDate);
+  //     this.potentialDatesArray.push(meetingDate);
+  //     // Reload potential times
+  //     console.log('reload potential times');
+  //     // Reload potential times
+  //     this.loadMeetingPotentialTimes(this.meetingId);
+  //     //reset progress bar values
+  //     this.resetValues();
+  //     Materialize.toast('Plage ajoutée !', 3000, 'rounded')
+  //   },
+  //   (error) => {
+  //     console.log('addPotentialDateToMeeting error', error);
+  //     this.displayErrorBookingDate = true;
+  //     Materialize.toast("Erreur lors de l'ajout", 3000, 'rounded')
+  //   }
+  // );
+  // }
 }
