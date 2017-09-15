@@ -28,6 +28,7 @@ import {ProfileRhAdminComponent} from "./user/profile/rh/profile-rh-admin/profil
 import {LegalNoticeComponent} from "./legals/legal-notice/legal-notice.component";
 import {TermsOfUseComponent} from "./legals/terms-of-use/terms-of-use.component";
 import {CookiePolicyComponent} from "./legals/cookie-policy/cookie-policy.component";
+import {HomeAdminComponent} from "./admin/home-admin/home-admin.component";
 
 const APP_ROUTES: Routes = [
   {path: '', redirectTo: '/welcome', pathMatch: 'full'},
@@ -56,6 +57,8 @@ const APP_ROUTES: Routes = [
 
   {path: 'admin', component: AdminComponent,
     children: [
+      {path: '', redirectTo: 'home', pathMatch: 'full'},
+      {path: 'home', component: HomeAdminComponent},
       {path: 'signup', component: SignupAdminComponent},
       {path: 'coachs-list', component: AdminCoachsListComponent},
       {path: 'coachees-list', component: CoacheesListComponent},

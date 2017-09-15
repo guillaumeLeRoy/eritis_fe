@@ -1,29 +1,4 @@
-<div class="header-user" [ngsReveal]="{scale:1, origin: 'top', distance:'200px', duration: 500}">
-  <div class="header-user-filter">
-    <div class="container row">
-
-      <div class="user col-lg-5">
-        <button class="btn-back" (click)="goToRhsAdmin()">
-          <i class="material-icons">keyboard_arrow_left</i>
-        </button>
-
-        <!--<img src="{{(coach | async)?.avatar_url}}" alt="profile image" class="user-img circle responsive-img z-depth-2">-->
-        <div class="user-img avatar z-depth-2"
-             *ngIf="(rh | async)?.avatar_url !== null && (rh | async)?.avatar_url !== undefined"
-             [style.background-image]="'url(' + (rh | async)?.avatar_url + ')'"></div>
-
-        <div class="user-info">
-          <h5>{{(rh | async)?.first_name}} {{(rh | async)?.last_name}}</h5>
-          <p class="light-grey-text">{{(rh | async)?.email}}</p>
-          <p class="italic">{{(rh | async)?.company_name}}</p>
-        </div>
-      </div>
-
-      <div class="col-sm-12 hide-on-large-only gap"></div>
-
-    </div>
-  </div>
-</div>
+<rb-profile-header [user]="rh" [isOwner]="true"></rb-profile-header>
 
 <div class="container" *ifLoader="loading" [ngsReveal]="{scale:1, opacity:0, distance:0, duration: 1000}">
   <h4 class="text-right italic">"{{ (rh | async)?.description }}"</h4>

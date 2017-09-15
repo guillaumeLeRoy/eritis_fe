@@ -212,7 +212,6 @@ export class MeetingDateComponent implements OnInit, OnDestroy {
 
       this.addPotentialDate(dateToSave);
 
-
       //   // create new date
       //   this.meetingService.addPotentialDateToMeeting(this.meetingId, timestampMin, timestampMax).subscribe(
       //     (meetingDate: MeetingDate) => {
@@ -379,7 +378,7 @@ export class MeetingDateComponent implements OnInit, OnDestroy {
           return this.meetingService.addAContextForMeeting(meetingId, this.meetingContext)
             .flatMap(
               (meetingReview: MeetingReview) => {
-                return this.meetingService.addAGoalToMeeting(meetingId, this.meetingContext);
+                return this.meetingService.addAGoalToMeeting(meetingId, this.meetingGoal);
               }
             )
             .flatMap(

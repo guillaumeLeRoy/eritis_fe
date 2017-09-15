@@ -153,3 +153,29 @@ p {
   margin: 8px 0;
   margin-left: 8px;
 }
+
+
+
+@media (max-width: 768px) {
+  .meeting-item-header > div,
+  .meeting-item-coach,
+  .meeting-item-body {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .meeting-item-coach-avatar {
+    margin: 0;
+    margin-bottom: 8px;
+  }
+
+  .meeting-item-date {
+    margin-left: 0;
+  }
+
+  .meeting-item-body-buttons,
+  .meeting-item-body-content {
+    text-align: center;
+    width: 100%;
+  }
+}

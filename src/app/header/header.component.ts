@@ -14,6 +14,7 @@ import {PromiseObservable} from "rxjs/observable/PromiseObservable";
 import {FirebaseService} from "../service/firebase.service";
 import {MeetingsService} from "../service/meetings.service";
 import {Meeting} from "../model/meeting";
+import {Utils} from "../utils/Utils";
 
 
 declare var $: any;
@@ -124,6 +125,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   onLogout() {
     console.log("login out")
     window.scrollTo(0, 0);
+    $('.button-collapse').sideNav('hide');
     this.authService.loginOut();
   }
 
@@ -153,6 +155,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   }
 
   goToWelcomePage() {
+    $('.button-collapse').sideNav('hide');
     this.router.navigate(['/welcome']);
   }
 
@@ -294,24 +297,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   }
 
   printDateString(date: string) {
-    return this.getDate(date) + ' - ' + this.getHours(date) + 'h' + this.getMinutes(date);
-  }
-
-  getHours(date: string) {
-    return (new Date(date)).getHours();
-  }
-
-  getMinutes(date: string) {
-    let m = (new Date(date)).getMinutes();
-    if (m === 0)
-      return '00';
-    if (m < 10)
-      return '0' + m;
-    return m;
-  }
-
-  getDate(date: string): string {
-    return (new Date(date)).getDate() + ' ' + this.months[(new Date(date)).getMonth()];
+    return Utils.dateToString(date) + ' - ' + Utils.getHoursAndMinutesFromDate(date);
   }
 
   readAllNotifications() {

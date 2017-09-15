@@ -151,9 +151,24 @@ export class MeetingsService {
    */
   addPotentialDatesToMeeting(meetingId: string, dates: Array<MeetingDate>): Observable<MeetingDate> {
     console.log("addPotentialDatesToMeeting");
-    let body = dates.toString();
+
+    // convert milliSec to sec ...
+    let datesInSeconds: Array<MeetingDate> = new Array();
+    for (let date of dates) {
+      let secDate = new MeetingDate(date.id);
+      secDate.start_date = date.start_date / 1000;
+      secDate.end_date = date.end_date / 1000;
+      datesInSeconds.push(secDate);
+    }
+
+    let jsonBody: any = {};
+    jsonBody.dates = datesInSeconds;
+
+    let body = JSON.stringify(jsonBody);
+    console.log("addPotentialDatesToMeeting, body %s", body);
+
     let param = [meetingId];
-    return this.apiService.post(AuthService.PUT_MEETING_POTENTIALS_DATE, param, body).map((response: Response) => {
+    return this.apiService.put(AuthService.PUT_MEETING_POTENTIALS_DATE, param, body).map((response: Response) => {
       let json: MeetingDate = response.json();
       console.log("getCoachForId, response json : ", json);
       return json;
