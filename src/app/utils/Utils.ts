@@ -1,6 +1,4 @@
-import {MeetingDate} from "../model/MeetingDate";
 import {NgbDateStruct} from "@ng-bootstrap/ng-bootstrap";
-import {print} from "util";
 /**
  * Created by guillaume on 02/09/2017.
  */
@@ -9,7 +7,7 @@ export class Utils {
   public static months = ['Janvier', 'Février', 'Mars', 'Avril', 'Mai', 'Juin', 'Juillet', 'Août', 'Septembre', 'Octobre', 'Novembre', 'Décembre'];
   public static days = ['Dimanche', 'Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi'];
 
-
+  public static EMAIL_REGEX = '[a-z0-9!#$%&\'*+/=?^_`{|}~-]+(?:.[a-z0-9!#$%&\'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?'
 
   /*Dates*/
 
@@ -73,9 +71,10 @@ export class Utils {
 
   static getMinutes(date: string): string {
     let m = (new Date(date)).getMinutes();
-    if (m === 0) {
+    if (m === 0)
       return '00';
-    }
+    if (m < 10)
+      return '0' + m;
     return m.toString();
   }
 
