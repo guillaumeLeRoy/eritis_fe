@@ -67,40 +67,40 @@ export class MeetingsService {
     return this.apiService.delete(AuthService.DELETE_MEETING, param);
   }
 
-  /**
-   * Delete a potential date
-   * @param potentialId
-   * @returns {Observable<R>}
-   */
-  updatePotentialTime(potentialId: string, startDate: number, endDate: number): Observable<MeetingDate> {
-    console.log("updatePotentialTime, potentialId %s", potentialId);
-
-    let body = {
-      start_date: startDate.toString(),
-      end_date: endDate.toString(),
-    };
-    let param = [potentialId];
-    return this.apiService.put(AuthService.PUT_POTENTIAL_DATE_TO_MEETING, param, body).map((response: Response) => {
-      let json: MeetingDate = response.json();
-      console.log("updatePotentialTime, response json : ", json);
-      return json;
-    });
-  }
-
-  /**
-   * Delete a potential date
-   * @param potentialId
-   * @returns {Observable<R>}
-   */
-  removePotentialTime(potentialId: string): Observable<any> {
-    console.log("removePotentialTime, potentialId %s", potentialId);
-    let param = [potentialId];
-    return this.apiService.delete(AuthService.DELETE_POTENTIAL_DATE, param).map((response: Response) => {
-      let json: Meeting = response.json();
-      console.log("removePotentialTime, response json : ", json);
-      return json;
-    });
-  }
+  // /**
+  //  * Delete a potential date
+  //  * @param potentialId
+  //  * @returns {Observable<R>}
+  //  */
+  // updatePotentialTime(potentialId: string, startDate: number, endDate: number): Observable<MeetingDate> {
+  //   console.log("updatePotentialTime, potentialId %s", potentialId);
+  //
+  //   let body = {
+  //     start_date: startDate.toString(),
+  //     end_date: endDate.toString(),
+  //   };
+  //   let param = [potentialId];
+  //   return this.apiService.put(AuthService.PUT_POTENTIAL_DATE_TO_MEETING, param, body).map((response: Response) => {
+  //     let json: MeetingDate = response.json();
+  //     console.log("updatePotentialTime, response json : ", json);
+  //     return json;
+  //   });
+  // }
+  //
+  // /**
+  //  * Delete a potential date
+  //  * @param potentialId
+  //  * @returns {Observable<R>}
+  //  */
+  // removePotentialTime(potentialId: string): Observable<any> {
+  //   console.log("removePotentialTime, potentialId %s", potentialId);
+  //   let param = [potentialId];
+  //   return this.apiService.delete(AuthService.DELETE_POTENTIAL_DATE, param).map((response: Response) => {
+  //     let json: Meeting = response.json();
+  //     console.log("removePotentialTime, response json : ", json);
+  //     return json;
+  //   });
+  // }
 
   /**
    * Close the given meeting with a comment
@@ -177,6 +177,7 @@ export class MeetingsService {
 
   /**
    * Fetch all potential dates for the given meeting
+   * Backend returns dates in Unix time in seconds but but MeetingDate deals with timestamp.
    * @param meetingId
    * @returns {Observable<R>}
    */
@@ -186,7 +187,16 @@ export class MeetingsService {
     return this.apiService.get(AuthService.GET_MEETING_POTENTIAL_DATES, param).map((response: Response) => {
       let dates: MeetingDate[] = response.json();
       console.log("getMeetingPotentialTimes, response json : ", dates);
-      return dates;
+
+      // convert dates to use milliseconds ....
+      let datesMilli = new Array<MeetingDate>();
+      for (var date of dates) {
+        let dateMilli = new MeetingDate(date.id);
+        dateMilli.start_date = date.start_date * 1000;
+        dateMilli.end_date = date.end_date * 1000;
+        datesMilli.push(dateMilli)
+      }
+      return datesMilli;
     });
   }
 

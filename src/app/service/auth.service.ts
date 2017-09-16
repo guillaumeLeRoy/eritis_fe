@@ -90,7 +90,7 @@ export class AuthService {
   public static POST_MEETING_POTENTIAL_DATE = "/v1/meetings/:meetingId/potentials";
   public static PUT_MEETING_POTENTIALS_DATE = "/v1/meetings/:meetingId/potentials";
   public static GET_MEETING_POTENTIAL_DATES = "/v1/meetings/:meetingId/potentials";
-  public static PUT_POTENTIAL_DATE_TO_MEETING = "/v1/meetings/potentials/:potentialId";//update potential date
+  // public static PUT_POTENTIAL_DATE_TO_MEETING = "/v1/meetings/potentials/:potentialId";//update potential date
   public static DELETE_POTENTIAL_DATE = "/v1/meetings/potentials/:potentialId";//delete potential date
   public static PUT_FINAL_DATE_TO_MEETING = "/v1/meetings/:meetingId/dates/:potentialId";//set the potential date as the meeting selected date
   public static GET_AVAILABLE_MEETINGS = "/v1/meetings";//get available meetings ( meetings with NO coach associated )
