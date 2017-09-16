@@ -50,7 +50,7 @@ export class WelcomeComponent implements OnInit {
 
   private onUserObtained(user: Coach | Coachee | HR) {
     console.log('onUserObtained : ' + user);
-    if (user != null)
+    if (user != null && this.cookieService.get('ACTIVE_SESSION') !== undefined)
       this.router.navigate(['/meetings']);
   }
 

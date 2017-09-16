@@ -183,9 +183,11 @@ export class AuthService {
 
   getConnectedUser(): Coach | Coachee | HR {
     // if (this.ApiUser !== null)
-    // if (this.cookieService.get('ACTIVE_SESSION') !== 'true')
-    // this.loginOut();
-    return this.ApiUser;
+    if (this.cookieService.get('ACTIVE_SESSION') !== 'true')
+      // this.loginOut();
+      return this.ApiUser;
+    else
+      return null;
   }
 
   getConnectedUserObservable(): Observable<ApiUser> {
