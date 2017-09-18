@@ -12,13 +12,11 @@ import {
   MEETING_REVIEW_TYPE_SESSION_UTILITY,
   MeetingReview
 } from "../model/MeetingReview";
-import {CookieService} from "ngx-cookie";
-import {Router} from "@angular/router";
 
 @Injectable()
 export class MeetingsService {
 
-  constructor(private apiService: AuthService, private cookieService: CookieService, private router: Router) {
+  constructor(private apiService: AuthService) {
   }
 
   getAllMeetingsForCoacheeId(coacheeId: string): Observable<Meeting[]> {
