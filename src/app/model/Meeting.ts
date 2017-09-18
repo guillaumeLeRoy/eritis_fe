@@ -14,6 +14,8 @@ export class Meeting {
   }
 
   static parseFromBE(json: any): Meeting {
+    console.log("parseFromBE, json : ", json);
+
     let meeting = new Meeting();
     meeting.id = json.id;
     if (json.coach != null) {
@@ -30,6 +32,9 @@ export class Meeting {
     }
     // convert dates to use milliseconds ....
     meeting.created_date = json.created_date * 1000;//todo convert to unix time
+
+    console.log("parseFromBE, Meeting created: ", meeting);
+
     return meeting;
   }
 }

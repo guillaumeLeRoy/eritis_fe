@@ -5,10 +5,8 @@ import {AuthService} from "../../../../service/auth.service";
 import {Observable} from "rxjs/Observable";
 import {Meeting} from "../../../../model/Meeting";
 import {Subscription} from "rxjs/Subscription";
-import {Coachee} from "../../../../model/Coachee";
 import {Coach} from "../../../../model/Coach";
 import {HRUsageRate} from "../../../../model/HRUsageRate";
-import {HR} from "../../../../model/HR";
 import {ApiUser} from "../../../../model/ApiUser";
 
 declare var $: any;
@@ -25,11 +23,11 @@ export class MeetingListCoachComponent implements OnInit, AfterViewInit, OnDestr
 
   private user: Observable<ApiUser>;
 
-  private meetings: Observable<Meeting[]>;
+  private meetings: Observable<Array<Meeting>>;
   private meetingsOpened: Observable<Meeting[]>;
   private meetingsClosed: Observable<Meeting[]>;
   private meetingsUnbooked: Observable<Meeting[]>;
-  private meetingsArray: Meeting[];
+  private meetingsArray: Array<Meeting>;
 
   private hasOpenedMeeting = false;
   private hasClosedMeeting = false;
@@ -111,33 +109,20 @@ export class MeetingListCoachComponent implements OnInit, AfterViewInit, OnDestr
   }
 
   private getAllMeetingsForCoach(coachId: string) {
-    this.subscription = this.meetingsService.getAllMeetingsForCoachId(coachId).subscribe(
-      (meetings: Meeting[]) => {
-        console.log('got meetings for coach', meetings);
+    this.subscription = this.meetingsService.getAllMeetingsForCoachId(coachId)
+      .subscribe(
+        (meetings: Array<Meeting>) => {
+          console.log('got meetings for coach', meetings);
 
-        this.meetingsArray = meetings;
-        this.meetings = Observable.of(meetings);
-        this.getBookedMeetings();
-        this.getClosedMeetings();
-        this.getUnbookedMeetings();
-        this.cd.detectChanges();
-        this.loading = false;
-      }
-    );
-  }
-
-  private getOpenedMeetings() {
-    console.log('getOpenedMeetings');
-    if (this.meetingsArray != null) {
-      let opened: Meeting[] = [];
-      for (let meeting of this.meetingsArray) {
-        if (meeting != null && meeting.isOpen) {
-          opened.push(meeting);
-          this.hasOpenedMeeting = true;
+          this.meetingsArray = meetings;
+          this.meetings = Observable.of(meetings);
+          this.getBookedMeetings();
+          this.getClosedMeetings();
+          this.getUnbookedMeetings();
+          this.cd.detectChanges();
+          this.loading = false;
         }
-      }
-      this.meetingsOpened = Observable.of(opened);
-    }
+      );
   }
 
   private getClosedMeetings() {
@@ -155,13 +140,16 @@ export class MeetingListCoachComponent implements OnInit, AfterViewInit, OnDestr
   }
 
   private getBookedMeetings() {
-    console.log('getOpenedMeetings');
+    console.log('getBookedMeetings');
     if (this.meetingsArray != null) {
       let opened: Meeting[] = [];
       for (let meeting of this.meetingsArray) {
-        if (meeting != null && meeting.isOpen && meeting.agreed_date) {
+        console.log('getBookedMeetings, meeting : ', meeting);
+
+        if (meeting != null && meeting.isOpen && meeting.agreed_date != undefined) {
           opened.push(meeting);
           this.hasOpenedMeeting = true;
+          console.log('getBookedMeetings, add meeting');
         }
       }
       this.meetingsOpened = Observable.of(opened);
@@ -169,7 +157,7 @@ export class MeetingListCoachComponent implements OnInit, AfterViewInit, OnDestr
   }
 
   private getUnbookedMeetings() {
-    console.log('getAskedMeetings');
+    console.log('getUnbookedMeetings');
     if (this.meetingsArray != null) {
       let unbooked: Meeting[] = [];
       for (let meeting of this.meetingsArray) {

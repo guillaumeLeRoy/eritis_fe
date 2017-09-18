@@ -37,16 +37,18 @@ export class MeetingsService {
   getAllMeetingsForCoachId(coachId: string): Observable<Array<Meeting>> {
     let param = [coachId];
 
-    return this.apiService.get(AuthService.GET_MEETINGS_FOR_COACH_ID, param).map(response => {
-      let json: Meeting[] = response.json();
-      console.log("getAllMeetingsForCoachId, response json : ", json);
-      let res: Array<any> = response.json();
-      let meetings = new Array<Meeting>();
-      for (var meeting of res) {
-        meetings.push(Meeting.parseFromBE(meeting));
-      }
-      return meetings;
-    });
+    return this.apiService.get(AuthService.GET_MEETINGS_FOR_COACH_ID, param)
+      .map(response => {
+        console.log("getAllMeetingsForCoachId, response : ", response);
+        let res: Array<any> = response.json();
+        let meetings = new Array<Meeting>();
+        for (var meeting of res) {
+          if (meeting != null) {
+            meetings.push(Meeting.parseFromBE(meeting));
+          }
+        }
+        return meetings;
+      });
   }
 
   /**
@@ -103,6 +105,31 @@ export class MeetingsService {
    * Add this date as a Potential Date for the given meeting
    * @param meetingId
    * @returns {Observable<R>}
+   */
+  addPotentialDateToMeeting(meetingId: string, date: MeetingDate): Observable<MeetingDate> {
+    console.log("addPotentialDateToMeeting");
+
+    // convert milliSec to sec ...
+    let secDate: any = {};
+    secDate.start_date = date.start_date / 1000;
+    secDate.end_date = date.end_date / 1000;
+
+    let body = JSON.stringify(secDate);
+    console.log("addPotentialDateToMeeting, body %s", body);
+
+    let param = [meetingId];
+    return this.apiService.post(AuthService.POST_MEETING_POTENTIAL_DATE, param, body)
+      .map((response: Response) => {
+        let meetingDate: MeetingDate = MeetingDate.parseFromBE(response.json());
+        console.log("addPotentialDateToMeeting, response meetingDate : ", meetingDate);
+        return meetingDate;
+      });
+  }
+
+  /**
+   * Replace any PotentialDate with those dates for the given meeting
+   * @param meetingId
+   * @returns {Observable<R>} todo return an array
    */
   addPotentialDatesToMeeting(meetingId: string, dates: Array<MeetingDate>): Observable<MeetingDate> {
     console.log("addPotentialDatesToMeeting");
@@ -272,6 +299,16 @@ export class MeetingsService {
       let json: MeetingReview = response.json();
       console.log("addSessionRateToMeeting, response json : ", json);
       return json;
+    });
+  }
+
+  setFinalDateToMeeting(meetingId: string, potentialDateId: string): Observable<Meeting> {
+    console.log("setFinalDateToMeeting, meetingId %s, potentialId %s", meetingId, potentialDateId);
+    let param = [meetingId, potentialDateId];
+    return this.apiService.put(AuthService.PUT_FINAL_DATE_TO_MEETING, param, null).map((response: Response) => {
+      let meeting: Meeting = response.json();
+      console.log("setFinalDateToMeeting, response json : ", meeting);
+      return meeting;
     });
   }
 
