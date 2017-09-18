@@ -149,7 +149,7 @@ export class AuthService {
     return obs.map(
       (res: Response) => {
         console.log("fetchCoach, obtained from API : ", res);
-        let coach = AuthService.parseCoach(res.json());
+        let coach = Coach.parseCoach(res.json());
         this.onAPIuserObtained(coach, this.ApiUser.firebaseToken);
         return coach;
       }
@@ -162,7 +162,7 @@ export class AuthService {
     return obs.map(
       (res: Response) => {
         console.log("fetchCoachee, obtained from API : ", res);
-        let coachee = AuthService.parseCoachee(res.json());
+        let coachee = Coachee.parseCoachee(res.json());
         this.onAPIuserObtained(coachee, this.ApiUser.firebaseToken);
         return coachee;
       }
@@ -175,7 +175,7 @@ export class AuthService {
     return obs.map(
       (res: Response) => {
         console.log("fetchRh, obtained from API : ", res);
-        let rh = AuthService.parseRh(res.json());
+        let rh = HR.parseRh(res.json());
         this.onAPIuserObtained(rh, this.ApiUser.firebaseToken);
         return rh;
       }
@@ -307,7 +307,7 @@ export class AuthService {
   getPotentialCoachee(path: string, params: string[]): Observable<PotentialCoachee> {
     return this.httpService.get(this.generatePath(path, params)).map(
       (res: Response) => {
-        return this.parsePotentialCoachee(res.json());
+        return PotentialCoachee.parsePotentialCoachee(res.json());
       }
     );
   }
@@ -315,7 +315,7 @@ export class AuthService {
   getPotentialRh(path: string, params: string[]): Observable<PotentialRh> {
     return this.httpService.get(this.generatePath(path, params)).map(
       (res: Response) => {
-        return this.parsePotentialRh(res.json());
+        return PotentialRh.parsePotentialRh(res.json());
       }
     );
   }
@@ -548,101 +548,16 @@ export class AuthService {
     if (response.coach) {
       let coach = response.coach;
       //coach
-      return AuthService.parseCoach(coach);
+      return Coach.parseCoach(coach);
     } else if (response.coachee) {
       let coachee = response.coachee;
       //coachee
-      return AuthService.parseCoachee(coachee);
+      return Coachee.parseCoachee(coachee);
     } else if (response.rh) {
       let rh = response.rh;
-      return AuthService.parseRh(rh);
+      return HR.parseRh(rh);
     }
     return null;
-  }
-
-  static parseCoach(json: any): Coach {
-    let coach: Coach = new Coach(json.id);
-    coach.email = json.email;
-    coach.first_name = json.first_name;
-    coach.last_name = json.last_name;
-    coach.avatar_url = json.avatar_url;
-    coach.start_date = json.start_date;
-    coach.score = json.score;
-    coach.sessionsCount = json.sessions_count;
-    coach.description = json.description;
-    coach.chat_room_url = json.chat_room_url;
-    coach.linkedin_url = json.linkedin_url;
-    coach.training = json.training;
-    coach.degree = json.degree;
-    coach.extraActivities = json.extraActivities;
-    coach.coachForYears = json.coachForYears;
-    coach.coachingExperience = json.coachingExperience;
-    coach.coachingHours = json.coachingHours;
-    coach.supervisor = json.supervisor;
-    coach.favoriteCoachingSituation = json.favoriteCoachingSituation;
-    coach.status = json.status;
-    coach.revenues = json.revenue;
-    coach.insurance_url = json.insurance_url;
-    coach.invoice_address = json.invoice_address;
-    coach.invoice_city = json.invoice_city;
-    coach.invoice_entity = json.invoice_entity;
-    coach.invoice_postcode = json.invoice_postcode;
-    coach.languages = json.languages;
-    coach.experienceShortSession = json.experienceShortSession;
-    coach.coachingSpecifics = json.coachingSpecifics;
-    coach.therapyElements = json.therapyElements;
-    return coach;
-  }
-
-  static parseCoachee(json: any): Coachee {
-    // TODO : don't really need to manually parse the received Json
-    let coachee: Coachee = new Coachee(json.id);
-    coachee.id = json.id;
-    coachee.email = json.email;
-    coachee.first_name = json.first_name;
-    coachee.last_name = json.last_name;
-    coachee.avatar_url = json.avatar_url;
-    coachee.start_date = json.start_date;
-    coachee.selectedCoach = json.selectedCoach;
-    coachee.contractPlan = json.plan;
-    coachee.availableSessionsCount = json.available_sessions_count;
-    coachee.updateAvailableSessionCountDate = json.update_sessions_count_date;
-    coachee.sessionsDoneMonthCount = json.sessions_done_month_count;
-    coachee.sessionsDoneTotalCount = json.sessions_done_total_count;
-    coachee.associatedRh = json.associatedRh;
-    coachee.last_objective = json.last_objective;
-    coachee.plan = json.plan;
-    return coachee;
-  }
-
-  static parseRh(json: any): HR {
-    console.log(json);
-    let rh: HR = new HR(json.id);
-    rh.email = json.email;
-    rh.description = json.description;
-    rh.first_name = json.first_name;
-    rh.last_name = json.last_name;
-    rh.start_date = json.start_date;
-    rh.avatar_url = json.avatar_url;
-    rh.company_name = json.company_name;
-    return rh;
-  }
-
-  parsePotentialRh(json: any): PotentialRh {
-    let potentialRh: PotentialRh = new PotentialRh(json.id);
-    potentialRh.email = json.email;
-    potentialRh.firstName = json.first_name;
-    potentialRh.lastName = json.last_name;
-    potentialRh.start_date = json.create_date;
-    return potentialRh;
-  }
-
-  parsePotentialCoachee(json: any): PotentialCoachee {
-    let potentialCoachee: PotentialCoachee = new PotentialCoachee(json.id);
-    potentialCoachee.email = json.email;
-    potentialCoachee.start_date = json.create_date;
-    potentialCoachee.plan = json.plan;
-    return potentialCoachee;
   }
 
   signIn(user: User): Observable<Coach | Coachee | HR> {

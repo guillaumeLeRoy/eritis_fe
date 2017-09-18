@@ -1,6 +1,6 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {ApiUser} from "../../../model/ApiUser";
-import {Coachee} from "../../../model/coachee";
+import {Coachee} from "../../../model/Coachee";
 import {HR} from "../../../model/HR";
 import {Coach} from "../../../model/Coach";
 import {Location} from "@angular/common";

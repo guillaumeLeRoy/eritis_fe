@@ -8,7 +8,7 @@ import {ActivatedRoute, Router} from "@angular/router";
 import {MeetingReview} from "../../model/MeetingReview";
 import {MeetingsService} from "../../service/meetings.service";
 import {Utils} from "../../utils/Utils";
-import {Meeting} from "../../model/meeting";
+import {Meeting} from "../../model/Meeting";
 
 declare var Materialize: any;
 
@@ -188,7 +188,7 @@ export class MeetingDateComponent implements OnInit, OnDestroy {
       //
     } else {
 
-      let dateToSave = new MeetingDate("");//no id for now
+      let dateToSave = new MeetingDate();
       // dateToSave.start_date = minDate.valueOf().toString();//TODO verify getTime et valueOf return the same value
       // dateToSave.end_date = maxDate.valueOf().toString();
 
@@ -287,10 +287,6 @@ export class MeetingDateComponent implements OnInit, OnDestroy {
     return Utils.timeIntToString(hour);
   }
 
-  dateToString(date: string): string {
-    return Utils.dateToString(date);
-  }
-
   timestampToString(timestamp: number): string {
     return Utils.timestampToString(timestamp);
   }
@@ -298,10 +294,6 @@ export class MeetingDateComponent implements OnInit, OnDestroy {
   ngbDateToString(date: NgbDateStruct): string {
     return Utils.ngbDateToString(date);
   }
-
-  // stringToDate(date: string): NgbDateStruct {
-  //   return Utils.stringToNgbDate(date);
-  // }
 
   timestampToNgbDateStruct(timestamp: number): NgbDateStruct {
     return Utils.timestampToNgbDate(timestamp);
@@ -393,6 +385,7 @@ export class MeetingDateComponent implements OnInit, OnDestroy {
         this.router.navigate(['/meetings']);
         Materialize.toast('Vos disponibilités on été enregitrées !', 3000, 'rounded')
       }, (error) => {
+        console.log('getOrCreateMeeting error', error);
         Materialize.toast("Impossible d'enregistrer vos disponibilités", 3000, 'rounded')
       }
     );

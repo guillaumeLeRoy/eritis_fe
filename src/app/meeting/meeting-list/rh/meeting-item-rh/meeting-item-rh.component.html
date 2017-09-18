@@ -59,7 +59,7 @@
             <div *ngFor="let meeting of (meetings | async)">
               <div class="row">
                 <div class=" col-md-3">
-                  <span class="meeting-list-date">Pour le {{ printDateString(meeting.agreed_date.start_date) }}</span>
+                  <span class="meeting-list-date">Pour le {{ dayAndMonthFromTimestamp(meeting.agreed_date.start_date) }}</span>
                 </div>
                 <div class="col-md-9">
                   <span class="black-text bold">Objectif de la séance: </span>

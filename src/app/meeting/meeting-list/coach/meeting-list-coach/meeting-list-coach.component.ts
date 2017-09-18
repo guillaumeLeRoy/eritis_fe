@@ -235,12 +235,12 @@ export class MeetingListCoachComponent implements OnInit, AfterViewInit, OnDestr
     this.coachCancelModalVisibility(true);
   }
 
-  //
+
   // cancelCoachCancelMeeting() {
   //   this.coachCancelModalVisibility(false);
   //   this.meetingToCancel = null;
   // }
-  //
+
   // // remove MeetingTime
   // validateCoachCancelMeeting() {
   //   console.log('validateCancelMeeting, agreed date : ', this.meetingToCancel.agreed_date);

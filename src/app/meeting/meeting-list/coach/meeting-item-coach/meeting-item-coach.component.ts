@@ -61,7 +61,7 @@ export class MeetingItemCoachComponent implements OnInit, AfterViewInit {
   private selectedDate = '0';
   private selectedHour = 0;
 
-  private potentialDays: Observable<number[]>;
+  private potentialDays: Observable<string[]>;
   private potentialHours: Observable<number[]>;
 
   private connectedUserSubscription: Subscription;
@@ -262,13 +262,15 @@ export class MeetingItemCoachComponent implements OnInit, AfterViewInit {
 
   private loadPotentialDays() {
     console.log("loadPotentialDays");
-    let days = [];
+    let days = new Array<string>();
 
     if (this.potentialDatesArray != null) {
       for (let date of this.potentialDatesArray) {
         let d = new Date(date.start_date);
+        // remove hours and minute
         d.setHours(0);
         d.setMinutes(0);
+        // avoid duplicates
         if (days.indexOf(d.toString()) < 0)
           days.push(d.toString());
       }
@@ -297,12 +299,12 @@ export class MeetingItemCoachComponent implements OnInit, AfterViewInit {
     console.log("potentialHours", hours);
   }
 
-  dateToString(date: string): string {
-    return Utils.dateToString(date);
+  timestampToString(timestamp: number): string {
+    return Utils.timestampToString(timestamp);
   }
 
-  timeToString(date: string) {
-    return Utils.getHoursAndMinutesFromDate(date);
+  hoursAndMinutesFromTimestamp(timestamp: number) {
+    return Utils.getHoursAndMinutesFromTimestamp(timestamp);
   }
 
   timeIntToString(hour: number) {

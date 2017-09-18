@@ -105,12 +105,12 @@ export class MeetingItemCoacheeComponent implements OnInit {
     );
   }
 
-  dateToString(date: string): string {
-    return Utils.dateToString(date);
+  timestampToString(timestamp: number): string {
+    return Utils.timestampToString(timestamp);
   }
 
-  printTimeString(date: string) {
-    return Utils.getHoursAndMinutesFromDate(date);
+  hoursAndMinutesFromTimestamp(timestamp: number) {
+    return Utils.getHoursAndMinutesFromTimestamp(timestamp);
   }
 
   getDate(date: string) {

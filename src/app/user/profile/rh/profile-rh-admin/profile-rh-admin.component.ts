@@ -1,7 +1,7 @@
 import {AfterViewInit, ChangeDetectorRef, Component, OnDestroy, OnInit} from '@angular/core';
 import {Observable} from "rxjs/Observable";
 import {Coach} from "../../../../model/Coach";
-import {Coachee} from "../../../../model/coachee";
+import {Coachee} from "../../../../model/Coachee";
 import {HR} from "../../../../model/HR";
 import {Subscription} from "rxjs/Subscription";
 import {AuthService} from "../../../../service/auth.service";

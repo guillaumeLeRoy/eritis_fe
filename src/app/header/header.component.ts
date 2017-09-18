@@ -13,7 +13,7 @@ import {CookieService} from "ngx-cookie";
 import {PromiseObservable} from "rxjs/observable/PromiseObservable";
 import {FirebaseService} from "../service/firebase.service";
 import {MeetingsService} from "../service/meetings.service";
-import {Meeting} from "../model/meeting";
+import {Meeting} from "../model/Meeting";
 import {Utils} from "../utils/Utils";
 
 
