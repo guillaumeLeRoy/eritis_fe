@@ -19,8 +19,6 @@ import {Router} from "@angular/router";
 export class MeetingsService {
 
   constructor(private apiService: AuthService, private cookieService: CookieService, private router: Router) {
-    if (this.cookieService.get('ACTIVE_SESSION') === undefined)
-      this.router.navigate(['/welcome']);
   }
 
   getAllMeetingsForCoacheeId(coacheeId: string): Observable<Meeting[]> {
