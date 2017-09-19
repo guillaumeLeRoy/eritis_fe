@@ -138,7 +138,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
     this.router.navigate(['/signup']);
   }
 
-  goToHome(){
+  goToHome() {
     console.log('goToHome');
     if (this.isAuthenticated) {
       console.log('goToHomeUser');

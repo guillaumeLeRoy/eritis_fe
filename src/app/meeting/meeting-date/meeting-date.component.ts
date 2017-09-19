@@ -321,8 +321,8 @@ export class MeetingDateComponent implements OnInit, OnDestroy {
       || newDate.getDay() === 0
       || date.year < now.getFullYear()
       || (date.month < now.getMonth() + 1 && date.year <= now.getFullYear())
-      || (date.year <= now.getFullYear() && date.month == now.getMonth() + 1 && date.day < now.getDate())
-      || (date.year == now.getFullYear() && date.month == now.getMonth() + 1 && date.day < now.getDate() + 4));
+      || (date.year <= now.getFullYear() && date.month === now.getMonth() + 1 && date.day < now.getDate())
+      || (date.year === now.getFullYear() && date.month === now.getMonth() + 1 && date.day < now.getDate() + 4));
   }
 
   /**
