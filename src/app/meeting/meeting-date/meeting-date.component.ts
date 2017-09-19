@@ -65,7 +65,7 @@ export class MeetingDateComponent implements OnInit, OnDestroy {
   days = ['Dimanche', 'Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi'];
 
   now = new Date();
-  dateModel: NgbDateStruct = {year: this.now.getFullYear(), month: this.now.getMonth() + 1, day: this.now.getDate()};
+  dateModel: NgbDateStruct = null;
   timeRange: number[] = [10, 18];
 
   /* Meeting potential dates */
