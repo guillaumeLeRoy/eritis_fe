@@ -317,7 +317,12 @@ export class MeetingDateComponent implements OnInit, OnDestroy {
     let newDate = new Date(date.year, date.month - 1, date.day);
     // TODO add this to block next month days
     // TODO date.month !== current.month ||
-    return (newDate.getDay() === 6 || newDate.getDay() === 0 || date.year < now.getFullYear() || (date.month < now.getMonth() + 1 && date.year <= now.getFullYear()) || (date.year <= now.getFullYear() && date.month == now.getMonth() + 1 && date.day < now.getDate()));
+    return (newDate.getDay() === 6
+      || newDate.getDay() === 0
+      || date.year < now.getFullYear()
+      || (date.month < now.getMonth() + 1 && date.year <= now.getFullYear())
+      || (date.year <= now.getFullYear() && date.month == now.getMonth() + 1 && date.day < now.getDate())
+      || (date.year == now.getFullYear() && date.month == now.getMonth() + 1 && date.day < now.getDate() + 4));
   }
 
   /**
