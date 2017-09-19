@@ -78,6 +78,18 @@ export class MeetingListCoachComponent implements OnInit, AfterViewInit, OnDestr
     this.onRefreshRequested();
   }
 
+  ngOnDestroy(): void {
+    console.log('ngOnDestroy');
+
+    if (this.subscription) {
+      this.subscription.unsubscribe();
+    }
+
+    if (this.connectedUserSubscription) {
+      this.connectedUserSubscription.unsubscribe();
+    }
+  }
+
   onRefreshRequested() {
     let user = this.authService.getConnectedUser();
     console.log('onRefreshRequested, user : ', user);
@@ -193,16 +205,6 @@ export class MeetingListCoachComponent implements OnInit, AfterViewInit, OnDestr
 
   refreshDashboard() {
     location.reload();
-  }
-
-  ngOnDestroy(): void {
-    if (this.subscription) {
-      this.subscription.unsubscribe();
-    }
-
-    if (this.connectedUserSubscription) {
-      this.connectedUserSubscription.unsubscribe();
-    }
   }
 
 

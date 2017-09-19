@@ -225,7 +225,14 @@ header.user-connected {
 .header-btn .btn-basic{
   min-width: 170px;
   margin: 8px 0;
+}
 
+.header-btn .btn-connexion {
+  color: $main-dark-grey !important;
+}
+
+.header-btn .btn-connexion:hover {
+  color: $main-electric-blue !important;
 }
 
 .header-arrow-bottom{
