@@ -102,19 +102,24 @@ export class AvailableMeetingsComponent implements OnInit {
     return this.meetingService.addPotentialDateToMeeting(meetingId, newDate)
       .flatMap(
         (meetingDate: MeetingDate) => {
+          console.log('test, onSubmitValidateMeeting 3');
+
           console.log('addPotentialDateToMeeting, meetingDate : ', meetingDate);
           // validate date
           return this.meetingService.setFinalDateToMeeting(meetingId, meetingDate.id);
         }
-      ).map(
-        (meeting: Meeting) => {
-          console.log("setFinalDateToMeeting, response", meeting);
-          this.onRefreshRequested();
-          Materialize.toast('Meeting validé !', 3000, 'rounded')
-          window.location.reload();
-          return meeting;
-        }
-      );
+      )
+      // .map(
+      //   (meeting: Meeting) => {
+      //     console.log("setFinalDateToMeeting, response", meeting);
+      //     console.log('test, onSubmitValidateMeeting 4');
+      //
+      //     // this.onRefreshRequested();
+      //     // Materialize.toast('Meeting validé !', 3000, 'rounded')
+      //     // window.location.reload();
+      //     return meeting;
+      //   }
+      // );
   }
 
   onSubmitValidateMeeting() {
@@ -124,16 +129,21 @@ export class AvailableMeetingsComponent implements OnInit {
       .take(1)
       .flatMap(
         (user: Coach) => {
+          console.log('test, onSubmitValidateMeeting 1');
           return this.meetingService.associateCoachToMeeting(this.selectedMeeting.id, user.id);
         }
       ).flatMap(
       (meeting: Meeting) => {
         console.log('on meeting associated : ', meeting);
+        console.log('test, onSubmitValidateMeeting 2');
+
         return this.confirmPotentialDate(meeting.id);
       }
     ).subscribe(
       (meeting: Meeting) => {
         console.log('on meeting associated : ', meeting);
+        console.log('test, onSubmitValidateMeeting 4');
+
         this.coachValidateModalVisibility(false);
         //navigate to dashboard
         this.router.navigate(['/meetings']);
@@ -141,8 +151,6 @@ export class AvailableMeetingsComponent implements OnInit {
         console.log('get potentials dates error', error);
         Materialize.toast('Erreur lors de la validation du meeting', 3000, 'rounded')
       });
-
-
   }
 
   coachValidateModalVisibility(isVisible: boolean) {
