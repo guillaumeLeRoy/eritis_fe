@@ -5,10 +5,8 @@ import {AuthService} from "../../../../service/auth.service";
 import {Observable} from "rxjs/Observable";
 import {Meeting} from "../../../../model/Meeting";
 import {Subscription} from "rxjs/Subscription";
-import {Coachee} from "../../../../model/Coachee";
 import {Coach} from "../../../../model/Coach";
 import {HRUsageRate} from "../../../../model/HRUsageRate";
-import {HR} from "../../../../model/HR";
 import {ApiUser} from "../../../../model/ApiUser";
 
 declare var $: any;
@@ -78,6 +76,18 @@ export class MeetingListCoachComponent implements OnInit, AfterViewInit, OnDestr
     console.log('ngAfterViewInit');
 
     this.onRefreshRequested();
+  }
+
+  ngOnDestroy(): void {
+    console.log('ngOnDestroy');
+
+    if (this.subscription) {
+      this.subscription.unsubscribe();
+    }
+
+    if (this.connectedUserSubscription) {
+      this.connectedUserSubscription.unsubscribe();
+    }
   }
 
   onRefreshRequested() {
@@ -205,16 +215,6 @@ export class MeetingListCoachComponent implements OnInit, AfterViewInit, OnDestr
 
   refreshDashboard() {
     location.reload();
-  }
-
-  ngOnDestroy(): void {
-    if (this.subscription) {
-      this.subscription.unsubscribe();
-    }
-
-    if (this.connectedUserSubscription) {
-      this.connectedUserSubscription.unsubscribe();
-    }
   }
 
 
