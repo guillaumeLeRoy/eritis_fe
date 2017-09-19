@@ -1,7 +1,7 @@
-import {ChangeDetectorRef, Component, OnInit} from "@angular/core";
+import {ChangeDetectorRef, Component, OnDestroy, OnInit} from "@angular/core";
 import {Observable} from "rxjs/Observable";
-import {Meeting} from '../../../../model/Meeting';
-import {MeetingsService} from '../../../../service/meetings.service';
+import {Meeting} from "../../../../model/Meeting";
+import {MeetingsService} from "../../../../service/meetings.service";
 import {AuthService} from "../../../../service/auth.service";
 import {Subscription} from "rxjs/Subscription";
 import {Coach} from "../../../../model/Coach";
@@ -17,7 +17,7 @@ declare var Materialize: any;
   templateUrl: './available-meetings.component.html',
   styleUrls: ['./available-meetings.component.scss']
 })
-export class AvailableMeetingsComponent implements OnInit {
+export class AvailableMeetingsComponent implements OnInit, OnDestroy {
 
   private availableMeetings: Observable<Meeting[]>;
 
@@ -38,6 +38,13 @@ export class AvailableMeetingsComponent implements OnInit {
   ngOnInit() {
     this.onRefreshRequested();
     this.loading = true;
+  }
+
+  ngOnDestroy() {
+    console.log('ngOnDestroy');
+    if (this.connectedUserSubscription != null) {
+      this.connectedUserSubscription.unsubscribe();
+    }
   }
 
   onRefreshRequested() {
