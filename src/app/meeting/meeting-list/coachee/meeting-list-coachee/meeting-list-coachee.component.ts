@@ -233,6 +233,7 @@ export class MeetingListCoacheeComponent implements OnInit, AfterViewInit, OnDes
         console.log('confirmCancelMeeting, res', response);
         // this.onMeetingCancelled.emit();
         this.onRefreshRequested();
+        window.location.reload();
         Materialize.toast('Meeting supprimé !', 3000, 'rounded');
       }, (error) => {
         console.log('confirmCancelMeeting, error', error);
