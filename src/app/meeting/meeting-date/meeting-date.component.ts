@@ -356,7 +356,10 @@ export class MeetingDateComponent implements OnInit, OnDestroy {
 
   /* Call this method to check if all required params are correctly set. */
   canFinish(): boolean {
-    let canFinish = this.meetingGoal != null && this.meetingContext != null && this.potentialDatesArray.length > 0;
+    let canFinish =
+      this.meetingGoal != null
+      && this.meetingContext != null
+      && this.potentialDatesArray.length > 2;
     return canFinish;
   }
 
@@ -388,7 +391,8 @@ export class MeetingDateComponent implements OnInit, OnDestroy {
       (res: any) => {
         window.scrollTo(0, 0)
         this.router.navigate(['/meetings']);
-        Materialize.toast('Vos disponibilités on été enregitrées !', 3000, 'rounded')
+        Materialize.toast('Vos disponibilités on été enregitrées !', 3000, 'rounded');
+        // window.location.reload();
       }, (error) => {
         console.log('getOrCreateMeeting error', error);
         Materialize.toast("Impossible d'enregistrer vos disponibilités", 3000, 'rounded')

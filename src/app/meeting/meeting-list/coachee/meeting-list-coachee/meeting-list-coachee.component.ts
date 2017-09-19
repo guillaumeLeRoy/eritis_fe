@@ -66,6 +66,7 @@ export class MeetingListCoacheeComponent implements OnInit, AfterViewInit, OnDes
         (user: Coachee) => {
           console.log('onRefreshRequested, getConnectedUser');
           this.onUserObtained(user);
+          this.cd.detectChanges();
         }
       );
     } else {
@@ -81,6 +82,7 @@ export class MeetingListCoacheeComponent implements OnInit, AfterViewInit, OnDes
         // coachee
         console.log('get a coachee');
         this.getAllMeetingsForCoachee(user.id);
+        this.cd.detectChanges();
       }
 
       this.user = Observable.of(user);
@@ -191,6 +193,9 @@ export class MeetingListCoacheeComponent implements OnInit, AfterViewInit, OnDes
       this.connectedUserSubscription.unsubscribe();
     }
   }
+
+
+
 
 
   /*************************************
