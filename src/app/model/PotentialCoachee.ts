@@ -15,4 +15,12 @@ export class PotentialCoachee {
   constructor(id: string) {
     this.id = id;
   }
+
+  static parsePotentialCoachee(json: any): PotentialCoachee {
+    let potentialCoachee: PotentialCoachee = new PotentialCoachee(json.id);
+    potentialCoachee.email = json.email;
+    potentialCoachee.start_date = json.create_date;
+    potentialCoachee.plan = json.plan;
+    return potentialCoachee;
+  }
 }

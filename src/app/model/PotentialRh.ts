@@ -16,4 +16,13 @@ export class PotentialRh {
   constructor(id: string) {
     this.id = id;
   }
+
+  static parsePotentialRh(json: any): PotentialRh {
+    let potentialRh: PotentialRh = new PotentialRh(json.id);
+    potentialRh.email = json.email;
+    potentialRh.firstName = json.first_name;
+    potentialRh.lastName = json.last_name;
+    potentialRh.start_date = json.create_date;
+    return potentialRh;
+  }
 }

@@ -120,13 +120,13 @@
       <div class="navbar-color" [class.z-depth-2]="(isAuthenticated | async) || isAdmin()">
         <div class="col s12">
 
-          <a (click)="goToHome()" class="brand-logo left hide-on-med-and-down"
+          <a (click)="goToMeetings()" class="brand-logo left hide-on-med-and-down"
              *ngIf="(isAuthenticated | async) || isAdmin()"><img src="assets/img/logo-eritis-new.png"
                                                                               alt="Eritis"></a>
-          <a (click)="goToHome()" class="brand-logo center hide-on-med-and-down"
+          <a (click)="goToMeetings()" class="brand-logo center hide-on-med-and-down"
              *ngIf="!(isAuthenticated | async) && !isAdmin()"><img
             src="assets/img/logo-eritis-new.png" alt="Eritis"></a>
-          <a (click)="goToHome()" class="brand-logo brand-logo-phone center hide-on-large-only"><img
+          <a (click)="goToMeetings()" class="brand-logo brand-logo-phone center hide-on-large-only"><img
             src="assets/img/logo-eritis-new.png" alt="Eritis"></a>
 
           <a data-activates="side-nav" class="button-collapse left" [hidden]="!(isAuthenticated | async) && !isAdmin()">

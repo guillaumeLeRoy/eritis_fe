@@ -66,6 +66,7 @@ export class MeetingListCoacheeComponent implements OnInit, AfterViewInit, OnDes
         (user: Coachee) => {
           console.log('onRefreshRequested, getConnectedUser');
           this.onUserObtained(user);
+          this.cd.detectChanges();
         }
       );
     } else {
@@ -81,6 +82,7 @@ export class MeetingListCoacheeComponent implements OnInit, AfterViewInit, OnDes
         // coachee
         console.log('get a coachee');
         this.getAllMeetingsForCoachee(user.id);
+        this.cd.detectChanges();
       }
 
       this.user = Observable.of(user);
@@ -114,29 +116,34 @@ export class MeetingListCoacheeComponent implements OnInit, AfterViewInit, OnDes
           return;
         }
 
-        // 1) create a new meeting
-        // 2) refresh our user to have a correct number of available sessions
-        // 3) redirect to our MeetingDateComponent
-        this.meetingsService.createMeeting(user.id).flatMap(
-          (meeting: Meeting) => {
-            console.log('goToDate, meeting created');
+        // this.router.navigate(['/date', meeting.id]);
+        this.router.navigate(['/date']);
 
-            //meeting created, now fetch user
-            return this.authService.refreshConnectedUser().flatMap(
-              (user: Coach | Coachee) => {
-                console.log('goToDate, user refreshed');
-                return Observable.of(meeting);
-              }
-            );
-          }
-        ).subscribe(
-          (meeting: Meeting) => {
-            // TODO display a loader
-            console.log('goToDate, go to setup dates');
-            window.scrollTo(0, 0);
-            this.router.navigate(['/date', meeting.id]);
-          }
-        );
+        // // 1) create a new meeting
+        // // 2) refresh our user to have a correct number of available sessions
+        // // 3) redirect to our MeetingDateComponent
+        // this.meetingsService.createMeeting(user.id).flatMap(
+        //   (meeting: Meeting) => {
+        //     console.log('goToDate, meeting created');
+        //
+        //     //meeting created, now fetch user
+        //     return this.authService.refreshConnectedUser().flatMap(
+        //       (user: Coach | Coachee) => {
+        //         console.log('goToDate, user refreshed');
+        //         return Observable.of(meeting);
+        //       }
+        //     );
+        //   }
+        // ).subscribe(
+        //   (meeting: Meeting) => {
+        //     // TODO display a loader
+        //     console.log('goToDate, go to setup dates');
+        //     window.scrollTo(0, 0);
+        //     this.router.navigate(['/date', meeting.id]);
+        //   }
+        // );
+
+
       });
   }
 
@@ -188,6 +195,9 @@ export class MeetingListCoacheeComponent implements OnInit, AfterViewInit, OnDes
   }
 
 
+
+
+
   /*************************************
    ----------- Modal control ------------
    *************************************/
@@ -223,6 +233,7 @@ export class MeetingListCoacheeComponent implements OnInit, AfterViewInit, OnDes
         console.log('confirmCancelMeeting, res', response);
         // this.onMeetingCancelled.emit();
         this.onRefreshRequested();
+        window.location.reload();
         Materialize.toast('Meeting supprimé !', 3000, 'rounded');
       }, (error) => {
         console.log('confirmCancelMeeting, error', error);

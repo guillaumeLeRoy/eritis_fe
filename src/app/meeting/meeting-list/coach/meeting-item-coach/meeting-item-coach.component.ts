@@ -11,7 +11,6 @@ import {ApiUser} from "../../../../model/ApiUser";
 import {Subscription} from "rxjs/Subscription";
 import {Router} from "@angular/router";
 import {Utils} from "../../../../utils/Utils";
-import {NgbDateStruct} from "@ng-bootstrap/ng-bootstrap";
 
 declare var $: any;
 declare var Materialize: any;
@@ -62,7 +61,7 @@ export class MeetingItemCoachComponent implements OnInit, AfterViewInit {
   private selectedDate = '0';
   private selectedHour = 0;
 
-  private potentialDays: Observable<number[]>;
+  private potentialDays: Observable<string[]>;
   private potentialHours: Observable<number[]>;
 
   private connectedUserSubscription: Subscription;
@@ -263,13 +262,15 @@ export class MeetingItemCoachComponent implements OnInit, AfterViewInit {
 
   private loadPotentialDays() {
     console.log("loadPotentialDays");
-    let days = [];
+    let days = new Array<string>();
 
     if (this.potentialDatesArray != null) {
       for (let date of this.potentialDatesArray) {
         let d = new Date(date.start_date);
+        // remove hours and minute
         d.setHours(0);
         d.setMinutes(0);
+        // avoid duplicates
         if (days.indexOf(d.toString()) < 0)
           days.push(d.toString());
       }
@@ -285,8 +286,9 @@ export class MeetingItemCoachComponent implements OnInit, AfterViewInit {
     let hours = [];
 
     for (let date of this.potentialDatesArray) {
-      if (Utils.getDate(date.start_date) === Utils.getDate(selected)) {
-        for (let _i = Utils.getHours(date.start_date); _i < Utils.getHours(date.end_date); _i++) {
+      // TODO could be improved
+      if (Utils.getDayAndMonthFromTimestamp(date.start_date) === Utils.getDate(selected)) {
+        for (let _i = Utils.getHoursFromTimestamp(date.start_date); _i < Utils.getHoursFromTimestamp(date.end_date); _i++) {
           hours.push(_i);
         }
       }
@@ -297,12 +299,12 @@ export class MeetingItemCoachComponent implements OnInit, AfterViewInit {
     console.log("potentialHours", hours);
   }
 
-  dateToString(date: string): string {
-    return Utils.dateToString(date);
+  timestampToString(timestamp: number): string {
+    return Utils.timestampToString(timestamp);
   }
 
-  timeToString(date: string) {
-    return Utils.timeToString(date);
+  hoursAndMinutesFromTimestamp(timestamp: number) {
+    return Utils.getHoursAndMinutesFromTimestamp(timestamp);
   }
 
   timeIntToString(hour: number) {

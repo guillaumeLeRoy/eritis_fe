@@ -13,7 +13,7 @@ import {CookieService} from "ngx-cookie";
 import {PromiseObservable} from "rxjs/observable/PromiseObservable";
 import {FirebaseService} from "../service/firebase.service";
 import {MeetingsService} from "../service/meetings.service";
-import {Meeting} from "../model/meeting";
+import {Meeting} from "../model/Meeting";
 import {Utils} from "../utils/Utils";
 
 
@@ -138,7 +138,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
     this.router.navigate(['/signup']);
   }
 
-  goToHome(){
+  goToHome() {
     console.log('goToHome');
     if (this.isAuthenticated) {
       console.log('goToHomeUser');
@@ -297,7 +297,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   }
 
   printDateString(date: string) {
-    return Utils.dateToString(date) + ' - ' + Utils.timeToString(date);
+    return Utils.dateToString(date) + ' - ' + Utils.getHoursAndMinutesFromDate(date);
   }
 
   readAllNotifications() {
