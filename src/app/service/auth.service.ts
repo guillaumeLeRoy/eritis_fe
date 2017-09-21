@@ -77,6 +77,8 @@ export class AuthService {
   public static ADMIN_GET_POSSIBLE_COACHS = "/v1/admins/possible_coachs";
   public static ADMIN_GET_POSSIBLE_COACH = "/v1/admins/possible_coachs/:id";
   public static ADMIN_PUT_COACH_PROFILE_PICT = "/v1/admins/coachs/:id/profile_picture";
+  public static ADMIN_GET_MEETINGS_FOR_COACHEE_ID = "/v1/admins/meetings/coachees/:coacheeId";
+  public static ADMIN_GET_MEETINGS_FOR_COACH_ID = "/v1/admins/meetings/coachs/:coachId";
 
   /* Meeting */
   public static POST_MEETING = "/v1/meetings";
@@ -185,7 +187,7 @@ export class AuthService {
   getConnectedUser(): Coach | Coachee | HR {
     // if (this.ApiUser !== null)
     if (this.cookieService.get('ACTIVE_SESSION') === 'true')
-      // this.loginOut();
+    // this.loginOut();
       return this.ApiUser;
     else
       return null;

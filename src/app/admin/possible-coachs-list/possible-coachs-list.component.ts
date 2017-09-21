@@ -1,8 +1,8 @@
 import {AfterViewInit, ChangeDetectorRef, Component, OnDestroy, OnInit} from "@angular/core";
 import {Observable} from "rxjs/Observable";
-import {Coach} from "../../model/Coach";
 import {Subscription} from "rxjs/Subscription";
 import {AdminAPIService} from "../../service/adminAPI.service";
+import {PossibleCoach} from "../../model/PossibleCoach";
 
 declare var $: any;
 declare var Materialize: any;
@@ -14,7 +14,7 @@ declare var Materialize: any;
 })
 export class PossibleCoachsListComponent implements OnInit, AfterViewInit, OnDestroy {
 
-  private possibleCoachs: Observable<Array<Coach>>;
+  private possibleCoachs: Observable<Array<PossibleCoach>>;
   private getAllPossibleCoachsSub: Subscription;
 
   loading = true;
@@ -44,7 +44,7 @@ export class PossibleCoachsListComponent implements OnInit, AfterViewInit, OnDes
 
   private fetchData() {
     this.getAllPossibleCoachsSub = this.apiService.getPossibleCoachs().subscribe(
-      (coachs: Array<Coach>) => {
+      (coachs: Array<PossibleCoach>) => {
         console.log('getAllPossibleCoachsSub subscribe, coachs : ', coachs);
 
         this.possibleCoachs = Observable.of(coachs);

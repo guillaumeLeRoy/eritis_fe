@@ -1,5 +1,5 @@
 import {Injectable} from "@angular/core";
-import {Http, RequestOptionsArgs, Response} from "@angular/http";
+import {Headers, Http, RequestOptionsArgs, Response} from "@angular/http";
 import {Observable} from "rxjs/Observable";
 import {environment} from "../../environments/environment";
 import {Coach} from "../model/Coach";
@@ -8,12 +8,12 @@ import {AuthService} from "./auth.service";
 import {Admin} from "../model/Admin";
 import {HR} from "../model/HR";
 import {PossibleCoach} from "../model/PossibleCoach";
-import {Headers} from "@angular/http";
+import {Meeting} from "../model/Meeting";
 
 @Injectable()
 export class AdminAPIService {
 
-  constructor(private httpService: Http, private authService: AuthService) {
+  constructor(private httpService: Http) {
     console.log("ctr done");
   }
 
@@ -50,7 +50,12 @@ export class AdminAPIService {
   getCoachs(): Observable<Array<Coach>> {
     return this.get(AuthService.ADMIN_GET_COACHS, null).map(
       (res: Response) => {
-        let coachs: Array<Coach> = res.json();
+        let resArray: Array<any> = res.json();
+
+        let coachs = new Array<Coach>();
+        for (let c of resArray) {
+          coachs.push(Coach.parseCoach(c));
+        }
         return coachs;
       }
     );
@@ -70,8 +75,13 @@ export class AdminAPIService {
   getCoachees(): Observable<Array<Coachee>> {
     return this.get(AuthService.ADMIN_GET_COACHEES, null).map(
       (res: Response) => {
-        let Coachees: Array<Coachee> = res.json();
-        return Coachees;
+        let resArray: Array<any> = res.json();
+
+        let coachees = new Array<Coachee>();
+        for (let c of resArray) {
+          coachees.push(Coachee.parseCoachee(c));
+        }
+        return coachees;
       }
     );
   }
@@ -80,8 +90,7 @@ export class AdminAPIService {
     let params = [id];
     return this.get(AuthService.ADMIN_GET_COACHEE, params).map(
       (res: Response) => {
-        let coachee: Coachee = res.json();
-        return coachee;
+        return Coachee.parseCoachee(res.json());
       }
     );
   }
@@ -89,8 +98,13 @@ export class AdminAPIService {
   getRhs(): Observable<Array<HR>> {
     return this.get(AuthService.ADMIN_GET_RHS, null).map(
       (res: Response) => {
-        let HRs: Array<HR> = res.json();
-        return HRs;
+        let resArray: Array<any> = res.json();
+
+        let hrs = new Array<HR>();
+        for (let c of resArray) {
+          hrs.push(HR.parseRh(c));
+        }
+        return hrs;
       }
     );
   }
@@ -99,17 +113,16 @@ export class AdminAPIService {
     let params = [id];
     return this.get(AuthService.ADMIN_GET_RH, params).map(
       (res: Response) => {
-        let rh: HR = res.json();
-        return rh;
+        return HR.parseRh(res.json());
       }
     );
   }
 
-  getPossibleCoachs(): Observable<Array<Coach>> {
+  getPossibleCoachs(): Observable<Array<PossibleCoach>> {
     return this.get(AuthService.ADMIN_GET_POSSIBLE_COACHS, null).map(
       (res: Response) => {
-        let coachs: Array<Coach> = res.json();
-        return coachs;
+        let possibleCoachs: Array<PossibleCoach> = res.json();
+        return possibleCoachs;
       }
     );
   }
@@ -135,6 +148,38 @@ export class AdminAPIService {
 
     return this.put(AuthService.ADMIN_PUT_COACH_PROFILE_PICT, params, formData, {headers: headers})
       .map(res => res.json());
+  }
+
+  getMeetingsForCoacheeId(coacheeId: string): Observable<Array<Meeting>> {
+    let param = [coacheeId];
+
+    return this.get(AuthService.ADMIN_GET_MEETINGS_FOR_COACHEE_ID, param).map(response => {
+      let json: Meeting[] = response.json();
+      console.log("getAllMeetingsForCoacheeId, response json : ", json);
+      let res: Array<any> = response.json();
+      let meetings = new Array<Meeting>();
+      for (var meeting of res) {
+        meetings.push(Meeting.parseFromBE(meeting));
+      }
+      return meetings;
+    });
+  }
+
+  getMeetingsForCoachId(coachId: string): Observable<Array<Meeting>> {
+    let param = [coachId];
+
+    return this.get(AuthService.ADMIN_GET_MEETINGS_FOR_COACH_ID, param)
+      .map(response => {
+        console.log("getAllMeetingsForCoachId, response : ", response);
+        let res: Array<any> = response.json();
+        let meetings = new Array<Meeting>();
+        for (var meeting of res) {
+          if (meeting != null) {
+            meetings.push(Meeting.parseFromBE(meeting));
+          }
+        }
+        return meetings;
+      });
   }
 
   private post(path: string, params: string[], body: any): Observable<Response> {

@@ -1,10 +1,9 @@
-import {AfterViewInit, ChangeDetectorRef, Component, OnDestroy, OnInit} from '@angular/core';
+import {AfterViewInit, ChangeDetectorRef, Component, OnDestroy, OnInit} from "@angular/core";
 import {Observable} from "rxjs/Observable";
 import {Subscription} from "rxjs/Subscription";
 import {Coachee} from "../../../../model/Coachee";
 import {ActivatedRoute, Router} from "@angular/router";
 import {AdminAPIService} from "../../../../service/adminAPI.service";
-import {HR} from "../../../../model/HR";
 
 @Component({
   selector: 'rb-profile-coachee-admin',
@@ -26,6 +25,16 @@ export class ProfileCoacheeAdminComponent implements OnInit, AfterViewInit, OnDe
     window.scrollTo(0, 0);
     this.loading = true;
     this.getCoachee();
+  }
+
+  ngAfterViewInit(): void {
+  }
+
+  ngOnDestroy(): void {
+    if (this.subscriptionGetCoachee) {
+      console.log("Unsubscribe coach");
+      this.subscriptionGetCoachee.unsubscribe();
+    }
   }
 
   private getCoachee() {
@@ -55,13 +64,4 @@ export class ProfileCoacheeAdminComponent implements OnInit, AfterViewInit, OnDe
     this.router.navigate(['admin/profile/rh', this.rhId])
   }
 
-  ngAfterViewInit(): void {
-  }
-
-  ngOnDestroy(): void {
-    if (this.subscriptionGetCoachee) {
-      console.log("Unsubscribe coach");
-      this.subscriptionGetCoachee.unsubscribe();
-    }
-  }
 }
