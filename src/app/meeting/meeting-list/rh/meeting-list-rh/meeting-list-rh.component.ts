@@ -11,6 +11,8 @@ import {HR} from "../../../../model/HR";
 import {PotentialCoachee} from "../../../../model/PotentialCoachee";
 import {ApiUser} from "../../../../model/ApiUser";
 import {CoacheeObjective} from "../../../../model/CoacheeObjective";
+import {FormBuilder, FormGroup, Validators} from "@angular/forms";
+import {Utils} from "../../../../utils/Utils";
 
 declare var $: any;
 declare var Materialize: any;
@@ -37,9 +39,7 @@ export class MeetingListRhComponent implements OnInit, AfterViewInit, OnDestroy 
   private connectedUserSubscription: Subscription;
 
   private plans: Observable<ContractPlan[]>;
-  selectedPlan = new ContractPlan('-1');
-
-  potentialCoacheeEmail?;
+  private selectedPlan = new ContractPlan(-1);
 
   private HrUsageRate: Observable<HRUsageRate>;
 
@@ -55,14 +55,21 @@ export class MeetingListRhComponent implements OnInit, AfterViewInit, OnDestroy 
    */
   private addNewObjectiveCoacheeId: string;
 
+  private signInForm: FormGroup;
 
-  constructor(private coachCoacheeService: CoachCoacheeService, private authService: AuthService, private cd: ChangeDetectorRef) {
+  constructor(private coachCoacheeService: CoachCoacheeService, private authService: AuthService, private cd: ChangeDetectorRef, private formBuilder: FormBuilder) {
   }
 
   ngOnInit() {
     console.log('ngOnInit');
     this.loading1 = true;
     this.loading2 = true;
+
+    this.signInForm = this.formBuilder.group({
+      email: ['', [Validators.required, Validators.pattern(Utils.EMAIL_REGEX)]],
+      first_name: [''],
+      last_name: [''],
+    });
   }
 
   ngAfterViewInit(): void {
@@ -178,32 +185,52 @@ export class MeetingListRhComponent implements OnInit, AfterViewInit, OnDestroy 
   }
 
   cancelAddPotentialCoachee() {
-    this.potentialCoacheeEmail = null;
+    // this.potentialCoacheeEmail = null;
     this.addPotentialCoacheeModalVisibility(false);
   }
 
   validateAddPotentialCoachee() {
-    console.log('validateAddPotentialCoachee, potentialCoacheeEmail : ', this.potentialCoacheeEmail);
+    // console.log('validateAddPotentialCoachee, potentialCoacheeEmail : ', this.potentialCoacheeEmail);
 
     this.addPotentialCoacheeModalVisibility(false);
 
     this.user.take(1).subscribe(
       (user: ApiUser) => {
 
+        // let body = {
+        //   "email": this.potentialCoacheeEmail,
+        //   "plan_id": this.selectedPlan.plan_id,
+        //   "rh_id": user.id,
+        //   "first_name": this.potentialCoacheeFirstName,
+        //   "last_name": this.potentialCoacheeLastName,
+        // };
+
+        // force Plan
+        this.selectedPlan.plan_id = 1;
+
         let body = {
-          "email": this.potentialCoacheeEmail,
+          "email": this.signInForm.value.email,
           "plan_id": this.selectedPlan.plan_id,
-          "rh_id": user.id
+          "rh_id": user.id,
+          "first_name": this.signInForm.value.first_name,
+          "last_name": this.signInForm.value.last_name,
         };
+
+        console.log('postPotentialCoachee, body', body);
 
         this.coachCoacheeService.postPotentialCoachee(body).subscribe(
           (res: PotentialCoachee) => {
             console.log('postPotentialCoachee, res', res);
             this.onRefreshRequested();
             Materialize.toast('Manager ajouté !', 3000, 'rounded');
-          }, (error) => {
-            console.log('postPotentialCoachee, error', error);
-            Materialize.toast("Impossible d'ajouter le manager", 3000, 'rounded');
+          }, (errorRes: Response) => {
+            let json: any = errorRes.json();
+            console.log('postPotentialCoachee, error', json);
+            if (json.error == "EMAIL_ALREADY_USED") {
+              Materialize.toast("Impossible d'ajouter le manager, cet email est déjà utilisé", 3000, 'rounded');
+            } else {
+              Materialize.toast("Impossible d'ajouter le manager", 3000, 'rounded');
+            }
           }
         );
       }

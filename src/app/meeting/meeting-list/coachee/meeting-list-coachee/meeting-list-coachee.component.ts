@@ -7,9 +7,10 @@ import {Observable} from "rxjs/Observable";
 import {Meeting} from "../../../../model/Meeting";
 import {Subscription} from "rxjs/Subscription";
 import {Coachee} from "../../../../model/Coachee";
-import {Coach} from "../../../../model/Coach";
 import {HRUsageRate} from "../../../../model/HRUsageRate";
 import {ApiUser} from "../../../../model/ApiUser";
+import {HR} from "../../../../model/HR";
+import {Coach} from "../../../../model/Coach";
 
 declare var $: any;
 declare var Materialize: any;
@@ -67,32 +68,32 @@ export class MeetingListCoacheeComponent implements OnInit, AfterViewInit, OnDes
   }
 
   onRefreshRequested() {
-    // let user = this.authService.getConnectedUser();
-    // console.log('onRefreshRequested, user : ', user);
-    // if (user == null) {
-    //   this.connectedUserSubscription = this.authService.getConnectedUserObservable().subscribe(
-    //     (user: Coachee) => {
-    //       console.log('onRefreshRequested, getConnectedUser');
-    //       this.onUserObtained(user);
-    //     }
-    //   );
-    // } else {
-      this.onUserObtained(this.mUser);
-    // }
+    let user = this.authService.getConnectedUser();
+    console.log('onRefreshRequested, user : ', user);
+    if (user == null) {
+      this.connectedUserSubscription = this.authService.getConnectedUserObservable().subscribe(
+        (user: Coachee) => {
+          console.log('onRefreshRequested, getConnectedUser');
+          this.onUserObtained(user);
+          this.cd.detectChanges();
+        }
+      );
+    } else {
+      this.onUserObtained(user);
+    }
   }
 
-  private onUserObtained(user: Coachee) {
+  private onUserObtained(user: Coachee | Coach | HR) {
     console.log('onUserObtained, user : ', user);
     if (user) {
 
-      // if (user instanceof Coachee) {
+      if (user instanceof Coachee) {
         // coachee
         console.log('get a coachee');
         this.getAllMeetingsForCoachee(user.id);
-      // }
-
-      this.user = Observable.of(user);
-      this.cd.detectChanges();
+        this.user = Observable.of(user);
+        this.cd.detectChanges();
+      }
     }
   }
 
@@ -125,29 +126,34 @@ export class MeetingListCoacheeComponent implements OnInit, AfterViewInit, OnDes
           return;
         }
 
-        // 1) create a new meeting
-        // 2) refresh our user to have a correct number of available sessions
-        // 3) redirect to our MeetingDateComponent
-        this.meetingsService.createMeeting(user.id).flatMap(
-          (meeting: Meeting) => {
-            console.log('goToDate, meeting created');
+        // this.router.navigate(['/date', meeting.id]);
+        this.router.navigate(['/date']);
 
-            //meeting created, now fetch user
-            return this.authService.refreshConnectedUser().flatMap(
-              (user: Coach | Coachee) => {
-                console.log('goToDate, user refreshed');
-                return Observable.of(meeting);
-              }
-            );
-          }
-        ).subscribe(
-          (meeting: Meeting) => {
-            // TODO display a loader
-            console.log('goToDate, go to setup dates');
-            window.scrollTo(0, 0);
-            this.router.navigate(['/date', meeting.id]);
-          }
-        );
+        // // 1) create a new meeting
+        // // 2) refresh our user to have a correct number of available sessions
+        // // 3) redirect to our MeetingDateComponent
+        // this.meetingsService.createMeeting(user.id).flatMap(
+        //   (meeting: Meeting) => {
+        //     console.log('goToDate, meeting created');
+        //
+        //     //meeting created, now fetch user
+        //     return this.authService.refreshConnectedUser().flatMap(
+        //       (user: Coach | Coachee) => {
+        //         console.log('goToDate, user refreshed');
+        //         return Observable.of(meeting);
+        //       }
+        //     );
+        //   }
+        // ).subscribe(
+        //   (meeting: Meeting) => {
+        //     // TODO display a loader
+        //     console.log('goToDate, go to setup dates');
+        //     window.scrollTo(0, 0);
+        //     this.router.navigate(['/date', meeting.id]);
+        //   }
+        // );
+
+
       });
   }
 
@@ -225,6 +231,7 @@ export class MeetingListCoacheeComponent implements OnInit, AfterViewInit, OnDes
         console.log('confirmCancelMeeting, res', response);
         // this.onMeetingCancelled.emit();
         this.onRefreshRequested();
+        window.location.reload();
         Materialize.toast('Meeting supprimé !', 3000, 'rounded');
       }, (error) => {
         console.log('confirmCancelMeeting, error', error);

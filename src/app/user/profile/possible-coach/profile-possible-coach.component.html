@@ -1,31 +1,6 @@
-<div class="header-user" [ngsReveal]="{scale:1, origin: 'top', distance:'200px', duration: 500}">
-  <div class="header-user-filter">
-    <div class="container row">
+<rb-profile-header [user]="possibleCoach" [isOwner]="true"></rb-profile-header>
 
-      <div class="user col-lg-5">
-        <button class="btn-back" (click)="goToPossibleCoachsAdmin()">
-          <i class="material-icons">keyboard_arrow_left</i>
-        </button>
-
-        <div class="user-img avatar z-depth-2"
-             *ngIf="(possibleCoach | async)?.avatar_url != null"
-             [style.background-image]="'url(' + (possibleCoach | async)?.avatar_url + ')'"></div>
-
-        <div class="user-info">
-          <h5>{{(possibleCoach | async)?.first_name}} {{(possibleCoach | async)?.last_name}}</h5>
-          <p class="light-grey-text">{{(possibleCoach | async)?.email}}</p>
-        </div>
-      </div>
-
-      <div class="header-stats col-lg-7">
-
-      </div>
-
-    </div>
-  </div>
-</div>
-
-<div class="container" *ifLoader="loading" [ngsReveal]="{scale:1, opacity:0, distance:0, duration: 1000}">
+<div class="container" *ifLoader="loading" [ngsReveal]="{scale:1, opacity:0, distance:0, duration: 1000, viewFactor: 0}">
 
   <div class="row">
 

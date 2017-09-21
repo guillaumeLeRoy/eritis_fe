@@ -1,0 +1,60 @@
+<div class="header-user" [ngsReveal]="{scale:1, origin: 'top', distance:'200px', duration: 500}">
+  <div class="header-user-filter">
+    <div class="container row">
+
+      <!--Header large screen-->
+      <div class="user col-lg-6 hide-on-med-and-down">
+        <button class="btn-back" (click)="goBack()">
+          <i class="material-icons">keyboard_arrow_left</i>
+        </button>
+
+        <div class="user-img avatar z-depth-2"
+             *ngIf="(user | async)?.avatar_url !== null && (user | async)?.avatar_url !== undefined"
+             [style.background-image]="'url(' + (user | async)?.avatar_url + ')'"></div>
+
+        <div class="user-info">
+          <h5>{{(user | async)?.first_name}} {{(user | async)?.last_name}}</h5>
+          <p *ngIf="isOwner" class="light-grey-text">{{(user | async)?.email}}</p>
+        </div>
+      </div>
+
+      <!--Header small screen-->
+      <div class="user user-mobile col-lg-6 hide-on-large-only">
+        <button class="btn-back" (click)="goBack()">
+          <i class="material-icons">keyboard_arrow_left</i>
+        </button>
+
+        <div class="text-center">
+          <div class="user-img avatar z-depth-2"
+               *ngIf="(user | async)?.avatar_url !== null && (user | async)?.avatar_url !== undefined"
+               [style.background-image]="'url(' + (user | async)?.avatar_url + ')'"></div>
+        </div>
+
+        <div class="user-info text-center">
+          <h5>{{(user | async)?.first_name}} {{(user | async)?.last_name}}</h5>
+          <p *ngIf="isOwner" class="light-grey-text">{{(user | async)?.email}}</p>
+        </div>
+      </div>
+
+      <div class="header-stats col-lg-6" *ngIf="isCoach(user | async)">
+        <div class="col-sm-12 hide-on-large-only gap"></div>
+
+        <div class="row">
+          <div class="header-item col-lg-6 col-xs-6">
+            <div class="header-item-number"><span>{{(user | async)?.score}}</span><span class="indice"> / 5</span>
+            </div>
+            <p class="header-item-title">Moyenne</p>
+          </div>
+
+          <div class="header-item col-lg-6 col-xs-6">
+            <div class="header-item-number"><span>{{(user | async)?.sessionsCount}}</span></div>
+            <p class="header-item-title">séances réalisées</p>
+          </div>
+
+        </div>
+      </div>
+
+
+    </div>
+  </div>
+</div>

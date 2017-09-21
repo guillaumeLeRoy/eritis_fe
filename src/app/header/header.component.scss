@@ -113,17 +113,18 @@ nav li a:focus {
   padding: 32px;
   color: #FFF;
   background-color: $main-blue-filter;
-  display: flex;
-  flex-direction: row;
-  flex-grow: 1;
-  align-items: center;
+  //display: flex;
+  //flex-direction: row;
+  //flex-grow: 1;
+  //align-items: center;
   line-height: 1.5;
 }
 
 .side-nav-user-img {
+  display: inline-block;
   width: 70px;
   height: 70px;
-  margin-right: 16px;
+  margin-bottom: 16px;
 }
 
 .side-nav-user-info h5 {
@@ -224,7 +225,14 @@ header.user-connected {
 .header-btn .btn-basic{
   min-width: 170px;
   margin: 8px 0;
+}
 
+.header-btn .btn-connexion {
+  color: $main-dark-grey !important;
+}
+
+.header-btn .btn-connexion:hover {
+  color: $main-electric-blue !important;
 }
 
 .header-arrow-bottom{

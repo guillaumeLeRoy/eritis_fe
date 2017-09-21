@@ -1,7 +1,7 @@
-import {ChangeDetectorRef, Component, OnInit} from "@angular/core";
+import {ChangeDetectorRef, Component, OnDestroy, OnInit} from "@angular/core";
 import {Observable} from "rxjs/Observable";
-import {Meeting} from '../../../../model/Meeting';
-import {MeetingsService} from '../../../../service/meetings.service';
+import {Meeting} from "../../../../model/Meeting";
+import {MeetingsService} from "../../../../service/meetings.service";
 import {AuthService} from "../../../../service/auth.service";
 import {Subscription} from "rxjs/Subscription";
 import {Coach} from "../../../../model/Coach";
@@ -17,7 +17,7 @@ declare var Materialize: any;
   templateUrl: './available-meetings.component.html',
   styleUrls: ['./available-meetings.component.scss']
 })
-export class AvailableMeetingsComponent implements OnInit {
+export class AvailableMeetingsComponent implements OnInit, OnDestroy {
 
   private availableMeetings: Observable<Meeting[]>;
 
@@ -38,6 +38,13 @@ export class AvailableMeetingsComponent implements OnInit {
   ngOnInit() {
     this.onRefreshRequested();
     this.loading = true;
+  }
+
+  ngOnDestroy() {
+    console.log('ngOnDestroy');
+    if (this.connectedUserSubscription != null) {
+      this.connectedUserSubscription.unsubscribe();
+    }
   }
 
   onRefreshRequested() {
@@ -83,67 +90,74 @@ export class AvailableMeetingsComponent implements OnInit {
   }
 
 
-  onSelectMeetingBtnClicked(meeting: Meeting) {
-    this.user.take(1).subscribe(
-      (user: Coach) => {
-        this.meetingService.associateCoachToMeeting(meeting.id, user.id).subscribe(
-          (meeting: Meeting) => {
-            console.log('on meeting associated : ', meeting);
-            //navigate to dashboard
-            this.router.navigate(['/meetings']);
-          }
-        );
-      }
-    );
-  }
-
-  confirmPotentialDate(meetingId: string) {
+  confirmPotentialDate(meetingId: string): Observable<Meeting> {
+    console.log('confirmPotentialDate : ', meetingId);
 
     let minDate = new Date(this.selectedDate);
     minDate.setHours(this.selectedHour);
     let maxDate = new Date(this.selectedDate);
     maxDate.setHours(this.selectedHour + 1);
 
-    let timestampMin: number = +minDate.getTime().toFixed(0) / 1000;
-    let timestampMax: number = +maxDate.getTime().toFixed(0) / 1000;
+    let timestampMin: number = +minDate.valueOf();
+    let timestampMax: number = +maxDate.valueOf();
+
+    let newDate = new MeetingDate();
+    newDate.start_date = timestampMin;
+    newDate.end_date = timestampMax;
 
     // create new date
-    this.meetingService.addPotentialDateToMeeting(meetingId, timestampMin, timestampMax).subscribe(
-      (meetingDate: MeetingDate) => {
-        console.log('addPotentialDateToMeeting, meetingDate : ', meetingDate);
+    return this.meetingService.addPotentialDateToMeeting(meetingId, newDate)
+      .flatMap(
+        (meetingDate: MeetingDate) => {
+          console.log('test, onSubmitValidateMeeting 3');
 
-        // validate date
-        this.meetingService.setFinalDateToMeeting(meetingId, meetingDate.id).subscribe(
-          (meeting: Meeting) => {
-            console.log("confirmPotentialDate, response", meeting);
-            this.onRefreshRequested();
-            Materialize.toast('Meeting validé !', 3000, 'rounded')
-            window.location.reload();
-          }, (error) => {
-            console.log('get potentials dates error', error);
-            Materialize.toast('Erreur lors de la validation du meeting', 3000, 'rounded')
-          }
-        );
-      },
-      (error) => {
-        console.log('addPotentialDateToMeeting error', error);
-      }
-    );
+          console.log('addPotentialDateToMeeting, meetingDate : ', meetingDate);
+          // validate date
+          return this.meetingService.setFinalDateToMeeting(meetingId, meetingDate.id);
+        }
+      )
+      // .map(
+      //   (meeting: Meeting) => {
+      //     console.log("setFinalDateToMeeting, response", meeting);
+      //     console.log('test, onSubmitValidateMeeting 4');
+      //
+      //     // this.onRefreshRequested();
+      //     // Materialize.toast('Meeting validé !', 3000, 'rounded')
+      //     // window.location.reload();
+      //     return meeting;
+      //   }
+      // );
   }
 
   onSubmitValidateMeeting() {
-    this.user.take(1).subscribe(
-      (user: Coach) => {
-        this.meetingService.associateCoachToMeeting(this.selectedMeeting.id, user.id).subscribe(
-          (meeting: Meeting) => {
-            console.log('on meeting associated : ', meeting);
-            //navigate to dashboard
-            this.confirmPotentialDate(meeting.id);
-            this.coachValidateModalVisibility(false);
-          }
-        );
+    console.log('onSubmitValidateMeeting');
+
+    this.user
+      .take(1)
+      .flatMap(
+        (user: Coach) => {
+          console.log('test, onSubmitValidateMeeting 1');
+          return this.meetingService.associateCoachToMeeting(this.selectedMeeting.id, user.id);
+        }
+      ).flatMap(
+      (meeting: Meeting) => {
+        console.log('on meeting associated : ', meeting);
+        console.log('test, onSubmitValidateMeeting 2');
+
+        return this.confirmPotentialDate(meeting.id);
       }
-    );
+    ).subscribe(
+      (meeting: Meeting) => {
+        console.log('on meeting associated : ', meeting);
+        console.log('test, onSubmitValidateMeeting 4');
+
+        this.coachValidateModalVisibility(false);
+        //navigate to dashboard
+        this.router.navigate(['/meetings']);
+      }, (error) => {
+        console.log('get potentials dates error', error);
+        Materialize.toast('Erreur lors de la validation du meeting', 3000, 'rounded')
+      });
   }
 
   coachValidateModalVisibility(isVisible: boolean) {

@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from "@angular/core";
+import {Component, OnInit} from "@angular/core";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {AuthService} from "../../service/auth.service";
 import {Router} from "@angular/router";
@@ -7,6 +7,7 @@ import {Coach} from "../../model/Coach";
 import {FirebaseService} from "../../service/firebase.service";
 import {HR} from "../../model/HR";
 import {PromiseObservable} from "rxjs/observable/PromiseObservable";
+import {Utils} from "../../utils/Utils";
 
 declare var $: any;
 declare var Materialize: any;
@@ -36,11 +37,10 @@ export class SigninComponent implements OnInit {
     console.log('ngOnInit');
 
     this.signInForm = this.formBuilder.group({
-      email: ['', [Validators.required, Validators.pattern('[a-z0-9!#$%&\'*+/=?^_`{|}~-]+(?:.[a-z0-9!#$%&\'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?')]],
+      email: ['', [Validators.required, Validators.pattern(Utils.EMAIL_REGEX)]],
       password: ['', Validators.required],
     });
 
-    ga('send', 'signin component init');
   }
 
   onSignIn() {

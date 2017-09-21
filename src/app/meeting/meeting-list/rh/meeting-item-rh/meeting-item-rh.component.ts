@@ -136,7 +136,7 @@ export class MeetingItemRhComponent implements OnInit, AfterViewInit {
     this.onUpdateObjectiveBtnClick.emit(this.coachee.id);
   }
 
-  printDateString(date: string): string {
-    return Utils.getDate(date);
+  dayAndMonthFromTimestamp(timestamp: number): string {
+    return Utils.getDayAndMonthFromTimestamp(timestamp);
   }
 }
