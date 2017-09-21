@@ -9,6 +9,7 @@ import {Admin} from "../model/Admin";
 import {HR} from "../model/HR";
 import {PossibleCoach} from "../model/PossibleCoach";
 import {Meeting} from "../model/Meeting";
+import {MeetingDate} from "../model/MeetingDate";
 
 @Injectable()
 export class AdminAPIService {
@@ -180,6 +181,29 @@ export class AdminAPIService {
         }
         return meetings;
       });
+  }
+
+
+  /**
+   * Fetch all potential dates for the given meeting
+   * Backend returns dates in Unix time in seconds but but MeetingDate deals with timestamp.
+   * @param meetingId
+   * @returns {Observable<R>}
+   */
+  getMeetingPotentialTimes(meetingId: string): Observable<Array<MeetingDate>> {
+    console.log("getMeetingPotentialTimes, meetingId : ", meetingId);
+    let param = [meetingId];
+    return this.get(AuthService.ADMIN_GET_MEETING_POTENTIAL_DATES, param).map((response: Response) => {
+      let dates: Array<any> = response.json();
+      console.log("getMeetingPotentialTimes, response json : ", dates);
+
+      let datesMilli = new Array<MeetingDate>();
+      for (var date of dates) {
+        let dateMilli = MeetingDate.parseFromBE(date);
+        datesMilli.push(dateMilli)
+      }
+      return datesMilli;
+    });
   }
 
   private post(path: string, params: string[], body: any): Observable<Response> {

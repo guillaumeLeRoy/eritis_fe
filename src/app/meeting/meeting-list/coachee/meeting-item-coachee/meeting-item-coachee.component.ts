@@ -7,6 +7,7 @@ import {MeetingDate} from "../../../../model/MeetingDate";
 import {Router} from "@angular/router";
 import {MeetingsService} from "../../../../service/meetings.service";
 import {Utils} from "../../../../utils/Utils";
+import {AdminAPIService} from "../../../../service/adminAPI.service";
 
 declare var $: any;
 declare var Materialize: any;
@@ -20,6 +21,9 @@ export class MeetingItemCoacheeComponent implements OnInit {
 
   @Input()
   meeting: Meeting;
+
+  @Input()
+  isAdmin: boolean;
 
   // @Output()
   // onMeetingCancelled = new EventEmitter<any>();
@@ -65,7 +69,7 @@ export class MeetingItemCoacheeComponent implements OnInit {
   /* Meeting potential dates */
   private potentialDates: Observable<MeetingDate[]>;
 
-  constructor(private router: Router, private meetingService: MeetingsService, private cd: ChangeDetectorRef) {
+  constructor(private router: Router, private meetingService: MeetingsService, private adminAPIService: AdminAPIService, private cd: ChangeDetectorRef) {
   }
 
   ngOnInit() {
@@ -79,30 +83,37 @@ export class MeetingItemCoacheeComponent implements OnInit {
     this.getSessionCoachReview();
   }
 
-  // onPreMeetingReviewPosted(meeting: Meeting) {
-  //   console.log("onPreMeetingReviewPosted");
-  //   this.getReview();
-  // }
-  //
-  // onPotentialDatePosted(date: MeetingDate) {
-  //   console.log("onPotentialDatePosted");
-  //   this.potentialDatePosted.emit(date);
-  // }
-
-
   private loadMeetingPotentialTimes() {
     this.loading = true;
 
-    this.meetingService.getMeetingPotentialTimes(this.meeting.id).subscribe(
-      (dates: MeetingDate[]) => {
-        console.log("potential dates obtained, ", dates);
-        this.potentialDates = Observable.of(dates);
-        this.cd.detectChanges();
-        this.loading = false;
-      }, (error) => {
-        console.log('get potentials dates error', error);
-      }
-    );
+
+    this.isAdmin = true;//TODO to remove
+
+    if (this.isAdmin) {
+      this.adminAPIService.getMeetingPotentialTimes(this.meeting.id).subscribe(
+        (dates: Array<MeetingDate>) => {
+          console.log("potential dates obtained, ", dates);
+          this.potentialDates = Observable.of(dates);
+          this.cd.detectChanges();
+          this.loading = false;
+        }, (error) => {
+          console.log('get potentials dates error', error);
+        }
+      );
+    } else {
+      this.meetingService.getMeetingPotentialTimes(this.meeting.id).subscribe(
+        (dates: Array<MeetingDate>) => {
+          console.log("potential dates obtained, ", dates);
+          this.potentialDates = Observable.of(dates);
+          this.cd.detectChanges();
+          this.loading = false;
+        }, (error) => {
+          console.log('get potentials dates error', error);
+        }
+      );
+    }
+
+
   }
 
   timestampToString(timestamp: number): string {
@@ -175,10 +186,11 @@ export class MeetingItemCoacheeComponent implements OnInit {
     this.meetingService.getSessionReviewResult(this.meeting.id).subscribe(
       (reviews: MeetingReview[]) => {
         console.log("getSessionReviewTypeResult, got result : ", reviews);
-        if (reviews != null)
+        if (reviews != null) {
           this.sessionResult = reviews[0].value;
-        else
+        } else {
           this.sessionResult = null;
+        }
 
         this.cd.detectChanges();
         this.hasSessionResult = (this.sessionResult != null);
@@ -196,10 +208,11 @@ export class MeetingItemCoacheeComponent implements OnInit {
     this.meetingService.getSessionReviewUtility(this.meeting.id).subscribe(
       (reviews: MeetingReview[]) => {
         console.log("getSessionReviewTypeUtility, got goal : ", reviews);
-        if (reviews != null)
+        if (reviews != null) {
           this.sessionUtility = reviews[0].value;
-        else
+        } else {
           this.sessionUtility = null;
+        }
 
         this.cd.detectChanges();
         this.hasSessionUtility = (this.sessionUtility != null);
@@ -217,10 +230,11 @@ export class MeetingItemCoacheeComponent implements OnInit {
     this.meetingService.getSessionReviewRate(this.meeting.id).subscribe(
       (reviews: MeetingReview[]) => {
         console.log("getSessionReviewTypeRate, got rate : ", reviews);
-        if (reviews != null)
+        if (reviews != null) {
           this.sessionRate = reviews[0].value;
-        else
+        } else {
           this.sessionRate = null;
+        }
 
         this.cd.detectChanges();
         this.hasRate = (this.sessionRate != null);

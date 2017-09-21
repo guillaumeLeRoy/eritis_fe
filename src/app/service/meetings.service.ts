@@ -163,7 +163,7 @@ export class MeetingsService {
    * @param meetingId
    * @returns {Observable<R>}
    */
-  getMeetingPotentialTimes(meetingId: string): Observable<MeetingDate[]> {
+  getMeetingPotentialTimes(meetingId: string): Observable<Array<MeetingDate>> {
     console.log("getMeetingPotentialTimes, meetingId : ", meetingId);
     let param = [meetingId];
     return this.apiService.get(AuthService.GET_MEETING_POTENTIAL_DATES, param).map((response: Response) => {

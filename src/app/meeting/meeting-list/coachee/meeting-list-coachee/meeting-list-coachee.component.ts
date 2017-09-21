@@ -30,10 +30,10 @@ export class MeetingListCoacheeComponent implements OnInit, AfterViewInit, OnDes
 
   // private user: Observable<ApiUser>;
 
-  private meetings: Observable<Meeting[]>;
-  private meetingsOpened: Observable<Meeting[]>;
-  private meetingsClosed: Observable<Meeting[]>;
-  private meetingsArray: Meeting[];
+  private meetings: Observable<Array<Meeting>>;
+  private meetingsOpened: Observable<Array<Meeting>>;
+  private meetingsClosed: Observable<Array<Meeting>>;
+  private meetingsArray: Array<Meeting>;
 
   private hasOpenedMeeting = false;
   private hasClosedMeeting = false;
@@ -74,7 +74,7 @@ export class MeetingListCoacheeComponent implements OnInit, AfterViewInit, OnDes
         this.getAllMeetingsForCoachee(user.id);
         this.user = Observable.of(user);
         this.cd.detectChanges();
-      }else{
+      } else {
         console.log('get a coachee, not instance of coachee');
 
       }
@@ -85,7 +85,7 @@ export class MeetingListCoacheeComponent implements OnInit, AfterViewInit, OnDes
 
     if (this.isAdmin) {
       this.subscription = this.adminAPIservice.getMeetingsForCoacheeId(coacheeId).subscribe(
-        (meetings: Meeting[]) => {
+        (meetings: Array<Meeting>) => {
           this.onMeetingsObtained(meetings);
         }, (error) => {
           console.log('got meetings for coachee ERROR', error);
@@ -105,23 +105,28 @@ export class MeetingListCoacheeComponent implements OnInit, AfterViewInit, OnDes
 
   }
 
-  private onMeetingsObtained(meetings: Meeting[]) {
+  private onMeetingsObtained(meetings: Array<Meeting>) {
     console.log('got meetings for coachee', meetings);
 
     this.meetingsArray = meetings;
     this.meetings = Observable.of(meetings);
     this.getOpenedMeetings();
     this.getClosedMeetings();
-    this.cd.detectChanges();
     this.loading = false;
+
+    console.log('got meetings, loading', this.loading);
+
+    this.cd.detectChanges();
   }
 
   private getOpenedMeetings() {
     console.log('getOpenedMeetings');
     if (this.meetingsArray != null) {
-      let opened: Meeting[] = [];
+      let opened: Array<Meeting> = new Array<Meeting>();
       for (let meeting of this.meetingsArray) {
         if (meeting.isOpen) {
+          console.log('getOpenedMeetings, add open meeting');
+
           opened.push(meeting);
           this.hasOpenedMeeting = true;
         }
@@ -136,6 +141,8 @@ export class MeetingListCoacheeComponent implements OnInit, AfterViewInit, OnDes
       let closed: Meeting[] = [];
       for (let meeting of this.meetingsArray) {
         if (!meeting.isOpen) {
+          console.log('getClosedMeetings, add close meeting');
+
           closed.push(meeting);
           this.hasClosedMeeting = true;
         }

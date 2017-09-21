@@ -79,6 +79,8 @@ export class AuthService {
   public static ADMIN_PUT_COACH_PROFILE_PICT = "/v1/admins/coachs/:id/profile_picture";
   public static ADMIN_GET_MEETINGS_FOR_COACHEE_ID = "/v1/admins/meetings/coachees/:coacheeId";
   public static ADMIN_GET_MEETINGS_FOR_COACH_ID = "/v1/admins/meetings/coachs/:coachId";
+  public static ADMIN_GET_MEETING_POTENTIAL_DATES = "/v1/admins/meetings/:meetingId/potentials";
+
 
   /* Meeting */
   public static POST_MEETING = "/v1/meetings";
