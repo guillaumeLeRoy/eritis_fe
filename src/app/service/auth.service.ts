@@ -25,7 +25,7 @@ export class AuthService {
   public static POST_POTENTIAL_COACH = "/v1/potentials/coachs";
   public static POST_POTENTIAL_RH = "/v1/potentials/rhs";
 
-  public static LOGIN = "/login/:firebaseId";
+  public static LOGIN = "/v1/login/:firebaseId";
   public static GET_POTENTIAL_COACHEE_FOR_TOKEN = "/v1/potentials/coachees/:token";
   public static GET_POTENTIAL_COACH_FOR_TOKEN = "/v1/potentials/coachs/:token";
   public static GET_POTENTIAL_RH_FOR_TOKEN = "/v1/potentials/rhs/:token";
@@ -67,19 +67,19 @@ export class AuthService {
 
 
   /* admin */
-  public static GET_ADMIN = "/v1/admins/user";
-  public static ADMIN_GET_COACHS = "/v1/admins/coachs";
-  public static ADMIN_GET_COACH = "/v1/admins/coachs/:id";
-  public static ADMIN_GET_COACHEES = "/v1/admins/coachees";
-  public static ADMIN_GET_COACHEE = "/v1/admins/coachees/:id";
-  public static ADMIN_GET_RHS = "/v1/admins/rhs";
-  public static ADMIN_GET_RH = "/v1/admins/rhs/:id";
-  public static ADMIN_GET_POSSIBLE_COACHS = "/v1/admins/possible_coachs";
-  public static ADMIN_GET_POSSIBLE_COACH = "/v1/admins/possible_coachs/:id";
-  public static ADMIN_PUT_COACH_PROFILE_PICT = "/v1/admins/coachs/:id/profile_picture";
-  public static ADMIN_GET_MEETINGS_FOR_COACHEE_ID = "/v1/admins/meetings/coachees/:coacheeId";
-  public static ADMIN_GET_MEETINGS_FOR_COACH_ID = "/v1/admins/meetings/coachs/:coachId";
-  public static ADMIN_GET_MEETING_POTENTIAL_DATES = "/v1/admins/meetings/:meetingId/potentials";
+  public static GET_ADMIN = "/admins/v1/user";
+  public static ADMIN_GET_COACHS = "/admins/v1/coachs";
+  public static ADMIN_GET_COACH = "/admins/v1/coachs/:id";
+  public static ADMIN_GET_COACHEES = "/admins/v1/coachees";
+  public static ADMIN_GET_COACHEE = "/admins/v1/coachees/:id";
+  public static ADMIN_GET_RHS = "/admins/v1/rhs";
+  public static ADMIN_GET_RH = "/admins/v1/rhs/:id";
+  public static ADMIN_GET_POSSIBLE_COACHS = "/admins/v1/possible_coachs";
+  public static ADMIN_GET_POSSIBLE_COACH = "/admins/v1/possible_coachs/:id";
+  public static ADMIN_PUT_COACH_PROFILE_PICT = "/admins/v1/coachs/:id/profile_picture";
+  public static ADMIN_GET_MEETINGS_FOR_COACHEE_ID = "/admins/v1/meetings/coachees/:coacheeId";
+  public static ADMIN_GET_MEETINGS_FOR_COACH_ID = "/admins/v1/meetings/coachs/:coachId";
+  public static ADMIN_GET_MEETING_POTENTIAL_DATES = "/admins/v1/meetings/:meetingId/potentials";
 
 
   /* Meeting */
