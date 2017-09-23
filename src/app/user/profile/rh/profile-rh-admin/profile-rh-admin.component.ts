@@ -1,13 +1,11 @@
-import {AfterViewInit, ChangeDetectorRef, Component, OnDestroy, OnInit} from '@angular/core';
+import {AfterViewInit, ChangeDetectorRef, Component, OnDestroy, OnInit} from "@angular/core";
 import {Observable} from "rxjs/Observable";
 import {Coach} from "../../../../model/Coach";
 import {Coachee} from "../../../../model/Coachee";
 import {HR} from "../../../../model/HR";
 import {Subscription} from "rxjs/Subscription";
-import {AuthService} from "../../../../service/auth.service";
 import {ActivatedRoute, Router} from "@angular/router";
 import {CoachCoacheeService} from "../../../../service/coach_coachee.service";
-import {AdminAPIService} from "../../../../service/adminAPI.service";
 
 @Component({
   selector: 'rb-profile-rh-admin',
@@ -24,7 +22,7 @@ export class ProfileRhAdminComponent implements OnInit, AfterViewInit, OnDestroy
 
   loading: boolean = true;
 
-  constructor(private cd: ChangeDetectorRef, private route: ActivatedRoute, private apiService: AdminAPIService, private router: Router) {
+  constructor(private cd: ChangeDetectorRef, private route: ActivatedRoute, private apiService: CoachCoacheeService, private router: Router) {
   }
 
   ngOnInit() {
@@ -45,7 +43,7 @@ export class ProfileRhAdminComponent implements OnInit, AfterViewInit, OnDestroy
       (params: any) => {
         let rhId = params['id'];
 
-        this.apiService.getRh(rhId).subscribe(
+        this.apiService.getRhForId(rhId, true).subscribe(
           (rh: HR) => {
             console.log("gotRh", rh);
 

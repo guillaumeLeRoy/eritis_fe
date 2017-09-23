@@ -6,7 +6,6 @@ import {Subscription} from "rxjs/Subscription";
 import {Coachee} from "../../../../model/Coachee";
 import {HR} from "../../../../model/HR";
 import {Coach} from "../../../../model/Coach";
-import {AdminAPIService} from "../../../../service/adminAPI.service";
 
 declare var $: any;
 declare var Materialize: any;
@@ -46,7 +45,7 @@ export class MeetingListCoacheeComponent implements OnInit, AfterViewInit, OnDes
   private sessionRate = '0';
   private sessionPreRate = '0';
 
-  constructor(private meetingsService: MeetingsService, private adminAPIservice: AdminAPIService, private cd: ChangeDetectorRef) {
+  constructor(private meetingsService: MeetingsService, private cd: ChangeDetectorRef) {
   }
 
   ngOnInit() {
@@ -75,34 +74,21 @@ export class MeetingListCoacheeComponent implements OnInit, AfterViewInit, OnDes
         this.user = Observable.of(user);
         this.cd.detectChanges();
       } else {
-        console.log('get a coachee, not instance of coachee');
+        console.log('get a coachee, not instance of coachee !!!');
 
       }
     }
   }
 
   private getAllMeetingsForCoachee(coacheeId: string) {
-
-    if (this.isAdmin) {
-      this.subscription = this.adminAPIservice.getMeetingsForCoacheeId(coacheeId).subscribe(
-        (meetings: Array<Meeting>) => {
-          this.onMeetingsObtained(meetings);
-        }, (error) => {
-          console.log('got meetings for coachee ERROR', error);
-          this.loading = false;
-        }
-      );
-    } else {
-      this.subscription = this.meetingsService.getAllMeetingsForCoacheeId(coacheeId).subscribe(
-        (meetings: Meeting[]) => {
-          this.onMeetingsObtained(meetings);
-        }, (error) => {
-          console.log('got meetings for coachee ERROR', error);
-          this.loading = false;
-        }
-      );
-    }
-
+    this.subscription = this.meetingsService.getAllMeetingsForCoacheeId(coacheeId, this.isAdmin).subscribe(
+      (meetings: Meeting[]) => {
+        this.onMeetingsObtained(meetings);
+      }, (error) => {
+        console.log('got meetings for coachee ERROR', error);
+        this.loading = false;
+      }
+    );
   }
 
   private onMeetingsObtained(meetings: Array<Meeting>) {

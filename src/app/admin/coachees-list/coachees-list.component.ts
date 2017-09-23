@@ -1,8 +1,8 @@
-import {AfterViewInit, ChangeDetectorRef, Component, OnDestroy, OnInit} from '@angular/core';
+import {AfterViewInit, ChangeDetectorRef, Component, OnDestroy, OnInit} from "@angular/core";
 import {Observable} from "rxjs/Observable";
 import {Coachee} from "../../model/Coachee";
 import {Subscription} from "rxjs/Subscription";
-import {AdminAPIService} from "../../service/adminAPI.service";
+import {CoachCoacheeService} from "../../service/coach_coachee.service";
 
 @Component({
   selector: 'er-coachees-list',
@@ -16,7 +16,7 @@ export class CoacheesListComponent implements OnInit, AfterViewInit, OnDestroy {
 
   loading = true;
 
-  constructor(private apiService: AdminAPIService, private cd: ChangeDetectorRef) {
+  constructor(private apiService: CoachCoacheeService, private cd: ChangeDetectorRef) {
   }
 
   ngOnInit() {
@@ -36,7 +36,7 @@ export class CoacheesListComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   private fetchData() {
-    this.getAllCoacheesSub = this.apiService.getCoachees().subscribe(
+    this.getAllCoacheesSub = this.apiService.getCoachees(true).subscribe(
       (coachees: Array<Coachee>) => {
         console.log('getAllCoachees subscribe, coachees : ', coachees);
         //filter coachee with NO selected coachs

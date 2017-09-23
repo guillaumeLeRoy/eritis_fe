@@ -21,11 +21,10 @@ export class AuthService {
   /* contract plan*/
   public static GET_CONTRACT_PLANS = "/v1/plans/";
 
+  public static LOGIN = "/v1/login/:firebaseId";
   public static POST_POTENTIAL_COACHEE = "/v1/potentials/coachees";
   public static POST_POTENTIAL_COACH = "/v1/potentials/coachs";
   public static POST_POTENTIAL_RH = "/v1/potentials/rhs";
-
-  public static LOGIN = "/v1/login/:firebaseId";
   public static GET_POTENTIAL_COACHEE_FOR_TOKEN = "/v1/potentials/coachees/:token";
   public static GET_POTENTIAL_COACH_FOR_TOKEN = "/v1/potentials/coachs/:token";
   public static GET_POTENTIAL_RH_FOR_TOKEN = "/v1/potentials/rhs/:token";
@@ -54,6 +53,7 @@ export class AuthService {
   public static PUT_COACH_PROFILE_PICT = "/v1/coachs/:id/profile_picture";
 
   /* HR */
+  public static GET_RHS = "/v1/rhs";
   public static UPDATE_RH = "/v1/rhs/:id";
   public static POST_SIGN_UP_RH = "/v1/rhs";
   public static GET_COACHEES_FOR_RH = "/v1/rhs/:uid/coachees";
@@ -67,20 +67,9 @@ export class AuthService {
 
 
   /* admin */
-  public static GET_ADMIN = "/admins/v1/user";
-  public static ADMIN_GET_COACHS = "/admins/v1/coachs";
-  public static ADMIN_GET_COACH = "/admins/v1/coachs/:id";
-  public static ADMIN_GET_COACHEES = "/admins/v1/coachees";
-  public static ADMIN_GET_COACHEE = "/admins/v1/coachees/:id";
-  public static ADMIN_GET_RHS = "/admins/v1/rhs";
-  public static ADMIN_GET_RH = "/admins/v1/rhs/:id";
-  public static ADMIN_GET_POSSIBLE_COACHS = "/admins/v1/possible_coachs";
-  public static ADMIN_GET_POSSIBLE_COACH = "/admins/v1/possible_coachs/:id";
-  public static ADMIN_PUT_COACH_PROFILE_PICT = "/admins/v1/coachs/:id/profile_picture";
-  public static ADMIN_GET_MEETINGS_FOR_COACHEE_ID = "/admins/v1/meetings/coachees/:coacheeId";
-  public static ADMIN_GET_MEETINGS_FOR_COACH_ID = "/admins/v1/meetings/coachs/:coachId";
-  public static ADMIN_GET_MEETING_POTENTIAL_DATES = "/admins/v1/meetings/:meetingId/potentials";
-
+  public static GET_ADMIN = "/v1/user";
+  public static ADMIN_GET_POSSIBLE_COACHS = "/v1/possible_coachs";
+  public static ADMIN_GET_POSSIBLE_COACH = "/v1/possible_coachs/:id";
 
   /* Meeting */
   public static POST_MEETING = "/v1/meetings";
@@ -203,112 +192,154 @@ export class AuthService {
     return this.isUserAuth.asObservable();
   }
 
-  post(path: string, params: string[], body: any, options?: RequestOptionsArgs): Observable<Response> {
-    let method = this.getConnectedApiUser().flatMap(
-      (firebaseUser: ApiUser) => {
-        return this.getHeader(firebaseUser).flatMap(
-          (headers: Headers) => {
 
-            if (options != undefined) {
-              for (let headerKey of options.headers.keys()) {
-                console.log('post, options headerKey : ', headerKey);
-                console.log('post, options value : ', options.headers.get(headerKey));
-                headers.append(headerKey, options.headers.get(headerKey));
+  /*
+   *
+   * define POST methods
+   * */
+
+  post(path: string, params: string[], body: any, options?: RequestOptionsArgs, isAdmin?: boolean): Observable<Response> {
+    if (isAdmin) {
+      return this.internal_post(path, params, body, options, true);
+    } else {
+      return this.getConnectedApiUser().flatMap(
+        (firebaseUser: ApiUser) => {
+          return this.getHeader(firebaseUser).flatMap(
+            (headers: Headers) => {
+              //todo to change
+              if (options != undefined) {
+                for (let headerKey of options.headers.keys()) {
+                  headers.append(headerKey, options.headers.get(headerKey));
+                }
               }
+              return this.internal_post(path, params, body, {headers: headers});
             }
-
-            return this.httpService.post(this.generatePath(path, params), body, {headers: headers})
-          }
-        );
-      }
-    );
-    return method;
+          );
+        }
+      );
+    }
   }
 
   postNotAuth(path: string, params: string[], body: any): Observable<Response> {
-    return this.httpService.post(this.generatePath(path, params), body)
+    return this.internal_post(path, params, body)
   }
 
-  put(path: string, params: string[], body: any, options?: RequestOptionsArgs): Observable<Response> {
-    let method = this.getConnectedApiUser().flatMap(
-      (firebaseUser: ApiUser) => {
-        return this.getHeader(firebaseUser).flatMap(
-          (headers: Headers) => {
+  private internal_post(path: string, params: string[], body: any, options?: RequestOptionsArgs, isAdmin?: boolean): Observable<Response> {
+    return this.httpService.post(this.generatePath(path, params, isAdmin), body, options)
+  }
 
-            if (options != null)
-              for (let headerKey of options.headers.keys()) {
-                console.log('put, options headerKey : ', headerKey);
-                console.log('put, options value : ', options.headers.get(headerKey));
+  /*
+   *
+   * define PUT
+   * */
 
-                headers.append(headerKey, options.headers.get(headerKey));
+  put(path: string, params: string[], body: any, options?: RequestOptionsArgs, isAdmin?: boolean): Observable<Response> {
+    if (isAdmin) {
+      return this.internal_put(path, params, body, options, true);
+    } else {
+      return this.getConnectedApiUser().flatMap(
+        (firebaseUser: ApiUser) => {
+          return this.getHeader(firebaseUser).flatMap(
+            (headers: Headers) => {
+              // add params headers to received ones
+              if (options != null) {
+                for (let headerKey of headers.keys()) {
+                  options.headers.append(headerKey, headers.get(headerKey));
+                }
               }
-
-            return this.httpService.put(this.generatePath(path, params), body, {headers: headers})
-          }
-        );
-      }
-    );
-    return method;
+              // for (let headerKey of options.headers.keys()) {
+              //   headers.append(headerKey, options.headers.get(headerKey));
+              // }
+              // return this.httpService.put(this.generatePath(path, params), body, {headers: headers})
+              return this.internal_put(path, params, body, options);
+            }
+          );
+        }
+      );
+    }
   }
 
   putNotAuth(path: string, params: string[], body: any, options?: RequestOptionsArgs): Observable<Response> {
-    let headers = new Headers();
-    if (options != null)
-      for (let headerKey of options.headers.keys()) {
-        console.log('put, options headerKey : ', headerKey);
-        console.log('put, options value : ', options.headers.get(headerKey));
-
-        headers.append(headerKey, options.headers.get(headerKey));
-      }
-
-    return this.httpService.put(this.generatePath(path, params), body, {headers: headers})
+    // let headers = new Headers();
+    // if (options != null)
+    //   for (let headerKey of options.headers.keys()) {
+    //     headers.append(headerKey, options.headers.get(headerKey));
+    //   }
+    // return this.httpService.put(this.generatePath(path, params), body, {headers: headers})
+    return this.internal_put(path, params, body, options);
   }
 
-  get(path: string, params: string[]): Observable<Response> {
-    return this.getWithSearchParams(path, params, null);
+  private internal_put(path: string, params: string[], body: any, options?: RequestOptionsArgs, isAdmin?: boolean): Observable<Response> {
+    // let headers = new Headers();
+    // if (options != null)
+    //   for (let headerKey of options.headers.keys()) {
+    //     headers.append(headerKey, options.headers.get(headerKey));
+    //   }
+    return this.httpService.put(this.generatePath(path, params, isAdmin), body, options);
   }
 
-  getWithSearchParams(path: string, params: string[], searchParams: URLSearchParams): Observable<Response> {
-    console.log("1. get");
+  /*
+   *
+   * define GET
+   * */
 
-    let method = this.getConnectedApiUser().flatMap(
-      (firebaseUser: ApiUser) => {
-        return this.getHeader(firebaseUser).flatMap(
-          (headers: Headers) => {
-            console.log("4. start request");
-            return this.httpService.get(this.generatePath(path, params), {headers: headers, search: searchParams})
-          }
-        );
-      }
-    );
-    return method;
+  get(path: string, params: string[], isAdmin?: boolean): Observable<Response> {
+    return this.getWithSearchParams(path, params, null, isAdmin);
   }
 
-  delete(path: string, params: string[]): Observable<Response> {
-    let method = this.getConnectedApiUser().flatMap(
-      (firebaseUser: ApiUser) => {
-        return this.getHeader(firebaseUser).flatMap(
-          (headers: Headers) => {
-            console.log("4. start request");
-            return this.httpService.delete(this.generatePath(path, params), {headers: headers})
-          }
-        );
-      }
-    );
-    return method;
+  getWithSearchParams(path: string, params: string[], searchParams: URLSearchParams, isAdmin?: boolean): Observable<Response> {
+    if (isAdmin) {
+      return this.internal_get(path, params, {search: searchParams}, true);
+    } else {
+      return this.getConnectedApiUser().flatMap(
+        (firebaseUser: ApiUser) => {
+          return this.getHeader(firebaseUser).flatMap(
+            (headers: Headers) => {
+              return this.internal_get(path, params, {headers: headers, search: searchParams});
+            }
+          );
+        }
+      );
+    }
   }
 
   getNotAuth(path: string, params: string[]): Observable<Response> {
-    console.log("getNotAuth, start request");
-    return this.httpService.get(this.generatePath(path, params)).map(
+    return this.internal_get(path, params).map(
       (res: Response) => {
-        console.log("getNotAuth, got user", res);
         return res;
       }, (error) => {
         console.log("getNotAuth, error", error);
       }
     );
   }
+
+  private internal_get(path: string, params: string[], options?: RequestOptionsArgs, isAdmin?: boolean): Observable<Response> {
+    return this.httpService.get(this.generatePath(path, params, isAdmin), options)
+  }
+
+  /*
+   *
+   * define DELETE
+   * */
+
+  delete(path: string, params: string[], isAdmin?: boolean): Observable<Response> {
+    let method = this.getConnectedApiUser().flatMap(
+      (firebaseUser: ApiUser) => {
+        return this.getHeader(firebaseUser).flatMap(
+          (headers: Headers) => {
+            console.log("4. start request");
+            return this.httpService.delete(this.generatePath(path, params, isAdmin), {headers: headers})
+          }
+        );
+      }
+    );
+    return method;
+  }
+
+  /*
+   *
+   * OPEN api
+   * */
 
   getPotentialCoachee(path: string, params: string[]): Observable<PotentialCoachee> {
     return this.httpService.get(this.generatePath(path, params)).map(
@@ -379,11 +410,17 @@ export class AuthService {
     }
   }
 
-  private generatePath(path: string, params: string[]): string {
+  private generatePath(path: string, params: string[], isAdmin ?: boolean): string {
     // console.log("generatePath, path : ", path);
     // console.log("generatePath, params : ", params);
 
     let completedPath = "";
+
+    //add a "admin" if necessary
+    if (isAdmin) {
+      completedPath += "/admins";
+    }
+
     let segs = path.split("/");
     let paramIndex = 0;
     for (let seg of segs) {
@@ -527,7 +564,7 @@ export class AuthService {
         headers.append('Authorization', 'Bearer ' + token);
 
         // start sign up request
-        return this.httpService.post(this.generatePath(path, params), body, {headers: headers})
+        return this.internal_post(path, params, body, {headers: headers})
           .map(
             (response) => {
               let loginResponse: LoginResponse = response.json();

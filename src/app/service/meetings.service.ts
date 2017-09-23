@@ -19,10 +19,10 @@ export class MeetingsService {
   constructor(private apiService: AuthService) {
   }
 
-  getAllMeetingsForCoacheeId(coacheeId: string): Observable<Array<Meeting>> {
+  getAllMeetingsForCoacheeId(coacheeId: string, isAdmin?: boolean): Observable<Array<Meeting>> {
     let param = [coacheeId];
 
-    return this.apiService.get(AuthService.GET_MEETINGS_FOR_COACHEE_ID, param).map(response => {
+    return this.apiService.get(AuthService.GET_MEETINGS_FOR_COACHEE_ID, param, isAdmin).map(response => {
       let json: Meeting[] = response.json();
       console.log("getAllMeetingsForCoacheeId, response json : ", json);
       let res: Array<any> = response.json();
@@ -34,10 +34,10 @@ export class MeetingsService {
     });
   }
 
-  getAllMeetingsForCoachId(coachId: string): Observable<Array<Meeting>> {
+  getAllMeetingsForCoachId(coachId: string, isAdmin?: boolean): Observable<Array<Meeting>> {
     let param = [coachId];
 
-    return this.apiService.get(AuthService.GET_MEETINGS_FOR_COACH_ID, param)
+    return this.apiService.get(AuthService.GET_MEETINGS_FOR_COACH_ID, param, isAdmin)
       .map(response => {
         console.log("getAllMeetingsForCoachId, response : ", response);
         let res: Array<any> = response.json();
@@ -163,10 +163,10 @@ export class MeetingsService {
    * @param meetingId
    * @returns {Observable<R>}
    */
-  getMeetingPotentialTimes(meetingId: string): Observable<Array<MeetingDate>> {
+  getMeetingPotentialTimes(meetingId: string, isAdmin?: boolean): Observable<Array<MeetingDate>> {
     console.log("getMeetingPotentialTimes, meetingId : ", meetingId);
     let param = [meetingId];
-    return this.apiService.get(AuthService.GET_MEETING_POTENTIAL_DATES, param).map((response: Response) => {
+    return this.apiService.get(AuthService.GET_MEETING_POTENTIAL_DATES, param, isAdmin).map((response: Response) => {
       let dates: Array<any> = response.json();
       console.log("getMeetingPotentialTimes, response json : ", dates);
 
@@ -180,14 +180,14 @@ export class MeetingsService {
   }
 
   //get all MeetingReview for context == SESSION_CONTEXT
-  getMeetingContext(meetingId: string): Observable<MeetingReview[]> {
+  getMeetingContext(meetingId: string, isAdmin?: boolean): Observable<MeetingReview[]> {
     console.log("getMeetingContext");
 
     let searchParams: URLSearchParams = new URLSearchParams();
     searchParams.set('type', MEETING_REVIEW_TYPE_SESSION_CONTEXT);
 
     let param = [meetingId];
-    return this.apiService.getWithSearchParams(AuthService.GET_MEETING_REVIEWS, param, searchParams).map((response: Response) => {
+    return this.apiService.getWithSearchParams(AuthService.GET_MEETING_REVIEWS, param, searchParams, isAdmin).map((response: Response) => {
       let json: MeetingReview[] = response.json();
       console.log("getMeetingContext, response json : ", json);
       return json;
@@ -195,14 +195,14 @@ export class MeetingsService {
   }
 
   //get all MeetingReview for context == SESSION_GOAL
-  getMeetingGoal(meetingId: string): Observable<MeetingReview[]> {
+  getMeetingGoal(meetingId: string, isAdmin?: boolean): Observable<MeetingReview[]> {
     console.log("getMeetingGoal");
 
     let searchParams: URLSearchParams = new URLSearchParams();
     searchParams.set('type', MEETING_REVIEW_TYPE_SESSION_GOAL);
 
     let param = [meetingId];
-    return this.apiService.getWithSearchParams(AuthService.GET_MEETING_REVIEWS, param, searchParams).map((response: Response) => {
+    return this.apiService.getWithSearchParams(AuthService.GET_MEETING_REVIEWS, param, searchParams, isAdmin).map((response: Response) => {
       let json: MeetingReview[] = response.json();
       console.log("getMeetingGoal, response json : ", json);
       return json;
@@ -210,14 +210,14 @@ export class MeetingsService {
   }
 
   //get all MeetingReview for context == MEETING_REVIEW_TYPE_SESSION_RESULT
-  getSessionReviewResult(meetingId: string): Observable<MeetingReview[]> {
+  getSessionReviewResult(meetingId: string, isAdmin?: boolean): Observable<MeetingReview[]> {
     console.log("getSessionReviewResult");
 
     let searchParams: URLSearchParams = new URLSearchParams();
     searchParams.set('type', MEETING_REVIEW_TYPE_SESSION_RESULT);
 
     let param = [meetingId];
-    return this.apiService.getWithSearchParams(AuthService.GET_MEETING_REVIEWS, param, searchParams).map((response: Response) => {
+    return this.apiService.getWithSearchParams(AuthService.GET_MEETING_REVIEWS, param, searchParams, isAdmin).map((response: Response) => {
       let json: MeetingReview[] = response.json();
       console.log("getSessionReviewResult, response json : ", json);
       return json;
@@ -225,14 +225,14 @@ export class MeetingsService {
   }
 
   //get all MeetingReview for context == MEETING_REVIEW_TYPE_SESSION_UTILITY
-  getSessionReviewUtility(meetingId: string): Observable<MeetingReview[]> {
+  getSessionReviewUtility(meetingId: string, isAdmin?: boolean): Observable<MeetingReview[]> {
     console.log("getSessionReviewUtility");
 
     let searchParams: URLSearchParams = new URLSearchParams();
     searchParams.set('type', MEETING_REVIEW_TYPE_SESSION_UTILITY);
 
     let param = [meetingId];
-    return this.apiService.getWithSearchParams(AuthService.GET_MEETING_REVIEWS, param, searchParams).map((response: Response) => {
+    return this.apiService.getWithSearchParams(AuthService.GET_MEETING_REVIEWS, param, searchParams, isAdmin).map((response: Response) => {
       let json: MeetingReview[] = response.json();
       console.log("getSessionReviewUtility, response json : ", json);
       return json;
@@ -240,14 +240,14 @@ export class MeetingsService {
   }
 
   //get all MeetingReview for context == MEETING_REVIEW_TYPE_SESSION_RATE
-  getSessionReviewRate(meetingId: string): Observable<MeetingReview[]> {
+  getSessionReviewRate(meetingId: string, isAdmin?: boolean): Observable<MeetingReview[]> {
     console.log("getSessionReviewRate");
 
     let searchParams: URLSearchParams = new URLSearchParams();
     searchParams.set('type', MEETING_REVIEW_TYPE_SESSION_RATE);
 
     let param = [meetingId];
-    return this.apiService.getWithSearchParams(AuthService.GET_MEETING_REVIEWS, param, searchParams).map((response: Response) => {
+    return this.apiService.getWithSearchParams(AuthService.GET_MEETING_REVIEWS, param, searchParams, isAdmin).map((response: Response) => {
       let json: MeetingReview[] = response.json();
       console.log("getSessionReviewRate, response json : ", json);
       return json;

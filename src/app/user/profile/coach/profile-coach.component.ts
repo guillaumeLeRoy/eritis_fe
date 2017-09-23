@@ -143,6 +143,7 @@ export class ProfileCoachComponent implements OnInit, AfterViewInit, OnDestroy {
           let headers = new Headers();
           headers.append('Accept', 'application/json');
 
+          //todo call coachCoacheeAPIservice
           return this.authService.put(AuthService.PUT_COACH_PROFILE_PICT, params, formData, {headers: headers})
             .map(res => res.json())
             .catch(error => Observable.throw(error))

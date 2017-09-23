@@ -7,7 +7,6 @@ import {MeetingDate} from "../../../../model/MeetingDate";
 import {Router} from "@angular/router";
 import {MeetingsService} from "../../../../service/meetings.service";
 import {Utils} from "../../../../utils/Utils";
-import {AdminAPIService} from "../../../../service/adminAPI.service";
 
 declare var $: any;
 declare var Materialize: any;
@@ -69,7 +68,7 @@ export class MeetingItemCoacheeComponent implements OnInit {
   /* Meeting potential dates */
   private potentialDates: Observable<MeetingDate[]>;
 
-  constructor(private router: Router, private meetingService: MeetingsService, private adminAPIService: AdminAPIService, private cd: ChangeDetectorRef) {
+  constructor(private router: Router, private meetingService: MeetingsService, private cd: ChangeDetectorRef) {
   }
 
   ngOnInit() {
@@ -86,34 +85,18 @@ export class MeetingItemCoacheeComponent implements OnInit {
   private loadMeetingPotentialTimes() {
     this.loading = true;
 
-
     this.isAdmin = true;//TODO to remove
 
-    if (this.isAdmin) {
-      this.adminAPIService.getMeetingPotentialTimes(this.meeting.id).subscribe(
-        (dates: Array<MeetingDate>) => {
-          console.log("potential dates obtained, ", dates);
-          this.potentialDates = Observable.of(dates);
-          this.cd.detectChanges();
-          this.loading = false;
-        }, (error) => {
-          console.log('get potentials dates error', error);
-        }
-      );
-    } else {
-      this.meetingService.getMeetingPotentialTimes(this.meeting.id).subscribe(
-        (dates: Array<MeetingDate>) => {
-          console.log("potential dates obtained, ", dates);
-          this.potentialDates = Observable.of(dates);
-          this.cd.detectChanges();
-          this.loading = false;
-        }, (error) => {
-          console.log('get potentials dates error', error);
-        }
-      );
-    }
-
-
+    this.meetingService.getMeetingPotentialTimes(this.meeting.id, this.isAdmin).subscribe(
+      (dates: Array<MeetingDate>) => {
+        console.log("potential dates obtained, ", dates);
+        this.potentialDates = Observable.of(dates);
+        this.cd.detectChanges();
+        this.loading = false;
+      }, (error) => {
+        console.log('get potentials dates error', error);
+      }
+    );
   }
 
   timestampToString(timestamp: number): string {
@@ -137,7 +120,7 @@ export class MeetingItemCoacheeComponent implements OnInit {
   private getGoal() {
     this.loading = true;
 
-    this.meetingService.getMeetingGoal(this.meeting.id).subscribe(
+    this.meetingService.getMeetingGoal(this.meeting.id, this.isAdmin).subscribe(
       (reviews: MeetingReview[]) => {
         console.log("getMeetingGoal, got goal : ", reviews);
         if (reviews != null) {
@@ -160,7 +143,7 @@ export class MeetingItemCoacheeComponent implements OnInit {
   private getContext() {
     this.loading = true;
 
-    this.meetingService.getMeetingContext(this.meeting.id).subscribe(
+    this.meetingService.getMeetingContext(this.meeting.id, this.isAdmin).subscribe(
       (reviews: MeetingReview[]) => {
         console.log("getMeetingContext, got context : ", reviews);
         if (reviews != null) {
@@ -183,7 +166,7 @@ export class MeetingItemCoacheeComponent implements OnInit {
   private getSessionReviewTypeResult() {
     this.loading = true;
 
-    this.meetingService.getSessionReviewResult(this.meeting.id).subscribe(
+    this.meetingService.getSessionReviewResult(this.meeting.id, this.isAdmin).subscribe(
       (reviews: MeetingReview[]) => {
         console.log("getSessionReviewTypeResult, got result : ", reviews);
         if (reviews != null) {
@@ -205,7 +188,7 @@ export class MeetingItemCoacheeComponent implements OnInit {
   private getSessionReviewTypeUtility() {
     this.loading = true;
 
-    this.meetingService.getSessionReviewUtility(this.meeting.id).subscribe(
+    this.meetingService.getSessionReviewUtility(this.meeting.id, this.isAdmin).subscribe(
       (reviews: MeetingReview[]) => {
         console.log("getSessionReviewTypeUtility, got goal : ", reviews);
         if (reviews != null) {
@@ -227,7 +210,7 @@ export class MeetingItemCoacheeComponent implements OnInit {
   private getSessionReviewTypeRate() {
     this.loading = true;
 
-    this.meetingService.getSessionReviewRate(this.meeting.id).subscribe(
+    this.meetingService.getSessionReviewRate(this.meeting.id, this.isAdmin).subscribe(
       (reviews: MeetingReview[]) => {
         console.log("getSessionReviewTypeRate, got rate : ", reviews);
         if (reviews != null) {

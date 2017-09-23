@@ -1,9 +1,11 @@
 import {AfterViewInit, ChangeDetectorRef, Component, OnDestroy, OnInit} from "@angular/core";
 import {ActivatedRoute, Router} from "@angular/router";
-import {AdminAPIService} from "../../../../service/adminAPI.service";
 import {Subscription} from "rxjs/Subscription";
 import {Observable} from "rxjs/Observable";
 import {Coach} from "../../../../model/Coach";
+import {CoachCoacheeService} from "../../../../service/coach_coachee.service";
+import {PotentialCoach} from "../../../../model/PotentialCoach";
+import {AdminAPIService} from "../../../../service/adminAPI.service";
 
 declare var Materialize: any;
 declare var $: any;
@@ -24,7 +26,7 @@ export class ProfileCoachAdminComponent implements OnInit, AfterViewInit, OnDest
   private avatarFile: File;
 
 
-  constructor(private apiService: AdminAPIService, private router: Router, private cd: ChangeDetectorRef, private route: ActivatedRoute, private adminAPIService: AdminAPIService) {
+  constructor(private apiService: CoachCoacheeService, private apiAdminService: AdminAPIService, private router: Router, private cd: ChangeDetectorRef, private route: ActivatedRoute) {
   }
 
   ngOnInit() {
@@ -38,7 +40,7 @@ export class ProfileCoachAdminComponent implements OnInit, AfterViewInit, OnDest
       (params: any) => {
         let coachId = params['id'];
 
-        this.apiService.getCoach(coachId).subscribe(
+        this.apiService.getCoachForId(coachId, true).subscribe(
           (coach: Coach) => {
             console.log("gotCoach", coach);
             this.coach = Observable.of(coach);
@@ -58,8 +60,8 @@ export class ProfileCoachAdminComponent implements OnInit, AfterViewInit, OnDest
   sendInvite(email: string) {
     console.log('sendInvite, email', email);
 
-    this.apiService.createPotentialCoach(email).subscribe(
-      (res: any) => {
+    this.apiAdminService.createPotentialCoach(email).subscribe(
+      (res: PotentialCoach) => {
         console.log('createPotentialCoach, res', res);
         this.getCoach();
         Materialize.toast('Invitation envoyée au Coach !', 3000, 'rounded');
@@ -105,7 +107,7 @@ export class ProfileCoachAdminComponent implements OnInit, AfterViewInit, OnDest
 
       this.coach.last().flatMap(
         (coach: Coach) => {
-          return this.adminAPIService.updateCoachProfilePicture(coach.id, this.avatarFile);
+          return this.apiService.updateCoachProfilePicture(coach.id, this.avatarFile);
         }
       ).subscribe(
         (res: any) => {
