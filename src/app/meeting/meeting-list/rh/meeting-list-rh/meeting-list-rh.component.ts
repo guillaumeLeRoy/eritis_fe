@@ -1,4 +1,4 @@
-import {AfterViewInit, ChangeDetectorRef, Component, OnDestroy, OnInit} from "@angular/core";
+import {AfterViewInit, ChangeDetectorRef, Component, Input, OnDestroy, OnInit} from "@angular/core";
 import {CoachCoacheeService} from "../../../../service/coach_coachee.service";
 import {AuthService} from "../../../../service/auth.service";
 import {Observable} from "rxjs/Observable";
@@ -27,6 +27,12 @@ export class MeetingListRhComponent implements OnInit, AfterViewInit, OnDestroy 
   loading1 = true;
   loading2 = true;
 
+  @Input()
+  mUser: HR;
+
+  @Input()
+  isAdmin: boolean = false;
+
   private user: Observable<ApiUser>;
 
   private coachees: Observable<Coachee[]>;
@@ -36,12 +42,9 @@ export class MeetingListRhComponent implements OnInit, AfterViewInit, OnDestroy 
   private hasPotentialCollaborators = false;
 
   private subscription: Subscription;
-  private connectedUserSubscription: Subscription;
 
   private plans: Observable<ContractPlan[]>;
   private selectedPlan = new ContractPlan(-1);
-
-  private HrUsageRate: Observable<HRUsageRate>;
 
   /**
    * Used in Objective modal.
@@ -57,7 +60,7 @@ export class MeetingListRhComponent implements OnInit, AfterViewInit, OnDestroy 
 
   private signInForm: FormGroup;
 
-  constructor(private coachCoacheeService: CoachCoacheeService, private authService: AuthService, private cd: ChangeDetectorRef, private formBuilder: FormBuilder) {
+  constructor(private authService: AuthService, private coachCoacheeService: CoachCoacheeService, private cd: ChangeDetectorRef, private formBuilder: FormBuilder) {
   }
 
   ngOnInit() {
@@ -79,33 +82,18 @@ export class MeetingListRhComponent implements OnInit, AfterViewInit, OnDestroy 
   }
 
   onRefreshRequested() {
-    let user = this.authService.getConnectedUser();
-    console.log('onRefreshRequested, user : ', user);
-    if (user == null) {
-      this.connectedUserSubscription = this.authService.getConnectedUserObservable().subscribe(
-        (user: Coach | Coachee) => {
-          console.log('onRefreshRequested, getConnectedUser');
-          this.onUserObtained(user);
-        }
-      );
-    } else {
-      this.onUserObtained(user);
-    }
+    console.log('onRefreshRequested, getConnectedUser');
+    this.onUserObtained(this.mUser);
   }
 
-  private onUserObtained(user: Coach | Coachee | HR) {
+  private onUserObtained(user: HR) {
     console.log('onUserObtained, user : ', user);
     if (user) {
-
-      if (user instanceof HR) {
-        // rh
-        console.log('get a rh');
-        this.getAllCoacheesForRh(user.id);
-        this.getAllPotentialCoacheesForRh(user.id);
-        this.getAllContractPlans();
-        this.getUsageRate(user.id)
-      }
-
+      // rh
+      console.log('get a rh');
+      this.getAllCoacheesForRh(user.id);
+      this.getAllPotentialCoacheesForRh(user.id);
+      this.getAllContractPlans();
       this.user = Observable.of(user);
       this.cd.detectChanges();
     }
@@ -148,26 +136,9 @@ export class MeetingListRhComponent implements OnInit, AfterViewInit, OnDestroy 
     );
   }
 
-  private getUsageRate(rhId: string) {
-    this.coachCoacheeService.getUsageRate(rhId).subscribe(
-      (rate: HRUsageRate) => {
-        console.log("getUsageRate, rate : ", rate);
-        this.HrUsageRate = Observable.of(rate);
-      }
-    );
-  }
-
-  refreshDashboard() {
-    location.reload();
-  }
-
   ngOnDestroy(): void {
     if (this.subscription) {
       this.subscription.unsubscribe();
-    }
-
-    if (this.connectedUserSubscription) {
-      this.connectedUserSubscription.unsubscribe();
     }
   }
 

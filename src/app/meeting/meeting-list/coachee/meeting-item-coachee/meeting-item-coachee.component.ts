@@ -85,8 +85,6 @@ export class MeetingItemCoacheeComponent implements OnInit {
   private loadMeetingPotentialTimes() {
     this.loading = true;
 
-    this.isAdmin = true;//TODO to remove
-
     this.meetingService.getMeetingPotentialTimes(this.meeting.id, this.isAdmin).subscribe(
       (dates: Array<MeetingDate>) => {
         console.log("potential dates obtained, ", dates);

@@ -59,35 +59,37 @@
             <div *ngFor="let meeting of (meetings | async)">
               <div class="row">
                 <div class=" col-md-3">
-                  <span class="meeting-list-date">Pour le {{ dayAndMonthFromTimestamp(meeting.agreed_date.start_date) }}</span>
+                  <span class="meeting-list-date">Le {{ dayAndMonthFromTimestamp(meeting.agreed_date.start_date) }}</span>
                 </div>
                 <div class="col-md-9">
-                  <span class="black-text bold">Objectif de la séance: </span>
-                  <span>{{ goals[meeting.id] }}</span>
-                </div>
-              </div>
-              <div class="row">
-                <div class=" col-md-12">
-                  <span class="black-text bold">Note donnée : </span>
+                  <div class="row">
+                    <div class="col-md-12">
+                      <span class="black-text bold">Objectif de la séance: </span>
+                      <span>{{ goals[meeting.id] }}</span>
+                    </div>
 
-                  <div class="ratebar ratebar-mini">
-                    <div class="rate-star" [class.selected]="sessionRates[meeting.id] > 0">
-                      <i class="material-icons star">star</i>
-                    </div>
-                    <div class="rate-star" [class.selected]="sessionRates[meeting.id] > 1">
-                      <i class="material-icons star">star</i>
-                    </div>
-                    <div class="rate-star" [class.selected]="sessionRates[meeting.id] > 2">
-                      <i class="material-icons star">star</i>
-                    </div>
-                    <div class="rate-star" [class.selected]="sessionRates[meeting.id] > 3">
-                      <i class="material-icons star">star</i>
-                    </div>
-                    <div class="rate-star" [class.selected]="sessionRates[meeting.id] > 4">
-                      <i class="material-icons star">star</i>
+                    <div class="col-md-12">
+                      <span class="black-text bold">Note donnée :</span>
+
+                      <div class="ratebar ratebar-mini">
+                        <div class="rate-star" [class.selected]="sessionRates[meeting.id] > 0">
+                          <i class="material-icons star">star</i>
+                        </div>
+                        <div class="rate-star" [class.selected]="sessionRates[meeting.id] > 1">
+                          <i class="material-icons star">star</i>
+                        </div>
+                        <div class="rate-star" [class.selected]="sessionRates[meeting.id] > 2">
+                          <i class="material-icons star">star</i>
+                        </div>
+                        <div class="rate-star" [class.selected]="sessionRates[meeting.id] > 3">
+                          <i class="material-icons star">star</i>
+                        </div>
+                        <div class="rate-star" [class.selected]="sessionRates[meeting.id] > 4">
+                          <i class="material-icons star">star</i>
+                        </div>
+                      </div>
                     </div>
                   </div>
-
                 </div>
               </div>
 

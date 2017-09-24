@@ -1,3 +1,16 @@
-<p>
-  rh-dashboard works!
-</p>
+<div [ngsReveal]="{distance: '100px', origin: 'right', duration: 1000, delay: 200}">
+  <h3 class="text-right welcome-message">Bonjour {{ (user | async)?.first_name}},<br>
+    Ce mois-ci <span class="blue-text">{{(HrUsageRate | async)?.sessions_done_month_count}}</span> séances on été
+    réalisées
+    pour <span class="blue-text">{{(HrUsageRate | async)?.available_sessions_count}}</span> séances possibles
+  </h3>
+  <p class="text-right">
+    <span class="blue-text">Cliquez</span> ici pour ajouter un manager
+    <a class="btn-floating btn-large waves-effect waves-light add-meeting-btn"
+       (click)="addPotentialCoacheeModalVisibility(true)">
+      <i class="material-icons">add</i>
+    </a>
+  </p>
+</div>
+
+<rb-meeting-list-rh [mUser]="(user | async)" *ngIf="(user | async)"></rb-meeting-list-rh>

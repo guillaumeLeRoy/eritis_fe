@@ -1,15 +1,4 @@
-<div [ngsReveal]="{distance: '100px', origin: 'right', duration: 1000, delay: 200}">
-  <h3 class="text-right">Bonjour {{ (user | async)?.first_name}},
-    vous avez <span class="blue-text">{{(meetingsOpened | async)?.length}}</span> séance
-    <span *ngIf="(meetingsOpened | async)?.length > 1">s</span> cette semaine</h3>
-  <p class="text-right">
-    <span class="blue-text">Cliquez</span> ici pour votre salon
-    <a class="btn-floating btn-large waves-effect waves-light add-meeting-btn"
-       (click)="onCoachStartRoomClicked()">
-      <i class="material-icons">videocam</i>
-    </a>
-  </p>
-</div>
+
 
 
 <!--<div class="row">-->
@@ -41,6 +30,7 @@
         <div *ngIf="hasOpenedMeeting">
           <div class="collection-item" *ngFor="let meeting of meetingsOpened | async">
             <rb-meeting-item-coach [meeting]="meeting"
+                                   [isAdmin]="isAdmin"
                                    (dateAgreed)="onRefreshRequested($event)"
                                    (cancelMeetingTimeEvent)="openCoachCancelMeetingModal($event)"
                                    (onCloseMeetingBtnClickEmitter)="starCloseSessionFlow($event)">

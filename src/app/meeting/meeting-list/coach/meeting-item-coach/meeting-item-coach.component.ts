@@ -25,6 +25,9 @@ export class MeetingItemCoachComponent implements OnInit, AfterViewInit {
   @Input()
   meeting: Meeting;
 
+  @Input()
+  isAdmin: boolean = false;
+
   @Output()
   onValidateDateBtnClick = new EventEmitter();
 
@@ -123,7 +126,7 @@ export class MeetingItemCoachComponent implements OnInit, AfterViewInit {
   }
 
   loadMeetingPotentialTimes() {
-    this.meetingService.getMeetingPotentialTimes(this.meeting.id).subscribe(
+    this.meetingService.getMeetingPotentialTimes(this.meeting.id, this.isAdmin).subscribe(
       (dates: MeetingDate[]) => {
         console.log("potential dates obtained, ", dates);
 
@@ -159,7 +162,7 @@ export class MeetingItemCoachComponent implements OnInit, AfterViewInit {
   private getGoal() {
     this.loading = true;
 
-    this.meetingService.getMeetingGoal(this.meeting.id).subscribe(
+    this.meetingService.getMeetingGoal(this.meeting.id, this.isAdmin).subscribe(
       (reviews: MeetingReview[]) => {
         console.log("getMeetingGoal, got goal : ", reviews);
         if (reviews != null)
@@ -180,7 +183,7 @@ export class MeetingItemCoachComponent implements OnInit, AfterViewInit {
   private getContext() {
     this.loading = true;
 
-    this.meetingService.getMeetingContext(this.meeting.id).subscribe(
+    this.meetingService.getMeetingContext(this.meeting.id, this.isAdmin).subscribe(
       (reviews: MeetingReview[]) => {
         console.log("getMeetingContext, got context : ", reviews);
         if (reviews != null)
@@ -200,7 +203,7 @@ export class MeetingItemCoachComponent implements OnInit, AfterViewInit {
   private getReviewValue() {
     this.loading = true;
 
-    this.meetingService.getSessionReviewUtility(this.meeting.id).subscribe(
+    this.meetingService.getSessionReviewUtility(this.meeting.id, this.isAdmin).subscribe(
       (reviews: MeetingReview[]) => {
         console.log("getMeetingValue, got goal : ", reviews);
         if (reviews != null)
@@ -221,7 +224,7 @@ export class MeetingItemCoachComponent implements OnInit, AfterViewInit {
   private getReviewNextStep() {
     this.loading = true;
 
-    this.meetingService.getSessionReviewResult(this.meeting.id).subscribe(
+    this.meetingService.getSessionReviewResult(this.meeting.id, this.isAdmin).subscribe(
       (reviews: MeetingReview[]) => {
         console.log("getMeetingNextStep, : ", reviews);
         if (reviews != null)
@@ -242,7 +245,7 @@ export class MeetingItemCoachComponent implements OnInit, AfterViewInit {
   private getSessionReviewTypeRate() {
     this.loading = true;
 
-    this.meetingService.getSessionReviewRate(this.meeting.id).subscribe(
+    this.meetingService.getSessionReviewRate(this.meeting.id, this.isAdmin).subscribe(
       (reviews: MeetingReview[]) => {
         console.log("getSessionReviewTypeRate, got rate : ", reviews);
         if (reviews != null)

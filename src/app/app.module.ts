@@ -68,6 +68,8 @@ import {CookiePolicyComponent} from "./legals/cookie-policy/cookie-policy.compon
 import {ProfileHeaderComponent} from "./user/profile/profile-header/profile-header.component";
 import {HomeAdminComponent} from "./admin/home-admin/home-admin.component";
 import {CoacheeDashboardComponent} from "./meeting/meeting-list/coachee/coachee-dashboard/coachee-dashboard.component";
+import {CoachDashboardComponent} from "./meeting/meeting-list/coach/coach-dashboard/coach-dashboard.component";
+import {RhDashboardComponent} from "./meeting/meeting-list/rh/rh-dashboard/rh-dashboard.component";
 
 @NgModule({
   declarations: [
@@ -118,7 +120,9 @@ import {CoacheeDashboardComponent} from "./meeting/meeting-list/coachee/coachee-
     CookiePolicyComponent,
     ProfileHeaderComponent,
     HomeAdminComponent,
-    CoacheeDashboardComponent
+    CoacheeDashboardComponent,
+    CoachDashboardComponent,
+    RhDashboardComponent
   ],
   imports: [
     BrowserAnimationsModule,

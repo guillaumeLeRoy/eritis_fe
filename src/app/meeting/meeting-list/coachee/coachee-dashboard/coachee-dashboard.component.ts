@@ -48,7 +48,7 @@ export class CoacheeDashboardComponent implements OnInit, AfterViewInit, OnDestr
     console.log('onRefreshRequested, user : ', user);
     if (user == null) {
       this.connectedUserSubscription = this.authService.getConnectedUserObservable().subscribe(
-        (user: Coachee) => {
+        (user: ApiUser) => {
           console.log('onRefreshRequested, getConnectedUser');
           this.onUserObtained(user);
         }

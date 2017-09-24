@@ -1,4 +1,4 @@
-import {AfterViewInit, ChangeDetectorRef, Component, OnDestroy, OnInit} from "@angular/core";
+import {AfterViewInit, ChangeDetectorRef, Component, Input, OnDestroy, OnInit} from "@angular/core";
 import {MeetingsService} from "../../../../service/meetings.service";
 import {CoachCoacheeService} from "../../../../service/coach_coachee.service";
 import {AuthService} from "../../../../service/auth.service";
@@ -21,7 +21,13 @@ export class MeetingListCoachComponent implements OnInit, AfterViewInit, OnDestr
 
   loading = true;
 
-  private user: Observable<ApiUser>;
+  @Input()
+  mUser: Coach;
+
+  @Input()
+  isAdmin: boolean = false;
+
+  private user: Observable<Coach>;
 
   private meetings: Observable<Array<Meeting>>;
   private meetingsOpened: Observable<Meeting[]>;
@@ -34,7 +40,6 @@ export class MeetingListCoachComponent implements OnInit, AfterViewInit, OnDestr
   private hasUnbookedMeeting = false;
 
   private subscription: Subscription;
-  private connectedUserSubscription: Subscription;
 
   private meetingToCancel: Meeting;
 
@@ -64,17 +69,17 @@ export class MeetingListCoachComponent implements OnInit, AfterViewInit, OnDestr
    * @param authService
    * @param cd
    */
-  constructor(private meetingsService: MeetingsService, private coachCoacheeService: CoachCoacheeService, private authService: AuthService, private cd: ChangeDetectorRef) {
+  constructor(private coachCoacheeService: CoachCoacheeService, private meetingsService: MeetingsService, private cd: ChangeDetectorRef) {
   }
 
   ngOnInit() {
     console.log('ngOnInit');
     this.loading = true;
+    this.user = Observable.of(this.mUser);
   }
 
   ngAfterViewInit(): void {
     console.log('ngAfterViewInit');
-
     this.onRefreshRequested();
   }
 
@@ -84,57 +89,45 @@ export class MeetingListCoachComponent implements OnInit, AfterViewInit, OnDestr
     if (this.subscription) {
       this.subscription.unsubscribe();
     }
-
-    if (this.connectedUserSubscription) {
-      this.connectedUserSubscription.unsubscribe();
-    }
   }
 
   onRefreshRequested() {
-    let user = this.authService.getConnectedUser();
-    console.log('onRefreshRequested, user : ', user);
-    if (user == null) {
-      this.connectedUserSubscription = this.authService.getConnectedUserObservable().subscribe(
-        (user: Coach) => {
-          console.log('onRefreshRequested, getConnectedUser');
-          this.onUserObtained(user);
-        }
-      );
-    } else {
-      this.onUserObtained(user);
-    }
+    this.onUserObtained(this.mUser);
   }
 
-  private onUserObtained(user: ApiUser) {
+  private onUserObtained(user: Coach) {
     console.log('onUserObtained, user : ', user);
-    if (user) {
-
-      if (user instanceof Coach) {
-        // coach
-        console.log('get a coach');
-        this.getAllMeetingsForCoach(user.id);
-      }
-
-      this.user = Observable.of(user);
-      this.cd.detectChanges();
-    }
+    this.getAllMeetingsForCoach(user.id);
+    this.user = Observable.of(user);
+    this.cd.detectChanges();
   }
 
   private getAllMeetingsForCoach(coachId: string) {
-    this.subscription = this.meetingsService.getAllMeetingsForCoachId(coachId)
+    this.subscription = this.meetingsService.getAllMeetingsForCoachId(coachId, this.isAdmin)
       .subscribe(
-        (meetings: Array<Meeting>) => {
+        (meetings: Meeting[]) => {
           console.log('got meetings for coach', meetings);
-
-          this.meetingsArray = meetings;
-          this.meetings = Observable.of(meetings);
-          this.getBookedMeetings();
-          this.getClosedMeetings();
-          this.getUnbookedMeetings();
-          this.cd.detectChanges();
+          this.onMeetingsObtained(meetings);
+        }, (error) => {
+          console.log('got meetings for coach ERROR', error);
           this.loading = false;
         }
       );
+  }
+
+  private onMeetingsObtained(meetings: Array<Meeting>) {
+    console.log('got meetings for coach', meetings);
+
+    this.meetingsArray = meetings;
+    this.meetings = Observable.of(meetings);
+    this.getBookedMeetings();
+    this.getUnbookedMeetings();
+    this.getClosedMeetings();
+    this.loading = false;
+
+    console.log('got meetings, loading', this.loading);
+
+    this.cd.detectChanges();
   }
 
   private getClosedMeetings() {

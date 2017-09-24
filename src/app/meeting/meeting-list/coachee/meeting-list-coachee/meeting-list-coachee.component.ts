@@ -63,26 +63,18 @@ export class MeetingListCoacheeComponent implements OnInit, AfterViewInit, OnDes
     this.onUserObtained(this.mUser);
   }
 
-  private onUserObtained(user: Coachee | Coach | HR) {
+  private onUserObtained(user: Coachee) {
     console.log('onUserObtained, user : ', user);
-    if (user) {
-
-      if (user instanceof Coachee) {
-        // coachee
-        console.log('get a coachee');
-        this.getAllMeetingsForCoachee(user.id);
-        this.user = Observable.of(user);
-        this.cd.detectChanges();
-      } else {
-        console.log('get a coachee, not instance of coachee !!!');
-
-      }
-    }
+    this.getAllMeetingsForCoachee(user.id);
+    this.user = Observable.of(user);
+    this.cd.detectChanges();
   }
 
   private getAllMeetingsForCoachee(coacheeId: string) {
-    this.subscription = this.meetingsService.getAllMeetingsForCoacheeId(coacheeId, this.isAdmin).subscribe(
+    this.subscription = this.meetingsService.getAllMeetingsForCoacheeId(coacheeId, this.isAdmin)
+      .subscribe(
       (meetings: Meeting[]) => {
+        console.log('got meetings for coachee', meetings);
         this.onMeetingsObtained(meetings);
       }, (error) => {
         console.log('got meetings for coachee ERROR', error);

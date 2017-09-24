@@ -25,6 +25,9 @@ export class MeetingItemRhComponent implements OnInit, AfterViewInit {
   @Input()
   potentialCoachee: PotentialCoachee;
 
+  @Input()
+  isAdmin: boolean = false;
+
   /**
    * Event emitted when user clicks on the "Objective" btn.
    * @type {EventEmitter<string>} the coacheeId
@@ -78,7 +81,7 @@ export class MeetingItemRhComponent implements OnInit, AfterViewInit {
   private getAllMeetingsForCoachee(coacheeId: string) {
     this.loading = true;
 
-    this.meetingsService.getAllMeetingsForCoacheeId(coacheeId).subscribe(
+    this.meetingsService.getAllMeetingsForCoacheeId(coacheeId, this.isAdmin).subscribe(
       (meetings: Meeting[]) => {
         console.log('got meetings for coachee', meetings);
         let bookedMeetings: Meeting[] = [];
@@ -103,7 +106,7 @@ export class MeetingItemRhComponent implements OnInit, AfterViewInit {
   }
 
   private getGoal(meetingId: string) {
-    return this.meetingsService.getMeetingGoal(meetingId).subscribe(
+    return this.meetingsService.getMeetingGoal(meetingId, this.isAdmin).subscribe(
       (reviews: MeetingReview[]) => {
         console.log("getMeetingGoal, got goal : ", reviews);
         if (reviews != null)
@@ -118,13 +121,13 @@ export class MeetingItemRhComponent implements OnInit, AfterViewInit {
   }
 
   private getSessionReviewTypeRate(meetingId: string) {
-    this.meetingsService.getSessionReviewRate(meetingId).subscribe(
+    this.meetingsService.getSessionReviewRate(meetingId, this.isAdmin).subscribe(
       (reviews: MeetingReview[]) => {
         console.log("getSessionReviewTypeRate, got rate : ", reviews);
         if (reviews != null)
           this.sessionRates[meetingId] = reviews[0].value;
         else
-          this.sessionRates = 'Inconnu';
+          this.sessionRates[meetingId] = "Inconnu";
       },
       (error) => {
         console.log('getSessionReviewTypeRate error', error);

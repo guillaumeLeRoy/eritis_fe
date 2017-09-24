@@ -4,19 +4,19 @@
   <div class="row">
     <div class="col s12">
 
-      <!-- welcome message for coachee -->
+      <!-- Coachee dashboard -->
       <div *ngIf="isUserACoachee((user | async))">
         <rb-coachee-dashboard></rb-coachee-dashboard>
       </div>
 
-      <!-- welcome message for coach -->
+      <!-- Coach dashboard -->
       <div *ngIf="isUserACoach((user | async))">
-        <rb-meeting-list-coach></rb-meeting-list-coach>
+        <rb-coach-dashboard></rb-coach-dashboard>
       </div>
 
-      <!-- welcome message for rh -->
+      <!-- RH dashboard -->
       <div *ngIf="isUserARh((user | async))">
-        <rb-meeting-list-rh></rb-meeting-list-rh>
+        <rb-rh-dashboard></rb-rh-dashboard>
       </div>
 
     </div><!--end row-->
