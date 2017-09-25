@@ -123,10 +123,10 @@ export class CoachCoacheeService {
       });
   }
 
-  getAllCoacheesForRh(rhId: string): Observable<Coachee[]> {
+  getAllCoacheesForRh(rhId: string, isAdmin?: boolean): Observable<Coachee[]> {
     console.log("getAllCoacheesForRh, start request");
-    let param = [rhId];
-    return this.apiService.get(AuthService.GET_COACHEES_FOR_RH, param).map(
+    let params = [rhId];
+    return this.apiService.get(AuthService.GET_COACHEES_FOR_RH, params, isAdmin).map(
       (response: Response) => {
         let json: any[] = response.json();
 
@@ -139,10 +139,10 @@ export class CoachCoacheeService {
       });
   }
 
-  getAllPotentialCoacheesForRh(rhId: string): Observable<PotentialCoachee[]> {
+  getAllPotentialCoacheesForRh(rhId: string, isAdmin?: boolean): Observable<PotentialCoachee[]> {
     console.log("getAllPotentialCoacheesForRh, start request");
-    let param = [rhId];
-    return this.apiService.get(AuthService.GET_POTENTIAL_COACHEES_FOR_RH, param).map(
+    let params = [rhId];
+    return this.apiService.get(AuthService.GET_POTENTIAL_COACHEES_FOR_RH, params, isAdmin).map(
       (response: Response) => {
         let json: PotentialCoachee[] = response.json();
         console.log("getAllPotentialCoacheesForRh, response json : ", json);

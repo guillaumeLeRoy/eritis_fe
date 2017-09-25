@@ -172,6 +172,11 @@
 
     </div><!--end row>-->
 
+    <rb-meeting-list-coach [mUser]="(coach | async)"
+                           [isAdmin]="true"
+                           *ngIf="(coach | async)">
+    </rb-meeting-list-coach>
+
   </div>
 
 </div>

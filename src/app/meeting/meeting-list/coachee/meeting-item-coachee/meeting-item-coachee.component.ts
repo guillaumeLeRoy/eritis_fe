@@ -244,7 +244,10 @@ export class MeetingItemCoacheeComponent implements OnInit {
 
   goToCoachProfile(coachId: string) {
     window.scrollTo(0, 0);
-    this.router.navigate(['/profile_coach', coachId]);
+    if (this.isAdmin)
+      this.router.navigate(['admin/profile/coach', coachId]);
+    else
+      this.router.navigate(['/profile_coach', coachId]);
   }
 
   rateSession() {

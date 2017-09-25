@@ -38,7 +38,7 @@
           </p>
         </div>
 
-        <div class="meeting-item-body-buttons">
+        <div class="meeting-item-body-buttons" *ngIf="!isAdmin">
           <button class="btn-basic btn-blue btn-plain btn-small" (click)="onClickAddObjectiveBtn()"
                   *ngIf="!coachee.last_objective">
             Ajouter un objectif

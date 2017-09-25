@@ -5,7 +5,7 @@ import {Subscription} from "rxjs/Subscription";
 import {CoachCoacheeService} from "../../service/coach_coachee.service";
 
 @Component({
-  selector: 'er-rhs-list',
+  selector: 'rb-rhs-list',
   templateUrl: './rhs-list.component.html',
   styleUrls: ['./rhs-list.component.scss']
 })

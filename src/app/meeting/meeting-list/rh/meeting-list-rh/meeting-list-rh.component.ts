@@ -1,4 +1,7 @@
-import {AfterViewInit, ChangeDetectorRef, Component, Input, OnDestroy, OnInit} from "@angular/core";
+import {
+  AfterViewInit, ChangeDetectorRef, Component, EventEmitter, Input, OnDestroy, OnInit,
+  Output
+} from "@angular/core";
 import {CoachCoacheeService} from "../../../../service/coach_coachee.service";
 import {AuthService} from "../../../../service/auth.service";
 import {Observable} from "rxjs/Observable";
@@ -33,6 +36,9 @@ export class MeetingListRhComponent implements OnInit, AfterViewInit, OnDestroy 
   @Input()
   isAdmin: boolean = false;
 
+  @Output()
+  onStartAddNewObjectiveFlow = new EventEmitter<string>();
+
   private user: Observable<ApiUser>;
 
   private coachees: Observable<Coachee[]>;
@@ -43,36 +49,15 @@ export class MeetingListRhComponent implements OnInit, AfterViewInit, OnDestroy 
 
   private subscription: Subscription;
 
-  private plans: Observable<ContractPlan[]>;
-  private selectedPlan = new ContractPlan(-1);
+  //private plans: Observable<ContractPlan[]>;
 
-  /**
-   * Used in Objective modal.
-   * Describe new objective
-   */
-  private coacheeNewObjective: string;
-
-  /**
-   * Used in Objective modal.
-   * Coachee id
-   */
-  private addNewObjectiveCoacheeId: string;
-
-  private signInForm: FormGroup;
-
-  constructor(private authService: AuthService, private coachCoacheeService: CoachCoacheeService, private cd: ChangeDetectorRef, private formBuilder: FormBuilder) {
+  constructor(private coachCoacheeService: CoachCoacheeService, private cd: ChangeDetectorRef) {
   }
 
   ngOnInit() {
     console.log('ngOnInit');
     this.loading1 = true;
     this.loading2 = true;
-
-    this.signInForm = this.formBuilder.group({
-      email: ['', [Validators.required, Validators.pattern(Utils.EMAIL_REGEX)]],
-      first_name: [''],
-      last_name: [''],
-    });
   }
 
   ngAfterViewInit(): void {
@@ -93,14 +78,14 @@ export class MeetingListRhComponent implements OnInit, AfterViewInit, OnDestroy 
       console.log('get a rh');
       this.getAllCoacheesForRh(user.id);
       this.getAllPotentialCoacheesForRh(user.id);
-      this.getAllContractPlans();
+      //this.getAllContractPlans();
       this.user = Observable.of(user);
       this.cd.detectChanges();
     }
   }
 
   private getAllCoacheesForRh(rhId: string) {
-    this.subscription = this.coachCoacheeService.getAllCoacheesForRh(rhId).subscribe(
+    this.subscription = this.coachCoacheeService.getAllCoacheesForRh(rhId, this.isAdmin).subscribe(
       (coachees: Coachee[]) => {
         console.log('got coachees for rh', coachees);
 
@@ -113,7 +98,7 @@ export class MeetingListRhComponent implements OnInit, AfterViewInit, OnDestroy 
   }
 
   private getAllPotentialCoacheesForRh(rhId: string) {
-    this.subscription = this.coachCoacheeService.getAllPotentialCoacheesForRh(rhId).subscribe(
+    this.subscription = this.coachCoacheeService.getAllPotentialCoacheesForRh(rhId, this.isAdmin).subscribe(
       (coachees: PotentialCoachee[]) => {
         console.log('got potentialCoachees for rh', coachees);
 
@@ -125,7 +110,7 @@ export class MeetingListRhComponent implements OnInit, AfterViewInit, OnDestroy 
     );
   }
 
-  private getAllContractPlans() {
+  /*private getAllContractPlans() {
     this.authService.getNotAuth(AuthService.GET_CONTRACT_PLANS, null).subscribe(
       (response) => {
         let json: ContractPlan[] = response.json();
@@ -134,7 +119,7 @@ export class MeetingListRhComponent implements OnInit, AfterViewInit, OnDestroy 
         // this.cd.detectChanges();
       }
     );
-  }
+  }*/
 
   ngOnDestroy(): void {
     if (this.subscription) {
@@ -142,141 +127,8 @@ export class MeetingListRhComponent implements OnInit, AfterViewInit, OnDestroy 
     }
   }
 
-
-  /*************************************
-   ----------- Modal control for Potential Coachee ------------
-   *************************************/
-
-  addPotentialCoacheeModalVisibility(isVisible: boolean) {
-    if (isVisible) {
-      $('#add_potential_coachee_modal').openModal();
-    } else {
-      $('#add_potential_coachee_modal').closeModal();
-    }
+  private startAddNewObjectiveFlow() {
+    this.onStartAddNewObjectiveFlow.emit();
   }
-
-  cancelAddPotentialCoachee() {
-    // this.potentialCoacheeEmail = null;
-    this.addPotentialCoacheeModalVisibility(false);
-  }
-
-  validateAddPotentialCoachee() {
-    // console.log('validateAddPotentialCoachee, potentialCoacheeEmail : ', this.potentialCoacheeEmail);
-
-    this.addPotentialCoacheeModalVisibility(false);
-
-    this.user.take(1).subscribe(
-      (user: ApiUser) => {
-
-        // let body = {
-        //   "email": this.potentialCoacheeEmail,
-        //   "plan_id": this.selectedPlan.plan_id,
-        //   "rh_id": user.id,
-        //   "first_name": this.potentialCoacheeFirstName,
-        //   "last_name": this.potentialCoacheeLastName,
-        // };
-
-        // force Plan
-        this.selectedPlan.plan_id = 1;
-
-        let body = {
-          "email": this.signInForm.value.email,
-          "plan_id": this.selectedPlan.plan_id,
-          "rh_id": user.id,
-          "first_name": this.signInForm.value.first_name,
-          "last_name": this.signInForm.value.last_name,
-        };
-
-        console.log('postPotentialCoachee, body', body);
-
-        this.coachCoacheeService.postPotentialCoachee(body).subscribe(
-          (res: PotentialCoachee) => {
-            console.log('postPotentialCoachee, res', res);
-            this.onRefreshRequested();
-            Materialize.toast('Manager ajouté !', 3000, 'rounded');
-          }, (errorRes: Response) => {
-            let json: any = errorRes.json();
-            console.log('postPotentialCoachee, error', json);
-            if (json.error == "EMAIL_ALREADY_USED") {
-              Materialize.toast("Impossible d'ajouter le manager, cet email est déjà utilisé", 3000, 'rounded');
-            } else {
-              Materialize.toast("Impossible d'ajouter le manager", 3000, 'rounded');
-            }
-          }
-        );
-      }
-    );
-
-  }
-
-  /*************************************
-   ----------- Modal control for new coachee's objective ------------
-   *************************************/
-
-  private updateCoacheeObjectivePanelVisibility(visible: boolean) {
-    if (visible) {
-      $('#add_new_objective_modal').openModal();
-    } else {
-      $('#add_new_objective_modal').closeModal();
-    }
-  }
-
-
-  private makeAPICallToAddNewObjective(user: ApiUser) {
-    this.updateCoacheeObjectivePanelVisibility(false);
-    //call API
-    this.coachCoacheeService.addObjectiveToCoachee(user.id, this.addNewObjectiveCoacheeId, this.coacheeNewObjective).subscribe(
-      (obj: CoacheeObjective) => {
-        console.log('addObjectiveToCoachee, SUCCESS', obj);
-        // close modal
-        this.updateCoacheeObjectivePanelVisibility(false);
-        this.onRefreshRequested();
-        Materialize.toast("L'objectif a été modifié !", 3000, 'rounded')
-        // TODO stop loader
-        // clean
-        this.coacheeNewObjective = null;
-      }, (error) => {
-        console.log('addObjectiveToCoachee, error', error);
-
-        Materialize.toast("Imposible de modifier l'objectif", 3000, 'rounded')
-      }
-    );
-  }
-
-  startAddNewObjectiveFlow(coacheeId: string) {
-    console.log('startAddNewObjectiveFlow, coacheeId : ', coacheeId);
-
-    this.updateCoacheeObjectivePanelVisibility(true);
-    this.addNewObjectiveCoacheeId = coacheeId;
-  }
-
-  cancelAddNewObjectiveModal() {
-    this.updateCoacheeObjectivePanelVisibility(false);
-  }
-
-  validateAddNewObjectiveModal() {
-    console.log('validateAddNewObjectiveModal');
-
-    // TODO start loader
-    let user = this.authService.getConnectedUser();
-    if (user == null) {
-      let userObs = this.authService.getConnectedUserObservable();
-      userObs.take(1).subscribe(
-        (user: ApiUser) => {
-          console.log('validateAddNewObjectiveModal, got connected user');
-          if (user instanceof HR) {
-            this.makeAPICallToAddNewObjective(user);
-          }
-        }
-      );
-      return;
-    }
-
-    if (user instanceof HR) {
-      this.makeAPICallToAddNewObjective(user);
-    }
-
-  }
-
 
 }

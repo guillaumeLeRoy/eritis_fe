@@ -53,6 +53,7 @@
         <div *ngIf="hasClosedMeeting">
           <div class="collection-item" *ngFor="let meeting of meetingsClosed | async">
             <rb-meeting-item-coach [meeting]="meeting"
+                                   [isAdmin]="isAdmin"
                                    (dateAgreed)="onRefreshRequested($event)"
                                    (cancelMeetingTimeEvent)="openCoachCancelMeetingModal($event)">
             </rb-meeting-item-coach>

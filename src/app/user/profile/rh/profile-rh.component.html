@@ -110,6 +110,12 @@
       </div>
 
     </form>
+
+    <rb-meeting-list-rh [mUser]="(rh | async)"
+                        [isAdmin]="true"
+                        *ngIf="(coachee | async)">
+    </rb-meeting-list-rh>
+
   </div>
 
 </div>

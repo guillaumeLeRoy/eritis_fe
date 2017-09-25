@@ -71,7 +71,10 @@ export class MeetingItemRhComponent implements OnInit, AfterViewInit {
   }
 
   goToCoacheeProfile(coacheeId: String) {
-    this.router.navigate(['/profile_coachee', coacheeId]);
+    if (this.isAdmin)
+      this.router.navigate(['admin/profile/coachee', coacheeId]);
+    else
+      this.router.navigate(['/profile_coachee', coacheeId]);
   }
 
   toggleShowDetails() {

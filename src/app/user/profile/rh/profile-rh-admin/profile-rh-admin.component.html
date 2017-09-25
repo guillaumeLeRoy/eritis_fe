@@ -21,6 +21,11 @@
     <!--<button class="btn-basic btn-plain btn-blue right">Envoyer</button>-->
     <!--</div>-->
     <!--</form>-->
+
+    <rb-meeting-list-rh [mUser]="(rh | async)"
+                        [isAdmin]="true"
+                        *ngIf="(rh | async)"></rb-meeting-list-rh>
+
   </div>
 
 </div>

@@ -13,4 +13,82 @@
   </p>
 </div>
 
-<rb-meeting-list-rh [mUser]="(user | async)" *ngIf="(user | async)"></rb-meeting-list-rh>
+<rb-meeting-list-rh [mUser]="(user | async)"
+                    *ngIf="(user | async)"
+                    (onStartAddNewObjectiveFlow)="startAddNewObjectiveFlow($event)"></rb-meeting-list-rh>
+
+
+<!-- Modal RH add new objective to Coachee -->
+<div id="add_new_objective_modal" class="modal">
+  <div class="action-modal-content">
+    <div class="action-modal-message">
+      <label>Définissez un objectif</label>
+      <input type="text" placeholder="Objectif" id="" [(ngModel)]="coacheeNewObjective">
+    </div>
+    <div class="action-modal-footer">
+      <button class="btn-basic btn-blue btn-small" (click)="cancelAddNewObjectiveModal()">Annuler</button>
+      <button class="btn-basic btn-blue btn-plain btn-small" (click)="validateAddNewObjectiveModal()"
+              [disabled]="!coacheeNewObjective">Ajouter
+      </button>
+    </div>
+  </div>
+</div>
+
+
+
+<!-- Modal RH add Coachee -->
+<form [formGroup]="signInForm" id="add_potential_coachee_modal" class="modal">
+  <div class="action-modal-content">
+    <div class="action-modal-message">
+
+      <div class="row">
+        <div class="col-sm-12">
+          <label>Veuillez saisir l'adresse mail du manager. Un mail lui sera envoyé pour finaliser son
+            inscription.</label>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-sm-12">
+          <input type="email" placeholder="Email" id="potential_mail" formControlName="email">
+        </div>
+      </div>
+
+      <div id="add_potential_name_container" class="row">
+        <div class="col-sm-6">
+          <input type="text" placeholder="Prénom" id="first_name"
+                 formControlName="first_name">
+        </div>
+
+        <div class="col-sm-6">
+          <input type="text" placeholder="Nom" id="last_name" formControlName="last_name">
+
+        </div>
+      </div>
+
+
+      <!--<select [(ngModel)]="selectedPlan"-->
+      <!--[ngModelOptions]="{standalone: true}"-->
+      <!--name="plan_selector"-->
+      <!--class="browser-default">-->
+      <!--<option value="{{selectedPlan}}" disabled selected>Sélectionnez un plan</option>-->
+      <!--<option *ngFor="let plan of plans | async" [ngValue]="plan">-->
+      <!--{{ plan.sessions_count }} séances-->
+      <!--</option>-->
+      <!--</select>-->
+
+      <div class="row">
+        <div class="col-sm-12">
+          <label>Votre manager bénéficiera de 3 séances</label>
+        </div>
+      </div>
+
+    </div>
+    <div class="action-modal-footer">
+      <button class="btn-basic btn-plain btn-small" (click)="cancelAddPotentialCoachee()">Annuler</button>
+      <button class="btn-basic btn-blue btn-plain btn-small" (click)="validateAddPotentialCoachee()"
+              [disabled]="!signInForm.valid">Ajouter
+      </button>
+    </div>
+  </div>
+</form>
