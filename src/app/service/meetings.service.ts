@@ -56,16 +56,31 @@ export class MeetingsService {
    * @param coacheeId
    * @returns {Observable<R>}
    */
-  createMeeting(coacheeId: string): Observable<Meeting> {
-    console.log("bookAMeeting coacheeId %s", coacheeId);//todo check if userId ok
+  createMeeting(coacheeId: string, context: string, goal: string, dates: Array<MeetingDate>): Observable<Meeting> {
+    console.log("createMeeting coacheeId %s", coacheeId);//todo check if userId ok
 
-    let body = {
-      coacheeId: coacheeId
-    };
+    let body = this.getUpdateOrCreateMeetingRequestBody(coacheeId, context, goal, dates);
 
     return this.apiService.post(AuthService.POST_MEETING, null, body).map((response: Response) => {
       let meeting: Meeting = Meeting.parseFromBE(response.json());
-      console.log("bookAMeeting, response json : ", meeting);
+      console.log("createMeeting, response json : ", meeting);
+      return meeting;
+    });
+  }
+
+  /**
+   * Update a meeting
+   * @param coacheeId
+   * @returns {Observable<R>}
+   */
+  updateMeeting(coacheeId: string, meetingId: string, context: string, goal: string, dates: Array<MeetingDate>): Observable<Meeting> {
+    console.log("updateMeeting coacheeId %s", coacheeId);//todo check if userId ok
+
+    let body = this.getUpdateOrCreateMeetingRequestBody(coacheeId, context, goal, dates);
+    let param = [meetingId];
+    return this.apiService.put(AuthService.PUT_MEETING, param, body).map((response: Response) => {
+      let meeting: Meeting = Meeting.parseFromBE(response.json());
+      console.log("updateMeeting, response json : ", meeting);
       return meeting;
     });
   }
@@ -124,37 +139,6 @@ export class MeetingsService {
         console.log("addPotentialDateToMeeting, response meetingDate : ", meetingDate);
         return meetingDate;
       });
-  }
-
-  /**
-   * Replace any PotentialDate with those dates for the given meeting
-   * @param meetingId
-   * @returns {Observable<R>} todo return an array
-   */
-  addPotentialDatesToMeeting(meetingId: string, dates: Array<MeetingDate>): Observable<MeetingDate> {
-    console.log("addPotentialDatesToMeeting");
-
-    // convert milliSec to sec ...
-    let datesInSeconds: Array<any> = new Array();
-    for (let date of dates) {
-      let secDate: any = {};
-      secDate.start_date = date.start_date / 1000;
-      secDate.end_date = date.end_date / 1000;
-      datesInSeconds.push(secDate);
-    }
-
-    let jsonBody: any = {};
-    jsonBody.dates = datesInSeconds;
-
-    let body = JSON.stringify(jsonBody);
-    console.log("addPotentialDatesToMeeting, body %s", body);
-
-    let param = [meetingId];
-    return this.apiService.put(AuthService.PUT_MEETING_POTENTIALS_DATE, param, body).map((response: Response) => {
-      let meetingDate: MeetingDate = MeetingDate.parseFromBE(response.json());
-      console.log("getCoachForId, response meetingDate : ", meetingDate);
-      return meetingDate;
-    });
   }
 
   /**
@@ -254,36 +238,6 @@ export class MeetingsService {
     });
   }
 
-  //add review for type SESSION_CONTEXT
-  addAContextForMeeting(meetingId: string, context: string): Observable<MeetingReview> {
-    console.log("addAContextToMeeting, meetingId %s, comment : %s", meetingId, context);
-    let body = {
-      value: context,
-      type: MEETING_REVIEW_TYPE_SESSION_CONTEXT,
-    };
-    let param = [meetingId];
-    return this.apiService.put(AuthService.PUT_MEETING_REVIEW, param, body).map((response: Response) => {
-      let json: MeetingReview = response.json();
-      console.log("addAMeetingReview, response json : ", json);
-      return json;
-    });
-  }
-
-  //add review for type MEETING_REVIEW_TYPE_SESSION_GOAL
-  addAGoalToMeeting(meetingId: string, goal: string): Observable<MeetingReview> {
-    console.log("addAContextToMeeting, meetingId %s, comment : %s", meetingId, goal);
-    let body = {
-      value: goal,
-      type: MEETING_REVIEW_TYPE_SESSION_GOAL,
-    };
-    let param = [meetingId];
-    return this.apiService.put(AuthService.PUT_MEETING_REVIEW, param, body).map((response: Response) => {
-      let json: MeetingReview = response.json();
-      console.log("addAMeetingReview, response json : ", json);
-      return json;
-    });
-  }
-
   /**
    * Add a rate for this meeting
    * @returns {Observable<R>}
@@ -343,4 +297,35 @@ export class MeetingsService {
     });
   }
 
+
+  private getUpdateOrCreateMeetingRequestBody(coacheeId: string, context: string, goal: string, dates: Array<MeetingDate>): string {
+    let contextBody = {
+      value: context,
+      type: MEETING_REVIEW_TYPE_SESSION_CONTEXT,
+    };
+
+    let goalBody = {
+      value: goal,
+      type: MEETING_REVIEW_TYPE_SESSION_GOAL,
+    };
+
+    // convert milliSec to sec ...
+    let datesInSeconds: Array<any> = new Array();
+    for (let date of dates) {
+      let secDate: any = {};
+      secDate.start_date = date.start_date / 1000;
+      secDate.end_date = date.end_date / 1000;
+      datesInSeconds.push(secDate);
+    }
+
+    let body: any = {
+      coacheeId: coacheeId,
+      context: contextBody,
+      goal: goalBody,
+      dates: datesInSeconds
+    };
+
+    return JSON.stringify(body);
+
+  }
 }

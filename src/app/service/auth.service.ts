@@ -73,18 +73,15 @@ export class AuthService {
 
   /* Meeting */
   public static POST_MEETING = "/v1/meetings";
+  public static PUT_MEETING = "/v1/meetings/:meetingId";
   public static DELETE_MEETING = "/v1/meetings/:meetingId";
   public static GET_MEETING_REVIEWS = "/v1/meetings/:meetingId/reviews";
   public static PUT_MEETING_REVIEW = "/v1/meetings/:meetingId/reviews";//add or replace meeting review
-  public static DELETE_MEETING_REVIEW = "/v1/meetings/reviews/:reviewId";//delete review
   public static CLOSE_MEETING = "/v1/meetings/:meetingId/close";// close meeting
   public static GET_MEETINGS_FOR_COACHEE_ID = "/v1/meetings/coachees/:coacheeId";
   public static GET_MEETINGS_FOR_COACH_ID = "/v1/meetings/coachs/:coachId";
   public static POST_MEETING_POTENTIAL_DATE = "/v1/meetings/:meetingId/potentials";
-  public static PUT_MEETING_POTENTIALS_DATE = "/v1/meetings/:meetingId/potentials";
   public static GET_MEETING_POTENTIAL_DATES = "/v1/meetings/:meetingId/potentials";
-  // public static PUT_POTENTIAL_DATE_TO_MEETING = "/v1/meetings/potentials/:potentialId";//update potential date
-  public static DELETE_POTENTIAL_DATE = "/v1/meetings/potentials/:potentialId";//delete potential date
   public static PUT_FINAL_DATE_TO_MEETING = "/v1/meetings/:meetingId/dates/:potentialId";//set the potential date as the meeting selected date
   public static GET_AVAILABLE_MEETINGS = "/v1/meetings";//get available meetings ( meetings with NO coach associated )
   public static PUT_COACH_TO_MEETING = "/v1/meetings/:meetingId/coachs/:coachId";//associate coach with meeting

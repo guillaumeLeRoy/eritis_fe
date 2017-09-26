@@ -105,12 +105,11 @@ export class AvailableMeetingsComponent implements OnInit, OnDestroy {
     newDate.start_date = timestampMin;
     newDate.end_date = timestampMax;
 
-    // create new date
+    // create new date TODO :date could be set directly
     return this.meetingService.addPotentialDateToMeeting(meetingId, newDate)
       .flatMap(
         (meetingDate: MeetingDate) => {
           console.log('test, onSubmitValidateMeeting 3');
-
           console.log('addPotentialDateToMeeting, meetingDate : ', meetingDate);
           // validate date
           return this.meetingService.setFinalDateToMeeting(meetingId, meetingDate.id);
