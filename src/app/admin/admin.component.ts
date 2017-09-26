@@ -6,7 +6,7 @@ import {Observable} from "rxjs/Observable";
 import {environment} from "../../environments/environment";
 
 @Component({
-  selector: 'rb-admin',
+  selector: 'er-admin',
   templateUrl: './admin.component.html',
   styleUrls: ['./admin.component.scss']
 })

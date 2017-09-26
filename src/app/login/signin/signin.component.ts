@@ -14,7 +14,7 @@ declare var Materialize: any;
 declare let ga: Function;
 
 @Component({
-  selector: 'rb-signin',
+  selector: 'er-signin',
   templateUrl: './signin.component.html',
   styleUrls: ['./signin.component.scss']
 })

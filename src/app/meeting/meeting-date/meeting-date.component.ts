@@ -49,7 +49,7 @@ export class CustomDatepickerI18n extends NgbDatepickerI18n {
 }
 
 @Component({
-  selector: 'rb-meeting-date',
+  selector: 'er-meeting-date',
   templateUrl: './meeting-date.component.html',
   styleUrls: ['./meeting-date.component.scss'],
   providers: [I18n, {provide: NgbDatepickerI18n, useClass: CustomDatepickerI18n}] // define custom NgbDatepickerI18n provider

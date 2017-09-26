@@ -6,7 +6,7 @@
     <div *ifLoader="loading">
       <div *ngIf="(rhs | async) != null && (rhs | async).length > 0">
         <div class="collection-item" *ngFor="let rh of rhs | async">
-          <rb-rh-item [rh]="rh"></rb-rh-item>
+          <er-rh-item [rh]="rh"></er-rh-item>
         </div>
       </div>
 

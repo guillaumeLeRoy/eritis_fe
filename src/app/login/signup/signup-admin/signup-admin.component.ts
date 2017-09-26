@@ -16,7 +16,7 @@ enum SignUpType {
 }
 
 @Component({
-  selector: 'rb-signup',
+  selector: 'er-signup',
   templateUrl: './signup-admin.component.html',
   styleUrls: ['./signup-admin.component.scss']
 })

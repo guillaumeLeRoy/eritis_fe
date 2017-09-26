@@ -7,7 +7,7 @@ import {Location} from "@angular/common";
 import {PossibleCoach} from "../../../model/PossibleCoach";
 
 @Component({
-  selector: 'rb-profile-header',
+  selector: 'er-profile-header',
   templateUrl: './profile-header.component.html',
   styleUrls: ['./profile-header.component.scss']
 })

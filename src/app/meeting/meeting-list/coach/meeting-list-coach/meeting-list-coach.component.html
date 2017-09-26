@@ -7,10 +7,10 @@
 
 <!--<div *ngIf="hasUnbookedMeeting">-->
 <!--<div class="collection-item" *ngFor="let meeting of meetingsUnbooked | async">-->
-<!--<rb-meeting-item-coach [meeting]="meeting"-->
+<!--<er-meeting-item-coach [meeting]="meeting"-->
 <!--(dateAgreed)="onRefreshRequested($event)"-->
 <!--(cancelMeetingTimeEvent)="openCoachCancelMeetingModal($event)">-->
-<!--</rb-meeting-item-coach>-->
+<!--</er-meeting-item-coach>-->
 <!--</div>-->
 <!--</div>-->
 
@@ -29,12 +29,12 @@
       <div *ifLoader="loading">
         <div *ngIf="hasOpenedMeeting">
           <div class="collection-item" *ngFor="let meeting of meetingsOpened | async">
-            <rb-meeting-item-coach [meeting]="meeting"
+            <er-meeting-item-coach [meeting]="meeting"
                                    [isAdmin]="isAdmin"
                                    (dateAgreed)="onRefreshRequested($event)"
                                    (cancelMeetingTimeEvent)="openCoachCancelMeetingModal($event)"
                                    (onCloseMeetingBtnClickEmitter)="starCloseSessionFlow($event)">
-            </rb-meeting-item-coach>
+            </er-meeting-item-coach>
           </div>
         </div>
 
@@ -52,11 +52,11 @@
       <div *ifLoader="loading">
         <div *ngIf="hasClosedMeeting">
           <div class="collection-item" *ngFor="let meeting of meetingsClosed | async">
-            <rb-meeting-item-coach [meeting]="meeting"
+            <er-meeting-item-coach [meeting]="meeting"
                                    [isAdmin]="isAdmin"
                                    (dateAgreed)="onRefreshRequested($event)"
                                    (cancelMeetingTimeEvent)="openCoachCancelMeetingModal($event)">
-            </rb-meeting-item-coach>
+            </er-meeting-item-coach>
           </div>
         </div>
 

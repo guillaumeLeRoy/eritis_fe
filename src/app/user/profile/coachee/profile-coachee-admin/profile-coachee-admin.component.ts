@@ -6,7 +6,7 @@ import {ActivatedRoute, Router} from "@angular/router";
 import {CoachCoacheeService} from "../../../../service/coach_coachee.service";
 
 @Component({
-  selector: 'rb-profile-coachee-admin',
+  selector: 'er-profile-coachee-admin',
   templateUrl: './profile-coachee-admin.component.html',
   styleUrls: ['./profile-coachee-admin.component.scss']
 })

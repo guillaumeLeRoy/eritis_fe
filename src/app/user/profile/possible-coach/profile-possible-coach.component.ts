@@ -8,7 +8,7 @@ import {PossibleCoach} from "../../../model/PossibleCoach";
 declare var Materialize: any;
 
 @Component({
-  selector: 'rb-possible-coach',
+  selector: 'er-possible-coach',
   templateUrl: './profile-possible-coach.component.html',
   styleUrls: ['./profile-possible-coach.component.scss']
 })

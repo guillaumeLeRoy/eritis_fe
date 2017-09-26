@@ -7,10 +7,10 @@
       <div *ifLoader="loading">
         <div *ngIf="hasOpenedMeeting">
           <div class="collection-item" *ngFor="let meeting of meetingsOpened | async">
-            <rb-meeting-item-coachee [meeting]="meeting"
+            <er-meeting-item-coachee [meeting]="meeting"
                                      (cancelMeetingTimeEvent)="openCoacheeDeleteMeetingModal($event)"
                                       [isAdmin]="isAdmin">
-            </rb-meeting-item-coachee>
+            </er-meeting-item-coachee>
           </div>
         </div>
 
@@ -29,11 +29,11 @@
       <div *ifLoader="loading">
         <div *ngIf="hasClosedMeeting">
           <div class="collection-item" *ngFor="let meeting of meetingsClosed | async">
-            <rb-meeting-item-coachee [meeting]="meeting"
+            <er-meeting-item-coachee [meeting]="meeting"
                                      [isAdmin]="isAdmin"
                                      (cancelMeetingTimeEvent)="openCoacheeDeleteMeetingModal($event)"
                                      (onRateSessionBtnClickedEmitter)="openRateSessionModal($event)">
-            </rb-meeting-item-coachee>
+            </er-meeting-item-coachee>
           </div>
         </div>
 

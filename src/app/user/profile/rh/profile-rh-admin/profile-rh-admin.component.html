@@ -1,4 +1,4 @@
-<rb-profile-header [user]="rh" [isOwner]="true"></rb-profile-header>
+<er-profile-header [user]="rh" [isOwner]="true"></er-profile-header>
 
 <div class="container" *ifLoader="loading" [ngsReveal]="{scale:1, opacity:0, distance:0, duration: 1000}">
   <h4 class="text-right italic">"{{ (rh | async)?.description }}"</h4>
@@ -22,9 +22,9 @@
     <!--</div>-->
     <!--</form>-->
 
-    <rb-meeting-list-rh [mUser]="(rh | async)"
+    <er-meeting-list-rh [mUser]="(rh | async)"
                         [isAdmin]="true"
-                        *ngIf="(rh | async)"></rb-meeting-list-rh>
+                        *ngIf="(rh | async)"></er-meeting-list-rh>
 
   </div>
 

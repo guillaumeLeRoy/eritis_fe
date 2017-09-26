@@ -1,4 +1,4 @@
-<!--<rb-header></rb-header>-->
+<!--<er-header></er-header>-->
 
 <div class="container">
   <div class="row">
@@ -6,17 +6,17 @@
 
       <!-- Coachee dashboard -->
       <div *ngIf="isUserACoachee((user | async))">
-        <rb-coachee-dashboard></rb-coachee-dashboard>
+        <er-coachee-dashboard></er-coachee-dashboard>
       </div>
 
       <!-- Coach dashboard -->
       <div *ngIf="isUserACoach((user | async))">
-        <rb-coach-dashboard></rb-coach-dashboard>
+        <er-coach-dashboard></er-coach-dashboard>
       </div>
 
       <!-- RH dashboard -->
       <div *ngIf="isUserARh((user | async))">
-        <rb-rh-dashboard></rb-rh-dashboard>
+        <er-rh-dashboard></er-rh-dashboard>
       </div>
 
     </div><!--end row-->

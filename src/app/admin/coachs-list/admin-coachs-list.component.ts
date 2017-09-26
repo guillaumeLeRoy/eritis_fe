@@ -7,7 +7,7 @@ import {CoachCoacheeService} from "../../service/coach_coachee.service";
 declare var Materialize: any;
 
 @Component({
-  selector: 'rb-admin-coachs-list',
+  selector: 'er-admin-coachs-list',
   templateUrl: './admin-coachs-list.component.html',
   styleUrls: ['./admin-coachs-list.component.scss'],
 })

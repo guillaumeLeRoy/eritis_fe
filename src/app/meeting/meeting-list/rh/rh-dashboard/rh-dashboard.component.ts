@@ -16,7 +16,7 @@ declare var $: any;
 declare var Materialize: any;
 
 @Component({
-  selector: 'rb-rh-dashboard',
+  selector: 'er-rh-dashboard',
   templateUrl: './rh-dashboard.component.html',
   styleUrls: ['./rh-dashboard.component.scss']
 })

@@ -8,7 +8,7 @@ declare var $: any;
 declare var Materialize: any;
 
 @Component({
-  selector: 'rb-possible-coachs-list',
+  selector: 'er-possible-coachs-list',
   templateUrl: './possible-coachs-list.component.html',
   styleUrls: ['./possible-coachs-list.component.scss']
 })

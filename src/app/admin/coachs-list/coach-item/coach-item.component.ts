@@ -3,7 +3,7 @@ import {Router} from "@angular/router";
 import {Coach} from "../../../model/Coach";
 
 @Component({
-  selector: 'rb-coach-item',
+  selector: 'er-coach-item',
   templateUrl: './coach-item.component.html',
   styleUrls: ['./coach-item.component.scss']
 })

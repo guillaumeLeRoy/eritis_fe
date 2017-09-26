@@ -13,7 +13,7 @@ declare var $: any;
 declare var Materialize: any;
 
 @Component({
-  selector: 'rb-meeting-item-rh',
+  selector: 'er-meeting-item-rh',
   templateUrl: './meeting-item-rh.component.html',
   styleUrls: ['./meeting-item-rh.component.scss']
 })

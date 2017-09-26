@@ -1,4 +1,4 @@
-<rb-profile-header [user]="coach" [isOwner]="true"></rb-profile-header>
+<er-profile-header [user]="coach" [isOwner]="true"></er-profile-header>
 
 <div class="container" *ifLoader="loading" [ngsReveal]="{scale:1, opacity:0, distance:0, duration: 1000, viewFactor: 0}">
 
@@ -172,10 +172,10 @@
 
     </div><!--end row>-->
 
-    <rb-meeting-list-coach [mUser]="(coach | async)"
+    <er-meeting-list-coach [mUser]="(coach | async)"
                            [isAdmin]="true"
                            *ngIf="(coach | async)">
-    </rb-meeting-list-coach>
+    </er-meeting-list-coach>
 
   </div>
 

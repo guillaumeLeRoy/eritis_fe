@@ -6,11 +6,11 @@
       <div *ifLoader="loading1">
         <div *ngIf="hasCollaborators">
           <div class="collection-item has-collaborator" *ngFor="let coachee of coachees | async">
-            <rb-meeting-item-rh [coachee]="coachee"
+            <er-meeting-item-rh [coachee]="coachee"
                                 [isAdmin]="isAdmin"
                                 [potentialCoachee]="null"
                                 (onUpdateObjectiveBtnClick)="startAddNewObjectiveFlow($event)">
-            </rb-meeting-item-rh>
+            </er-meeting-item-rh>
           </div>
         </div>
 
@@ -29,9 +29,9 @@
       <div *ifLoader="loading2">
         <div *ngIf="hasPotentialCollaborators">
           <div class="collection-item" *ngFor="let potentialCoachee of potentialCoachees | async">
-            <rb-meeting-item-rh [potentialCoachee]="potentialCoachee"
+            <er-meeting-item-rh [potentialCoachee]="potentialCoachee"
                                 [coachee]="null">
-            </rb-meeting-item-rh>
+            </er-meeting-item-rh>
           </div>
         </div>
 

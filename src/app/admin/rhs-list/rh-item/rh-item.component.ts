@@ -3,7 +3,7 @@ import {Router} from "@angular/router";
 import {HR} from "../../../model/HR";
 
 @Component({
-  selector: 'rb-rh-item',
+  selector: 'er-rh-item',
   templateUrl: './rh-item.component.html',
   styleUrls: ['./rh-item.component.scss']
 })

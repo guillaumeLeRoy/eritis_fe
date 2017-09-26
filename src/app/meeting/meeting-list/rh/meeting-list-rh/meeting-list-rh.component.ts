@@ -21,7 +21,7 @@ declare var $: any;
 declare var Materialize: any;
 
 @Component({
-  selector: 'rb-meeting-list-rh',
+  selector: 'er-meeting-list-rh',
   templateUrl: './meeting-list-rh.component.html',
   styleUrls: ['./meeting-list-rh.component.scss']
 })

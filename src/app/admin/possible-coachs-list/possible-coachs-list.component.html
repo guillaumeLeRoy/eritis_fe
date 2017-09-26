@@ -6,8 +6,8 @@
     <div *ifLoader="loading">
       <div *ngIf="(possibleCoachs | async) != null  && (possibleCoachs | async).length > 0">
         <div class="collection-item" *ngFor="let coach of possibleCoachs | async">
-          <rb-possible-coach-item [coach]="coach"
-                                  (coachAdded)="updateList()"></rb-possible-coach-item>
+          <er-possible-coach-item [coach]="coach"
+                                  (coachAdded)="updateList()"></er-possible-coach-item>
         </div>
       </div>
 

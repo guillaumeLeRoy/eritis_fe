@@ -8,7 +8,7 @@ import {ActivatedRoute, Router} from "@angular/router";
 import {CoachCoacheeService} from "../../../../service/coach_coachee.service";
 
 @Component({
-  selector: 'rb-profile-rh-admin',
+  selector: 'er-profile-rh-admin',
   templateUrl: './profile-rh-admin.component.html',
   styleUrls: ['./profile-rh-admin.component.scss']
 })

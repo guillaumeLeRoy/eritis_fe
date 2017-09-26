@@ -10,7 +10,7 @@ declare var $: any;
 declare var Materialize: any;
 
 @Component({
-  selector: 'rb-coachee-dashboard',
+  selector: 'er-coachee-dashboard',
   templateUrl: './coachee-dashboard.component.html',
   styleUrls: ['./coachee-dashboard.component.scss']
 })

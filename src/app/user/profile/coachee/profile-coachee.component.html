@@ -1,4 +1,4 @@
-<rb-profile-header [user]="coachee" [isOwner]="isOwner"></rb-profile-header>
+<er-profile-header [user]="coachee" [isOwner]="isOwner"></er-profile-header>
 
 <div class="container" *ifLoader="loading" [ngsReveal]="{scale:1, opacity:0, distance:0, duration: 1000}">
   <h4 class="text-right"><span class="blue-text">{{(coachee | async)?.plan.sessions_count}}</span> séances / mois</h4>
@@ -109,7 +109,7 @@
 </div>
 
 
-<!--&lt;!&ndash;<rb-header></rb-header>&ndash;&gt;-->
+<!--&lt;!&ndash;<er-header></er-header>&ndash;&gt;-->
 <!--&lt;!&ndash;start container&ndash;&gt;-->
 <!--<div class="container">-->
 

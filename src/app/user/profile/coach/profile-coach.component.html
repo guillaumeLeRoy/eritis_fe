@@ -1,4 +1,4 @@
-<rb-profile-header [user]="coach" [isOwner]="isOwner"></rb-profile-header>
+<er-profile-header [user]="coach" [isOwner]="isOwner"></er-profile-header>
 
 <div class="container" *ifLoader="loading" [ngsReveal]="{scale:1, opacity:0, distance:0, duration: 1000}">
   <h4 class="text-right italic">"{{ (coach | async)?.description }}"</h4>
