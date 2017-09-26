@@ -1,5 +1,5 @@
 import {
-  AfterViewInit, ChangeDetectorRef, Component, EventEmitter, Input, OnDestroy, OnInit,
+  AfterViewInit, ChangeDetectorRef, Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit,
   Output
 } from "@angular/core";
 import {CoachCoacheeService} from "../../../../service/coach_coachee.service";
@@ -16,6 +16,7 @@ import {ApiUser} from "../../../../model/ApiUser";
 import {CoacheeObjective} from "../../../../model/CoacheeObjective";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {Utils} from "../../../../utils/Utils";
+import {Subject} from "rxjs/Subject";
 
 declare var $: any;
 declare var Materialize: any;
@@ -48,6 +49,7 @@ export class MeetingListRhComponent implements OnInit, AfterViewInit, OnDestroy 
   private hasPotentialCollaborators = false;
 
   private subscription: Subscription;
+  private refreshSubscription: Subscription;
 
   //private plans: Observable<ContractPlan[]>;
 
@@ -122,9 +124,8 @@ export class MeetingListRhComponent implements OnInit, AfterViewInit, OnDestroy 
   }*/
 
   ngOnDestroy(): void {
-    if (this.subscription) {
+    if (this.subscription)
       this.subscription.unsubscribe();
-    }
   }
 
   private startAddNewObjectiveFlow(coacheeId: string) {

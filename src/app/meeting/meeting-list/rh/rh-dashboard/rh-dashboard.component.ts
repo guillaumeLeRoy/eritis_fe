@@ -1,4 +1,4 @@
-import {AfterViewInit, ChangeDetectorRef, Component, OnDestroy, OnInit} from '@angular/core';
+import {AfterViewInit, ChangeDetectorRef, Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {Observable} from "rxjs/Observable";
 import {ApiUser} from "../../../../model/ApiUser";
 import {Subscription} from "rxjs/Subscription";
@@ -11,6 +11,7 @@ import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {Utils} from "../../../../utils/Utils";
 import {CoacheeObjective} from "../../../../model/CoacheeObjective";
 import {PotentialCoachee} from "../../../../model/PotentialCoachee";
+import {Subject} from "rxjs/Subject";
 
 declare var $: any;
 declare var Materialize: any;
@@ -21,6 +22,9 @@ declare var Materialize: any;
   styleUrls: ['./rh-dashboard.component.scss']
 })
 export class RhDashboardComponent implements OnInit, AfterViewInit, OnDestroy {
+
+  @ViewChild('coacheesList')
+  private coacheesList;
 
   private user: Observable<ApiUser>;
 
@@ -44,9 +48,6 @@ export class RhDashboardComponent implements OnInit, AfterViewInit, OnDestroy {
   private selectedPlan = new ContractPlan(-1);
 
   private signInForm: FormGroup;
-
-  loadingObjective = false;
-
 
   constructor(private authService: AuthService, private coachCoacheeService: CoachCoacheeService, private cd: ChangeDetectorRef, private formBuilder: FormBuilder) {
     this.signInForm = this.formBuilder.group({
@@ -88,6 +89,8 @@ export class RhDashboardComponent implements OnInit, AfterViewInit, OnDestroy {
     } else {
       this.onUserObtained(user);
     }
+
+    this.coacheesList.onRefreshRequested();
   }
 
   private onUserObtained(user: ApiUser) {
@@ -140,13 +143,9 @@ export class RhDashboardComponent implements OnInit, AfterViewInit, OnDestroy {
         this.updateCoacheeObjectivePanelVisibility(false);
         this.onRefreshRequested();
         Materialize.toast("L'objectif a été modifié !", 3000, 'rounded')
-        // TODO stop loader
-        this.loadingObjective = false;
-        // clean
         this.coacheeNewObjective = null;
       }, (error) => {
         console.log('addObjectiveToCoachee, error', error);
-        this.loadingObjective = false;
         Materialize.toast("Imposible de modifier l'objectif", 3000, 'rounded')
       }
     );
@@ -166,26 +165,15 @@ export class RhDashboardComponent implements OnInit, AfterViewInit, OnDestroy {
   validateAddNewObjectiveModal() {
     console.log('validateAddNewObjectiveModal');
 
-    // TODO start loader
-    this.loadingObjective = true;
-    // let user = this.authService.getConnectedUser();
-    // if (user == null) {
-    //   let userObs = this.authService.getConnectedUserObservable();
-      this.user.take(1).subscribe(
-        (user: ApiUser) => {
-          console.log('validateAddNewObjectiveModal, got connected user');
-          if (user instanceof HR) {
-            this.makeAPICallToAddNewObjective(user);
-          }
+    this.user.take(1).subscribe(
+      (user: ApiUser) => {
+        console.log('validateAddNewObjectiveModal, got connected user');
+        if (user instanceof HR) {
+          this.makeAPICallToAddNewObjective(user);
         }
-      );
-      return;
-    // }
-
-    // if (user instanceof HR) {
-    //   this.makeAPICallToAddNewObjective(user);
-    // }
-
+      }
+    );
+    return;
   }
 
 
@@ -241,6 +229,7 @@ export class RhDashboardComponent implements OnInit, AfterViewInit, OnDestroy {
             console.log('postPotentialCoachee, res', res);
             this.onRefreshRequested();
             Materialize.toast('Manager ajouté !', 3000, 'rounded');
+            this.onRefreshRequested();
           }, (errorRes: Response) => {
             let json: any = errorRes.json();
             console.log('postPotentialCoachee, error', json);

@@ -15,6 +15,7 @@
 
 <er-meeting-list-rh [mUser]="(user | async)"
                     *ngIf="(user | async)"
+                    #coacheesList
                     (onStartAddNewObjectiveFlow)="startAddNewObjectiveFlow($event)"></er-meeting-list-rh>
 
 
