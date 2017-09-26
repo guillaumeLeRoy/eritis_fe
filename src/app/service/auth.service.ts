@@ -246,6 +246,8 @@ export class AuthService {
                 for (let headerKey of headers.keys()) {
                   options.headers.append(headerKey, headers.get(headerKey));
                 }
+              } else {
+                options = {headers: headers};
               }
               // for (let headerKey of options.headers.keys()) {
               //   headers.append(headerKey, options.headers.get(headerKey));

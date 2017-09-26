@@ -352,6 +352,7 @@ export class MeetingDateComponent implements OnInit, OnDestroy {
     this.potentialDatesArray.push(date);
     this.potentialDates = Observable.of(this.potentialDatesArray);
     this.cd.detectChanges();
+    Materialize.toast('Plage ajoutée !', 3000, 'rounded');
   }
 
   /* Call this method to check if all required params are correctly set. */
@@ -391,7 +392,7 @@ export class MeetingDateComponent implements OnInit, OnDestroy {
       (res: any) => {
         this.router.navigate(['/meetings']);
         Materialize.toast('Vos disponibilités on été enregitrées !', 3000, 'rounded');
-        window.location.reload();
+        //window.location.reload();
       }, (error) => {
         console.log('getOrCreateMeeting error', error);
         Materialize.toast("Impossible d'enregistrer vos disponibilités", 3000, 'rounded')

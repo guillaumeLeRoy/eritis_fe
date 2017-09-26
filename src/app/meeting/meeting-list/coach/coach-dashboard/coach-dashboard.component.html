@@ -5,10 +5,11 @@
   <p class="text-right">
     <span class="blue-text">Cliquez</span> ici pour votre salon
     <a class="btn-floating btn-large waves-effect waves-light add-meeting-btn"
-       (click)="onCoachStartRoomClicked()">
+       [href]="(user | async)?.chat_room_url" target="_blank">
       <i class="material-icons">videocam</i>
     </a>
   </p>
 </div>
 
-<er-meeting-list-coach [mUser]="(user | async)" *ngIf="(user | async)"></er-meeting-list-coach>
+<er-meeting-list-coach [mUser]="(user | async)"
+                       *ngIf="(user | async)"></er-meeting-list-coach>

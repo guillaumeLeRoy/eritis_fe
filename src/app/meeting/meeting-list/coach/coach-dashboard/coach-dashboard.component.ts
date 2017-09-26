@@ -1,10 +1,11 @@
-import {AfterViewInit, ChangeDetectorRef, Component, OnDestroy, OnInit} from '@angular/core';
+import {AfterViewInit, ChangeDetectorRef, Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {Router} from "@angular/router";
 import {AuthService} from "../../../../service/auth.service";
 import {ApiUser} from "../../../../model/ApiUser";
 import {Subscription} from "rxjs/Subscription";
 import {Observable} from "rxjs/Observable";
 import {Coach} from "../../../../model/Coach";
+import {MeetingListCoachComponent} from "../meeting-list-coach/meeting-list-coach.component";
 
 declare var $: any;
 declare var Materialize: any;
@@ -15,6 +16,9 @@ declare var Materialize: any;
   styleUrls: ['./coach-dashboard.component.scss']
 })
 export class CoachDashboardComponent implements OnInit, AfterViewInit, OnDestroy {
+
+  @ViewChild(MeetingListCoachComponent)
+  meetingListComponent;
 
   private user: Observable<ApiUser>;
 
@@ -56,6 +60,9 @@ export class CoachDashboardComponent implements OnInit, AfterViewInit, OnDestroy
     } else {
       this.onUserObtained(user);
     }
+
+    if (this.meetingListComponent)
+      this.meetingListComponent.onRefreshRequested();
   }
 
   private onUserObtained(user: ApiUser) {

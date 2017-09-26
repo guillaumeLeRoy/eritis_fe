@@ -1,4 +1,7 @@
-import {AfterViewInit, ChangeDetectorRef, Component, Input, OnDestroy, OnInit} from "@angular/core";
+import {
+  AfterViewInit, ChangeDetectorRef, Component, EventEmitter, Input, OnDestroy, OnInit,
+  Output
+} from "@angular/core";
 import {MeetingsService} from "../../../../service/meetings.service";
 import {Observable} from "rxjs/Observable";
 import {Meeting} from "../../../../model/Meeting";
@@ -24,6 +27,9 @@ export class MeetingListCoacheeComponent implements OnInit, AfterViewInit, OnDes
 
   @Input()
   isAdmin: boolean = false;
+
+  @Output()
+  requestRefresh: EventEmitter<any> = new EventEmitter();
 
   private user: Observable<Coachee>;
 
@@ -61,6 +67,7 @@ export class MeetingListCoacheeComponent implements OnInit, AfterViewInit, OnDes
 
   private onRefreshRequested() {
     this.onUserObtained(this.mUser);
+    this.requestRefresh.emit(null);
   }
 
   private onUserObtained(user: Coachee) {
@@ -170,7 +177,7 @@ export class MeetingListCoacheeComponent implements OnInit, AfterViewInit, OnDes
         console.log('confirmCancelMeeting, res', response);
         // this.onMeetingCancelled.emit();
         this.onRefreshRequested();
-        window.location.reload();
+        //window.location.reload();
         Materialize.toast('Meeting supprimé !', 3000, 'rounded');
       }, (error) => {
         console.log('confirmCancelMeeting, error', error);

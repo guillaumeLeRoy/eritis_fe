@@ -1,4 +1,4 @@
-import {ChangeDetectorRef, Component, OnDestroy, OnInit} from "@angular/core";
+import {ChangeDetectorRef, Component, OnDestroy, OnInit, ViewChild} from "@angular/core";
 import {Observable} from "rxjs/Observable";
 import {Meeting} from "../../../../model/Meeting";
 import {MeetingsService} from "../../../../service/meetings.service";
@@ -8,7 +8,7 @@ import {Coach} from "../../../../model/Coach";
 import {ApiUser} from "../../../../model/ApiUser";
 import {Router} from "@angular/router";
 import {MeetingDate} from "../../../../model/MeetingDate";
-
+import {MeetingItemCoachComponent} from "../meeting-item-coach/meeting-item-coach.component";
 declare var $: any;
 declare var Materialize: any;
 
@@ -82,7 +82,7 @@ export class AvailableMeetingsComponent implements OnInit, OnDestroy {
       (meetings: Meeting[]) => {
         console.log('got getAllMeetings', meetings);
         this.availableMeetings = Observable.of(meetings);
-        if (meetings != null && meetings.length > 0) this.hasAvailableMeetings = true;
+        this.hasAvailableMeetings = (meetings != null && meetings.length > 0);
         this.cd.detectChanges();
         this.loading = false;
       }
