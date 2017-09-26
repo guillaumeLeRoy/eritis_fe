@@ -45,6 +45,8 @@ export class RhDashboardComponent implements OnInit, AfterViewInit, OnDestroy {
 
   private signInForm: FormGroup;
 
+  loadingObjective = false;
+
 
   constructor(private authService: AuthService, private coachCoacheeService: CoachCoacheeService, private cd: ChangeDetectorRef, private formBuilder: FormBuilder) {
     this.signInForm = this.formBuilder.group({
@@ -139,11 +141,12 @@ export class RhDashboardComponent implements OnInit, AfterViewInit, OnDestroy {
         this.onRefreshRequested();
         Materialize.toast("L'objectif a été modifié !", 3000, 'rounded')
         // TODO stop loader
+        this.loadingObjective = false;
         // clean
         this.coacheeNewObjective = null;
       }, (error) => {
         console.log('addObjectiveToCoachee, error', error);
-
+        this.loadingObjective = false;
         Materialize.toast("Imposible de modifier l'objectif", 3000, 'rounded')
       }
     );
@@ -164,10 +167,11 @@ export class RhDashboardComponent implements OnInit, AfterViewInit, OnDestroy {
     console.log('validateAddNewObjectiveModal');
 
     // TODO start loader
-    let user = this.authService.getConnectedUser();
-    if (user == null) {
-      let userObs = this.authService.getConnectedUserObservable();
-      userObs.take(1).subscribe(
+    this.loadingObjective = true;
+    // let user = this.authService.getConnectedUser();
+    // if (user == null) {
+    //   let userObs = this.authService.getConnectedUserObservable();
+      this.user.take(1).subscribe(
         (user: ApiUser) => {
           console.log('validateAddNewObjectiveModal, got connected user');
           if (user instanceof HR) {
@@ -176,11 +180,11 @@ export class RhDashboardComponent implements OnInit, AfterViewInit, OnDestroy {
         }
       );
       return;
-    }
+    // }
 
-    if (user instanceof HR) {
-      this.makeAPICallToAddNewObjective(user);
-    }
+    // if (user instanceof HR) {
+    //   this.makeAPICallToAddNewObjective(user);
+    // }
 
   }
 

@@ -127,8 +127,8 @@ export class MeetingListRhComponent implements OnInit, AfterViewInit, OnDestroy 
     }
   }
 
-  private startAddNewObjectiveFlow() {
-    this.onStartAddNewObjectiveFlow.emit();
+  private startAddNewObjectiveFlow(coacheeId: string) {
+    this.onStartAddNewObjectiveFlow.emit(coacheeId);
   }
 
 }

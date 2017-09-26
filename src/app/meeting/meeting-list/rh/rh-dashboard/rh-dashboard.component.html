@@ -85,10 +85,12 @@
 
     </div>
     <div class="action-modal-footer">
-      <button class="btn-basic btn-plain btn-small" (click)="cancelAddPotentialCoachee()">Annuler</button>
-      <button class="btn-basic btn-blue btn-plain btn-small" (click)="validateAddPotentialCoachee()"
-              [disabled]="!signInForm.valid">Ajouter
-      </button>
+      <div *ifLoader="loadingObjective">
+        <button class="btn-basic btn-plain btn-small" (click)="cancelAddPotentialCoachee()">Annuler</button>
+        <button class="btn-basic btn-blue btn-plain btn-small" (click)="validateAddPotentialCoachee()"
+                [disabled]="!signInForm.valid">Ajouter
+        </button>
+      </div>
     </div>
   </div>
 </form>
