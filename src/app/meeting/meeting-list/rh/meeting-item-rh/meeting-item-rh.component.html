@@ -14,6 +14,7 @@
 
             <div>
               <p class="meeting-item-coach-name black-text bold">{{ coachee.first_name}} {{ coachee.last_name}}</p>
+              <span>{{ coachee.email }}</span><br>
               <span class="italic">Inscrit le {{ dateToStringShort(coachee.start_date) }}</span>
             </div>
           </div>
@@ -114,7 +115,8 @@
             </div>
 
             <div>
-              <p class="meeting-item-coach">{{ potentialCoachee.email }}</p>
+              <p class="meeting-item-coach-name black-text bold">{{ potentialCoachee.first_name}} {{ potentialCoachee.last_name}}</p>
+              <span>{{ potentialCoachee.email }}</span>
             </div>
           </div>
 
