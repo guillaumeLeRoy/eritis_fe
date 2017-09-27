@@ -116,7 +116,7 @@ export class AuthService {
   /*
    * Get connected user from backend
    */
-  refreshConnectedUser(): Observable<Coach | Coachee | HR> {
+  refreshConnectedUser(): Observable<Coach | Coachee | HR | null> {
     console.log("refreshConnectedUser");
 
     if (this.ApiUser != null) {
@@ -173,12 +173,11 @@ export class AuthService {
   }
 
   getConnectedUser(): Coach | Coachee | HR {
-    // if (this.ApiUser !== null)
-    if (this.cookieService.get('ACTIVE_SESSION') === 'true')
-    // this.loginOut();
+    if (this.cookieService.get('ACTIVE_SESSION') === 'true') {
       return this.ApiUser;
-    else
+    } else {
       return null;
+    }
   }
 
   getConnectedUserObservable(): Observable<ApiUser> {

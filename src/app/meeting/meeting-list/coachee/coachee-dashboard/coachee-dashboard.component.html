@@ -17,5 +17,5 @@
 </div>
 
 <er-meeting-list-coachee [mUser]="(user | async)"
-                         (requestRefresh)="onRefreshRequested()"
+                         (requestRefreshEventEmitter)="onRefreshRequested()"
                          *ngIf="(user | async)"></er-meeting-list-coachee>
