@@ -1,26 +1,4 @@
 
-
-
-<!--<div class="row">-->
-<!--<h4 class="col-lg-12 black-text">Demandes disponibles</h4>-->
-<!--<div class="card collection col-lg-12">-->
-
-<!--<div *ngIf="hasUnbookedMeeting">-->
-<!--<div class="collection-item" *ngFor="let meeting of meetingsUnbooked | async">-->
-<!--<er-meeting-item-coach [meeting]="meeting"-->
-<!--(dateAgreed)="onRefreshRequested($event)"-->
-<!--(cancelMeetingTimeEvent)="openCoachCancelMeetingModal($event)">-->
-<!--</er-meeting-item-coach>-->
-<!--</div>-->
-<!--</div>-->
-
-<!--<div *ngIf="!hasUnbookedMeeting" class="collection-item text-center">-->
-<!--<h5 class="no-meeting">Les demandes disponibles apparaîtront ici</h5>-->
-<!--</div>-->
-
-<!--</div>&lt;!&ndash;end card&ndash;&gt;-->
-<!--</div>&lt;!&ndash;end row&ndash;&gt;-->
-
 <div [ngsReveal]="{origin: 'left', distance: '100px', scale: 1, delay: 200, duration: 1000}">
   <div class="row">
     <h4 class="col-lg-12 black-text">&Agrave; venir</h4>
@@ -31,8 +9,8 @@
           <div class="collection-item" *ngFor="let meeting of meetingsOpened | async">
             <er-meeting-item-coach [meeting]="meeting"
                                    [isAdmin]="isAdmin"
-                                   (dateAgreed)="onRefreshRequested($event)"
-                                   (cancelMeetingTimeEvent)="openCoachCancelMeetingModal($event)"
+                                   (onValidateDateBtnClickEmitter)="onRefreshRequested($event)"
+                                   (cancelMeetingBtnClickEmitter)="openCoachCancelMeetingModal($event)"
                                    (onCloseMeetingBtnClickEmitter)="starCloseSessionFlow($event)">
             </er-meeting-item-coach>
           </div>
@@ -54,8 +32,8 @@
           <div class="collection-item" *ngFor="let meeting of meetingsClosed | async">
             <er-meeting-item-coach [meeting]="meeting"
                                    [isAdmin]="isAdmin"
-                                   (dateAgreed)="onRefreshRequested($event)"
-                                   (cancelMeetingTimeEvent)="openCoachCancelMeetingModal($event)">
+                                   (onValidateDateBtnClickEmitter)="onRefreshRequested($event)"
+                                   (cancelMeetingBtnClickEmitter)="openCoachCancelMeetingModal($event)">
             </er-meeting-item-coach>
           </div>
         </div>

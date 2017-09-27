@@ -45,8 +45,6 @@ const APP_ROUTES: Routes = [
   {path: 'signup_coachee', component: SignupCoacheeComponent},
   {path: 'signup_coach', component: SignupCoachComponent},
   {path: 'signup_rh', component: SignupRhComponent},
-  // {path: 'profile_coach', component: ProfileCoachComponent},
-  // {path: 'profile_coachee', component: ProfileCoacheeComponent},
   {path: 'profile_rh/:id', component: ProfileRhComponent},
   {path: 'profile_coach/:id', component: ProfileCoachComponent},
   {path: 'profile_coachee/:id', component: ProfileCoacheeComponent},

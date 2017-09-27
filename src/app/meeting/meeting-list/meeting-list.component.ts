@@ -29,22 +29,16 @@ export class MeetingListComponent implements OnInit, AfterViewInit, OnDestroy {
 
   ngAfterViewInit(): void {
     console.log('ngAfterViewInit');
-
     this.onRefreshRequested();
   }
 
-  onRefreshRequested() {
-    let user = this.authService.getConnectedUser();
-    console.log('onRefreshRequested, user : ', user);
-    if (user == null) {
-      this.connectedUserSubscription = this.authService.getConnectedUserObservable().subscribe(
-        (user: Coach | Coachee) => {
-          console.log('onRefreshRequested, getConnectedUser');
-          this.onUserObtained(user);
-        }
-      );
-    } else {
-      this.onUserObtained(user);
+  ngOnDestroy(): void {
+    if (this.subscription) {
+      this.subscription.unsubscribe();
+    }
+
+    if (this.connectedUserSubscription) {
+      this.connectedUserSubscription.unsubscribe();
     }
   }
 
@@ -68,13 +62,18 @@ export class MeetingListComponent implements OnInit, AfterViewInit, OnDestroy {
     }
   }
 
-  ngOnDestroy(): void {
-    if (this.subscription) {
-      this.subscription.unsubscribe();
-    }
-
-    if (this.connectedUserSubscription) {
-      this.connectedUserSubscription.unsubscribe();
+  private onRefreshRequested() {
+    let user = this.authService.getConnectedUser();
+    console.log('onRefreshRequested, user : ', user);
+    if (user == null) {
+      this.connectedUserSubscription = this.authService.getConnectedUserObservable().subscribe(
+        (user: Coach | Coachee) => {
+          console.log('onRefreshRequested, getConnectedUser');
+          this.onUserObtained(user);
+        }
+      );
+    } else {
+      this.onUserObtained(user);
     }
   }
 

@@ -239,7 +239,7 @@ export class MeetingItemCoacheeComponent implements OnInit {
 
   goToChatRoom() {
     console.log('goToChatRoom');
-    let win = window.open(this.meeting.coach.chat_room_url, "_blank");
+    window.open(this.meeting.coach.chat_room_url, "_blank");
   }
 
   goToCoachProfile(coachId: string) {
@@ -254,27 +254,5 @@ export class MeetingItemCoacheeComponent implements OnInit {
     console.log('rateSession');
     this.onRateSessionBtnClickedEmitter.emit(this.meeting.id);
   }
-
-  // cancelCancelMeeting() {
-  //   $('#deleteModal').closeModal();
-  //
-  // }
-  //
-  // confirmCancelMeeting() {
-  //   console.log('confirmCancelMeeting');
-  //
-  //   $('#deleteModal').closeModal();
-  //
-  //   this.meetingAPIService.deleteMeeting(this.meeting.id).subscribe(
-  //     (response: Response) => {
-  //       console.log('confirmCancelMeeting, res', response);
-  //       this.onMeetingCancelled.emit();
-  //       Materialize.toast('Meeting supprimé !', 3000, 'rounded')
-  //     }, (error) => {
-  //       console.log('confirmCancelMeeting, error', error);
-  //       Materialize.toast('Impossible de supprimer le meeting', 3000, 'rounded')
-  //     }
-  //   );
-  // }
 
 }

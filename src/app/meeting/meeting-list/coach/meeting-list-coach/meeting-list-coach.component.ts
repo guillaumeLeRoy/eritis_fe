@@ -1,13 +1,11 @@
 import {AfterViewInit, ChangeDetectorRef, Component, Input, OnDestroy, OnInit} from "@angular/core";
 import {MeetingsService} from "../../../../service/meetings.service";
 import {CoachCoacheeService} from "../../../../service/coach_coachee.service";
-import {AuthService} from "../../../../service/auth.service";
 import {Observable} from "rxjs/Observable";
 import {Meeting} from "../../../../model/Meeting";
 import {Subscription} from "rxjs/Subscription";
 import {Coach} from "../../../../model/Coach";
 import {HRUsageRate} from "../../../../model/HRUsageRate";
-import {ApiUser} from "../../../../model/ApiUser";
 
 declare var $: any;
 declare var Materialize: any;
@@ -92,6 +90,7 @@ export class MeetingListCoachComponent implements OnInit, AfterViewInit, OnDestr
   }
 
   onRefreshRequested() {
+    console.log('onRefreshRequested');
     this.onUserObtained(this.mUser);
   }
 
@@ -184,22 +183,6 @@ export class MeetingListCoachComponent implements OnInit, AfterViewInit, OnDestr
     );
   }
 
-  onCoachStartRoomClicked() {
-    console.log('onCoachStartRoomClicked');
-
-    this.user.take(1).subscribe(
-      (usr: ApiUser) => {
-        console.log('onCoachStartRoomClicked, get user');
-        let coach: Coach = usr as Coach;
-        let win = window.open(coach.chat_room_url, "_blank");
-      }
-    );
-  }
-
-  refreshDashboard() {
-    location.reload();
-  }
-
 
   /*************************************
    ----------- Modal control ------------
@@ -217,37 +200,6 @@ export class MeetingListCoachComponent implements OnInit, AfterViewInit, OnDestr
     this.meetingToCancel = meeting;
     this.coachCancelModalVisibility(true);
   }
-
-
-  // cancelCoachCancelMeeting() {
-  //   this.coachCancelModalVisibility(false);
-  //   this.meetingToCancel = null;
-  // }
-
-  // // remove MeetingTime
-  // validateCoachCancelMeeting() {
-  //   console.log('validateCancelMeeting, agreed date : ', this.meetingToCancel.agreed_date);
-  //   let meetingTimeId = this.meetingToCancel.agreed_date.id;
-  //   console.log('validateCancelMeeting, id : ', meetingTimeId);
-  //
-  //   // hide modal
-  //   this.coachCancelModalVisibility(false);
-  //   this.meetingToCancel = null;
-  //   // perform request
-  //   this.meetingsService.removePotentialTime(meetingTimeId).subscribe(
-  //     (response: Response) => {
-  //       console.log('validateCancelMeeting, res ', response);
-  //       console.log('emit');
-  //       // this.dateRemoved.emit(null);
-  //       this.onRefreshRequested();
-  //       Materialize.toast('Meeting annulé !', 3000, 'rounded');
-  //     }, (error) => {
-  //       console.log('unbookAdate, error', error);
-  //       Materialize.toast('Impossible d\'annuler le meeting', 3000, 'rounded');
-  //     }
-  //   );
-  // }
-
 
   /*************************************
    ----------- Modal control to close a sessions ------------
