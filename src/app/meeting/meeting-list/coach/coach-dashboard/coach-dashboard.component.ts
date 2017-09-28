@@ -1,9 +1,11 @@
-import {AfterViewInit, ChangeDetectorRef, Component, OnDestroy, OnInit} from "@angular/core";
+import {AfterViewInit, Component, OnDestroy, OnInit} from "@angular/core";
 import {AuthService} from "../../../../service/auth.service";
 import {ApiUser} from "../../../../model/ApiUser";
 import {Subscription} from "rxjs/Subscription";
-import {Observable} from "rxjs/Observable";
 import {Coach} from "../../../../model/Coach";
+import {HR} from "../../../../model/HR";
+import {Coachee} from "../../../../model/Coachee";
+import {BehaviorSubject} from "rxjs/BehaviorSubject";
 
 declare var $: any;
 declare var Materialize: any;
@@ -15,12 +17,12 @@ declare var Materialize: any;
 })
 export class CoachDashboardComponent implements OnInit, AfterViewInit, OnDestroy {
 
-  private user: Observable<ApiUser>;
+  private user: BehaviorSubject<ApiUser>;
 
-  private subscription: Subscription;
   private connectedUserSubscription: Subscription;
 
-  constructor(private authService: AuthService, private cd: ChangeDetectorRef) {
+  constructor(private authService: AuthService) {
+    this.user = new BehaviorSubject(null);
   }
 
   ngOnInit() {
@@ -33,28 +35,17 @@ export class CoachDashboardComponent implements OnInit, AfterViewInit, OnDestroy
   }
 
   ngOnDestroy(): void {
-    if (this.subscription) {
-      this.subscription.unsubscribe();
-    }
-
     if (this.connectedUserSubscription) {
       this.connectedUserSubscription.unsubscribe();
     }
   }
 
   onRefreshRequested() {
-    let user = this.authService.getConnectedUser();
-    console.log('onRefreshRequested, user : ', user);
-    if (user == null) {
-      this.connectedUserSubscription = this.authService.getConnectedUserObservable().subscribe(
-        (user: ApiUser) => {
-          console.log('onRefreshRequested, getConnectedUser');
+    this.connectedUserSubscription = this.authService.refreshConnectedUser()
+      .subscribe((user?: Coach | Coachee | HR) => {
           this.onUserObtained(user);
         }
       );
-    } else {
-      this.onUserObtained(user);
-    }
   }
 
   private onUserObtained(user: ApiUser) {
@@ -66,8 +57,7 @@ export class CoachDashboardComponent implements OnInit, AfterViewInit, OnDestroy
         console.log('get a coach');
       }
 
-      this.user = Observable.of(user);
-      this.cd.detectChanges();
+      this.user.next(user);
     }
   }
 

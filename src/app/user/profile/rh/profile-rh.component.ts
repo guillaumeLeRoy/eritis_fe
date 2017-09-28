@@ -22,7 +22,7 @@ export class ProfileRhComponent implements OnInit, OnDestroy {
   private rhObs: BehaviorSubject<HR>;
 
   private subscriptionGetRh: Subscription;
-  private subscriptionGetUser: Subscription;
+  private subscriptionGetRoute: Subscription;
 
   private isOwner = false;
 
@@ -52,14 +52,26 @@ export class ProfileRhComponent implements OnInit, OnDestroy {
     this.getRhAndUser();
   }
 
+  ngOnDestroy(): void {
+    if (this.subscriptionGetRh) {
+      console.log("Unsubscribe rh");
+      this.subscriptionGetRh.unsubscribe();
+    }
+
+    if (this.subscriptionGetRoute) {
+      console.log("Unsubscribe user");
+      this.subscriptionGetRoute.unsubscribe();
+    }
+  }
+
   private getRhAndUser() {
     console.log("getRh");
 
-    this.subscriptionGetRh = this.route.params.subscribe(
+    this.subscriptionGetRoute = this.route.params.subscribe(
       (params: any) => {
         let rhId = params['id'];
 
-        this.coachService.getRhForId(rhId).subscribe(
+        this.subscriptionGetRh = this.coachService.getRhForId(rhId).subscribe(
           (rh: HR) => {
             console.log("gotRh", rh);
 
@@ -153,16 +165,5 @@ export class ProfileRhComponent implements OnInit, OnDestroy {
     }
   }
 
-  ngOnDestroy(): void {
-    if (this.subscriptionGetRh) {
-      console.log("Unsubscribe rh");
-      this.subscriptionGetRh.unsubscribe();
-    }
-
-    if (this.subscriptionGetUser) {
-      console.log("Unsubscribe user");
-      this.subscriptionGetUser.unsubscribe();
-    }
-  }
 
 }

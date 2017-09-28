@@ -73,8 +73,6 @@ export class MeetingItemCoachComponent implements OnInit, AfterViewInit, OnDestr
   private potentialDays: Observable<string[]>;
   private potentialHours: Observable<number[]>;
 
-  private connectedUserSubscription: Subscription;
-
   /**
    * Coach rate given by coachee
    */
@@ -87,6 +85,7 @@ export class MeetingItemCoachComponent implements OnInit, AfterViewInit, OnDestr
   private mSessionContextSubscription: Subscription;
   private mSessionGoalSubscription: Subscription;
   private mSessionPotentialTimesSubscription: Subscription;
+  private connectedUserSubscription: Subscription;
 
   constructor(private authService: AuthService, private meetingService: MeetingsService, private cd: ChangeDetectorRef, private router: Router) {
     $('select').material_select();
@@ -141,6 +140,9 @@ export class MeetingItemCoachComponent implements OnInit, AfterViewInit, OnDestr
       this.mSessionPotentialTimesSubscription.unsubscribe();
     }
 
+    if (this.connectedUserSubscription != null) {
+      this.connectedUserSubscription.unsubscribe();
+    }
   }
 
   onRefreshRequested() {

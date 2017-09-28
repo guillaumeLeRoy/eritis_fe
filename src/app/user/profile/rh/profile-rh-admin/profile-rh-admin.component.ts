@@ -15,6 +15,7 @@ export class ProfileRhAdminComponent implements OnInit, OnDestroy {
 
   private rhObs: BehaviorSubject<HR>;
   private subscriptionGetRh: Subscription;
+  private subscriptionGetRoute: Subscription;
 
   loading: boolean = true;
 
@@ -34,16 +35,21 @@ export class ProfileRhAdminComponent implements OnInit, OnDestroy {
       console.log("Unsubscribe rh");
       this.subscriptionGetRh.unsubscribe();
     }
+
+    if (this.subscriptionGetRoute) {
+      console.log("Unsubscribe route");
+      this.subscriptionGetRoute.unsubscribe();
+    }
   }
 
   private getRh() {
     console.log("getRh");
 
-    this.subscriptionGetRh = this.route.params.subscribe(
+    this.subscriptionGetRoute = this.route.params.subscribe(
       (params: any) => {
         let rhId = params['id'];
 
-        this.apiService.getRhForId(rhId, true).subscribe(
+        this.subscriptionGetRh = this.apiService.getRhForId(rhId, true).subscribe(
           (rh: HR) => {
             console.log("gotRh", rh);
             this.rhObs.next(rh);

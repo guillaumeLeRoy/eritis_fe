@@ -15,6 +15,7 @@ export class ProfileCoacheeAdminComponent implements OnInit, AfterViewInit, OnDe
   private coachee: Observable<Coachee>;
   private rhId: string;
   private subscriptionGetCoachee: Subscription;
+  private subscriptionGetRoute: Subscription;
 
   loading: boolean = true;
 
@@ -35,14 +36,20 @@ export class ProfileCoacheeAdminComponent implements OnInit, AfterViewInit, OnDe
       console.log("Unsubscribe coach");
       this.subscriptionGetCoachee.unsubscribe();
     }
+
+    if (this.subscriptionGetRoute) {
+      console.log("Unsubscribe route");
+      this.subscriptionGetRoute.unsubscribe();
+    }
   }
 
   private getCoachee() {
-    this.subscriptionGetCoachee = this.route.params.subscribe(
+
+    this.subscriptionGetRoute = this.route.params.subscribe(
       (params: any) => {
         let coacheeId = params['id'];
 
-        this.apiService.getCoacheeForId(coacheeId, true).subscribe(
+        this.subscriptionGetCoachee = this.apiService.getCoacheeForId(coacheeId, true).subscribe(
           (coachee: Coachee) => {
             console.log("gotCoachee", coachee);
             this.coachee = Observable.of(coachee);
@@ -53,11 +60,6 @@ export class ProfileCoacheeAdminComponent implements OnInit, AfterViewInit, OnDe
         );
       }
     )
-  }
-
-  goToCoacheesAdmin() {
-    window.scrollTo(0, 0);
-    this.router.navigate(['admin/coachees-list']);
   }
 
   goToRhProfile() {

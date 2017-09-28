@@ -34,10 +34,8 @@ export class MeetingListRhComponent implements OnInit, OnDestroy {
   private hasCollaborators = false;
   private hasPotentialCollaborators = false;
 
-  private subscription: Subscription;
-  private refreshSubscription: Subscription;
-
-  //private plans: Observable<ContractPlan[]>;
+  private getAllCoacheesForRhSubscription: Subscription;
+  private getAllPotentialCoacheesForRhSubscription: Subscription;
 
   constructor(private coachCoacheeService: CoachCoacheeService, private cd: ChangeDetectorRef) {
   }
@@ -55,9 +53,17 @@ export class MeetingListRhComponent implements OnInit, OnDestroy {
 
 
   ngOnDestroy(): void {
-    if (this.subscription) {
-      this.subscription.unsubscribe();
+    if (this.getAllCoacheesForRhSubscription) {
+      this.getAllCoacheesForRhSubscription.unsubscribe();
     }
+
+    if (this.getAllPotentialCoacheesForRhSubscription) {
+      this.getAllPotentialCoacheesForRhSubscription.unsubscribe();
+    }
+  }
+
+  startAddNewObjectiveFlow(coacheeId: string) {
+    this.onStartAddNewObjectiveFlow.emit(coacheeId);
   }
 
   private onUserObtained(user: HR) {
@@ -68,35 +74,36 @@ export class MeetingListRhComponent implements OnInit, OnDestroy {
       this.getAllCoacheesForRh(user.id);
       this.getAllPotentialCoacheesForRh(user.id);
       //this.getAllContractPlans();
-      // this.user = Observable.of(user);
-      this.cd.detectChanges();
+      // this.cd.detectChanges();
     }
   }
 
   private getAllCoacheesForRh(rhId: string) {
-    this.subscription = this.coachCoacheeService.getAllCoacheesForRh(rhId, this.isAdmin).subscribe(
-      (coachees: Coachee[]) => {
-        console.log('got coachees for rh', coachees);
+    this.getAllCoacheesForRhSubscription = this.coachCoacheeService.getAllCoacheesForRh(rhId, this.isAdmin)
+      .subscribe(
+        (coachees: Coachee[]) => {
+          console.log('got coachees for rh', coachees);
 
-        this.coachees = Observable.of(coachees);
-        if (coachees !== null && coachees.length > 0) this.hasCollaborators = true;
-        this.cd.detectChanges();
-        this.loading1 = false;
-      }
-    );
+          this.coachees = Observable.of(coachees);
+          if (coachees !== null && coachees.length > 0) this.hasCollaborators = true;
+          this.cd.detectChanges();
+          this.loading1 = false;
+        }
+      );
   }
 
   private getAllPotentialCoacheesForRh(rhId: string) {
-    this.subscription = this.coachCoacheeService.getAllPotentialCoacheesForRh(rhId, this.isAdmin).subscribe(
-      (coachees: PotentialCoachee[]) => {
-        console.log('got potentialCoachees for rh', coachees);
+    this.getAllPotentialCoacheesForRhSubscription = this.coachCoacheeService.getAllPotentialCoacheesForRh(rhId, this.isAdmin)
+      .subscribe(
+        (coachees: PotentialCoachee[]) => {
+          console.log('got potentialCoachees for rh', coachees);
 
-        this.potentialCoachees = Observable.of(coachees);
-        if (coachees !== null && coachees.length > 0) this.hasPotentialCollaborators = true;
-        this.cd.detectChanges();
-        this.loading2 = false;
-      }
-    );
+          this.potentialCoachees = Observable.of(coachees);
+          if (coachees !== null && coachees.length > 0) this.hasPotentialCollaborators = true;
+          this.cd.detectChanges();
+          this.loading2 = false;
+        }
+      );
   }
 
   /*private getAllContractPlans() {
@@ -109,9 +116,5 @@ export class MeetingListRhComponent implements OnInit, OnDestroy {
    }
    );
    }*/
-
-  startAddNewObjectiveFlow(coacheeId: string) {
-    this.onStartAddNewObjectiveFlow.emit(coacheeId);
-  }
 
 }

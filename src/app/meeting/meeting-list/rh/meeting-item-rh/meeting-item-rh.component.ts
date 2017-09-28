@@ -16,7 +16,7 @@ import {MeetingsService} from "../../../../service/meetings.service";
 import {MeetingReview} from "../../../../model/MeetingReview";
 import {Router} from "@angular/router";
 import {Utils} from "../../../../utils/Utils";
-
+import {Subscription} from "rxjs/Subscription";
 
 declare var $: any;
 declare var Materialize: any;
@@ -54,12 +54,15 @@ export class MeetingItemRhComponent implements OnInit, AfterViewInit, OnDestroy 
   private goals = {};
   private sessionRates = {};
 
+  private mSessionReviewRateSubscription: Subscription;
+  private mSessionGoalSubscription: Subscription;
+  private mGetAllMeetingsSubscription: Subscription;
+
   constructor(private meetingsService: MeetingsService, private cd: ChangeDetectorRef, private router: Router) {
   }
 
   ngOnInit(): void {
     console.log('ngOnInit, coachee : ', this.coachee);
-
     if (this.coachee != null) {
       this.getAllMeetingsForCoachee(this.coachee.id);
     }
@@ -70,8 +73,21 @@ export class MeetingItemRhComponent implements OnInit, AfterViewInit, OnDestroy 
   }
 
   ngOnDestroy(): void {
-  }
+    console.log('ngOnDestroy');
 
+    if (this.mGetAllMeetingsSubscription != null) {
+      this.mGetAllMeetingsSubscription.unsubscribe();
+    }
+
+    if (this.mSessionReviewRateSubscription != null) {
+      this.mSessionReviewRateSubscription.unsubscribe();
+    }
+
+    if (this.mSessionGoalSubscription != null) {
+      this.mSessionGoalSubscription.unsubscribe();
+    }
+
+  }
 
   dateToStringShort(date: string): string {
     return Utils.dateToStringShort(date);
@@ -91,7 +107,7 @@ export class MeetingItemRhComponent implements OnInit, AfterViewInit, OnDestroy 
   private getAllMeetingsForCoachee(coacheeId: string) {
     this.loading = true;
 
-    this.meetingsService.getAllMeetingsForCoacheeId(coacheeId, this.isAdmin).subscribe(
+    this.mGetAllMeetingsSubscription = this.meetingsService.getAllMeetingsForCoacheeId(coacheeId, this.isAdmin).subscribe(
       (meetings: Meeting[]) => {
         console.log('got meetings for coachee', meetings);
         let bookedMeetings: Meeting[] = [];
@@ -116,33 +132,36 @@ export class MeetingItemRhComponent implements OnInit, AfterViewInit, OnDestroy 
   }
 
   private getGoal(meetingId: string) {
-    return this.meetingsService.getMeetingGoal(meetingId, this.isAdmin).subscribe(
-      (reviews: MeetingReview[]) => {
-        console.log("getMeetingGoal, got goal : ", reviews);
-        if (reviews != null)
-          this.goals[meetingId] = reviews[0].value;
-        else
-          this.goals[meetingId] = 'Non renseigné';
-      },
-      (error) => {
-        console.log('getMeetingGoal error', error);
-        //this.displayErrorPostingReview = true;
-      });
+    // todo should have an array or list of sub
+    this.mSessionGoalSubscription = this.meetingsService.getMeetingGoal(meetingId, this.isAdmin)
+      .subscribe(
+        (reviews: MeetingReview[]) => {
+          console.log("getMeetingGoal, got goal : ", reviews);
+          if (reviews != null)
+            this.goals[meetingId] = reviews[0].value;
+          else
+            this.goals[meetingId] = 'Non renseigné';
+        },
+        (error) => {
+          console.log('getMeetingGoal error', error);
+          //this.displayErrorPostingReview = true;
+        });
   }
 
   private getSessionReviewTypeRate(meetingId: string) {
-    this.meetingsService.getSessionReviewRate(meetingId, this.isAdmin).subscribe(
-      (reviews: MeetingReview[]) => {
-        console.log("getSessionReviewTypeRate, got rate : ", reviews);
-        if (reviews != null)
-          this.sessionRates[meetingId] = reviews[0].value;
-        else
-          this.sessionRates[meetingId] = "Inconnu";
-      },
-      (error) => {
-        console.log('getSessionReviewTypeRate error', error);
-        //this.displayErrorPostingReview = true;
-      });
+    this.mSessionReviewRateSubscription = this.meetingsService.getSessionReviewRate(meetingId, this.isAdmin)
+      .subscribe(
+        (reviews: MeetingReview[]) => {
+          console.log("getSessionReviewTypeRate, got rate : ", reviews);
+          if (reviews != null)
+            this.sessionRates[meetingId] = reviews[0].value;
+          else
+            this.sessionRates[meetingId] = "Inconnu";
+        },
+        (error) => {
+          console.log('getSessionReviewTypeRate error', error);
+          //this.displayErrorPostingReview = true;
+        });
   }
 
   onClickAddObjectiveBtn() {

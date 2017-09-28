@@ -12,6 +12,8 @@ import {Utils} from "../../../../utils/Utils";
 import {CoacheeObjective} from "../../../../model/CoacheeObjective";
 import {PotentialCoachee} from "../../../../model/PotentialCoachee";
 import {BehaviorSubject} from "rxjs/BehaviorSubject";
+import {Coachee} from "../../../../model/Coachee";
+import {Coach} from "../../../../model/Coach";
 
 declare var $: any;
 declare var Materialize: any;
@@ -27,6 +29,8 @@ export class RhDashboardComponent implements OnInit, AfterViewInit, OnDestroy {
 
   private subscription: Subscription;
   private connectedUserSubscription: Subscription;
+  private GetUsageRateSubscription: Subscription;
+  private updateCoacheeObjectiveSubscription: Subscription;
 
   private HrUsageRate: Observable<HRUsageRate>;
 
@@ -62,6 +66,7 @@ export class RhDashboardComponent implements OnInit, AfterViewInit, OnDestroy {
 
   ngAfterViewInit(): void {
     console.log('ngAfterViewInit');
+    // force to GET connected user from the API so the count of available sessions is always correct
     this.onRefreshRequested();
   }
 
@@ -73,15 +78,22 @@ export class RhDashboardComponent implements OnInit, AfterViewInit, OnDestroy {
     if (this.connectedUserSubscription) {
       this.connectedUserSubscription.unsubscribe();
     }
+
+    if (this.GetUsageRateSubscription) {
+      this.GetUsageRateSubscription.unsubscribe();
+    }
+
+    if (this.updateCoacheeObjectiveSubscription) {
+      this.updateCoacheeObjectiveSubscription.unsubscribe();
+    }
   }
 
   onRefreshRequested() {
-    this.connectedUserSubscription = this.authService.refreshConnectedUser().subscribe(
-      (user: ApiUser) => {
-        console.log('onRefreshRequested, getConnectedUser');
-        this.onUserObtained(user);
-      }
-    );
+    this.connectedUserSubscription = this.authService.refreshConnectedUser()
+      .subscribe((user?: Coach | Coachee | HR) => {
+          this.onUserObtained(user);
+        }
+      );
   }
 
   private onUserObtained(user: ApiUser) {
@@ -100,7 +112,7 @@ export class RhDashboardComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   private getUsageRate(rhId: string) {
-    this.coachCoacheeService.getUsageRate(rhId).subscribe(
+    this.GetUsageRateSubscription = this.coachCoacheeService.getUsageRate(rhId).subscribe(
       (rate: HRUsageRate) => {
         console.log("getUsageRate, rate : ", rate);
         this.HrUsageRate = Observable.of(rate);
@@ -125,19 +137,20 @@ export class RhDashboardComponent implements OnInit, AfterViewInit, OnDestroy {
   private makeAPICallToAddNewObjective(user: ApiUser) {
     this.updateCoacheeObjectivePanelVisibility(false);
     //call API
-    this.coachCoacheeService.addObjectiveToCoachee(user.id, this.addNewObjectiveCoacheeId, this.coacheeNewObjective).subscribe(
-      (obj: CoacheeObjective) => {
-        console.log('addObjectiveToCoachee, SUCCESS', obj);
-        // close modal
-        this.updateCoacheeObjectivePanelVisibility(false);
-        this.onRefreshRequested();
-        Materialize.toast("L'objectif a été modifié !", 3000, 'rounded')
-        this.coacheeNewObjective = null;
-      }, (error) => {
-        console.log('addObjectiveToCoachee, error', error);
-        Materialize.toast("Imposible de modifier l'objectif", 3000, 'rounded')
-      }
-    );
+    this.updateCoacheeObjectiveSubscription = this.coachCoacheeService.addObjectiveToCoachee(user.id, this.addNewObjectiveCoacheeId, this.coacheeNewObjective)
+      .subscribe(
+        (obj: CoacheeObjective) => {
+          console.log('addObjectiveToCoachee, SUCCESS', obj);
+          // close modal
+          this.updateCoacheeObjectivePanelVisibility(false);
+          this.onRefreshRequested();
+          Materialize.toast("L'objectif a été modifié !", 3000, 'rounded')
+          this.coacheeNewObjective = null;
+        }, (error) => {
+          console.log('addObjectiveToCoachee, error', error);
+          Materialize.toast("Imposible de modifier l'objectif", 3000, 'rounded')
+        }
+      );
   }
 
   startAddNewObjectiveFlow(coacheeId: string) {

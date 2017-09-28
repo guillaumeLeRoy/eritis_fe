@@ -37,7 +37,7 @@ export class MeetingListCoachComponent implements OnInit, AfterViewInit, OnDestr
   private hasClosedMeeting = false;
   private hasUnbookedMeeting = false;
 
-  private subscription: Subscription;
+  private getAllMeetingsForCoachIdSubscription: Subscription;
 
   private meetingToCancel: Meeting;
 
@@ -84,8 +84,8 @@ export class MeetingListCoachComponent implements OnInit, AfterViewInit, OnDestr
   ngOnDestroy(): void {
     console.log('ngOnDestroy');
 
-    if (this.subscription) {
-      this.subscription.unsubscribe();
+    if (this.getAllMeetingsForCoachIdSubscription) {
+      this.getAllMeetingsForCoachIdSubscription.unsubscribe();
     }
   }
 
@@ -102,7 +102,7 @@ export class MeetingListCoachComponent implements OnInit, AfterViewInit, OnDestr
   }
 
   private getAllMeetingsForCoach(coachId: string) {
-    this.subscription = this.meetingsService.getAllMeetingsForCoachId(coachId, this.isAdmin)
+    this.getAllMeetingsForCoachIdSubscription = this.meetingsService.getAllMeetingsForCoachId(coachId, this.isAdmin)
       .subscribe(
         (meetings: Meeting[]) => {
           console.log('got meetings for coach', meetings);
