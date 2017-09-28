@@ -1,4 +1,7 @@
-import {AfterViewInit, ChangeDetectorRef, Component, EventEmitter, Input, OnInit, Output} from "@angular/core";
+import {
+  AfterViewInit, ChangeDetectorRef, Component, EventEmitter, Input, OnDestroy, OnInit,
+  Output
+} from "@angular/core";
 import {Coachee} from "../../../../model/Coachee";
 import {PotentialCoachee} from "../../../../model/PotentialCoachee";
 import {Meeting} from "../../../../model/Meeting";
@@ -17,7 +20,7 @@ declare var Materialize: any;
   templateUrl: './meeting-item-rh.component.html',
   styleUrls: ['./meeting-item-rh.component.scss']
 })
-export class MeetingItemRhComponent implements OnInit, AfterViewInit {
+export class MeetingItemRhComponent implements OnInit, AfterViewInit,OnDestroy {
 
   @Input()
   coachee: Coachee;
@@ -45,11 +48,17 @@ export class MeetingItemRhComponent implements OnInit, AfterViewInit {
   private goals = {};
   private sessionRates = {};
 
+  private static index: number = 0;
+  private index: number;
+
   constructor(private meetingsService: MeetingsService, private cd: ChangeDetectorRef, private router: Router) {
+    this.index = MeetingItemRhComponent.index;
+    MeetingItemRhComponent.index++;
   }
 
   ngOnInit(): void {
     console.log('ngOnInit, coachee : ', this.coachee);
+    console.log('ngOnInit, index : ', this.index);
 
     if (this.coachee != null) {
       this.getAllMeetingsForCoachee(this.coachee.id);
@@ -60,6 +69,11 @@ export class MeetingItemRhComponent implements OnInit, AfterViewInit {
     console.log('ngAfterViewInit, coachee : ', this.coachee);
 
     // this.fetchConnectedUser();
+  }
+
+  ngOnDestroy():void{
+    console.log('ngOnDestroy, index : ', this.index);
+
   }
 
   dateToString(date: string): string {

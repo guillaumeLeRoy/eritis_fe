@@ -1,4 +1,4 @@
-import {AfterViewInit, ChangeDetectorRef, Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
+import {AfterViewInit, ChangeDetectorRef, Component, OnDestroy, OnInit} from "@angular/core";
 import {Observable} from "rxjs/Observable";
 import {ApiUser} from "../../../../model/ApiUser";
 import {Subscription} from "rxjs/Subscription";
@@ -11,7 +11,7 @@ import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {Utils} from "../../../../utils/Utils";
 import {CoacheeObjective} from "../../../../model/CoacheeObjective";
 import {PotentialCoachee} from "../../../../model/PotentialCoachee";
-import {Subject} from "rxjs/Subject";
+import {BehaviorSubject} from "rxjs/BehaviorSubject";
 
 declare var $: any;
 declare var Materialize: any;
@@ -23,10 +23,7 @@ declare var Materialize: any;
 })
 export class RhDashboardComponent implements OnInit, AfterViewInit, OnDestroy {
 
-  @ViewChild('coacheesList')
-  private coacheesList;
-
-  private user: Observable<ApiUser>;
+  private userObs: BehaviorSubject<HR>;
 
   private subscription: Subscription;
   private connectedUserSubscription: Subscription;
@@ -55,6 +52,8 @@ export class RhDashboardComponent implements OnInit, AfterViewInit, OnDestroy {
       first_name: [''],
       last_name: [''],
     });
+
+    this.userObs = new BehaviorSubject(null);
   }
 
   ngOnInit() {
@@ -77,20 +76,12 @@ export class RhDashboardComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   onRefreshRequested() {
-    let user = this.authService.getConnectedUser();
-    console.log('onRefreshRequested, user : ', user);
-    if (user == null) {
-      this.connectedUserSubscription = this.authService.getConnectedUserObservable().subscribe(
-        (user: ApiUser) => {
-          console.log('onRefreshRequested, getConnectedUser');
-          this.onUserObtained(user);
-        }
-      );
-    } else {
-      this.onUserObtained(user);
-    }
-
-    this.coacheesList.onRefreshRequested();
+    this.connectedUserSubscription = this.authService.refreshConnectedUser().subscribe(
+      (user: ApiUser) => {
+        console.log('onRefreshRequested, getConnectedUser');
+        this.onUserObtained(user);
+      }
+    );
   }
 
   private onUserObtained(user: ApiUser) {
@@ -101,13 +92,12 @@ export class RhDashboardComponent implements OnInit, AfterViewInit, OnDestroy {
         // rh
         console.log('get a rh');
         this.getUsageRate(user.id);
+        // this.user = Observable.of(user);
+        this.userObs.next(user);
+        this.cd.detectChanges();
       }
-
-      this.user = Observable.of(user);
-      this.cd.detectChanges();
     }
   }
-
 
   private getUsageRate(rhId: string) {
     this.coachCoacheeService.getUsageRate(rhId).subscribe(
@@ -117,7 +107,6 @@ export class RhDashboardComponent implements OnInit, AfterViewInit, OnDestroy {
       }
     );
   }
-
 
 
   /*************************************
@@ -165,7 +154,7 @@ export class RhDashboardComponent implements OnInit, AfterViewInit, OnDestroy {
   validateAddNewObjectiveModal() {
     console.log('validateAddNewObjectiveModal');
 
-    this.user.take(1).subscribe(
+    this.userObs.asObservable().take(1).subscribe(
       (user: ApiUser) => {
         console.log('validateAddNewObjectiveModal, got connected user');
         if (user instanceof HR) {
@@ -175,7 +164,6 @@ export class RhDashboardComponent implements OnInit, AfterViewInit, OnDestroy {
     );
     return;
   }
-
 
 
   /*************************************
@@ -200,7 +188,7 @@ export class RhDashboardComponent implements OnInit, AfterViewInit, OnDestroy {
 
     this.addPotentialCoacheeModalVisibility(false);
 
-    this.user.take(1).subscribe(
+    this.userObs.asObservable().take(1).subscribe(
       (user: ApiUser) => {
 
         // let body = {
@@ -227,7 +215,6 @@ export class RhDashboardComponent implements OnInit, AfterViewInit, OnDestroy {
         this.coachCoacheeService.postPotentialCoachee(body).subscribe(
           (res: PotentialCoachee) => {
             console.log('postPotentialCoachee, res', res);
-            this.onRefreshRequested();
             Materialize.toast('Manager ajouté !', 3000, 'rounded');
             this.onRefreshRequested();
           }, (errorRes: Response) => {

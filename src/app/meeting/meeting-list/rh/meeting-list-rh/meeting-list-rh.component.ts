@@ -1,22 +1,19 @@
 import {
-  AfterViewInit, ChangeDetectorRef, Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit,
+  AfterViewInit,
+  ChangeDetectorRef,
+  Component,
+  EventEmitter,
+  Input,
+  OnDestroy,
+  OnInit,
   Output
 } from "@angular/core";
 import {CoachCoacheeService} from "../../../../service/coach_coachee.service";
-import {AuthService} from "../../../../service/auth.service";
 import {Observable} from "rxjs/Observable";
 import {Subscription} from "rxjs/Subscription";
-import {ContractPlan} from "../../../../model/ContractPlan";
 import {Coachee} from "../../../../model/Coachee";
-import {Coach} from "../../../../model/Coach";
-import {HRUsageRate} from "../../../../model/HRUsageRate";
 import {HR} from "../../../../model/HR";
 import {PotentialCoachee} from "../../../../model/PotentialCoachee";
-import {ApiUser} from "../../../../model/ApiUser";
-import {CoacheeObjective} from "../../../../model/CoacheeObjective";
-import {FormBuilder, FormGroup, Validators} from "@angular/forms";
-import {Utils} from "../../../../utils/Utils";
-import {Subject} from "rxjs/Subject";
 
 declare var $: any;
 declare var Materialize: any;
@@ -32,15 +29,13 @@ export class MeetingListRhComponent implements OnInit, AfterViewInit, OnDestroy 
   loading2 = true;
 
   @Input()
-  mUser: HR;
+  user: Observable<HR>;
 
   @Input()
   isAdmin: boolean = false;
 
   @Output()
   onStartAddNewObjectiveFlow = new EventEmitter<string>();
-
-  private user: Observable<ApiUser>;
 
   private coachees: Observable<Coachee[]>;
   private potentialCoachees: Observable<PotentialCoachee[]>;
@@ -53,24 +48,41 @@ export class MeetingListRhComponent implements OnInit, AfterViewInit, OnDestroy 
 
   //private plans: Observable<ContractPlan[]>;
 
+  private static index: number = 0;
+  private index: number;
+
   constructor(private coachCoacheeService: CoachCoacheeService, private cd: ChangeDetectorRef) {
+    this.index = MeetingListRhComponent.index;
+    MeetingListRhComponent.index++;
   }
 
   ngOnInit() {
     console.log('ngOnInit');
+    console.log('ngOnInit, index : ', this.index);
+
     this.loading1 = true;
     this.loading2 = true;
+
+    this.user.subscribe((user: HR) => {
+      this.onUserObtained(user);
+    });
   }
 
   ngAfterViewInit(): void {
     console.log('ngAfterViewInit');
+    // this.onRefreshRequested();
+  }
 
-    this.onRefreshRequested();
+  ngOnDestroy(): void {
+    console.log('ngOnDestroy, index : ', this.index);
+
+    if (this.subscription)
+      this.subscription.unsubscribe();
   }
 
   onRefreshRequested() {
     console.log('onRefreshRequested, getConnectedUser');
-    this.onUserObtained(this.mUser);
+    // this.onUserObtained(this.mUser);
   }
 
   private onUserObtained(user: HR) {
@@ -81,7 +93,7 @@ export class MeetingListRhComponent implements OnInit, AfterViewInit, OnDestroy 
       this.getAllCoacheesForRh(user.id);
       this.getAllPotentialCoacheesForRh(user.id);
       //this.getAllContractPlans();
-      this.user = Observable.of(user);
+      // this.user = Observable.of(user);
       this.cd.detectChanges();
     }
   }
@@ -113,22 +125,17 @@ export class MeetingListRhComponent implements OnInit, AfterViewInit, OnDestroy 
   }
 
   /*private getAllContractPlans() {
-    this.authService.getNotAuth(AuthService.GET_CONTRACT_PLANS, null).subscribe(
-      (response) => {
-        let json: ContractPlan[] = response.json();
-        console.log("getListOfContractPlans, response json : ", json);
-        this.plans = Observable.of(json);
-        // this.cd.detectChanges();
-      }
-    );
-  }*/
+   this.authService.getNotAuth(AuthService.GET_CONTRACT_PLANS, null).subscribe(
+   (response) => {
+   let json: ContractPlan[] = response.json();
+   console.log("getListOfContractPlans, response json : ", json);
+   this.plans = Observable.of(json);
+   // this.cd.detectChanges();
+   }
+   );
+   }*/
 
-  ngOnDestroy(): void {
-    if (this.subscription)
-      this.subscription.unsubscribe();
-  }
-
-  private startAddNewObjectiveFlow(coacheeId: string) {
+  startAddNewObjectiveFlow(coacheeId: string) {
     this.onStartAddNewObjectiveFlow.emit(coacheeId);
   }
 

@@ -5,6 +5,7 @@ import {HR} from "../../../model/HR";
 import {Coach} from "../../../model/Coach";
 import {Location} from "@angular/common";
 import {PossibleCoach} from "../../../model/PossibleCoach";
+import {Observable} from "rxjs/Observable";
 
 @Component({
   selector: 'er-profile-header',
@@ -14,7 +15,7 @@ import {PossibleCoach} from "../../../model/PossibleCoach";
 export class ProfileHeaderComponent implements OnInit {
 
   @Input()
-  user: (Coach | Coachee | HR | PossibleCoach);
+  user: Observable<(Coach | Coachee | HR | PossibleCoach)>;
 
   @Input()
   isOwner: boolean;

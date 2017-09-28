@@ -13,8 +13,7 @@
   </p>
 </div>
 
-<er-meeting-list-rh [mUser]="(user | async)"
-                    *ngIf="(user | async)"
+<er-meeting-list-rh [user]="userObs"
                     #coacheesList
                     (onStartAddNewObjectiveFlow)="startAddNewObjectiveFlow($event)"></er-meeting-list-rh>
 
@@ -34,7 +33,6 @@
     </div>
   </div>
 </div>
-
 
 
 <!-- Modal RH add Coachee -->
@@ -86,12 +84,10 @@
 
     </div>
     <div class="action-modal-footer">
-      <div *ifLoader="loadingObjective">
-        <button class="btn-basic btn-plain btn-small" (click)="cancelAddPotentialCoachee()">Annuler</button>
-        <button class="btn-basic btn-blue btn-plain btn-small" (click)="validateAddPotentialCoachee()"
-                [disabled]="!signInForm.valid">Ajouter
-        </button>
-      </div>
+      <button class="btn-basic btn-plain btn-small" (click)="cancelAddPotentialCoachee()">Annuler</button>
+      <button class="btn-basic btn-blue btn-plain btn-small" (click)="validateAddPotentialCoachee()"
+              [disabled]="!signInForm.valid">Ajouter
+      </button>
     </div>
   </div>
 </form>

@@ -639,7 +639,7 @@ export class AuthService {
   }
 
 
-  updateCoacheeForId(id: string, first_name: string, last_name: string, avatarUrl: string): Observable<ApiUser> {
+  updateCoacheeForId(id: string, first_name: string, last_name: string, avatarUrl: string): Observable<Coachee> {
     console.log("updateCoacheeForId, id", id);
 
     let body = {
@@ -651,12 +651,11 @@ export class AuthService {
     let params = [id];
     return this.put(AuthService.UPDATE_COACHEE, params, body).map(
       (response: Response) => {
-        //return this.onUserResponse(response);
-        return null;
+        return Coachee.parseCoachee(response.json());
       });
   }
 
-  updateCoachForId(id: string, firstName: string, lastName: string, description: string, avatarUrl: string): Observable<ApiUser> {
+  updateCoachForId(id: string, firstName: string, lastName: string, description: string, avatarUrl: string): Observable<Coach> {
     console.log("updateCoachForId, id", id);
 
     let body = {
@@ -670,12 +669,11 @@ export class AuthService {
     return this.put(AuthService.UPDATE_COACH, params, body).map(
       (response: Response) => {
         //convert to coach
-        // return this.onUserResponse(response);
-        return null;
+        return Coach.parseCoach(response.json());
       });
   }
 
-  updateRhForId(id: string, firstName: string, lastName: string, description: string, avatarUrl: string): Observable<ApiUser> {
+  updateRhForId(id: string, firstName: string, lastName: string, description: string, avatarUrl: string): Observable<HR> {
     console.log("updateRhForId, id", id);
 
     let body = {
@@ -688,9 +686,9 @@ export class AuthService {
     let params = [id];
     return this.put(AuthService.UPDATE_RH, params, body).map(
       (response: Response) => {
-        //convert to coach
-        // return this.onUserResponse(response);
-        return null;
+        //convert to HR
+        return HR.parseRh(response.json());
+
       });
   }
 
@@ -712,19 +710,19 @@ export class AuthService {
   //     });
   // }
 
-  /**
-   *
-   * @param response
-   * @returns {Coach|Coachee}
-   */
-  private onUserResponse(response: Response): Coach | Coachee | HR {
-    let json: LoginResponse = response.json();
-    console.log("onUserResponse, response json : ", json);
-    let res = this.parseAPIuser(json);
-    console.log("onUserResponse, parsed user : ", res);
-    //dispatch
-    return this.onAPIuserObtained(res, this.ApiUser.firebaseToken);
-  }
+  // /**
+  //  *
+  //  * @param response
+  //  * @returns {Coach|Coachee}
+  //  */
+  // private onUserResponse(response: Response): Coach | Coachee | HR {
+  //   let json: LoginResponse = response.json();
+  //   console.log("onUserResponse, response json : ", json);
+  //   let res = this.parseAPIuser(json);
+  //   console.log("onUserResponse, parsed user : ", res);
+  //   //dispatch
+  //   return this.onAPIuserObtained(res, this.ApiUser.firebaseToken);
+  // }
 
 }
 
