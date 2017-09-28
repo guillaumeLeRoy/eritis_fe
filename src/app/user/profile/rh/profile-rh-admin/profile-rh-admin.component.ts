@@ -1,4 +1,4 @@
-import {ChangeDetectorRef, Component, OnDestroy, OnInit} from "@angular/core";
+import {Component, OnDestroy, OnInit} from "@angular/core";
 import {HR} from "../../../../model/HR";
 import {Subscription} from "rxjs/Subscription";
 import {ActivatedRoute} from "@angular/router";
@@ -18,7 +18,7 @@ export class ProfileRhAdminComponent implements OnInit, OnDestroy {
 
   loading: boolean = true;
 
-  constructor(private cd: ChangeDetectorRef, private route: ActivatedRoute, private apiService: CoachCoacheeService) {
+  constructor(private route: ActivatedRoute, private apiService: CoachCoacheeService) {
     this.rhObs = new BehaviorSubject(null);
   }
 

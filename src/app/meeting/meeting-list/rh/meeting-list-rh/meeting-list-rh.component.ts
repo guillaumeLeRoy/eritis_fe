@@ -1,13 +1,4 @@
-import {
-  AfterViewInit,
-  ChangeDetectorRef,
-  Component,
-  EventEmitter,
-  Input,
-  OnDestroy,
-  OnInit,
-  Output
-} from "@angular/core";
+import {ChangeDetectorRef, Component, EventEmitter, Input, OnDestroy, OnInit, Output} from "@angular/core";
 import {CoachCoacheeService} from "../../../../service/coach_coachee.service";
 import {Observable} from "rxjs/Observable";
 import {Subscription} from "rxjs/Subscription";
@@ -23,7 +14,7 @@ declare var Materialize: any;
   templateUrl: './meeting-list-rh.component.html',
   styleUrls: ['./meeting-list-rh.component.scss']
 })
-export class MeetingListRhComponent implements OnInit, AfterViewInit, OnDestroy {
+export class MeetingListRhComponent implements OnInit, OnDestroy {
 
   loading1 = true;
   loading2 = true;
@@ -48,17 +39,11 @@ export class MeetingListRhComponent implements OnInit, AfterViewInit, OnDestroy 
 
   //private plans: Observable<ContractPlan[]>;
 
-  private static index: number = 0;
-  private index: number;
-
   constructor(private coachCoacheeService: CoachCoacheeService, private cd: ChangeDetectorRef) {
-    this.index = MeetingListRhComponent.index;
-    MeetingListRhComponent.index++;
   }
 
   ngOnInit() {
     console.log('ngOnInit');
-    console.log('ngOnInit, index : ', this.index);
 
     this.loading1 = true;
     this.loading2 = true;
@@ -68,21 +53,11 @@ export class MeetingListRhComponent implements OnInit, AfterViewInit, OnDestroy 
     });
   }
 
-  ngAfterViewInit(): void {
-    console.log('ngAfterViewInit');
-    // this.onRefreshRequested();
-  }
 
   ngOnDestroy(): void {
-    console.log('ngOnDestroy, index : ', this.index);
-
-    if (this.subscription)
+    if (this.subscription) {
       this.subscription.unsubscribe();
-  }
-
-  onRefreshRequested() {
-    console.log('onRefreshRequested, getConnectedUser');
-    // this.onUserObtained(this.mUser);
+    }
   }
 
   private onUserObtained(user: HR) {
