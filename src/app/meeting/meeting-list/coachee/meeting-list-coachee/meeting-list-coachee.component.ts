@@ -27,7 +27,7 @@ export class MeetingListCoacheeComponent implements OnInit, AfterViewInit, OnDes
   loading = true;
 
   @Input()
-  mUser: Coachee;
+  user: Observable<Coachee>;
 
   @Input()
   isAdmin: boolean = false;
@@ -43,7 +43,7 @@ export class MeetingListCoacheeComponent implements OnInit, AfterViewInit, OnDes
   private hasOpenedMeeting = false;
   private hasClosedMeeting = false;
 
-  private subscription: Subscription;
+  private getAllMeetingsForCoacheeIdSubscription?: Subscription;
 
   private meetingToCancel: Meeting;
 
@@ -57,27 +57,34 @@ export class MeetingListCoacheeComponent implements OnInit, AfterViewInit, OnDes
   ngOnInit() {
     console.log('ngOnInit');
     this.loading = true;
+
+    this.user.subscribe((user: Coachee) => {
+      this.onUserObtained(user);
+    });
   }
 
   ngAfterViewInit(): void {
     console.log('ngAfterViewInit');
-    this.onUserObtained(this.mUser);
+    // this.onUserObtained(this.mUser);
   }
 
   private onRefreshRequested() {
-    this.onUserObtained(this.mUser);
-    this.requestRefreshEventEmitter.emit(null);
+    this.user.first().subscribe((user: Coachee) => {
+      this.onUserObtained(user);
+      this.requestRefreshEventEmitter.emit(null);
+    });
+
   }
 
   private onUserObtained(user: Coachee) {
     console.log('onUserObtained, user : ', user);
     this.getAllMeetingsForCoachee(user.id);
     // this.user = Observable.of(user);
-    this.cd.detectChanges();
+    // this.cd.detectChanges();
   }
 
   private getAllMeetingsForCoachee(coacheeId: string) {
-    this.subscription = this.meetingsService.getAllMeetingsForCoacheeId(coacheeId, this.isAdmin)
+    this.getAllMeetingsForCoacheeIdSubscription = this.meetingsService.getAllMeetingsForCoacheeId(coacheeId, this.isAdmin)
       .subscribe(
         (meetings: Meeting[]) => {
           console.log('got meetings for coachee', meetings);
@@ -136,8 +143,8 @@ export class MeetingListCoacheeComponent implements OnInit, AfterViewInit, OnDes
   }
 
   ngOnDestroy(): void {
-    if (this.subscription) {
-      this.subscription.unsubscribe();
+    if (this.getAllMeetingsForCoacheeIdSubscription) {
+      this.getAllMeetingsForCoacheeIdSubscription.unsubscribe();
     }
   }
 

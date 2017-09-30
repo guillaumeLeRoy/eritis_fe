@@ -1,7 +1,6 @@
-import {AfterViewInit, ChangeDetectorRef, Component, OnDestroy, OnInit} from "@angular/core";
+import {AfterViewInit, Component, OnDestroy, OnInit} from "@angular/core";
 import {AuthService} from "../../../../service/auth.service";
 import {Router} from "@angular/router";
-import {Observable} from "rxjs/Observable";
 import {Coachee} from "../../../../model/Coachee";
 import {ApiUser} from "../../../../model/ApiUser";
 import {HR} from "../../../../model/HR";
@@ -23,7 +22,7 @@ export class CoacheeDashboardComponent implements OnInit, AfterViewInit, OnDestr
 
   private connectedUserSubscription: Subscription;
 
-  constructor(private router: Router, private authService: AuthService, private cd: ChangeDetectorRef) {
+  constructor(private router: Router, private authService: AuthService) {
     this.user = new BehaviorSubject(null);
   }
 
@@ -66,8 +65,8 @@ export class CoacheeDashboardComponent implements OnInit, AfterViewInit, OnDestr
     }
   }
 
-  goToDate() {
-    console.log('goToDate');
+  navigateToCreateSession() {
+    console.log('navigateToCreateSession');
 
     if (this.user != null) {
       this.user.asObservable().take(1).subscribe(

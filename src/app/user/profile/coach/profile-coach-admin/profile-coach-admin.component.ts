@@ -1,9 +1,9 @@
 import {AfterViewInit, ChangeDetectorRef, Component, OnDestroy, OnInit} from "@angular/core";
 import {ActivatedRoute} from "@angular/router";
 import {Subscription} from "rxjs/Subscription";
-import {Observable} from "rxjs/Observable";
 import {Coach} from "../../../../model/Coach";
 import {CoachCoacheeService} from "../../../../service/coach_coachee.service";
+import {BehaviorSubject} from "rxjs/BehaviorSubject";
 
 declare var Materialize: any;
 declare var $: any;
@@ -15,7 +15,7 @@ declare var $: any;
 })
 export class ProfileCoachAdminComponent implements OnInit, AfterViewInit, OnDestroy {
 
-  private coach: Observable<Coach>;
+  private coach: BehaviorSubject<Coach>;
   private subscriptionGetCoach: Subscription;
   private subscriptionGetRoute: Subscription;
 
@@ -26,6 +26,7 @@ export class ProfileCoachAdminComponent implements OnInit, AfterViewInit, OnDest
 
 
   constructor(private apiService: CoachCoacheeService, private cd: ChangeDetectorRef, private route: ActivatedRoute) {
+    this.coach = new BehaviorSubject(null);
   }
 
   ngOnInit() {
@@ -61,8 +62,7 @@ export class ProfileCoachAdminComponent implements OnInit, AfterViewInit, OnDest
         this.subscriptionGetCoach = this.apiService.getCoachForId(coachId, true).subscribe(
           (coach: Coach) => {
             console.log("gotCoach", coach);
-            this.coach = Observable.of(coach);
-            this.cd.detectChanges();
+            this.coach.next(coach);
             this.loading = false;
           }
         );
@@ -93,7 +93,7 @@ export class ProfileCoachAdminComponent implements OnInit, AfterViewInit, OnDest
       console.log("Upload avatar");
       this.avatarLoading = true;
 
-      this.coach.last().flatMap(
+      this.coach.asObservable().last().flatMap(
         (coach: Coach) => {
           return this.apiService.updateCoachProfilePicture(coach.id, this.avatarFile);
         }

@@ -20,12 +20,10 @@ export class MeetingListCoachComponent implements OnInit, AfterViewInit, OnDestr
   loading = true;
 
   @Input()
-  mUser: Coach;
-
-  @Input()
   isAdmin: boolean = false;
 
-  private user: Observable<Coach>;
+  @Input()
+  user: Observable<Coach>;
 
   private meetings: Observable<Array<Meeting>>;
   private meetingsOpened: Observable<Meeting[]>;
@@ -73,12 +71,15 @@ export class MeetingListCoachComponent implements OnInit, AfterViewInit, OnDestr
   ngOnInit() {
     console.log('ngOnInit');
     this.loading = true;
-    this.user = Observable.of(this.mUser);
+
+    this.user.subscribe((user: Coach) => {
+      this.onUserObtained(user);
+    });
   }
 
   ngAfterViewInit(): void {
     console.log('ngAfterViewInit');
-    this.onRefreshRequested();
+    // this.onRefreshRequested();
   }
 
   ngOnDestroy(): void {
@@ -91,14 +92,15 @@ export class MeetingListCoachComponent implements OnInit, AfterViewInit, OnDestr
 
   onRefreshRequested() {
     console.log('onRefreshRequested');
-    this.onUserObtained(this.mUser);
+    this.user.first().subscribe((user: Coach) => {
+      this.onUserObtained(user);
+    });
   }
 
   private onUserObtained(user: Coach) {
     console.log('onUserObtained, user : ', user);
     this.getAllMeetingsForCoach(user.id);
-    this.user = Observable.of(user);
-    this.cd.detectChanges();
+    // this.cd.detectChanges();
   }
 
   private getAllMeetingsForCoach(coachId: string) {
