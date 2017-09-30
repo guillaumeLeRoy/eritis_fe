@@ -12,7 +12,7 @@ declare var Materialize: any;
 declare var $: any;
 
 @Component({
-  selector: 'rb-welcome',
+  selector: 'er-welcome',
   templateUrl: './welcome.component.html',
   styleUrls: ['./welcome.component.scss']
 })

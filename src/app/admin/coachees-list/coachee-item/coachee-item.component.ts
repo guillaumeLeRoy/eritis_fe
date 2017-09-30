@@ -3,7 +3,7 @@ import {Coachee} from "../../../model/Coachee";
 import {Router} from "@angular/router";
 
 @Component({
-  selector: 'rb-coachee-item',
+  selector: 'er-coachee-item',
   templateUrl: './coachee-item.component.html',
   styleUrls: ['./coachee-item.component.scss']
 })

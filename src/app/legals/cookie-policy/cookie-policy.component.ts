@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 
 @Component({
-  selector: 'rb-cookie-policy',
+  selector: 'er-cookie-policy',
   templateUrl: './cookie-policy.component.html',
   styleUrls: ['./cookie-policy.component.scss']
 })

@@ -14,7 +14,7 @@ declare var Materialize: any;
 declare let ga: Function;
 
 @Component({
-  selector: 'rb-signin',
+  selector: 'er-signin',
   templateUrl: './signin.component.html',
   styleUrls: ['./signin.component.scss']
 })
@@ -30,7 +30,6 @@ export class SigninComponent implements OnInit {
   private forgotEmail?: string;
 
   constructor(private formBuilder: FormBuilder, private authService: AuthService, private router: Router, private firebase: FirebaseService) {
-    authService.isAuthenticated().subscribe((isAuth) => console.log('onSignIn, isAuth', isAuth));
   }
 
   ngOnInit() {
@@ -58,42 +57,36 @@ export class SigninComponent implements OnInit {
     this.error = false;
     this.errorMessage = '';
 
-    this.authService.signIn(this.signInForm.value).subscribe(
-      (user: Coach | Coachee | HR) => {
+    this.authService.signIn(this.signInForm.value)
+      .subscribe(
+        (user: Coach | Coachee | HR) => {
 
-        ga('send', 'event', {
-          eventCategory: 'signin',
-          eventLabel: 'success|userId:' + user.id,
-          eventAction: 'api response',
-        });
+          ga('send', 'event', {
+            eventCategory: 'signin',
+            eventLabel: 'success|userId:' + user.id,
+            eventAction: 'api response',
+          });
 
-        console.log('onSignIn, user obtained', user);
+          console.log('onSignIn, user obtained', user);
+          /*L'utilisateur est TOUJOURS redirigé vers ses meetings*/
+          this.router.navigate(['/meetings']);
+          // Materialize.toast('Bonjour ' + user.first_name + ' !', 3000, 'rounded');
+          this.loginLoading = false;
+        },
+        error => {
+          ga('send', 'event', {
+            eventCategory: 'signin',
+            eventLabel: 'error:' + error,
+            eventAction: 'api response',
+          });
 
-        /*if (user instanceof Coach) {
-         this.router.navigate(['/meetings']);
-         } else {
-         this.router.navigate(['/coachs'])
-         }*/
-
-        /*L'utilisateur est TOUJOURS redirigé vers ses meetings*/
-        this.router.navigate(['/meetings']);
-        // Materialize.toast('Bonjour ' + user.first_name + ' !', 3000, 'rounded');
-        this.loginLoading = false;
-      },
-      error => {
-        ga('send', 'event', {
-          eventCategory: 'signin',
-          eventLabel: 'error:' + error,
-          eventAction: 'api response',
-        });
-
-        console.log('onSignIn, error obtained', error);
-        Materialize.toast("Le mot de passe ou l'adresse mail est incorrect", 3000, 'rounded');
-        this.loginLoading = false;
-        //this.error = true;
-        //this.errorMessage = error;
-      }
-    );
+          console.log('onSignIn, error obtained', error);
+          Materialize.toast("Le mot de passe ou l'adresse mail est incorrect", 3000, 'rounded');
+          this.loginLoading = false;
+          //this.error = true;
+          //this.errorMessage = error;
+        }
+      );
   }
 
   goToSignUp() {

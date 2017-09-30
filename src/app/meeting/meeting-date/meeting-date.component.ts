@@ -5,7 +5,6 @@ import {AuthService} from "../../service/auth.service";
 import {Observable, Subscription} from "rxjs";
 import {MeetingDate} from "../../model/MeetingDate";
 import {ActivatedRoute, Router} from "@angular/router";
-import {MeetingReview} from "../../model/MeetingReview";
 import {MeetingsService} from "../../service/meetings.service";
 import {Utils} from "../../utils/Utils";
 import {Meeting} from "../../model/Meeting";
@@ -49,7 +48,7 @@ export class CustomDatepickerI18n extends NgbDatepickerI18n {
 }
 
 @Component({
-  selector: 'rb-meeting-date',
+  selector: 'er-meeting-date',
   templateUrl: './meeting-date.component.html',
   styleUrls: ['./meeting-date.component.scss'],
   providers: [I18n, {provide: NgbDatepickerI18n, useClass: CustomDatepickerI18n}] // define custom NgbDatepickerI18n provider
@@ -117,28 +116,6 @@ export class MeetingDateComponent implements OnInit, OnDestroy {
     }
   }
 
-  private getOrCreateMeeting(): Observable<string> {
-
-    if (this.meetingId != null) {
-      return Observable.of(this.meetingId);
-    }
-
-    return this.connectedUser
-      .take(1)
-      .flatMap(
-        (user: ApiUser) => {
-          return this.meetingService
-            .createMeeting(user.id)
-            .map(
-              (meeting: Meeting) => {
-                console.log('meeting created');
-                return meeting.id;
-              }
-            );
-        }
-      );
-  }
-
   private onConnectedUserReceived(user: ApiUser) {
     this.connectedUser = Observable.of(user);
     this.cd.detectChanges();
@@ -146,18 +123,11 @@ export class MeetingDateComponent implements OnInit, OnDestroy {
 
   bookOrUpdateADate() {
     console.log('bookADate, dateModel : ', this.dateModel);
-    // console.log('bookADate, timeModel : ', this.timeModel);
 
     let minDate: Date = new Date(this.dateModel.year, this.dateModel.month - 1, this.dateModel.day, this.timeRange[0], 0);
     let maxDate = new Date(this.dateModel.year, this.dateModel.month - 1, this.dateModel.day, this.timeRange[1], 0);
 
-    // let timestampMin: number = +minDate.getTime().toFixed(0) / 1000;
-    // let timestampMax: number = +maxDate.getTime().toFixed(0) / 1000;
-
     if (this.isEditingPotentialDate) {
-
-      // this.mEditingPotentialTime.start_date = minDate.valueOf().toString();//TODO verify getTime et valueOf return the same value
-      // this.mEditingPotentialTime.end_date = maxDate.valueOf().toString();
 
       this.mEditingPotentialTime.start_date = minDate.valueOf();
       this.mEditingPotentialTime.end_date = maxDate.valueOf();
@@ -168,88 +138,17 @@ export class MeetingDateComponent implements OnInit, OnDestroy {
       //reset progress bar values
       this.resetValues();
       Materialize.toast('Plage modifiée !', 3000, 'rounded')
-
-      //   // just update potential date
-      //   this.meetingService.updatePotentialTime(this.mEditingPotentialTimeId, timestampMin, timestampMax).subscribe(
-      //     (meetingDate: MeetingDate) => {
-      //       console.log('updatePotentialTime, meetingDate : ', meetingDate);
-      //       // Reload potential times
-      //       this.loadMeetingPotentialTimes(this.meetingId);
-      //       //reset progress bar values
-      //       this.resetValues();
-      //       Materialize.toast('Plage modifiée !', 3000, 'rounded')
-      //     },
-      //     (error) => {
-      //       console.log('updatePotentialTime error', error);
-      //       this.displayErrorBookingDate = true;
-      //       Materialize.toast('Erreur lors de la modification', 3000, 'rounded')
-      //     }
-      //   );
-      //
     } else {
-
       let dateToSave = new MeetingDate();
-      // dateToSave.start_date = minDate.valueOf().toString();//TODO verify getTime et valueOf return the same value
-      // dateToSave.end_date = maxDate.valueOf().toString();
 
-      dateToSave.start_date = minDate.valueOf();//TODO verify getTime et valueOf return the same value
+      dateToSave.start_date = minDate.valueOf();
       dateToSave.end_date = maxDate.valueOf();
 
-      // dateToSave.start_date = timestampMin.toString();//TODO verify getTime et valueOf return the same value
-      // dateToSave.end_date = timestampMax.toString();
-
-      // console.log('bookOrUpdateADate, timestampMin : ', timestampMin);
-      // console.log('bookOrUpdateADate,  dateToSave.start_date : ', dateToSave.start_date);
-      //
-      // let date = new Date(timestampMin);
-      // console.log('bookOrUpdateADate, date min : ', date);
-      //
-      // date = new Date(minDate.valueOf());
-      // console.log('bookOrUpdateADate, date min : ', date);
-
-      // dateToSave.start_date = minDate.toDateString();//TODO verify getTime et valueOf return the same value
-      // dateToSave.end_date = maxDate.toDateString();
-
       this.addPotentialDate(dateToSave);
-
-      //   // create new date
-      //   this.meetingService.addPotentialDateToMeeting(this.meetingId, timestampMin, timestampMax).subscribe(
-      //     (meetingDate: MeetingDate) => {
-      //       console.log('addPotentialDateToMeeting, meetingDate : ', meetingDate);
-      //       this.potentialDatesArray.push(meetingDate);
-      //       // Reload potential times
-      //       console.log('reload potential times');
-      //       // Reload potential times
-      //       this.loadMeetingPotentialTimes(this.meetingId);
-      //       //reset progress bar values
-      //       this.resetValues();
-      //       Materialize.toast('Plage ajoutée !', 3000, 'rounded')
-      //     },
-      //     (error) => {
-      //       console.log('addPotentialDateToMeeting error', error);
-      //       this.displayErrorBookingDate = true;
-      //       Materialize.toast("Erreur lors de l'ajout", 3000, 'rounded')
-      //     }
-      //   );
     }
-
-
   }
 
   unbookAdate(meetingDate: MeetingDate) {
-    // console.log('unbookAdate');
-    // this.meetingService.removePotentialTime(potentialDateId).subscribe(
-    //   (response) => {
-    //     console.log('unbookAdate, response', response);
-    //     //reset progress bar values
-    //     this.resetValues();
-    //     // Reload potential times
-    //     this.loadMeetingPotentialTimes(this.meetingId);
-    //   }, (error) => {
-    //     console.log('unbookAdate, error', error);
-    //   }
-    // );
-
     this.potentialDatesArray.splice(this.potentialDatesArray.indexOf(meetingDate), 1)
     this.potentialDates = Observable.of(this.potentialDatesArray);
     this.cd.detectChanges();
@@ -318,11 +217,11 @@ export class MeetingDateComponent implements OnInit, OnDestroy {
     // TODO add this to block next month days
     // TODO date.month !== current.month ||
     return (newDate.getDay() === 6
-      || newDate.getDay() === 0
-      || date.year < now.getFullYear()
-      || (date.month < now.getMonth() + 1 && date.year <= now.getFullYear())
-      || (date.year <= now.getFullYear() && date.month === now.getMonth() + 1 && date.day < now.getDate())
-      || (date.year === now.getFullYear() && date.month === now.getMonth() + 1 && date.day < now.getDate() + 3));
+    || newDate.getDay() === 0
+    || date.year < now.getFullYear()
+    || (date.month < now.getMonth() + 1 && date.year <= now.getFullYear())
+    || (date.year <= now.getFullYear() && date.month === now.getMonth() + 1 && date.day < now.getDate())
+    || (date.year === now.getFullYear() && date.month === now.getMonth() + 1 && date.day < now.getDate() + 3));
   }
 
   /**
@@ -352,6 +251,7 @@ export class MeetingDateComponent implements OnInit, OnDestroy {
     this.potentialDatesArray.push(date);
     this.potentialDates = Observable.of(this.potentialDatesArray);
     this.cd.detectChanges();
+    Materialize.toast('Plage ajoutée !', 3000, 'rounded');
   }
 
   /* Call this method to check if all required params are correctly set. */
@@ -369,34 +269,30 @@ export class MeetingDateComponent implements OnInit, OnDestroy {
     console.log('finish, meetingGoal : ', this.meetingGoal);
     console.log('finish, meetingContext : ', this.meetingContext);
 
-    // create meeting
+    // create or update meeting
     // save GOAL and CONTEXT
     // save meeting dates
-    this.getOrCreateMeeting()
+    this.connectedUser
+      .take(1)
       .flatMap(
-        (meetingId: string) => {
-          return this.meetingService.addAContextForMeeting(meetingId, this.meetingContext)
-            .flatMap(
-              (meetingReview: MeetingReview) => {
-                return this.meetingService.addAGoalToMeeting(meetingId, this.meetingGoal);
-              }
-            )
-            .flatMap(
-              (meetingReview: MeetingReview) => {
-                return this.addMeetingDatesToMeeting(meetingId, this.potentialDatesArray);
-              }
-            );
+        (user: ApiUser) => {
+          if (this.meetingId != null) {
+            return this.meetingService
+              .updateMeeting(user.id, this.meetingId, this.meetingContext, this.meetingGoal, this.potentialDatesArray);
+          } else {
+            return this.meetingService
+              .createMeeting(user.id, this.meetingContext, this.meetingGoal, this.potentialDatesArray);
+          }
+        })
+      .subscribe(
+        (meeting: Meeting) => {
+          this.router.navigate(['/meetings']);
+          Materialize.toast('Vos disponibilités on été enregitrées !', 3000, 'rounded');
+        }, (error) => {
+          console.log('getOrCreateMeeting error', error);
+          Materialize.toast("Impossible d'enregistrer vos disponibilités", 3000, 'rounded')
         }
-      ).subscribe(
-      (res: any) => {
-        this.router.navigate(['/meetings']);
-        Materialize.toast('Vos disponibilités on été enregitrées !', 3000, 'rounded');
-        window.location.reload();
-      }, (error) => {
-        console.log('getOrCreateMeeting error', error);
-        Materialize.toast("Impossible d'enregistrer vos disponibilités", 3000, 'rounded')
-      }
-    );
+      );
   }
 
   ngOnDestroy(): void {
@@ -416,31 +312,4 @@ export class MeetingDateComponent implements OnInit, OnDestroy {
     console.log('onContextValueUpdated context', context);
     this.meetingContext = context;
   }
-
-  private addMeetingDatesToMeeting(meetingId: string, meetingDates: Array<MeetingDate>): Observable<MeetingDate> {
-    return this.meetingService.addPotentialDatesToMeeting(meetingId, meetingDates);
-  }
-
-  // private addMeetingDateToMeeting(meetingId: string, meetingDate: MeetingDate): Observable<MeetingDate> {
-  //   return this.meetingService.addPotentialDateToMeeting(meetingId, meetingDate.start_date.toString(), meetingDate.end_date.toString());
-
-  // .subscribe(
-  //   (meetingDate: MeetingDate) => {
-  //     console.log('addPotentialDateToMeeting, meetingDate : ', meetingDate);
-  //     this.potentialDatesArray.push(meetingDate);
-  //     // Reload potential times
-  //     console.log('reload potential times');
-  //     // Reload potential times
-  //     this.loadMeetingPotentialTimes(this.meetingId);
-  //     //reset progress bar values
-  //     this.resetValues();
-  //     Materialize.toast('Plage ajoutée !', 3000, 'rounded')
-  //   },
-  //   (error) => {
-  //     console.log('addPotentialDateToMeeting error', error);
-  //     this.displayErrorBookingDate = true;
-  //     Materialize.toast("Erreur lors de l'ajout", 3000, 'rounded')
-  //   }
-  // );
-  // }
 }

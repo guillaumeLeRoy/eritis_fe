@@ -21,7 +21,7 @@ declare var $: any;
 declare var Materialize: any;
 
 @Component({
-  selector: 'rb-header',
+  selector: 'er-header',
   templateUrl: 'header.component.html',
   styleUrls: ['./header.component.scss']
 })

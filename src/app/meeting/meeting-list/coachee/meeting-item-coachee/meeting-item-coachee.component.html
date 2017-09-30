@@ -110,7 +110,7 @@
 
       </div>
 
-      <div class="meeting-item-body-buttons" *ngIf="meeting.isOpen">
+      <div class="meeting-item-body-buttons" *ngIf="meeting.isOpen && !isAdmin">
         <button class="btn-basic btn-plain btn-blue btn-small" *ngIf="!meeting.agreed_date"
                 (click)="goToModifyDate(meeting.id)">
           MODIFIER
@@ -121,8 +121,11 @@
         </button>
         <button class="btn-basic btn-cancel" (click)="openModal()"><i class="material-icons">clear</i></button>
       </div>
-      <div class="meeting-item-body-buttons" *ngIf="!meeting.isOpen && !hasRate">
-        <button class="btn-basic btn-plain btn-blue btn-small" (click)="rateSession()">NOTER</button>
+
+      <div class="meeting-item-body-buttons" *ngIf="!meeting.isOpen && !hasRate && !isAdmin">
+        <div class="meeting-item-body-buttons">
+          <button class="btn-basic btn-plain btn-blue btn-small" (click)="rateSession()">NOTER</button>
+        </div>
       </div>
 
 

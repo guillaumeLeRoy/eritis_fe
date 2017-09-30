@@ -2,7 +2,7 @@ import {AfterViewInit, ChangeDetectorRef, Component, OnDestroy, OnInit} from "@a
 import {Observable} from "rxjs/Observable";
 import {Coach} from "../../model/Coach";
 import {Subscription} from "rxjs/Subscription";
-import {AdminAPIService} from "../../service/adminAPI.service";
+import {CoachCoacheeService} from "../../service/coach_coachee.service";
 
 declare var Materialize: any;
 
@@ -18,7 +18,7 @@ export class AdminCoachsListComponent implements OnInit, AfterViewInit, OnDestro
 
   loading = true;
 
-  constructor(private apiService: AdminAPIService, private cd: ChangeDetectorRef) {
+  constructor(private apiService: CoachCoacheeService, private cd: ChangeDetectorRef) {
   }
 
   ngOnInit() {
@@ -38,7 +38,7 @@ export class AdminCoachsListComponent implements OnInit, AfterViewInit, OnDestro
   }
 
   private fetchData() {
-    this.getAllCoachsSub = this.apiService.getCoachs().subscribe(
+    this.getAllCoachsSub = this.apiService.getAllCoachs(true).subscribe(
       (coachs: Array<Coach>) => {
         console.log('getAllCoachs subscribe, coachs : ', coachs);
 

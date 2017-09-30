@@ -1,9 +1,9 @@
 import {AfterViewInit, ChangeDetectorRef, Component, OnDestroy, OnInit} from "@angular/core";
-import {ActivatedRoute, Router} from "@angular/router";
-import {AdminAPIService} from "../../../../service/adminAPI.service";
+import {ActivatedRoute} from "@angular/router";
 import {Subscription} from "rxjs/Subscription";
 import {Observable} from "rxjs/Observable";
 import {Coach} from "../../../../model/Coach";
+import {CoachCoacheeService} from "../../../../service/coach_coachee.service";
 
 declare var Materialize: any;
 declare var $: any;
@@ -17,6 +17,7 @@ export class ProfileCoachAdminComponent implements OnInit, AfterViewInit, OnDest
 
   private coach: Observable<Coach>;
   private subscriptionGetCoach: Subscription;
+  private subscriptionGetRoute: Subscription;
 
   private loading: boolean = true;
 
@@ -24,7 +25,7 @@ export class ProfileCoachAdminComponent implements OnInit, AfterViewInit, OnDest
   private avatarFile: File;
 
 
-  constructor(private apiService: AdminAPIService, private router: Router, private cd: ChangeDetectorRef, private route: ActivatedRoute, private adminAPIService: AdminAPIService) {
+  constructor(private apiService: CoachCoacheeService, private cd: ChangeDetectorRef, private route: ActivatedRoute) {
   }
 
   ngOnInit() {
@@ -33,12 +34,31 @@ export class ProfileCoachAdminComponent implements OnInit, AfterViewInit, OnDest
     this.getCoach();
   }
 
+
+  ngAfterViewInit(): void {
+    console.log("afterViewInit");
+    // this.isOwner = (user instanceof Coach) && (coach.email === user.email);
+  }
+
+
+  ngOnDestroy(): void {
+    if (this.subscriptionGetCoach) {
+      console.log("Unsubscribe coach");
+      this.subscriptionGetCoach.unsubscribe();
+    }
+
+    if (this.subscriptionGetRoute) {
+      console.log("Unsubscribe route");
+      this.subscriptionGetRoute.unsubscribe();
+    }
+  }
+
   private getCoach() {
     this.subscriptionGetCoach = this.route.params.subscribe(
       (params: any) => {
         let coachId = params['id'];
 
-        this.apiService.getCoach(coachId).subscribe(
+        this.subscriptionGetCoach = this.apiService.getCoachForId(coachId, true).subscribe(
           (coach: Coach) => {
             console.log("gotCoach", coach);
             this.coach = Observable.of(coach);
@@ -50,36 +70,6 @@ export class ProfileCoachAdminComponent implements OnInit, AfterViewInit, OnDest
     )
   }
 
-  ngAfterViewInit(): void {
-    console.log("afterViewInit");
-    // this.isOwner = (user instanceof Coach) && (coach.email === user.email);
-  }
-
-  sendInvite(email: string) {
-    console.log('sendInvite, email', email);
-
-    this.apiService.createPotentialCoach(email).subscribe(
-      (res: any) => {
-        console.log('createPotentialCoach, res', res);
-        this.getCoach();
-        Materialize.toast('Invitation envoyée au Coach !', 3000, 'rounded');
-      }, (error) => {
-        console.log('createPotentialCoach, error', error);
-        Materialize.toast("Impossible d'ajouter le Coach", 3000, 'rounded');
-      }
-    );
-  }
-
-  goToCoachsAdmin() {
-    this.router.navigate(['admin/coachs-list']);
-  }
-
-  ngOnDestroy(): void {
-    if (this.subscriptionGetCoach) {
-      console.log("Unsubscribe coach");
-      this.subscriptionGetCoach.unsubscribe();
-    }
-  }
 
   previewPicture(event: any) {
     console.log('filePreview', event.target.files[0]);
@@ -105,7 +95,7 @@ export class ProfileCoachAdminComponent implements OnInit, AfterViewInit, OnDest
 
       this.coach.last().flatMap(
         (coach: Coach) => {
-          return this.adminAPIService.updateCoachProfilePicture(coach.id, this.avatarFile);
+          return this.apiService.updateCoachProfilePicture(coach.id, this.avatarFile);
         }
       ).subscribe(
         (res: any) => {

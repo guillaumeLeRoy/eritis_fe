@@ -2,7 +2,7 @@ import {Component, OnInit, Input} from '@angular/core';
 import {Message} from "./message";
 
 @Component({
-  selector: 'rb-chat-item',
+  selector: 'er-chat-item',
   templateUrl: './chat-item.component.html',
   styleUrls: ['./chat-item.component.scss']
 })

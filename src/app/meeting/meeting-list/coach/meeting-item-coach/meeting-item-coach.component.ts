@@ -1,4 +1,13 @@
-import {AfterViewInit, ChangeDetectorRef, Component, EventEmitter, Input, OnInit, Output} from "@angular/core";
+import {
+  AfterViewInit,
+  ChangeDetectorRef,
+  Component,
+  EventEmitter,
+  Input,
+  OnDestroy,
+  OnInit,
+  Output
+} from "@angular/core";
 import {Meeting} from "../../../../model/Meeting";
 import {Observable} from "rxjs";
 import {MeetingReview} from "../../../../model/MeetingReview";
@@ -16,23 +25,23 @@ declare var $: any;
 declare var Materialize: any;
 
 @Component({
-  selector: 'rb-meeting-item-coach',
+  selector: 'er-meeting-item-coach',
   templateUrl: './meeting-item-coach.component.html',
   styleUrls: ['./meeting-item-coach.component.scss']
 })
-export class MeetingItemCoachComponent implements OnInit, AfterViewInit {
+export class MeetingItemCoachComponent implements OnInit, AfterViewInit, OnDestroy {
 
   @Input()
   meeting: Meeting;
 
-  @Output()
-  onValidateDateBtnClick = new EventEmitter();
-
-  // @Output()
-  // dateRemoved = new EventEmitter();
+  @Input()
+  isAdmin: boolean = false;
 
   @Output()
-  cancelMeetingTimeEvent = new EventEmitter<Meeting>();
+  onValidateDateBtnClickEmitter = new EventEmitter();
+
+  @Output()
+  cancelMeetingBtnClickEmitter = new EventEmitter<Meeting>();
 
   @Output()
   onCloseMeetingBtnClickEmitter = new EventEmitter();
@@ -64,27 +73,32 @@ export class MeetingItemCoachComponent implements OnInit, AfterViewInit {
   private potentialDays: Observable<string[]>;
   private potentialHours: Observable<number[]>;
 
-  private connectedUserSubscription: Subscription;
-
   /**
    * Coach rate given by coachee
    */
   private sessionRate: string;
   private hasRate: boolean;
 
+  private mSessionReviewSubscription: Subscription;
+  private mSessionReviewResultSubscription: Subscription;
+  private mSessionReviewRateSubscription: Subscription;
+  private mSessionContextSubscription: Subscription;
+  private mSessionGoalSubscription: Subscription;
+  private mSessionPotentialTimesSubscription: Subscription;
+  private connectedUserSubscription: Subscription;
+
   constructor(private authService: AuthService, private meetingService: MeetingsService, private cd: ChangeDetectorRef, private router: Router) {
     $('select').material_select();
   }
 
   ngOnInit() {
-    console.log("ngOnInit, meeting : ", this.meeting);
+    console.log("ngOnInit");
 
     this.onRefreshRequested();
 
     this.coachee = this.meeting.coachee;
 
     $('select').material_select();
-
   }
 
   ngAfterViewInit(): void {
@@ -99,16 +113,49 @@ export class MeetingItemCoachComponent implements OnInit, AfterViewInit {
     $('select').material_select();
   }
 
+  ngOnDestroy(): void {
+    console.log("ngOnDestroy");
+
+    if (this.mSessionReviewSubscription != null) {
+      this.mSessionReviewSubscription.unsubscribe();
+    }
+
+    if (this.mSessionReviewResultSubscription != null) {
+      this.mSessionReviewResultSubscription.unsubscribe();
+    }
+
+    if (this.mSessionReviewRateSubscription != null) {
+      this.mSessionReviewRateSubscription.unsubscribe();
+    }
+
+    if (this.mSessionContextSubscription != null) {
+      this.mSessionContextSubscription.unsubscribe();
+    }
+
+    if (this.mSessionGoalSubscription != null) {
+      this.mSessionGoalSubscription.unsubscribe();
+    }
+
+    if (this.mSessionPotentialTimesSubscription != null) {
+      this.mSessionPotentialTimesSubscription.unsubscribe();
+    }
+
+    if (this.connectedUserSubscription != null) {
+      this.connectedUserSubscription.unsubscribe();
+    }
+  }
+
   onRefreshRequested() {
     let user = this.authService.getConnectedUser();
     console.log('onRefreshRequested, user : ', user);
     if (user == null) {
-      this.connectedUserSubscription = this.authService.getConnectedUserObservable().subscribe(
-        (user: Coach) => {
-          console.log('onRefreshRequested, getConnectedUser');
-          this.onUserObtained(user);
-        }
-      );
+      this.connectedUserSubscription = this.authService.getConnectedUserObservable()
+        .subscribe(
+          (user: Coach) => {
+            console.log('onRefreshRequested, getConnectedUser');
+            this.onUserObtained(user);
+          }
+        );
     } else {
       this.onUserObtained(user);
     }
@@ -123,33 +170,34 @@ export class MeetingItemCoachComponent implements OnInit, AfterViewInit {
   }
 
   loadMeetingPotentialTimes() {
-    this.meetingService.getMeetingPotentialTimes(this.meeting.id).subscribe(
-      (dates: MeetingDate[]) => {
-        console.log("potential dates obtained, ", dates);
+    this.mSessionPotentialTimesSubscription = this.meetingService.getMeetingPotentialTimes(this.meeting.id, this.isAdmin)
+      .subscribe(
+        (dates: MeetingDate[]) => {
+          console.log("potential dates obtained, ", dates);
 
-        if (dates != null) {
-          dates.sort(function (a, b) {
-            let d1 = new Date(a.start_date);
-            let d2 = new Date(b.start_date);
-            let res = d1.getUTCFullYear() - d2.getUTCFullYear();
-            if (res === 0)
-              res = d1.getUTCMonth() - d2.getUTCMonth();
-            if (res === 0)
-              res = d1.getUTCDate() - d2.getUTCDate();
-            if (res === 0)
-              res = d1.getUTCHours() - d2.getUTCHours();
-            return res;
-          });
+          if (dates != null) {
+            dates.sort(function (a, b) {
+              let d1 = new Date(a.start_date);
+              let d2 = new Date(b.start_date);
+              let res = d1.getUTCFullYear() - d2.getUTCFullYear();
+              if (res === 0)
+                res = d1.getUTCMonth() - d2.getUTCMonth();
+              if (res === 0)
+                res = d1.getUTCDate() - d2.getUTCDate();
+              if (res === 0)
+                res = d1.getUTCHours() - d2.getUTCHours();
+              return res;
+            });
+          }
+
+          this.potentialDatesArray = dates;
+          this.potentialDates = Observable.of(dates);
+          this.cd.detectChanges();
+          this.loadPotentialDays();
+        }, (error) => {
+          console.log('get potentials dates error', error);
         }
-
-        this.potentialDatesArray = dates;
-        this.potentialDates = Observable.of(dates);
-        this.cd.detectChanges();
-        this.loadPotentialDays();
-      }, (error) => {
-        console.log('get potentials dates error', error);
-      }
-    );
+      );
   }
 
   onCloseMeetingBtnClick() {
@@ -159,7 +207,7 @@ export class MeetingItemCoachComponent implements OnInit, AfterViewInit {
   private getGoal() {
     this.loading = true;
 
-    this.meetingService.getMeetingGoal(this.meeting.id).subscribe(
+    this.mSessionGoalSubscription = this.meetingService.getMeetingGoal(this.meeting.id, this.isAdmin).subscribe(
       (reviews: MeetingReview[]) => {
         console.log("getMeetingGoal, got goal : ", reviews);
         if (reviews != null)
@@ -180,7 +228,7 @@ export class MeetingItemCoachComponent implements OnInit, AfterViewInit {
   private getContext() {
     this.loading = true;
 
-    this.meetingService.getMeetingContext(this.meeting.id).subscribe(
+    this.mSessionContextSubscription = this.meetingService.getMeetingContext(this.meeting.id, this.isAdmin).subscribe(
       (reviews: MeetingReview[]) => {
         console.log("getMeetingContext, got context : ", reviews);
         if (reviews != null)
@@ -200,64 +248,68 @@ export class MeetingItemCoachComponent implements OnInit, AfterViewInit {
   private getReviewValue() {
     this.loading = true;
 
-    this.meetingService.getSessionReviewUtility(this.meeting.id).subscribe(
-      (reviews: MeetingReview[]) => {
-        console.log("getMeetingValue, got goal : ", reviews);
-        if (reviews != null)
-          this.reviewValue = reviews[0].value;
-        else
-          this.reviewValue = null;
+    this.mSessionReviewSubscription = this.meetingService.getSessionReviewUtility(this.meeting.id, this.isAdmin)
+      .subscribe(
+        (reviews: MeetingReview[]) => {
+          console.log("getMeetingValue, got goal : ", reviews);
+          if (reviews != null)
+            this.reviewValue = reviews[0].value;
+          else
+            this.reviewValue = null;
 
-        this.cd.detectChanges();
-        this.hasValue = (this.reviewValue != null);
-        this.loading = false;
-      },
-      (error) => {
-        console.log('getMeetingValue error', error);
-        //this.displayErrorPostingReview = true;
-      });
+          this.cd.detectChanges();
+          this.hasValue = (this.reviewValue != null);
+          this.loading = false;
+        },
+        (error) => {
+          console.log('getMeetingValue error', error);
+          //this.displayErrorPostingReview = true;
+        });
   }
 
   private getReviewNextStep() {
     this.loading = true;
 
-    this.meetingService.getSessionReviewResult(this.meeting.id).subscribe(
-      (reviews: MeetingReview[]) => {
-        console.log("getMeetingNextStep, : ", reviews);
-        if (reviews != null)
-          this.reviewNextStep = reviews[0].value;
-        else
-          this.reviewNextStep = null;
+    this.mSessionReviewResultSubscription = this.meetingService.getSessionReviewResult(this.meeting.id, this.isAdmin)
+      .subscribe(
+        (reviews: MeetingReview[]) => {
+          console.log("getMeetingNextStep, : ", reviews);
+          if (reviews != null)
+            this.reviewNextStep = reviews[0].value;
+          else
+            this.reviewNextStep = null;
 
-        this.cd.detectChanges();
-        this.hasNextStep = (this.reviewNextStep != null);
-        this.loading = false;
-      },
-      (error) => {
-        console.log('getMeetingNextStep error', error);
-        //this.displayErrorPostingReview = true;
-      });
+          this.cd.detectChanges();
+          this.hasNextStep = (this.reviewNextStep != null);
+          this.loading = false;
+        },
+        (error) => {
+          console.log('getMeetingNextStep error', error);
+          //this.displayErrorPostingReview = true;
+        });
   }
+
 
   private getSessionReviewTypeRate() {
     this.loading = true;
 
-    this.meetingService.getSessionReviewRate(this.meeting.id).subscribe(
-      (reviews: MeetingReview[]) => {
-        console.log("getSessionReviewTypeRate, got rate : ", reviews);
-        if (reviews != null)
-          this.sessionRate = reviews[0].value;
-        else
-          this.sessionRate = null;
+    this.mSessionReviewRateSubscription = this.meetingService.getSessionReviewRate(this.meeting.id, this.isAdmin)
+      .subscribe(
+        (reviews: MeetingReview[]) => {
+          console.log("getSessionReviewTypeRate, got rate : ", reviews);
+          if (reviews != null)
+            this.sessionRate = reviews[0].value;
+          else
+            this.sessionRate = null;
 
-        this.cd.detectChanges();
-        this.hasRate = (this.sessionRate != null);
-        this.loading = false;
-      },
-      (error) => {
-        console.log('getSessionReviewTypeRate error', error);
-        //this.displayErrorPostingReview = true;
-      });
+          this.cd.detectChanges();
+          this.hasRate = (this.sessionRate != null);
+          this.loading = false;
+        },
+        (error) => {
+          console.log('getSessionReviewTypeRate error', error);
+          //this.displayErrorPostingReview = true;
+        });
   }
 
   private loadPotentialDays() {
@@ -312,11 +364,14 @@ export class MeetingItemCoachComponent implements OnInit, AfterViewInit {
   }
 
   goToCoacheeProfile(coacheeId: String) {
-    this.router.navigate(['/profile_coachee', coacheeId]);
+    if (this.isAdmin)
+      this.router.navigate(['admin/profile/coachee', coacheeId]);
+    else
+      this.router.navigate(['/profile_coachee', coacheeId]);
   }
 
   onValidateDateClick() {
-    this.onValidateDateBtnClick.emit({
+    this.onValidateDateBtnClickEmitter.emit({
       selectedDate: this.selectedDate,
       selectedHour: this.selectedHour,
       meeting: this.meeting

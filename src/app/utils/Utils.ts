@@ -109,6 +109,8 @@ export class Utils {
     if (m === 0) {
       return '00';
     }
+    if (m < 10)
+      return '0' + m;
     return m.toString();
   }
 }

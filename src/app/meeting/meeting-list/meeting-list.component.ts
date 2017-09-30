@@ -1,7 +1,6 @@
 import {AfterViewInit, ChangeDetectorRef, Component, OnDestroy, OnInit} from "@angular/core";
 import {Observable, Subscription} from "rxjs";
 import {AuthService} from "../../service/auth.service";
-import {ApiUser} from "../../model/ApiUser";
 import {Coach} from "../../model/Coach";
 import {Coachee} from "../../model/Coachee";
 import {HR} from "../../model/HR";
@@ -10,7 +9,7 @@ declare var $: any;
 declare var Materialize: any;
 
 @Component({
-  selector: 'rb-meeting-list',
+  selector: 'er-meeting-list',
   templateUrl: './meeting-list.component.html',
   styleUrls: ['./meeting-list.component.scss']
 })
@@ -30,22 +29,16 @@ export class MeetingListComponent implements OnInit, AfterViewInit, OnDestroy {
 
   ngAfterViewInit(): void {
     console.log('ngAfterViewInit');
-
     this.onRefreshRequested();
   }
 
-  onRefreshRequested() {
-    let user = this.authService.getConnectedUser();
-    console.log('onRefreshRequested, user : ', user);
-    if (user == null) {
-      this.connectedUserSubscription = this.authService.getConnectedUserObservable().subscribe(
-        (user: Coach | Coachee) => {
-          console.log('onRefreshRequested, getConnectedUser');
-          this.onUserObtained(user);
-        }
-      );
-    } else {
-      this.onUserObtained(user);
+  ngOnDestroy(): void {
+    if (this.subscription) {
+      this.subscription.unsubscribe();
+    }
+
+    if (this.connectedUserSubscription) {
+      this.connectedUserSubscription.unsubscribe();
     }
   }
 
@@ -69,13 +62,18 @@ export class MeetingListComponent implements OnInit, AfterViewInit, OnDestroy {
     }
   }
 
-  ngOnDestroy(): void {
-    if (this.subscription) {
-      this.subscription.unsubscribe();
-    }
-
-    if (this.connectedUserSubscription) {
-      this.connectedUserSubscription.unsubscribe();
+  private onRefreshRequested() {
+    let user = this.authService.getConnectedUser();
+    console.log('onRefreshRequested, user : ', user);
+    if (user == null) {
+      this.connectedUserSubscription = this.authService.getConnectedUserObservable().subscribe(
+        (user: Coach | Coachee) => {
+          console.log('onRefreshRequested, getConnectedUser');
+          this.onUserObtained(user);
+        }
+      );
+    } else {
+      this.onUserObtained(user);
     }
   }
 
