@@ -130,7 +130,7 @@ export class AuthService {
     } else {
       console.log("refreshConnectedUser, no connected user");
     }
-    return Observable.from(null);
+    return Observable.of(null);
   }
 
   private fetchCoach(userId: string): Observable<Coach> {
@@ -635,7 +635,7 @@ export class AuthService {
     this.firebase.auth().signOut();
     this.updateAuthStatus(null);
     this.cookieService.remove('ACTIVE_SESSION');
-    this.router.navigate(['/welcome']);
+    this.router.navigate(['/']);
   }
 
 

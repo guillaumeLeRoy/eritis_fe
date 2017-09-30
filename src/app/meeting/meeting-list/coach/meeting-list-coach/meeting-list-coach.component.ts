@@ -104,7 +104,8 @@ export class MeetingListCoachComponent implements OnInit, AfterViewInit, OnDestr
 
   private onUserObtained(user: Coach) {
     console.log('onUserObtained, user : ', user);
-    this.getAllMeetingsForCoach(user.id);
+    if (user)
+      this.getAllMeetingsForCoach(user.id);
     // this.cd.detectChanges();
   }
 

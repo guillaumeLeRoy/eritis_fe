@@ -79,7 +79,8 @@ export class MeetingListCoacheeComponent implements OnInit, AfterViewInit, OnDes
 
   private onUserObtained(user: Coachee) {
     console.log('onUserObtained, user : ', user);
-    this.getAllMeetingsForCoachee(user.id);
+    if (user)
+      this.getAllMeetingsForCoachee(user.id);
     // this.user = Observable.of(user);
     // this.cd.detectChanges();
   }

@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {AuthService} from "../service/auth.service";
 import {Response} from "@angular/http";
 import {FormGroup, FormBuilder, Validators} from "@angular/forms";
@@ -7,6 +7,7 @@ import {Coachee} from "app/model/Coachee";
 import {Coach} from "../model/Coach";
 import {Router} from "@angular/router";
 import {CookieService} from "ngx-cookie";
+import {Subscription} from "rxjs/Subscription";
 
 declare var Materialize: any;
 declare var $: any;
@@ -16,12 +17,11 @@ declare var $: any;
   templateUrl: './welcome.component.html',
   styleUrls: ['./welcome.component.scss']
 })
-export class WelcomeComponent implements OnInit {
-  private loginActivated = false;
+export class WelcomeComponent implements OnInit, OnDestroy {
 
   private contactForm: FormGroup;
-  private error = false;
-  private errorMessage: '';
+
+  private connectedUserSubscription: Subscription;
 
   constructor(private router: Router, private authService: AuthService, private formBuilder: FormBuilder, private cookieService: CookieService) {
   }
@@ -40,7 +40,7 @@ export class WelcomeComponent implements OnInit {
     });
 
     // this.connectedUser = this.authService.getConnectedUserObservable();
-    this.authService.getConnectedUserObservable().subscribe(
+    this.connectedUserSubscription = this.authService.getConnectedUserObservable().subscribe(
       (user: Coach | Coachee | HR) => {
         console.log('getConnectedUser : ' + user);
         this.onUserObtained(user);
@@ -48,14 +48,15 @@ export class WelcomeComponent implements OnInit {
     );
   }
 
+  ngOnDestroy() {
+    if (this.connectedUserSubscription)
+      this.connectedUserSubscription.unsubscribe();
+  }
+
   private onUserObtained(user: Coach | Coachee | HR) {
     console.log('onUserObtained : ' + user);
     if (user != null && this.cookieService.get('ACTIVE_SESSION') !== undefined)
       this.router.navigate(['/meetings']);
-  }
-
-  activateLogin() {
-    this.loginActivated = true;
   }
 
   /**
