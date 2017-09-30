@@ -43,6 +43,7 @@ export class MeetingListCoacheeComponent implements OnInit, AfterViewInit, OnDes
   private hasOpenedMeeting = false;
   private hasClosedMeeting = false;
 
+  private userSubscription: Subscription;
   private getAllMeetingsForCoacheeIdSubscription?: Subscription;
 
   private meetingToCancel: Meeting;
@@ -69,7 +70,7 @@ export class MeetingListCoacheeComponent implements OnInit, AfterViewInit, OnDes
   }
 
   private onRefreshRequested() {
-    this.user.first().subscribe((user: Coachee) => {
+    this.userSubscription = this.user.first().subscribe((user: Coachee) => {
       this.onUserObtained(user);
       this.requestRefreshEventEmitter.emit(null);
     });
@@ -145,6 +146,10 @@ export class MeetingListCoacheeComponent implements OnInit, AfterViewInit, OnDes
   ngOnDestroy(): void {
     if (this.getAllMeetingsForCoacheeIdSubscription) {
       this.getAllMeetingsForCoacheeIdSubscription.unsubscribe();
+    }
+
+    if (this.userSubscription) {
+      this.userSubscription.unsubscribe();
     }
   }
 

@@ -35,6 +35,7 @@ export class MeetingListCoachComponent implements OnInit, AfterViewInit, OnDestr
   private hasClosedMeeting = false;
   private hasUnbookedMeeting = false;
 
+  private userSubscription: Subscription;
   private getAllMeetingsForCoachIdSubscription: Subscription;
 
   private meetingToCancel: Meeting;
@@ -72,7 +73,7 @@ export class MeetingListCoachComponent implements OnInit, AfterViewInit, OnDestr
     console.log('ngOnInit');
     this.loading = true;
 
-    this.user.subscribe((user: Coach) => {
+    this.userSubscription = this.user.subscribe((user: Coach) => {
       this.onUserObtained(user);
     });
   }
@@ -87,6 +88,10 @@ export class MeetingListCoachComponent implements OnInit, AfterViewInit, OnDestr
 
     if (this.getAllMeetingsForCoachIdSubscription) {
       this.getAllMeetingsForCoachIdSubscription.unsubscribe();
+    }
+
+    if (this.userSubscription) {
+      this.userSubscription.unsubscribe();
     }
   }
 
