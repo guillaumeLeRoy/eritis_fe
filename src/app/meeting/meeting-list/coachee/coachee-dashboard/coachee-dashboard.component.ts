@@ -70,7 +70,7 @@ export class CoacheeDashboardComponent implements OnInit, AfterViewInit, OnDestr
     console.log('goToDate');
 
     if (this.user != null) {
-      this.user.take(1).subscribe(
+      this.user.asObservable().take(1).subscribe(
         (user: ApiUser) => {
           if (user == null) {
             console.log('no connected user')
