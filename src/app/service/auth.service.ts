@@ -108,9 +108,9 @@ export class AuthService {
     let date = (new Date());
     date.setHours(date.getHours() + 1);
     console.log('COOKIE', date);
-    if (this.cookieService.get('ACTIVE_SESSION') === undefined)
-      if (this.cookieService.get('ACCEPTS_COOKIES') !== undefined)
-        this.cookieService.put('ACTIVE_SESSION', 'true', {expires: date.toDateString()});
+    // if (this.cookieService.get('ACTIVE_SESSION') === undefined)
+    //   if (this.cookieService.get('ACCEPTS_COOKIES') !== undefined)
+    //     this.cookieService.put('ACTIVE_SESSION', 'true', {expires: date.toDateString()});
   }
 
   /*

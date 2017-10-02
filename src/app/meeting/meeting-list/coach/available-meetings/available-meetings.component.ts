@@ -152,7 +152,7 @@ export class AvailableMeetingsComponent implements OnInit, OnDestroy {
 
         this.coachValidateModalVisibility(false);
         //navigate to dashboard
-        this.router.navigate(['/meetings']);
+        this.router.navigate(['dashboard/meetings']);
       }, (error) => {
         console.log('get potentials dates error', error);
         Materialize.toast('Erreur lors de la validation du meeting', 3000, 'rounded')

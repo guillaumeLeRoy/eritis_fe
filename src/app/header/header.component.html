@@ -139,12 +139,12 @@
             <div [hidden]="isAdmin() || isHomePage()">
               <li *ngIf="(isAuthenticated | async) && isUserACoach()"
                   [class.has-notif]="hasAvailableMeetings"
-                  [class.active]="router.url === '/available_meetings'">
+                  [class.active]="router.url === '/dashboard/available_meetings'">
                 <a (click)="goToAvailableSessions()">
                 Demandes en attente</a>
               </li>
 
-              <li *ngIf="(isAuthenticated | async)" [class.active]="router.url === '/meetings'">
+              <li *ngIf="(isAuthenticated | async)" [class.active]="router.url === '/dashboard/meetings'">
                 <a (click)="goToMeetings()">
                   Tableau de bord</a>
               </li>
@@ -247,10 +247,10 @@
   <!--<li *ngIf="(isAuthenticated | async)"><a (click)="goToMeetings()">Vos meetings</a></li>-->
   <div class="side-nav-items" *ngIf="!isAdmin()">
     <li *ngIf="(isAuthenticated | async) && isUserACoach()"
-        [class.active]="router.url === '/available_meetings'"><a (click)="goToAvailableSessions()">Séances
+        [class.active]="router.url === '/dashboard/available_meetings'"><a (click)="goToAvailableSessions()">Séances
       disponibles</a></li>
 
-    <li *ngIf="(isAuthenticated | async)" [class.active]="router.url === '/meetings'"><a
+    <li *ngIf="(isAuthenticated | async)" [class.active]="router.url === '/dashboard/meetings'"><a
       (click)="goToMeetings()">Tableau de bord</a></li>
 
     <!--<li [hidden]="!(isAuthenticated | async)">-->

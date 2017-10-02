@@ -52,8 +52,8 @@ export class MeetingListComponent implements OnInit, AfterViewInit, OnDestroy {
     console.log('onUserObtained, user : ', user);
     if (user)
       this.user.next(user);
-    else
-      this.router.navigate(['/']);
+    // else
+    //   this.router.navigate(['/']);
   }
 
   isUserACoach(user: Coach | Coachee | HR) {

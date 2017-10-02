@@ -25,8 +25,6 @@ export class WelcomeComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    window.scrollTo(0, 0);
-
     // Clean cookies
     this.cookieService.remove('COACH_REGISTER_CONDITIONS_ACCEPTED');
     this.cookieService.remove('COACH_REGISTER_FORM_SENT');

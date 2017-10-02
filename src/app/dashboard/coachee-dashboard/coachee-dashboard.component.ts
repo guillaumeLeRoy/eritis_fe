@@ -1,10 +1,10 @@
 import {AfterViewInit, Component, OnDestroy, OnInit} from "@angular/core";
-import {AuthService} from "../../../../service/auth.service";
+import {AuthService} from "../../service/auth.service";
 import {Router} from "@angular/router";
-import {Coachee} from "../../../../model/Coachee";
-import {ApiUser} from "../../../../model/ApiUser";
-import {HR} from "../../../../model/HR";
-import {Coach} from "../../../../model/Coach";
+import {Coachee} from "../../model/Coachee";
+import {ApiUser} from "../../model/ApiUser";
+import {HR} from "../../model/HR";
+import {Coach} from "../../model/Coach";
 import {BehaviorSubject} from "rxjs/BehaviorSubject";
 import {Subscription} from "rxjs/Subscription";
 
@@ -75,7 +75,7 @@ export class CoacheeDashboardComponent implements OnInit, AfterViewInit, OnDestr
             console.log('no connected user')
             return;
           }
-          this.router.navigate(['/date']);
+          this.router.navigate(['dashboard/date']);
         });
     }
   }

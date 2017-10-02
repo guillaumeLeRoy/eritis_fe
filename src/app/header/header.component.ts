@@ -60,15 +60,15 @@ export class HeaderComponent implements OnInit, AfterViewInit, OnDestroy {
     this.getConnectedUser();
 
     this.router.events.subscribe((evt) => {
-      if (!(evt instanceof NavigationEnd)) {
-        this.onRefreshRequested();
-        // console.log("headerNav USER", this.mUser);
-        // console.log("headerNav COOKIE", this.cookieService.get('ACTIVE_SESSION'));
-        if (this.mUser !== null && this.cookieService.get('ACTIVE_SESSION') === undefined) {
-          this.onLogout();
-          this.router.navigate(['/']);
-        }
-      }
+      // if (!(evt instanceof NavigationEnd)) {
+      //   this.onRefreshRequested();
+      //   // console.log("headerNav USER", this.mUser);
+      //   // console.log("headerNav COOKIE", this.cookieService.get('ACTIVE_SESSION'));
+      //   if (this.mUser !== null && this.cookieService.get('ACTIVE_SESSION') === undefined) {
+      //     this.onLogout();
+      //     this.router.navigate(['/']);
+      //   }
+      // }
 
       window.scrollTo(0, 0)
     });
@@ -174,30 +174,30 @@ export class HeaderComponent implements OnInit, AfterViewInit, OnDestroy {
 
   goToWelcomePage() {
     $('.button-collapse').sideNav('hide');
-    this.router.navigate(['/welcome']);
+    this.router.navigate(['welcome']);
   }
 
   goToMeetings() {
     let user = this.authService.getConnectedUser();
     if (user != null) {
-      this.router.navigate(['/meetings']);
+      this.router.navigate(['dashboard/meetings']);
     }
   }
 
   goToAvailableSessions() {
     let user = this.authService.getConnectedUser();
     if (user != null) {
-      this.router.navigate(['/available_meetings']);
+      this.router.navigate(['dashboard/available_meetings']);
     }
   }
 
   goToProfile() {
     if (this.mUser instanceof Coach) {
-      this.router.navigate(['/profile_coach', this.mUser.id]);
+      this.router.navigate(['dashboard/profile_coach', this.mUser.id]);
     } else if (this.mUser instanceof Coachee) {
-      this.router.navigate(['/profile_coachee', this.mUser.id]);
+      this.router.navigate(['dashboard/profile_coachee', this.mUser.id]);
     } else if (this.mUser instanceof HR) {
-      this.router.navigate(['/profile_rh', this.mUser.id]);
+      this.router.navigate(['dashboard/profile_rh', this.mUser.id]);
     }
   }
 

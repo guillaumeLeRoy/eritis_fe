@@ -88,7 +88,7 @@ export class SignupCoacheeComponent implements OnInit {
       data => {
         console.log("onSignUp, data obtained", data)
         /*L'utilisateur est TOUJOURS redirigé vers ses meetings*/
-        this.router.navigate(['/meetings']);
+        this.router.navigate(['/dashboard']);
       },
       error => {
         console.log("onSignUp, error obtained", error)

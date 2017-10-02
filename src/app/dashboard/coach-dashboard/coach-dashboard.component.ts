@@ -1,10 +1,10 @@
 import {AfterViewInit, Component, OnDestroy, OnInit} from "@angular/core";
-import {AuthService} from "../../../../service/auth.service";
-import {ApiUser} from "../../../../model/ApiUser";
+import {AuthService} from "../../service/auth.service";
+import {ApiUser} from "../../model/ApiUser";
 import {Subscription} from "rxjs/Subscription";
-import {Coach} from "../../../../model/Coach";
-import {HR} from "../../../../model/HR";
-import {Coachee} from "../../../../model/Coachee";
+import {Coach} from "../../model/Coach";
+import {HR} from "../../model/HR";
+import {Coachee} from "../../model/Coachee";
 import {BehaviorSubject} from "rxjs/BehaviorSubject";
 
 declare var $: any;
