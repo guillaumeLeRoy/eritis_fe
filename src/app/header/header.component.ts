@@ -53,7 +53,11 @@ export class HeaderComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.onRefreshRequested();
+  }
+
+  ngAfterViewInit(): void {
+    console.log('ngAfterViewInit');
+    this.getConnectedUser();
 
     this.router.events.subscribe((evt) => {
       if (!(evt instanceof NavigationEnd)) {
@@ -69,13 +73,8 @@ export class HeaderComponent implements OnInit, AfterViewInit, OnDestroy {
       window.scrollTo(0, 0)
     });
 
-
     // Cookie Headband
     this.showCookiesMessage = this.cookieService.get('ACCEPTS_COOKIES') === undefined;
-  }
-
-  ngAfterViewInit(): void {
-    console.log('ngAfterViewInit');
   }
 
   ngOnDestroy(): void {
@@ -95,6 +94,14 @@ export class HeaderComponent implements OnInit, AfterViewInit, OnDestroy {
 
     if (this.readAllNotifSubscription)
       this.readAllNotifSubscription.unsubscribe();
+  }
+
+  getConnectedUser() {
+    this.connectedUserSubscription = this.authService.getConnectedUserObservable()
+      .subscribe((user?: Coach | Coachee | HR) => {
+          this.onUserObtained(user);
+        }
+      );
   }
 
   onRefreshRequested() {

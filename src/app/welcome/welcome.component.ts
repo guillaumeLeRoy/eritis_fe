@@ -21,9 +21,7 @@ export class WelcomeComponent implements OnInit, OnDestroy {
 
   private contactForm: FormGroup;
 
-  private connectedUserSubscription: Subscription;
-
-  constructor(private router: Router, private authService: AuthService, private formBuilder: FormBuilder, private cookieService: CookieService) {
+  constructor(private authService: AuthService, private router: Router, private formBuilder: FormBuilder, private cookieService: CookieService) {
   }
 
   ngOnInit() {
@@ -38,25 +36,9 @@ export class WelcomeComponent implements OnInit, OnDestroy {
       mail: ['', Validators.compose([Validators.required])],
       message: ['', [Validators.required]],
     });
-
-    // this.connectedUser = this.authService.getConnectedUserObservable();
-    this.connectedUserSubscription = this.authService.getConnectedUserObservable().subscribe(
-      (user: Coach | Coachee | HR) => {
-        console.log('getConnectedUser : ' + user);
-        this.onUserObtained(user);
-      }
-    );
   }
 
   ngOnDestroy() {
-    if (this.connectedUserSubscription)
-      this.connectedUserSubscription.unsubscribe();
-  }
-
-  private onUserObtained(user: Coach | Coachee | HR) {
-    console.log('onUserObtained : ' + user);
-    if (user != null && this.cookieService.get('ACTIVE_SESSION') !== undefined)
-      this.router.navigate(['/meetings']);
   }
 
   /**
