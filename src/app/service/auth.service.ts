@@ -15,6 +15,8 @@ import {PotentialCoachee} from "../model/PotentialCoachee";
 import {PotentialRh} from "../model/PotentialRh";
 import {CookieService} from "ngx-cookie";
 
+declare var Materialize: any;
+
 @Injectable()
 export class AuthService {
 
@@ -636,6 +638,7 @@ export class AuthService {
     this.updateAuthStatus(null);
     this.cookieService.remove('ACTIVE_SESSION');
     this.router.navigate(['/']);
+    Materialize.toast('Vous avez été déconnecté', 3000, 'rounded');
   }
 
 

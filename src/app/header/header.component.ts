@@ -53,10 +53,7 @@ export class HeaderComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   ngOnInit(): void {
-  }
-
-  ngAfterViewInit(): void {
-    console.log('ngAfterViewInit');
+    console.log('ngOnInit');
     this.getConnectedUser();
 
     this.router.events.subscribe((evt) => {
@@ -69,9 +66,12 @@ export class HeaderComponent implements OnInit, AfterViewInit, OnDestroy {
       //     this.router.navigate(['/']);
       //   }
       // }
-
       window.scrollTo(0, 0)
     });
+  }
+
+  ngAfterViewInit(): void {
+    console.log('ngAfterViewInit');
 
     // Cookie Headband
     this.showCookiesMessage = this.cookieService.get('ACCEPTS_COOKIES') === undefined;
@@ -99,7 +99,9 @@ export class HeaderComponent implements OnInit, AfterViewInit, OnDestroy {
   getConnectedUser() {
     this.connectedUserSubscription = this.authService.getConnectedUserObservable()
       .subscribe((user?: Coach | Coachee | HR) => {
+          console.log("getConnectedUser : " + user);
           this.onUserObtained(user);
+          this.cd.detectChanges();
         }
       );
   }
@@ -107,7 +109,9 @@ export class HeaderComponent implements OnInit, AfterViewInit, OnDestroy {
   onRefreshRequested() {
     this.connectedUserSubscription = this.authService.refreshConnectedUser()
       .subscribe((user?: Coach | Coachee | HR) => {
+          console.log("onRefreshRequested : " + user);
           this.onUserObtained(user);
+          this.cd.detectChanges();
         }
       );
   }
@@ -132,7 +136,7 @@ export class HeaderComponent implements OnInit, AfterViewInit, OnDestroy {
       else
         console.log('onUserObtained COOKIE', this.cookieService.get('ACTIVE_SESSION'));
 
-      if (this.isUserACoach(user))
+      if (this.isUserACoach())
         this.getAvailableMeetings();
 
       this.user.next(user);
@@ -162,7 +166,7 @@ export class HeaderComponent implements OnInit, AfterViewInit, OnDestroy {
       console.log('goToHomeUser');
       this.goToMeetings();
     }
-    if (this.isAdmin()) {
+    else if (this.isAdmin()) {
       console.log('goToHomeAdmin');
       this.navigateAdminHome();
     }
@@ -223,16 +227,16 @@ export class HeaderComponent implements OnInit, AfterViewInit, OnDestroy {
     }
   }
 
-  isUserACoach(user: ApiUser): boolean {
-    return user instanceof Coach
+  isUserACoach(): boolean {
+    return this.mUser instanceof Coach
   }
 
-  isUserACoachee(user: ApiUser): boolean {
-    return user instanceof Coachee
+  isUserACoachee(): boolean {
+    return this.mUser instanceof Coachee
   }
 
-  isUserARh(user: ApiUser): boolean {
-    return user instanceof HR
+  isUserARh(): boolean {
+    return this.mUser instanceof HR
   }
 
   isAdmin(): boolean {
@@ -283,6 +287,7 @@ export class HeaderComponent implements OnInit, AfterViewInit, OnDestroy {
       (meetings: Meeting[]) => {
         console.log('got getAvailableMeetings', meetings);
         if (meetings != null && meetings.length > 0) this.hasAvailableMeetings = true;
+        this.cd.detectChanges();
       }
     );
   }
@@ -311,6 +316,7 @@ export class HeaderComponent implements OnInit, AfterViewInit, OnDestroy {
         }
 
         this.notifications = Observable.of(notifs);
+        this.cd.detectChanges();
       }
     );
   }
@@ -408,6 +414,7 @@ export class HeaderComponent implements OnInit, AfterViewInit, OnDestroy {
         console.log("sendPasswordResetEmail ");
         Materialize.toast("Email envoyé", 3000, 'rounded');
         this.cancelForgotPasswordModal();
+        this.cd.detectChanges();
       },
       error => {
         /**

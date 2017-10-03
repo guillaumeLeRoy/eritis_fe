@@ -72,10 +72,7 @@ export class MeetingListCoachComponent implements OnInit, AfterViewInit, OnDestr
   ngOnInit() {
     console.log('ngOnInit');
     this.loading = true;
-
-    this.userSubscription = this.user.subscribe((user: Coach) => {
-      this.onUserObtained(user);
-    });
+    this.onRefreshRequested();
   }
 
   ngAfterViewInit(): void {
@@ -97,8 +94,10 @@ export class MeetingListCoachComponent implements OnInit, AfterViewInit, OnDestr
 
   onRefreshRequested() {
     console.log('onRefreshRequested');
-    this.user.first().subscribe((user: Coach) => {
-      this.onUserObtained(user);
+    this.userSubscription = this.user.first().subscribe(
+      (user: Coach) => {
+        this.onUserObtained(user);
+        this.cd.detectChanges();
     });
   }
 

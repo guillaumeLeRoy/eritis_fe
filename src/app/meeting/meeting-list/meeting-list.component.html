@@ -4,17 +4,17 @@
 
       <!-- Coachee dashboard -->
       <div *ngIf="isUserACoachee((user | async))">
-        <er-coachee-dashboard></er-coachee-dashboard>
+        <er-coachee-dashboard [user]="user"></er-coachee-dashboard>
       </div>
 
       <!-- Coach dashboard -->
       <div *ngIf="isUserACoach((user | async))">
-        <er-coach-dashboard></er-coach-dashboard>
+        <er-coach-dashboard [user]="user"></er-coach-dashboard>
       </div>
 
       <!-- RH dashboard -->
       <div *ngIf="isUserARh((user | async))">
-        <er-rh-dashboard></er-rh-dashboard>
+        <er-rh-dashboard [user]="user"></er-rh-dashboard>
       </div>
 
     </div><!--end row-->

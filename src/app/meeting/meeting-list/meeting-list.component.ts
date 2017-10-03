@@ -20,17 +20,17 @@ export class MeetingListComponent implements OnInit, AfterViewInit, OnDestroy {
   private user: BehaviorSubject<Coach | Coachee | HR>;
   private connectedUserSubscription: Subscription;
 
-  constructor(private authService: AuthService, private router: Router) {
+  constructor(private authService: AuthService, private cd: ChangeDetectorRef) {
     this.user = new BehaviorSubject(null);
   }
 
   ngOnInit() {
     console.log('ngOnInit');
+    this.onRefreshRequested();
   }
 
   ngAfterViewInit(): void {
     console.log('ngAfterViewInit');
-    this.onRefreshRequested();
   }
 
   ngOnDestroy(): void {
@@ -44,6 +44,7 @@ export class MeetingListComponent implements OnInit, AfterViewInit, OnDestroy {
     this.connectedUserSubscription = this.authService.refreshConnectedUser()
       .subscribe((user?: Coach | Coachee | HR) => {
           this.onUserObtained(user);
+          this.cd.detectChanges();
         }
       );
   }
@@ -52,8 +53,6 @@ export class MeetingListComponent implements OnInit, AfterViewInit, OnDestroy {
     console.log('onUserObtained, user : ', user);
     if (user)
       this.user.next(user);
-    // else
-    //   this.router.navigate(['/']);
   }
 
   isUserACoach(user: Coach | Coachee | HR) {

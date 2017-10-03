@@ -1,4 +1,4 @@
-import {AfterViewInit, Component, OnDestroy, OnInit} from "@angular/core";
+import {AfterViewInit, ChangeDetectorRef, Component, Input, OnDestroy, OnInit} from "@angular/core";
 import {AuthService} from "../../service/auth.service";
 import {ApiUser} from "../../model/ApiUser";
 import {Subscription} from "rxjs/Subscription";
@@ -6,6 +6,9 @@ import {Coach} from "../../model/Coach";
 import {HR} from "../../model/HR";
 import {Coachee} from "../../model/Coachee";
 import {BehaviorSubject} from "rxjs/BehaviorSubject";
+import {Observable} from "rxjs/Observable";
+import {Meeting} from "../../model/Meeting";
+import {MeetingsService} from "../../service/meetings.service";
 
 declare var $: any;
 declare var Materialize: any;
@@ -17,12 +20,15 @@ declare var Materialize: any;
 })
 export class CoachDashboardComponent implements OnInit, AfterViewInit, OnDestroy {
 
-  private user: BehaviorSubject<ApiUser>;
+  @Input()
+  user: Observable<Coach>;
 
+  private meetingsOpened = 0;
+
+  private getAllMeetingsForCoachIdSubscription: Subscription;
   private connectedUserSubscription: Subscription;
 
-  constructor(private authService: AuthService) {
-    this.user = new BehaviorSubject(null);
+  constructor(private authService: AuthService, private meetingService: MeetingsService, private cd: ChangeDetectorRef) {
   }
 
   ngOnInit() {
@@ -38,26 +44,47 @@ export class CoachDashboardComponent implements OnInit, AfterViewInit, OnDestroy
     if (this.connectedUserSubscription) {
       this.connectedUserSubscription.unsubscribe();
     }
+    if (this.getAllMeetingsForCoachIdSubscription) {
+      this.getAllMeetingsForCoachIdSubscription.unsubscribe();
+    }
+
   }
 
   onRefreshRequested() {
-    this.connectedUserSubscription = this.authService.refreshConnectedUser()
-      .subscribe((user?: Coach | Coachee | HR) => {
-          this.onUserObtained(user);
-        }
-      );
+    this.connectedUserSubscription = this.user.first().subscribe(
+      (user: Coach) => {
+        this.onUserObtained(user);
+        this.cd.detectChanges();
+    });
   }
 
   private onUserObtained(user: ApiUser) {
     console.log('onUserObtained, user : ', user);
-    if (user) {
+    if (user)
+      this.getAllMeetingsForCoach(user.id);
+  }
 
-      if (user instanceof Coach) {
-        // coachee
-        console.log('get a coach');
+  private getAllMeetingsForCoach(coachId: string) {
+    this.getAllMeetingsForCoachIdSubscription = this.meetingService.getAllMeetingsForCoachId(coachId)
+      .subscribe(
+        (meetings: Meeting[]) => {
+          console.log('got meetings for coach', meetings);
+          this.onMeetingsObtained(meetings);
+          this.cd.detectChanges();
+        }, (error) => {
+          console.log('got meetings for coach ERROR', error);
+        }
+      );
+  }
+
+  private onMeetingsObtained(meetings: Array<Meeting>) {
+    console.log('got meetings for coach', meetings);
+    if (meetings) {
+      for (let meeting of meetings) {
+        if (meeting != null && meeting.isOpen && meeting.agreed_date != undefined) {
+          this.meetingsOpened++;
+        }
       }
-
-      this.user.next(user);
     }
   }
 

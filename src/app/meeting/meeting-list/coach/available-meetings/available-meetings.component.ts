@@ -24,6 +24,7 @@ export class AvailableMeetingsComponent implements OnInit, OnDestroy {
   private hasAvailableMeetings = false;
 
   private connectedUserSubscription: Subscription;
+  private getAllMeetingsSubscription: Subscription;
   private user: Observable<ApiUser>;
 
   private selectedDate: string;
@@ -36,15 +37,17 @@ export class AvailableMeetingsComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.onRefreshRequested();
     this.loading = true;
+    this.onRefreshRequested();
   }
 
   ngOnDestroy() {
     console.log('ngOnDestroy');
-    if (this.connectedUserSubscription != null) {
+    if (this.connectedUserSubscription)
       this.connectedUserSubscription.unsubscribe();
-    }
+
+    if (this.getAllMeetingsSubscription)
+      this.getAllMeetingsSubscription.unsubscribe();
   }
 
   onRefreshRequested() {
@@ -55,6 +58,7 @@ export class AvailableMeetingsComponent implements OnInit, OnDestroy {
         (user: Coach) => {
           console.log('onRefreshRequested, getConnectedUser');
           this.onUserObtained(user);
+          this.cd.detectChanges();
         }
       );
     } else {
@@ -73,18 +77,17 @@ export class AvailableMeetingsComponent implements OnInit, OnDestroy {
       }
 
       this.user = Observable.of(user);
-      this.cd.detectChanges();
     }
   }
 
   private getAllMeetings() {
-    this.meetingService.getAvailableMeetings().subscribe(
+    this.getAllMeetingsSubscription = this.meetingService.getAvailableMeetings().subscribe(
       (meetings: Meeting[]) => {
         console.log('got getAllMeetings', meetings);
         this.availableMeetings = Observable.of(meetings);
         this.hasAvailableMeetings = (meetings != null && meetings.length > 0);
-        this.cd.detectChanges();
         this.loading = false;
+        this.cd.detectChanges();
       }
     );
   }
@@ -153,6 +156,7 @@ export class AvailableMeetingsComponent implements OnInit, OnDestroy {
         this.coachValidateModalVisibility(false);
         //navigate to dashboard
         this.router.navigate(['dashboard/meetings']);
+        this.cd.detectChanges();
       }, (error) => {
         console.log('get potentials dates error', error);
         Materialize.toast('Erreur lors de la validation du meeting', 3000, 'rounded')

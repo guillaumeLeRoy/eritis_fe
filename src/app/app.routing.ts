@@ -35,10 +35,12 @@ import {NotAuthGuard} from "./service/not-auth-guard";
 const APP_ROUTES: Routes = [
   {path: '', redirectTo: '/welcome', pathMatch: 'full'},
   {path: 'welcome', component: WelcomeComponent, canActivate: [NotAuthGuard]},
-  {path: 'chat', component: ChatComponent},
+
+  //{path: 'chat', component: ChatComponent},
+
   {path: 'signin', component: SigninComponent},
 
-  {path: 'dashboard', canActivate: [AuthGuard],
+  {path: 'dashboard', canActivate: [AuthGuard], canActivateChild: [AuthGuard],
     children: [
       {path: '', redirectTo: 'meetings', pathMatch: 'full'},
       {path: 'profile_rh/:id', component: ProfileRhComponent},
@@ -54,10 +56,12 @@ const APP_ROUTES: Routes = [
   {path: 'legal-notice', component: LegalNoticeComponent},
   {path: 'terms-of-use', component: TermsOfUseComponent},
   {path: 'cookie-policy', component: CookiePolicyComponent},
+
   {path: 'register_coach/step1', component: RegisterCoachComponent},
   {path: 'register_coach/code_deontologie', component: CodeDeontologieComponent},
   {path: 'register_coach/step2', component: RegisterCoachFormComponent},
   {path: 'register_coach/step3', component: RegisterCoachMessageComponent},
+
   {path: 'signup_coachee', component: SignupCoacheeComponent},
   {path: 'signup_coach', component: SignupCoachComponent},
   {path: 'signup_rh', component: SignupRhComponent},

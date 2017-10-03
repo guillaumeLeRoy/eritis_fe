@@ -1,4 +1,4 @@
-import {AfterViewInit, Component, OnDestroy, OnInit} from "@angular/core";
+import {AfterViewInit, ChangeDetectorRef, Component, Input, OnDestroy, OnInit} from "@angular/core";
 import {AuthService} from "../../service/auth.service";
 import {Router} from "@angular/router";
 import {Coachee} from "../../model/Coachee";
@@ -7,6 +7,7 @@ import {HR} from "../../model/HR";
 import {Coach} from "../../model/Coach";
 import {BehaviorSubject} from "rxjs/BehaviorSubject";
 import {Subscription} from "rxjs/Subscription";
+import {Observable} from "rxjs/Observable";
 
 declare var $: any;
 declare var Materialize: any;
@@ -18,12 +19,12 @@ declare var Materialize: any;
 })
 export class CoacheeDashboardComponent implements OnInit, AfterViewInit, OnDestroy {
 
-  private user: BehaviorSubject<ApiUser>;
+  @Input()
+  user: Observable<Coachee>;
 
   private connectedUserSubscription: Subscription;
 
-  constructor(private router: Router, private authService: AuthService) {
-    this.user = new BehaviorSubject(null);
+  constructor(private router: Router, private authService: AuthService, private cd: ChangeDetectorRef) {
   }
 
   ngOnInit() {
@@ -44,11 +45,11 @@ export class CoacheeDashboardComponent implements OnInit, AfterViewInit, OnDestr
 
   // fetch current user from API
   onRefreshRequested() {
-    this.connectedUserSubscription = this.authService.refreshConnectedUser()
-      .subscribe((user?: Coach | Coachee | HR) => {
-          this.onUserObtained(user);
-        }
-      );
+    this.connectedUserSubscription = this.user.first().subscribe(
+      (user: Coachee) => {
+        this.onUserObtained(user);
+        this.cd.detectChanges();
+      });
   }
 
   private onUserObtained(user?: ApiUser) {
@@ -60,8 +61,6 @@ export class CoacheeDashboardComponent implements OnInit, AfterViewInit, OnDestr
         // coachee
         console.log('get a coachee');
       }
-
-      this.user.next(user);
     }
   }
 
@@ -69,7 +68,7 @@ export class CoacheeDashboardComponent implements OnInit, AfterViewInit, OnDestr
     console.log('navigateToCreateSession');
 
     if (this.user != null) {
-      this.user.asObservable().take(1).subscribe(
+      this.user.take(1).subscribe(
         (user: ApiUser) => {
           if (user == null) {
             console.log('no connected user')

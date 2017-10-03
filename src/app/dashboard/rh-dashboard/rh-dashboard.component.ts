@@ -1,4 +1,4 @@
-import {AfterViewInit, ChangeDetectorRef, Component, OnDestroy, OnInit} from "@angular/core";
+import {AfterViewInit, ChangeDetectorRef, Component, Input, OnDestroy, OnInit} from "@angular/core";
 import {Observable} from "rxjs/Observable";
 import {ApiUser} from "../../model/ApiUser";
 import {Subscription} from "rxjs/Subscription";
@@ -25,7 +25,8 @@ declare var Materialize: any;
 })
 export class RhDashboardComponent implements OnInit, AfterViewInit, OnDestroy {
 
-  private userObs: BehaviorSubject<HR>;
+  @Input()
+  user: Observable<HR>;
 
   private subscription: Subscription;
   private connectedUserSubscription: Subscription;
@@ -56,8 +57,6 @@ export class RhDashboardComponent implements OnInit, AfterViewInit, OnDestroy {
       first_name: [''],
       last_name: [''],
     });
-
-    this.userObs = new BehaviorSubject(null);
   }
 
   ngOnInit() {
@@ -89,26 +88,17 @@ export class RhDashboardComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   onRefreshRequested() {
-    this.connectedUserSubscription = this.authService.refreshConnectedUser()
-      .subscribe((user?: Coach | Coachee | HR) => {
-          this.onUserObtained(user);
-        }
-      );
+    this.connectedUserSubscription = this.user.first().subscribe(
+      (user: HR) => {
+        this.onUserObtained(user);
+        this.cd.detectChanges();
+      });
   }
 
   private onUserObtained(user: ApiUser) {
     console.log('onUserObtained, user : ', user);
-    if (user) {
-
-      if (user instanceof HR) {
-        // rh
-        console.log('get a rh');
-        this.getUsageRate(user.id);
-        // this.user = Observable.of(user);
-        this.userObs.next(user);
-        this.cd.detectChanges();
-      }
-    }
+    if (user)
+      this.getUsageRate(user.id);
   }
 
   private getUsageRate(rhId: string) {
@@ -116,6 +106,7 @@ export class RhDashboardComponent implements OnInit, AfterViewInit, OnDestroy {
       (rate: HRUsageRate) => {
         console.log("getUsageRate, rate : ", rate);
         this.HrUsageRate = Observable.of(rate);
+        this.cd.detectChanges();
       }
     );
   }
@@ -146,6 +137,7 @@ export class RhDashboardComponent implements OnInit, AfterViewInit, OnDestroy {
           this.onRefreshRequested();
           Materialize.toast("L'objectif a été modifié !", 3000, 'rounded')
           this.coacheeNewObjective = null;
+          this.cd.detectChanges();
         }, (error) => {
           console.log('addObjectiveToCoachee, error', error);
           Materialize.toast("Imposible de modifier l'objectif", 3000, 'rounded')
@@ -167,12 +159,13 @@ export class RhDashboardComponent implements OnInit, AfterViewInit, OnDestroy {
   validateAddNewObjectiveModal() {
     console.log('validateAddNewObjectiveModal');
 
-    this.userObs.asObservable().take(1).subscribe(
+    this.user.take(1).subscribe(
       (user: ApiUser) => {
         console.log('validateAddNewObjectiveModal, got connected user');
         if (user instanceof HR) {
           this.makeAPICallToAddNewObjective(user);
         }
+        this.cd.detectChanges();
       }
     );
     return;
@@ -201,7 +194,7 @@ export class RhDashboardComponent implements OnInit, AfterViewInit, OnDestroy {
 
     this.addPotentialCoacheeModalVisibility(false);
 
-    this.userObs.asObservable().take(1).subscribe(
+    this.user.take(1).subscribe(
       (user: ApiUser) => {
 
         // let body = {
