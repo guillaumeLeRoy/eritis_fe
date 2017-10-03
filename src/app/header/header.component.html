@@ -112,8 +112,7 @@
 
 <header id="header" class="page-topbar"
         [class.user-connected]="(isAuthenticated | async) || isAdmin()"
-        [hidden]="!(isAuthenticated | async) && !isAdmin()"
-        [ngsReveal]="{scale:1, origin: 'top', distance:'200px', duration: 500, delay: 200, reset: true}">
+        [hidden]="!(isAuthenticated | async) && !isAdmin()">
   <div class="navbar" [class.navbar-fixed]="(isAuthenticated | async) || isAdmin()"
        [class.z-depth-2]="!(isAuthenticated | async) && !isAdmin()">
     <nav>

@@ -72,7 +72,7 @@ export class HeaderComponent implements OnInit, AfterViewInit, OnDestroy {
 
   ngAfterViewInit(): void {
     console.log('ngAfterViewInit');
-
+    this.onRefreshRequested();
     // Cookie Headband
     this.showCookiesMessage = this.cookieService.get('ACCEPTS_COOKIES') === undefined;
   }

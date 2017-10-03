@@ -1,4 +1,4 @@
-import {ChangeDetectorRef, Component, OnDestroy, OnInit, ViewChild} from "@angular/core";
+import {AfterViewInit, ChangeDetectorRef, Component, OnDestroy, OnInit, ViewChild} from "@angular/core";
 import {Observable} from "rxjs/Observable";
 import {Meeting} from "../../../../model/Meeting";
 import {MeetingsService} from "../../../../service/meetings.service";
@@ -17,7 +17,7 @@ declare var Materialize: any;
   templateUrl: './available-meetings.component.html',
   styleUrls: ['./available-meetings.component.scss']
 })
-export class AvailableMeetingsComponent implements OnInit, OnDestroy {
+export class AvailableMeetingsComponent implements OnInit, AfterViewInit, OnDestroy {
 
   private availableMeetings: Observable<Meeting[]>;
 
@@ -38,6 +38,10 @@ export class AvailableMeetingsComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.loading = true;
+    this.getConnectedUser();
+  }
+
+  ngAfterViewInit() {
     this.onRefreshRequested();
   }
 
@@ -50,20 +54,24 @@ export class AvailableMeetingsComponent implements OnInit, OnDestroy {
       this.getAllMeetingsSubscription.unsubscribe();
   }
 
+  getConnectedUser() {
+    this.connectedUserSubscription = this.authService.getConnectedUserObservable().subscribe(
+      (user: Coach) => {
+        console.log('onRefreshRequested, getConnectedUser');
+        this.onUserObtained(user);
+        this.cd.detectChanges();
+      }
+    );
+  }
+
   onRefreshRequested() {
-    let user = this.authService.getConnectedUser();
-    console.log('onRefreshRequested, user : ', user);
-    if (user == null) {
-      this.connectedUserSubscription = this.authService.getConnectedUserObservable().subscribe(
-        (user: Coach) => {
-          console.log('onRefreshRequested, getConnectedUser');
-          this.onUserObtained(user);
-          this.cd.detectChanges();
-        }
-      );
-    } else {
-      this.onUserObtained(user);
-    }
+    this.connectedUserSubscription = this.authService.refreshConnectedUser().subscribe(
+      (user: Coach) => {
+        console.log('onRefreshRequested, getConnectedUser');
+        this.onUserObtained(user);
+        this.cd.detectChanges();
+      }
+    );
   }
 
   private onUserObtained(user: ApiUser) {

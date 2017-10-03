@@ -26,16 +26,28 @@ export class MeetingListComponent implements OnInit, AfterViewInit, OnDestroy {
 
   ngOnInit() {
     console.log('ngOnInit');
-    this.onRefreshRequested();
+    this.getConnectedUser();
   }
 
   ngAfterViewInit(): void {
     console.log('ngAfterViewInit');
+    this.onRefreshRequested();
   }
 
   ngOnDestroy(): void {
     if (this.connectedUserSubscription)
       this.connectedUserSubscription.unsubscribe();
+  }
+
+  private getConnectedUser() {
+    console.log('onRefreshRequested');
+
+    this.connectedUserSubscription = this.authService.getConnectedUserObservable()
+      .subscribe((user?: Coach | Coachee | HR) => {
+          this.onUserObtained(user);
+          this.cd.detectChanges();
+        }
+      );
   }
 
   private onRefreshRequested() {

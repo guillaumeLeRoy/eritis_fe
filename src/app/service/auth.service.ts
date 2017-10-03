@@ -14,6 +14,7 @@ import {HR} from "../model/HR";
 import {PotentialCoachee} from "../model/PotentialCoachee";
 import {PotentialRh} from "../model/PotentialRh";
 import {CookieService} from "ngx-cookie";
+import {EmptyObservable} from "rxjs/observable/EmptyObservable";
 
 declare var Materialize: any;
 
@@ -132,7 +133,7 @@ export class AuthService {
     } else {
       console.log("refreshConnectedUser, no connected user");
     }
-    return Observable.of(null);
+    return new EmptyObservable();
   }
 
   private fetchCoach(userId: string): Observable<Coach> {
