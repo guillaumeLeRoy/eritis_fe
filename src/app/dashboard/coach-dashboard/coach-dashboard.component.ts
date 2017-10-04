@@ -1,11 +1,7 @@
 import {AfterViewInit, ChangeDetectorRef, Component, Input, OnDestroy, OnInit} from "@angular/core";
-import {AuthService} from "../../service/auth.service";
 import {ApiUser} from "../../model/ApiUser";
 import {Subscription} from "rxjs/Subscription";
 import {Coach} from "../../model/Coach";
-import {HR} from "../../model/HR";
-import {Coachee} from "../../model/Coachee";
-import {BehaviorSubject} from "rxjs/BehaviorSubject";
 import {Observable} from "rxjs/Observable";
 import {Meeting} from "../../model/Meeting";
 import {MeetingsService} from "../../service/meetings.service";
@@ -23,12 +19,12 @@ export class CoachDashboardComponent implements OnInit, AfterViewInit, OnDestroy
   @Input()
   user: Observable<Coach>;
 
-  private meetingsOpened = 0;
+  private meetingsOpenedCount = 0;
 
   private getAllMeetingsForCoachIdSubscription: Subscription;
   private connectedUserSubscription: Subscription;
 
-  constructor(private authService: AuthService, private meetingService: MeetingsService, private cd: ChangeDetectorRef) {
+  constructor(private meetingService: MeetingsService, private cd: ChangeDetectorRef) {
   }
 
   ngOnInit() {
@@ -47,7 +43,6 @@ export class CoachDashboardComponent implements OnInit, AfterViewInit, OnDestroy
     if (this.getAllMeetingsForCoachIdSubscription) {
       this.getAllMeetingsForCoachIdSubscription.unsubscribe();
     }
-
   }
 
   onRefreshRequested() {
@@ -55,13 +50,14 @@ export class CoachDashboardComponent implements OnInit, AfterViewInit, OnDestroy
       (user: Coach) => {
         this.onUserObtained(user);
         this.cd.detectChanges();
-    });
+      });
   }
 
   private onUserObtained(user: ApiUser) {
     console.log('onUserObtained, user : ', user);
-    if (user)
+    if (user) {
       this.getAllMeetingsForCoach(user.id);
+    }
   }
 
   private getAllMeetingsForCoach(coachId: string) {
@@ -79,10 +75,11 @@ export class CoachDashboardComponent implements OnInit, AfterViewInit, OnDestroy
 
   private onMeetingsObtained(meetings: Array<Meeting>) {
     console.log('got meetings for coach', meetings);
+    this.meetingsOpenedCount = 0;
     if (meetings) {
       for (let meeting of meetings) {
         if (meeting != null && meeting.isOpen && meeting.agreed_date != undefined) {
-          this.meetingsOpened++;
+          this.meetingsOpenedCount++;
         }
       }
     }

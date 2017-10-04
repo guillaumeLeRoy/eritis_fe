@@ -1,11 +1,7 @@
 import {AfterViewInit, ChangeDetectorRef, Component, Input, OnDestroy, OnInit} from "@angular/core";
-import {AuthService} from "../../service/auth.service";
 import {Router} from "@angular/router";
 import {Coachee} from "../../model/Coachee";
 import {ApiUser} from "../../model/ApiUser";
-import {HR} from "../../model/HR";
-import {Coach} from "../../model/Coach";
-import {BehaviorSubject} from "rxjs/BehaviorSubject";
 import {Subscription} from "rxjs/Subscription";
 import {Observable} from "rxjs/Observable";
 
@@ -24,7 +20,7 @@ export class CoacheeDashboardComponent implements OnInit, AfterViewInit, OnDestr
 
   private connectedUserSubscription: Subscription;
 
-  constructor(private router: Router, private authService: AuthService, private cd: ChangeDetectorRef) {
+  constructor(private router: Router, private cd: ChangeDetectorRef) {
   }
 
   ngOnInit() {
@@ -33,8 +29,7 @@ export class CoacheeDashboardComponent implements OnInit, AfterViewInit, OnDestr
 
   ngAfterViewInit(): void {
     console.log('ngAfterViewInit');
-    // force to GET connected user from the API so the count of available sessions is always correct
-    this.onRefreshRequested();
+    // this.onRefreshRequested();
   }
 
   ngOnDestroy(): void {
@@ -43,26 +38,26 @@ export class CoacheeDashboardComponent implements OnInit, AfterViewInit, OnDestr
     }
   }
 
-  // fetch current user from API
   onRefreshRequested() {
+    //todo call parent
     this.connectedUserSubscription = this.user.first().subscribe(
       (user: Coachee) => {
-        this.onUserObtained(user);
+        // this.onUserObtained(user);
         this.cd.detectChanges();
       });
   }
 
-  private onUserObtained(user?: ApiUser) {
-    console.log('onUserObtained, user : ', user);
-
-    if (user) {
-
-      if (user instanceof Coachee) {
-        // coachee
-        console.log('get a coachee');
-      }
-    }
-  }
+  // private onUserObtained(user?: ApiUser) {
+  //   console.log('onUserObtained, user : ', user);
+  //
+  //   if (user) {
+  //
+  //     if (user instanceof Coachee) {
+  //       // coachee
+  //       console.log('get a coachee');
+  //     }
+  //   }
+  // }
 
   navigateToCreateSession() {
     console.log('navigateToCreateSession');

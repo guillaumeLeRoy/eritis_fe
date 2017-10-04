@@ -2,7 +2,6 @@ import {AfterViewInit, ChangeDetectorRef, Component, Input, OnDestroy, OnInit} f
 import {Observable} from "rxjs/Observable";
 import {ApiUser} from "../../model/ApiUser";
 import {Subscription} from "rxjs/Subscription";
-import {AuthService} from "../../service/auth.service";
 import {HR} from "../../model/HR";
 import {HRUsageRate} from "../../model/HRUsageRate";
 import {CoachCoacheeService} from "../../service/coach_coachee.service";
@@ -11,9 +10,6 @@ import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {Utils} from "../../utils/Utils";
 import {CoacheeObjective} from "../../model/CoacheeObjective";
 import {PotentialCoachee} from "../../model/PotentialCoachee";
-import {BehaviorSubject} from "rxjs/BehaviorSubject";
-import {Coachee} from "../../model/Coachee";
-import {Coach} from "../../model/Coach";
 
 declare var $: any;
 declare var Materialize: any;
@@ -51,7 +47,7 @@ export class RhDashboardComponent implements OnInit, AfterViewInit, OnDestroy {
 
   private signInForm: FormGroup;
 
-  constructor(private authService: AuthService, private coachCoacheeService: CoachCoacheeService, private cd: ChangeDetectorRef, private formBuilder: FormBuilder) {
+  constructor(private coachCoacheeService: CoachCoacheeService, private cd: ChangeDetectorRef, private formBuilder: FormBuilder) {
     this.signInForm = this.formBuilder.group({
       email: ['', [Validators.required, Validators.pattern(Utils.EMAIL_REGEX)]],
       first_name: [''],
