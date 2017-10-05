@@ -21,7 +21,7 @@
                 <input id="password" type="password" formControlName="password">
                 <small class="text-danger"
                        *ngIf="!signUpForm.controls['password'].pristine && !signUpForm.controls['password'].valid">
-                  Password must be at least 6 characters.
+                  Votre mot de passe doit contenir au moins 6 caractères.
                 </small>
               </div>
             </div>
@@ -32,7 +32,7 @@
                 <input id="confirm_password" type="password" formControlName="confirmPassword">
                 <small class="text-danger"
                        *ngIf="!signUpForm.controls['confirmPassword'].pristine && signUpForm.controls['confirmPassword'].errors && signUpForm.controls['confirmPassword'].errors['passwordNoMatch']">
-                  Confirm Password is incorrect
+                  Confirmation incorrecte.
                 </small>
               </div>
             </div>

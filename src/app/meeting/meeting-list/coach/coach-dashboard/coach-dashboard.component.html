@@ -1,15 +1,11 @@
 <div [ngsReveal]="{distance: '100px', origin: 'right', duration: 1000, delay: 200}">
-<<<<<<< Updated upstream:src/app/meeting/meeting-list/coach/coach-dashboard/coach-dashboard.component.html
-  <h3 class="text-right">Bonjour {{ (user | async)?.first_name}},
-    vous avez <span class="blue-text">{{(meetingsOpened | async)?.length}}</span> séance
-    <span *ngIf="(meetingsOpened | async)?.length > 1">s</span> cette semaine</h3>
-=======
+
   <h3 class="text-right" i18n>Bonjour {{ (user | async)?.first_name}},
-    vous avez <span class="blue-text">{{meetingsOpenedCount}}</span> {meetingsOpenedCount, plural, =0 {séance} =1
+    vous avez <span class="blue-text">{{(meetingsOpened | async)?.length}}</span> {meetingsOpened |
+    async)?.length || 0, plural, =0 {séance} =1
     {séance} other {séances}} cette semaine
   </h3>
 
->>>>>>> Stashed changes:src/app/dashboard/coach-dashboard/coach-dashboard.component.html
   <p class="text-right">
     <span class="blue-text">Cliquez</span> ici pour votre salon
     <a class="btn-floating btn-large waves-effect waves-light add-meeting-btn"
@@ -19,5 +15,4 @@
   </p>
 </div>
 
-<er-meeting-list-coach [mUser]="(user | async)"
-                       *ngIf="(user | async)"></er-meeting-list-coach>
+<er-meeting-list-coach [mUser]="(user | async)" *ngIf="(user | async)"></er-meeting-list-coach>
