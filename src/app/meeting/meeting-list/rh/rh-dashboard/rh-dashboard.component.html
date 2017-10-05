@@ -1,5 +1,5 @@
 <div [ngsReveal]="{distance: '100px', origin: 'right', duration: 1000, delay: 200}">
-  <h3 class="text-right welcome-message">Bonjour {{ (user | async)?.first_name}},<br>
+  <h3 class="text-right welcome-message">Bonjour {{ (userObs | async)?.first_name}},<br>
     <span *ngIf="(HrUsageRate | async)?.sessions_done_month_count" i18n>
      Ce mois-ci <span class="blue-text">{{(HrUsageRate | async)?.sessions_done_month_count}}</span> { (HrUsageRate | async)?.sessions_done_month_count, plural, =0 {séance ont été réalisée} =1 {séance ont été réalisée} other {séances ont été réalisées}}
       pour <span class="blue-text">{{(HrUsageRate | async)?.available_sessions_count}}</span> { (HrUsageRate | async)?.available_sessions_count, plural, =0 {séance possible} =1 {séance possible} other {séances possibles}}
@@ -15,7 +15,7 @@
   </p>
 </div>
 
-<er-meeting-list-rh [user]="user"
+<er-meeting-list-rh [user]="userObs"
                     #coacheesList
                     (onStartAddNewObjectiveFlow)="startAddNewObjectiveFlow($event)"></er-meeting-list-rh>
 
