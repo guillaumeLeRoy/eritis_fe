@@ -8,8 +8,8 @@ export class SessionService {
 
   public saveSessionTTL() {
     let TTL = new Date();
-    // TTL.setHours(TTL.getHours() + 4);
-    TTL.setMinutes(TTL.getMinutes() + 2);
+    TTL.setHours(TTL.getHours() + 1);
+    // TTL.setMinutes(TTL.getMinutes() + 2);
     let toSave = JSON.stringify({'expires': TTL});
     localStorage.setItem('ACTIVE_SESSION', toSave);
 
