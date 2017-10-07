@@ -34,6 +34,7 @@ export class MeetingListRhComponent implements OnInit, OnDestroy {
   private hasCollaborators = false;
   private hasPotentialCollaborators = false;
 
+  private userSubscription: Subscription;
   private getAllCoacheesForRhSubscription: Subscription;
   private getAllPotentialCoacheesForRhSubscription: Subscription;
 
@@ -46,20 +47,21 @@ export class MeetingListRhComponent implements OnInit, OnDestroy {
     this.loading1 = true;
     this.loading2 = true;
 
-    this.user.subscribe((user: HR) => {
+    this.userSubscription = this.user.subscribe((user: HR) => {
       this.onUserObtained(user);
     });
   }
 
 
   ngOnDestroy(): void {
-    if (this.getAllCoacheesForRhSubscription) {
+    if (this.getAllCoacheesForRhSubscription)
       this.getAllCoacheesForRhSubscription.unsubscribe();
-    }
 
-    if (this.getAllPotentialCoacheesForRhSubscription) {
+    if (this.getAllPotentialCoacheesForRhSubscription)
       this.getAllPotentialCoacheesForRhSubscription.unsubscribe();
-    }
+
+    if(this.userSubscription)
+      this.userSubscription.unsubscribe();
   }
 
   startAddNewObjectiveFlow(coacheeId: string) {

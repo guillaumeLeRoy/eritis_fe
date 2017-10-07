@@ -179,9 +179,14 @@ p {
     text-align: center;
   }
 
-  .meeting-item-body-buttons,
   .meeting-item-body-content {
-    text-align: center;
     width: 100%;
+    text-align: left;
   }
+
+  .meeting-item-body-buttons {
+    width: 100%;
+    text-align: center;
+  }
+
 }

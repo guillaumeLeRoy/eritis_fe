@@ -13,7 +13,10 @@ import {LoginResponse} from "../model/LoginResponse";
 import {HR} from "../model/HR";
 import {PotentialCoachee} from "../model/PotentialCoachee";
 import {PotentialRh} from "../model/PotentialRh";
-import {CookieService} from "ngx-cookie";
+import {EmptyObservable} from "rxjs/observable/EmptyObservable";
+import {SessionService} from "./session.service";
+
+declare var Materialize: any;
 
 @Injectable()
 export class AuthService {
@@ -96,7 +99,7 @@ export class AuthService {
 
   private ApiUser?: Coach | Coachee | HR = null;
 
-  constructor(private firebase: FirebaseService, private router: Router, private httpService: Http, private cookieService: CookieService) {
+  constructor(private firebase: FirebaseService, private router: Router, private httpService: Http, private sessionService: SessionService) {
     firebase.auth().onAuthStateChanged(function (user) {
       console.log("onAuthStateChanged, user : " + user);
       this.onAuthStateChangedCalled = true;
@@ -104,13 +107,14 @@ export class AuthService {
     }.bind(this));
 
     console.log("ctr done");
+    console.log("ctr done");
 
-    let date = (new Date());
-    date.setHours(date.getHours() + 1);
-    console.log('COOKIE', date);
-    if (this.cookieService.get('ACTIVE_SESSION') === undefined)
-      if (this.cookieService.get('ACCEPTS_COOKIES') !== undefined)
-        this.cookieService.put('ACTIVE_SESSION', 'true', {expires: date.toDateString()});
+    // let date = (new Date());
+    // date.setHours(date.getHours() + 1);
+    // console.log('COOKIE', date);
+    // if (this.cookieService.get('ACTIVE_SESSION') === undefined)
+    //   if (this.cookieService.get('ACCEPTS_COOKIES') !== undefined)
+    //     this.cookieService.put('ACTIVE_SESSION', 'true', {expires: date.toDateString()});
   }
 
   /*
@@ -130,7 +134,7 @@ export class AuthService {
     } else {
       console.log("refreshConnectedUser, no connected user");
     }
-    return Observable.from(null);
+    return new EmptyObservable();
   }
 
   private fetchCoach(userId: string): Observable<Coach> {
@@ -173,11 +177,7 @@ export class AuthService {
   }
 
   getConnectedUser(): Coach | Coachee | HR {
-    if (this.cookieService.get('ACTIVE_SESSION') === 'true') {
-      return this.ApiUser;
-    } else {
-      return null;
-    }
+    return this.ApiUser;
   }
 
   getConnectedUserObservable(): Observable<ApiUser> {
@@ -187,7 +187,6 @@ export class AuthService {
   isAuthenticated(): Observable<boolean> {
     return this.isUserAuth.asObservable();
   }
-
 
   /*
    *
@@ -568,11 +567,7 @@ export class AuthService {
               let loginResponse: LoginResponse = response.json();
               console.log("signUp, loginResponse : ", loginResponse);
 
-              let date = (new Date());
-              date.setHours(date.getHours() + 1);
-              console.log('COOKIE', date);
-              if (this.cookieService.get('ACCEPTS_COOKIES') !== undefined)
-                this.cookieService.put('ACTIVE_SESSION', 'true', {'expires': date});
+              this.sessionService.saveSessionTTL();
 
               // return json;
               this.isSignInOrUp = false;
@@ -618,11 +613,7 @@ export class AuthService {
       (token: string) => {
         //user should be ok just after a sign up
         let fbUser = this.firebase.auth().currentUser;
-        let date = (new Date());
-        date.setHours(date.getHours() + 1);
-        console.log('COOKIE', date);
-        if (this.cookieService.get('ACCEPTS_COOKIES') !== undefined)
-          this.cookieService.put('ACTIVE_SESSION', 'true', {'expires': date});
+        this.sessionService.saveSessionTTL();
         //now sign up in AppEngine
         this.isSignInOrUp = false;
         return this.getUserForFirebaseId(fbUser.uid, token);
@@ -634,8 +625,9 @@ export class AuthService {
     console.log("user loginOut");
     this.firebase.auth().signOut();
     this.updateAuthStatus(null);
-    this.cookieService.remove('ACTIVE_SESSION');
-    this.router.navigate(['/welcome']);
+    this.sessionService.clearSession();
+    this.router.navigate(['/']);
+    Materialize.toast('Vous avez été déconnecté', 3000, 'rounded');
   }
 
 

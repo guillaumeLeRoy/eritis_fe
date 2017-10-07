@@ -4,6 +4,8 @@ import {AuthService} from "../../service/auth.service";
 import {Coach} from "../../model/Coach";
 import {Coachee} from "../../model/Coachee";
 import {HR} from "../../model/HR";
+import {BehaviorSubject} from "rxjs/BehaviorSubject";
+import {Router} from "@angular/router";
 
 declare var $: any;
 declare var Materialize: any;
@@ -15,16 +17,16 @@ declare var Materialize: any;
 })
 export class MeetingListComponent implements OnInit, AfterViewInit, OnDestroy {
 
-  private user: Observable<Coach | Coachee | HR>;
-  private subscription: Subscription;
+  private user: BehaviorSubject<Coach | Coachee | HR>;
   private connectedUserSubscription: Subscription;
 
   constructor(private authService: AuthService, private cd: ChangeDetectorRef) {
+    this.user = new BehaviorSubject(null);
   }
 
   ngOnInit() {
     console.log('ngOnInit');
-    window.scrollTo(0, 0);
+    this.getConnectedUser();
   }
 
   ngAfterViewInit(): void {
@@ -33,13 +35,36 @@ export class MeetingListComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    if (this.subscription) {
-      this.subscription.unsubscribe();
-    }
-
-    if (this.connectedUserSubscription) {
+    if (this.connectedUserSubscription)
       this.connectedUserSubscription.unsubscribe();
-    }
+  }
+
+  private getConnectedUser() {
+    console.log('onRefreshRequested');
+
+    this.connectedUserSubscription = this.authService.getConnectedUserObservable()
+      .subscribe((user?: Coach | Coachee | HR) => {
+          this.onUserObtained(user);
+          this.cd.detectChanges();
+        }
+      );
+  }
+
+  private onRefreshRequested() {
+    console.log('onRefreshRequested');
+
+    this.connectedUserSubscription = this.authService.refreshConnectedUser()
+      .subscribe((user?: Coach | Coachee | HR) => {
+          this.onUserObtained(user);
+          this.cd.detectChanges();
+        }
+      );
+  }
+
+  private onUserObtained(user: Coach | Coachee | HR) {
+    console.log('onUserObtained, user : ', user);
+    if (user)
+      this.user.next(user);
   }
 
   isUserACoach(user: Coach | Coachee | HR) {
@@ -52,29 +77,6 @@ export class MeetingListComponent implements OnInit, AfterViewInit, OnDestroy {
 
   isUserARh(user: Coach | Coachee | HR) {
     return user instanceof HR;
-  }
-
-  private onUserObtained(user: Coach | Coachee | HR) {
-    console.log('onUserObtained, user : ', user);
-    if (user) {
-      this.user = Observable.of(user);
-      this.cd.detectChanges();
-    }
-  }
-
-  private onRefreshRequested() {
-    let user = this.authService.getConnectedUser();
-    console.log('onRefreshRequested, user : ', user);
-    if (user == null) {
-      this.connectedUserSubscription = this.authService.getConnectedUserObservable().subscribe(
-        (user: Coach | Coachee) => {
-          console.log('onRefreshRequested, getConnectedUser');
-          this.onUserObtained(user);
-        }
-      );
-    } else {
-      this.onUserObtained(user);
-    }
   }
 
 }

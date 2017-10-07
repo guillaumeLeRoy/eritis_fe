@@ -1,4 +1,4 @@
-import {ChangeDetectorRef, Component, OnDestroy, OnInit, ViewChild} from "@angular/core";
+import {AfterViewInit, ChangeDetectorRef, Component, OnDestroy, OnInit, ViewChild} from "@angular/core";
 import {Observable} from "rxjs/Observable";
 import {Meeting} from "../../../../model/Meeting";
 import {MeetingsService} from "../../../../service/meetings.service";
@@ -17,13 +17,14 @@ declare var Materialize: any;
   templateUrl: './available-meetings.component.html',
   styleUrls: ['./available-meetings.component.scss']
 })
-export class AvailableMeetingsComponent implements OnInit, OnDestroy {
+export class AvailableMeetingsComponent implements OnInit, AfterViewInit, OnDestroy {
 
   private availableMeetings: Observable<Meeting[]>;
 
   private hasAvailableMeetings = false;
 
   private connectedUserSubscription: Subscription;
+  private getAllMeetingsSubscription: Subscription;
   private user: Observable<ApiUser>;
 
   private selectedDate: string;
@@ -36,30 +37,41 @@ export class AvailableMeetingsComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.onRefreshRequested();
     this.loading = true;
+    this.getConnectedUser();
+  }
+
+  ngAfterViewInit() {
+    this.onRefreshRequested();
   }
 
   ngOnDestroy() {
     console.log('ngOnDestroy');
-    if (this.connectedUserSubscription != null) {
+    if (this.connectedUserSubscription)
       this.connectedUserSubscription.unsubscribe();
-    }
+
+    if (this.getAllMeetingsSubscription)
+      this.getAllMeetingsSubscription.unsubscribe();
+  }
+
+  getConnectedUser() {
+    this.connectedUserSubscription = this.authService.getConnectedUserObservable().subscribe(
+      (user: Coach) => {
+        console.log('onRefreshRequested, getConnectedUser');
+        this.onUserObtained(user);
+        this.cd.detectChanges();
+      }
+    );
   }
 
   onRefreshRequested() {
-    let user = this.authService.getConnectedUser();
-    console.log('onRefreshRequested, user : ', user);
-    if (user == null) {
-      this.connectedUserSubscription = this.authService.getConnectedUserObservable().subscribe(
-        (user: Coach) => {
-          console.log('onRefreshRequested, getConnectedUser');
-          this.onUserObtained(user);
-        }
-      );
-    } else {
-      this.onUserObtained(user);
-    }
+    this.connectedUserSubscription = this.authService.refreshConnectedUser().subscribe(
+      (user: Coach) => {
+        console.log('onRefreshRequested, getConnectedUser');
+        this.onUserObtained(user);
+        this.cd.detectChanges();
+      }
+    );
   }
 
   private onUserObtained(user: ApiUser) {
@@ -73,18 +85,17 @@ export class AvailableMeetingsComponent implements OnInit, OnDestroy {
       }
 
       this.user = Observable.of(user);
-      this.cd.detectChanges();
     }
   }
 
   private getAllMeetings() {
-    this.meetingService.getAvailableMeetings().subscribe(
+    this.getAllMeetingsSubscription = this.meetingService.getAvailableMeetings().subscribe(
       (meetings: Meeting[]) => {
         console.log('got getAllMeetings', meetings);
         this.availableMeetings = Observable.of(meetings);
         this.hasAvailableMeetings = (meetings != null && meetings.length > 0);
-        this.cd.detectChanges();
         this.loading = false;
+        this.cd.detectChanges();
       }
     );
   }
@@ -152,7 +163,8 @@ export class AvailableMeetingsComponent implements OnInit, OnDestroy {
 
         this.coachValidateModalVisibility(false);
         //navigate to dashboard
-        this.router.navigate(['/meetings']);
+        this.router.navigate(['dashboard/meetings']);
+        this.cd.detectChanges();
       }, (error) => {
         console.log('get potentials dates error', error);
         Materialize.toast('Erreur lors de la validation du meeting', 3000, 'rounded')

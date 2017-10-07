@@ -116,7 +116,7 @@ export class MeetingItemCoacheeComponent implements OnInit, OnDestroy {
     if (this.mSessionPotentialTimesSubscription != null) {
       this.mSessionPotentialTimesSubscription.unsubscribe();
     }
-    
+
   }
 
 
@@ -267,7 +267,7 @@ export class MeetingItemCoacheeComponent implements OnInit, OnDestroy {
 
   goToModifyDate(meetingId: number) {
     window.scrollTo(0, 0);
-    this.router.navigate(['/date', meetingId]);
+    this.router.navigate(['dashboard/date', meetingId]);
   }
 
   openModal() {
@@ -285,7 +285,7 @@ export class MeetingItemCoacheeComponent implements OnInit, OnDestroy {
     if (this.isAdmin)
       this.router.navigate(['admin/profile/coach', coachId]);
     else
-      this.router.navigate(['/profile_coach', coachId]);
+      this.router.navigate(['dashboard/profile_coach', coachId]);
   }
 
   rateSession() {

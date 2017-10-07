@@ -13,14 +13,14 @@ import {BehaviorSubject} from "rxjs/BehaviorSubject";
 
 export class ProfileRhAdminComponent implements OnInit, OnDestroy {
 
-  private rhObs: BehaviorSubject<HR>;
+  private rh: BehaviorSubject<HR>;
   private subscriptionGetRh: Subscription;
   private subscriptionGetRoute: Subscription;
 
   loading: boolean = true;
 
   constructor(private route: ActivatedRoute, private apiService: CoachCoacheeService) {
-    this.rhObs = new BehaviorSubject(null);
+    this.rh = new BehaviorSubject(null);
   }
 
   ngOnInit() {
@@ -52,7 +52,7 @@ export class ProfileRhAdminComponent implements OnInit, OnDestroy {
         this.subscriptionGetRh = this.apiService.getRhForId(rhId, true).subscribe(
           (rh: HR) => {
             console.log("gotRh", rh);
-            this.rhObs.next(rh);
+            this.rh.next(rh);
             // this.cd.detectChanges();
             this.loading = false;
           }, (error) => {

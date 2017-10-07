@@ -97,7 +97,7 @@ export class MeetingItemRhComponent implements OnInit, AfterViewInit, OnDestroy 
     if (this.isAdmin)
       this.router.navigate(['admin/profile/coachee', coacheeId]);
     else
-      this.router.navigate(['/profile_coachee', coacheeId]);
+      this.router.navigate(['dashboard/profile_coachee', coacheeId]);
   }
 
   toggleShowDetails() {

@@ -1,9 +1,9 @@
 import {AfterViewInit, ChangeDetectorRef, Component, OnDestroy, OnInit} from "@angular/core";
-import {Observable} from "rxjs/Observable";
 import {Subscription} from "rxjs/Subscription";
 import {Coachee} from "../../../../model/Coachee";
 import {ActivatedRoute, Router} from "@angular/router";
 import {CoachCoacheeService} from "../../../../service/coach_coachee.service";
+import {BehaviorSubject} from "rxjs/BehaviorSubject";
 
 @Component({
   selector: 'er-profile-coachee-admin',
@@ -12,7 +12,7 @@ import {CoachCoacheeService} from "../../../../service/coach_coachee.service";
 })
 export class ProfileCoacheeAdminComponent implements OnInit, AfterViewInit, OnDestroy {
 
-  private coachee: Observable<Coachee>;
+  private coachee: BehaviorSubject<Coachee>;
   private rhId: string;
   private subscriptionGetCoachee: Subscription;
   private subscriptionGetRoute: Subscription;
@@ -20,6 +20,7 @@ export class ProfileCoacheeAdminComponent implements OnInit, AfterViewInit, OnDe
   loading: boolean = true;
 
   constructor(private router: Router, private cd: ChangeDetectorRef, private apiService: CoachCoacheeService, private route: ActivatedRoute) {
+    this.coachee = new BehaviorSubject(null);
   }
 
   ngOnInit() {
@@ -52,9 +53,9 @@ export class ProfileCoacheeAdminComponent implements OnInit, AfterViewInit, OnDe
         this.subscriptionGetCoachee = this.apiService.getCoacheeForId(coacheeId, true).subscribe(
           (coachee: Coachee) => {
             console.log("gotCoachee", coachee);
-            this.coachee = Observable.of(coachee);
+            this.coachee.next(coachee);
             this.rhId = coachee.associatedRh.id;
-            this.cd.detectChanges();
+            // this.cd.detectChanges();
             this.loading = false;
           }
         );

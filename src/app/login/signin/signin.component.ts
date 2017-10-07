@@ -69,7 +69,7 @@ export class SigninComponent implements OnInit {
 
           console.log('onSignIn, user obtained', user);
           /*L'utilisateur est TOUJOURS redirigé vers ses meetings*/
-          this.router.navigate(['/meetings']);
+          this.router.navigate(['/dashboard']);
           // Materialize.toast('Bonjour ' + user.first_name + ' !', 3000, 'rounded');
           this.loginLoading = false;
         },
