@@ -46,9 +46,12 @@
             <p class="header-item-title">Moyenne</p>
           </div>
 
-          <div class="header-item col-lg-6 col-xs-6">
+          <div class="header-item col-lg-6 col-xs-6" i18n>
             <div class="header-item-number"><span>{{(user | async)?.sessionsCount}}</span></div>
-            <p class="header-item-title">séances réalisées</p>
+            <p class="header-item-title"> {(user |
+              async)?.sessionsCount || 0, plural, =0 {séance réalisée} =1
+              {séance réalisée} other {séances réalisées}}
+            </p>
           </div>
 
         </div>
