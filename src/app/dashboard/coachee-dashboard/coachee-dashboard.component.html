@@ -12,12 +12,10 @@
     Vous n'avez pas encore d'objectif fixé avec votre RH</h5>
   <p class="text-right" *ngIf="(user | async)?.availableSessionsCount > 0">
     <span class="blue-text">Cliquez</span> ici pour planifier une nouvelle séance
-    <a class="btn-floating btn-large waves-effect waves-light add-meeting-btn" (click)="goToDate()">
+    <a class="btn-floating btn-large waves-effect waves-light add-meeting-btn" (click)="navigateToCreateSession()">
       <i class="material-icons">add</i>
     </a>
   </p>
 </div>
 
-<er-meeting-list-coachee [mUser]="(user | async)"
-                         (requestRefreshEventEmitter)="onRefreshRequested()"
-                         *ngIf="(user | async)"></er-meeting-list-coachee>
+<er-meeting-list-coachee [user]="user " (requestRefreshEventEmitter)="onRefreshRequested()"></er-meeting-list-coachee>

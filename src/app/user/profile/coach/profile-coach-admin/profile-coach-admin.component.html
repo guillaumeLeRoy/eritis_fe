@@ -1,6 +1,7 @@
 <er-profile-header [user]="coach" [isOwner]="true"></er-profile-header>
 
-<div class="container" *ifLoader="loading" [ngsReveal]="{scale:1, opacity:0, distance:0, duration: 1000, viewFactor: 0}">
+<div class="container" *ifLoader="loading"
+     [ngsReveal]="{scale:1, opacity:0, distance:0, duration: 1000, viewFactor: 0}">
 
   <div class="center">
     <a target="_blank" class="btn-basic btn-blue btn-plain btn-small" [href]="(coach | async)?.linkedin_url"><i
@@ -20,7 +21,9 @@
            [style.background-image]="'url(' + avatarFile + ')'"
            *ngIf="avatarFile != null"></div>
       <div class="input-file-container">
-        <button class="btn-basic btn-blue btn-plain btn-small file-upload-button" *ngIf="!avatarLoading">Choisir une image</button>
+        <button class="btn-basic btn-blue btn-plain btn-small file-upload-button" *ngIf="!avatarLoading">Choisir une
+          image
+        </button>
         <input type="file"
                id="upload-avatar-input"
                accept=".jpeg,.jpg,.png"
@@ -164,7 +167,8 @@
 
           <div class="col-lg-12 input-container">
             <label>Avez-vous une copie de votre assurance RC Pro ?</label><br>
-            <p *ngIf="(coach | async)?.insurance_url != ''"><a [href]="(coach | async)?.insurance_url">Contrat d'assurance</a></p>
+            <p *ngIf="(coach | async)?.insurance_url != ''"><a [href]="(coach | async)?.insurance_url">Contrat
+              d'assurance</a></p>
             <br>
           </div>
         </div>
@@ -172,10 +176,7 @@
 
     </div><!--end row>-->
 
-    <er-meeting-list-coach [mUser]="(coach | async)"
-                           [isAdmin]="true"
-                           *ngIf="(coach | async)">
-    </er-meeting-list-coach>
+    <er-meeting-list-coach [user]="coach " [isAdmin]="true"></er-meeting-list-coach>
 
   </div>
 

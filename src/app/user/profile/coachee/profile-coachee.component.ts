@@ -137,7 +137,7 @@ export class ProfileCoacheeComponent implements OnInit, OnDestroy {
         Materialize.toast('Votre profil a été modifié !', 3000, 'rounded');
         //refresh page
         setTimeout('', 1000);
-        window.location.reload();
+        // window.location.reload();
       }, error => {
         console.log('Upload avatar error', error);
         this.updateUserLoading = false;

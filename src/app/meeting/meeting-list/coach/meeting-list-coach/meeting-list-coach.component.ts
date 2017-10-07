@@ -20,12 +20,10 @@ export class MeetingListCoachComponent implements OnInit, AfterViewInit, OnDestr
   loading = true;
 
   @Input()
-  mUser: Coach;
-
-  @Input()
   isAdmin: boolean = false;
 
-  private user: Observable<Coach>;
+  @Input()
+  user: Observable<Coach>;
 
   private meetings: Observable<Array<Meeting>>;
   private meetingsOpened: Observable<Meeting[]>;
@@ -37,6 +35,7 @@ export class MeetingListCoachComponent implements OnInit, AfterViewInit, OnDestr
   private hasClosedMeeting = false;
   private hasUnbookedMeeting = false;
 
+  private userSubscription: Subscription;
   private getAllMeetingsForCoachIdSubscription: Subscription;
 
   private meetingToCancel: Meeting;
@@ -73,12 +72,12 @@ export class MeetingListCoachComponent implements OnInit, AfterViewInit, OnDestr
   ngOnInit() {
     console.log('ngOnInit');
     this.loading = true;
-    this.user = Observable.of(this.mUser);
+    this.onRefreshRequested();
   }
 
   ngAfterViewInit(): void {
     console.log('ngAfterViewInit');
-    this.onRefreshRequested();
+    // this.onRefreshRequested();
   }
 
   ngOnDestroy(): void {
@@ -87,18 +86,26 @@ export class MeetingListCoachComponent implements OnInit, AfterViewInit, OnDestr
     if (this.getAllMeetingsForCoachIdSubscription) {
       this.getAllMeetingsForCoachIdSubscription.unsubscribe();
     }
+
+    if (this.userSubscription) {
+      this.userSubscription.unsubscribe();
+    }
   }
 
   onRefreshRequested() {
     console.log('onRefreshRequested');
-    this.onUserObtained(this.mUser);
+    this.userSubscription = this.user.first().subscribe(
+      (user: Coach) => {
+        this.onUserObtained(user);
+        this.cd.detectChanges();
+    });
   }
 
   private onUserObtained(user: Coach) {
     console.log('onUserObtained, user : ', user);
-    this.getAllMeetingsForCoach(user.id);
-    this.user = Observable.of(user);
-    this.cd.detectChanges();
+    if (user)
+      this.getAllMeetingsForCoach(user.id);
+    // this.cd.detectChanges();
   }
 
   private getAllMeetingsForCoach(coachId: string) {

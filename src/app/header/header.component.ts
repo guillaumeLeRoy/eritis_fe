@@ -1,5 +1,5 @@
-import {ChangeDetectorRef, Component, OnDestroy, OnInit} from "@angular/core";
-import {NavigationEnd, Router} from "@angular/router";
+import {AfterViewInit, ChangeDetectorRef, Component, OnDestroy, OnInit} from "@angular/core";
+import {Router} from "@angular/router";
 import {AuthService} from "../service/auth.service";
 import {Observable, Subscription} from "rxjs";
 import {Coach} from "../model/Coach";
@@ -9,12 +9,13 @@ import {ApiUser} from "../model/apiUser";
 import {Notif} from "../model/Notif";
 import {CoachCoacheeService} from "../service/coach_coachee.service";
 import {Response} from "@angular/http";
-import {CookieService} from "ngx-cookie";
 import {PromiseObservable} from "rxjs/observable/PromiseObservable";
 import {FirebaseService} from "../service/firebase.service";
 import {MeetingsService} from "../service/meetings.service";
 import {Meeting} from "../model/Meeting";
 import {Utils} from "../utils/Utils";
+import {BehaviorSubject} from "rxjs/BehaviorSubject";
+import {CookieService} from "ngx-cookie";
 
 
 declare var $: any;
@@ -25,14 +26,19 @@ declare var Materialize: any;
   templateUrl: 'header.component.html',
   styleUrls: ['./header.component.scss']
 })
-export class HeaderComponent implements OnInit, OnDestroy {
+export class HeaderComponent implements OnInit, AfterViewInit, OnDestroy {
   months = ['Janvier', 'Février', 'Mars', 'Avril', 'Mai', 'Juin', 'Juillet', 'Août', 'Septembre', 'Octobre', 'Novembre', 'Décembre'];
 
   private isAuthenticated: Observable<boolean>;
-  private subscription: Subscription;
 
-  private mUser: Coach | Coachee | HR;
-  private user: Observable<Coach | Coachee | HR>;
+  private mUser: Coach | Coachee | HR
+  private user: BehaviorSubject<ApiUser>;
+
+  private connectedUserSubscription: Subscription;
+  private routerEventSubscription: Subscription;
+  private readAllNotifSubscription: Subscription;
+  private getAvailableMeetingsSubscription: Subscription;
+  private getAllNotifSubscription: Subscription;
 
   private notifications: Observable<Notif[]>;
 
@@ -42,96 +48,108 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
   private showCookiesMessage = false;
 
-  constructor(private router: Router, private meetingService: MeetingsService, private authService: AuthService, private coachCoacheeService: CoachCoacheeService, private cd: ChangeDetectorRef, private cookieService: CookieService, private firebase: FirebaseService) {
+  constructor(private router: Router, private meetingService: MeetingsService, private authService: AuthService, private coachCoacheeService: CoachCoacheeService,
+              private cd: ChangeDetectorRef, private cookieService: CookieService, private firebase: FirebaseService) {
+    this.user = new BehaviorSubject(null);
   }
 
   ngOnInit(): void {
-
-    this.mUser = this.authService.getConnectedUser();
-    this.onUserObtained(this.mUser);
-    // this.isAuthenticated = this.authService.isAuthenticated();
-    // this.authService.isAuthenticated().subscribe(
-    //   (isAuth: boolean) => {
-    //     console.log("isAuthenticated : " + isAuth);
-    //     this.isAuthenticated = Observable.of(isAuth);
-    //     this.cd.detectChanges();
-    //   }
-    // );
-    if (this.user == null) {
-      // Un utilisateur non connecté est redirigé sur la page d'accueil
-      window.scrollTo(0, 0);
-      this.router.navigate(['/']);
-    }
-
-    // this.connectedUser = this.authService.getConnectedUserObservable();
-    this.subscription = this.authService.getConnectedUserObservable().subscribe(
-      (user: Coach | Coachee | HR) => {
-        console.log('getConnectedUser : ' + user);
-        this.onUserObtained(user);
-      }
-    );
+    console.log('ngOnInit');
+    this.getConnectedUser();
 
     this.router.events.subscribe((evt) => {
-      if (!(evt instanceof NavigationEnd)) {
-        // console.log("headerNav USER", this.mUser);
-        // console.log("headerNav COOKIE", this.cookieService.get('ACTIVE_SESSION'));
-        if (this.mUser !== null && this.cookieService.get('ACTIVE_SESSION') === undefined)
-          this.onLogout();
-      }
+      // if (!(evt instanceof NavigationEnd)) {
+      //   this.onRefreshRequested();
+      //   // console.log("headerNav USER", this.mUser);
+      //   // console.log("headerNav COOKIE", this.cookieService.get('ACTIVE_SESSION'));
+      //   if (this.mUser !== null && this.cookieService.get('ACTIVE_SESSION') === undefined) {
+      //     this.onLogout();
+      //     this.router.navigate(['/']);
+      //   }
+      // }
       window.scrollTo(0, 0)
     });
+  }
 
-
+  ngAfterViewInit(): void {
+    console.log('ngAfterViewInit');
+    this.onRefreshRequested();
     // Cookie Headband
     this.showCookiesMessage = this.cookieService.get('ACCEPTS_COOKIES') === undefined;
+  }
+
+  ngOnDestroy(): void {
+    console.log('ngOnDestroy');
+
+    if (this.connectedUserSubscription)
+      this.connectedUserSubscription.unsubscribe();
+
+    if (this.routerEventSubscription)
+      this.routerEventSubscription.unsubscribe();
+
+    if (this.getAvailableMeetingsSubscription)
+      this.getAvailableMeetingsSubscription.unsubscribe();
+
+    if (this.getAllNotifSubscription)
+      this.getAllNotifSubscription.unsubscribe();
+
+    if (this.readAllNotifSubscription)
+      this.readAllNotifSubscription.unsubscribe();
+  }
+
+  getConnectedUser() {
+    this.connectedUserSubscription = this.authService.getConnectedUserObservable()
+      .subscribe((user?: Coach | Coachee | HR) => {
+          console.log("getConnectedUser : " + user);
+          this.onUserObtained(user);
+          this.cd.detectChanges();
+        }
+      );
+  }
+
+  onRefreshRequested() {
+    this.connectedUserSubscription = this.authService.refreshConnectedUser()
+      .subscribe((user?: Coach | Coachee | HR) => {
+          console.log("onRefreshRequested : " + user);
+          this.onUserObtained(user);
+          this.cd.detectChanges();
+        }
+      );
   }
 
   private onUserObtained(user: Coach | Coachee | HR) {
     console.log('onUserObtained : ' + user);
 
+    this.mUser = user;
+
+    // Un utilisateur non connecté est redirigé sur la page d'accueil
     if (this.isAdmin()) {
-      this.user = null;
+      this.mUser = null;
       this.isAuthenticated = Observable.of(false);
     }
 
-    if (user == null) {
-      this.mUser = user;
-      this.isAuthenticated = Observable.of(false);
-    } else {
-      this.mUser = user;
+    if (user) {
       this.isAuthenticated = Observable.of(true);
       this.fetchNotificationsForUser(user);
-      if (this.cookieService.get('ACTIVE_SESSION') === undefined)
-        this.onLogout();
-      else
-        console.log('onUserObtained COOKIE', this.cookieService.get('ACTIVE_SESSION'));
 
       if (this.isUserACoach())
         this.getAvailableMeetings();
-    }
 
-    this.user = Observable.of(user);
-    this.cd.detectChanges();
+      this.user.next(user);
+    }
+    else {
+      this.isAuthenticated = Observable.of(false);
+    }
   }
 
   toggleLoginStatus() {
     $('#signin').slideToggle('slow');
   }
 
-  ngOnDestroy(): void {
-    this.subscription.unsubscribe();
-  }
-
   onLogout() {
     console.log("login out")
-    window.scrollTo(0, 0);
     $('.button-collapse').sideNav('hide');
     this.authService.loginOut();
-  }
-
-  onLogIn() {
-    window.scrollTo(0, 0);
-    this.router.navigate(['/signin']);
   }
 
   onSignUp() {
@@ -144,7 +162,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
       console.log('goToHomeUser');
       this.goToMeetings();
     }
-    if (this.isAdmin()) {
+    else if (this.isAdmin()) {
       console.log('goToHomeAdmin');
       this.navigateAdminHome();
     }
@@ -156,30 +174,30 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
   goToWelcomePage() {
     $('.button-collapse').sideNav('hide');
-    this.router.navigate(['/welcome']);
+    this.router.navigate(['welcome']);
   }
 
   goToMeetings() {
     let user = this.authService.getConnectedUser();
     if (user != null) {
-      this.router.navigate(['/meetings']);
+      this.router.navigate(['dashboard/meetings']);
     }
   }
 
   goToAvailableSessions() {
     let user = this.authService.getConnectedUser();
     if (user != null) {
-      this.router.navigate(['/available_meetings']);
+      this.router.navigate(['dashboard/available_meetings']);
     }
   }
 
   goToProfile() {
     if (this.mUser instanceof Coach) {
-      this.router.navigate(['/profile_coach', this.mUser.id]);
+      this.router.navigate(['dashboard/profile_coach', this.mUser.id]);
     } else if (this.mUser instanceof Coachee) {
-      this.router.navigate(['/profile_coachee', this.mUser.id]);
+      this.router.navigate(['dashboard/profile_coachee', this.mUser.id]);
     } else if (this.mUser instanceof HR) {
-      this.router.navigate(['/profile_rh', this.mUser.id]);
+      this.router.navigate(['dashboard/profile_rh', this.mUser.id]);
     }
   }
 
@@ -199,7 +217,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
       if (obs != null) {
         obs.subscribe((response: Response) => {
           console.log('updateNotificationRead response : ' + response);
-        });
+        }).unsubscribe();
       }
 
     }
@@ -239,7 +257,10 @@ export class HeaderComponent implements OnInit, OnDestroy {
     let signupCoachee = new RegExp('/signup_coachee');
     let signupRh = new RegExp('/signup_rh');
     let registerCoach = new RegExp('/register_coach');
-    return signupCoach.test(this.router.url) || signupCoachee.test(this.router.url) || signupRh.test(this.router.url) || registerCoach.test(this.router.url);
+    return signupCoach.test(this.router.url)
+      || signupCoachee.test(this.router.url)
+      || signupRh.test(this.router.url)
+      || registerCoach.test(this.router.url);
   }
 
   goToRegisterCoach() {
@@ -247,23 +268,22 @@ export class HeaderComponent implements OnInit, OnDestroy {
   }
 
   canDisplayListOfCoach(): boolean {
-    if (this.mUser == null) {
+    if (this.mUser == null)
       return false;
-    }
 
-    if (this.mUser instanceof Coach) {
+    if (this.mUser instanceof Coach)
       return false;
-    } else {
+    else
       return true;
-    }
   }
 
 
   private getAvailableMeetings() {
-    this.meetingService.getAvailableMeetings().subscribe(
+    this.getAvailableMeetingsSubscription = this.meetingService.getAvailableMeetings().subscribe(
       (meetings: Meeting[]) => {
         console.log('got getAvailableMeetings', meetings);
         if (meetings != null && meetings.length > 0) this.hasAvailableMeetings = true;
+        this.cd.detectChanges();
       }
     );
   }
@@ -271,7 +291,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   private fetchNotificationsForUser(user: ApiUser) {
 
     let param = user
-    this.coachCoacheeService.getAllNotificationsForUser(param).subscribe(
+    this.getAllNotifSubscription = this.coachCoacheeService.getAllNotificationsForUser(param).subscribe(
       (notifs: Notif[]) => {
         console.log('fetchNotificationsForUser : ' + notifs);
 
@@ -292,6 +312,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
         }
 
         this.notifications = Observable.of(notifs);
+        this.cd.detectChanges();
       }
     );
   }
@@ -301,7 +322,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   }
 
   readAllNotifications() {
-    this.coachCoacheeService.readAllNotificationsForUser(this.mUser).subscribe(
+    this.readAllNotifSubscription = this.coachCoacheeService.readAllNotificationsForUser(this.mUser).subscribe(
       (response: Response) => {
         console.log("getAllNotifications OK", response);
         this.fetchNotificationsForUser(this.mUser);
@@ -309,7 +330,6 @@ export class HeaderComponent implements OnInit, OnDestroy {
       }
     );
   }
-
 
 
   /******* Admin page *****/
@@ -350,7 +370,6 @@ export class HeaderComponent implements OnInit, OnDestroy {
   }
 
 
-
   /*************************************
    ----------- Modal control for forgot password ------------
    *************************************/
@@ -389,6 +408,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
         console.log("sendPasswordResetEmail ");
         Materialize.toast("Email envoyé", 3000, 'rounded');
         this.cancelForgotPasswordModal();
+        this.cd.detectChanges();
       },
       error => {
         /**
@@ -410,7 +430,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
         }
         Materialize.toast("Une erreur est survenue", 3000, 'rounded');
       }
-    );
+    ).unsubscribe();
   }
 
 }

@@ -140,7 +140,7 @@ export class ProfileRhComponent implements OnInit, OnDestroy {
         Materialize.toast('Votre profil a été modifié !', 3000, 'rounded');
         //refresh page
         setTimeout('', 1000);
-        window.location.reload();
+        // window.location.reload();
       },
       (error) => {
         console.log('rh update, error', error);

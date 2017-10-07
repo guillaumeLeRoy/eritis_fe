@@ -29,29 +29,42 @@ import {LegalNoticeComponent} from "./legals/legal-notice/legal-notice.component
 import {TermsOfUseComponent} from "./legals/terms-of-use/terms-of-use.component";
 import {CookiePolicyComponent} from "./legals/cookie-policy/cookie-policy.component";
 import {HomeAdminComponent} from "./admin/home-admin/home-admin.component";
+import {AuthGuard} from "./service/auth-guard.service";
+import {NotAuthGuard} from "./service/not-auth-guard";
 
 const APP_ROUTES: Routes = [
   {path: '', redirectTo: '/welcome', pathMatch: 'full'},
-  {path: 'welcome', component: WelcomeComponent},
-  {path: 'chat', component: ChatComponent},
+  {path: 'welcome', component: WelcomeComponent, canActivate: [NotAuthGuard]},
+
+  //{path: 'chat', component: ChatComponent},
+
   {path: 'signin', component: SigninComponent},
+
+  {path: 'dashboard', canActivate: [AuthGuard], canActivateChild: [AuthGuard],
+    children: [
+      {path: '', redirectTo: 'meetings', pathMatch: 'full'},
+      {path: 'profile_rh/:id', component: ProfileRhComponent},
+      {path: 'profile_coach/:id', component: ProfileCoachComponent},
+      {path: 'profile_coachee/:id', component: ProfileCoacheeComponent},
+      {path: 'meetings', component: MeetingListComponent},
+      {path: 'date/:meetingId', component: MeetingDateComponent},
+      {path: 'date', component: MeetingDateComponent},
+      {path: 'available_meetings', component: AvailableMeetingsComponent}
+    ]
+  },
+
   {path: 'legal-notice', component: LegalNoticeComponent},
   {path: 'terms-of-use', component: TermsOfUseComponent},
   {path: 'cookie-policy', component: CookiePolicyComponent},
+
   {path: 'register_coach/step1', component: RegisterCoachComponent},
   {path: 'register_coach/code_deontologie', component: CodeDeontologieComponent},
   {path: 'register_coach/step2', component: RegisterCoachFormComponent},
   {path: 'register_coach/step3', component: RegisterCoachMessageComponent},
+
   {path: 'signup_coachee', component: SignupCoacheeComponent},
   {path: 'signup_coach', component: SignupCoachComponent},
   {path: 'signup_rh', component: SignupRhComponent},
-  {path: 'profile_rh/:id', component: ProfileRhComponent},
-  {path: 'profile_coach/:id', component: ProfileCoachComponent},
-  {path: 'profile_coachee/:id', component: ProfileCoacheeComponent},
-  {path: 'meetings', component: MeetingListComponent},
-  {path: 'date/:meetingId', component: MeetingDateComponent},
-  {path: 'date', component: MeetingDateComponent},
-  {path: 'available_meetings', component: AvailableMeetingsComponent},
 
   {path: 'admin', component: AdminComponent,
     children: [
