@@ -1,11 +1,12 @@
-import { Injectable } from '@angular/core';
-import {CanActivate, Router, ActivatedRouteSnapshot, RouterStateSnapshot, CanActivateChild} from '@angular/router';
-import { AuthService } from './auth.service';
-import {CookieService} from "ngx-cookie";
+import {Injectable} from "@angular/core";
+import {ActivatedRouteSnapshot, CanActivate, CanActivateChild, RouterStateSnapshot} from "@angular/router";
+import {AuthService} from "./auth.service";
+import {SessionService} from "./Session.service";
 
 @Injectable()
 export class AuthGuard implements CanActivate, CanActivateChild {
-  constructor(private authService: AuthService, private router: Router, private cookieService: CookieService) {}
+  constructor(private authService: AuthService, private sessionService: SessionService) {
+  }
 
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean {
     let url: string = state.url;
@@ -20,16 +21,9 @@ export class AuthGuard implements CanActivate, CanActivateChild {
   }
 
   checkLogin(url: string): boolean {
-    let cookie = (this.cookieService.get('ACTIVE_SESSION') !== undefined);
-
     //if (this.authService.isAuthenticated() && cookie) { return true; }
-    if (cookie) {
-      let date = (new Date());
-      date.setHours(date.getHours() + 1);
-      console.log('COOKIE', date);
-      //Update cookie expiration time
-      this.cookieService.put('ACTIVE_SESSION', 'true', {'expires': date});
-
+    if (this.sessionService.isSessionActive()) {
+      this.sessionService.saveSessionTTL();
       return true;
     }
 

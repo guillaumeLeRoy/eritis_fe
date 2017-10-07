@@ -1,11 +1,11 @@
-import { Injectable } from '@angular/core';
-import { CanActivate, Router, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
-import { AuthService } from './auth.service';
-import {CookieOptions, CookieService} from "ngx-cookie";
+import {Injectable} from "@angular/core";
+import {ActivatedRouteSnapshot, CanActivate, Router, RouterStateSnapshot} from "@angular/router";
+import {SessionService} from "./Session.service";
 
 @Injectable()
 export class NotAuthGuard implements CanActivate {
-  constructor(private authService: AuthService, private router: Router, private cookieService: CookieService) {}
+  constructor(private router: Router, private sessionService: SessionService) {
+  }
 
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean {
     let url: string = state.url;
@@ -14,11 +14,11 @@ export class NotAuthGuard implements CanActivate {
   }
 
   checkLogin(url: string): boolean {
-    let cookie = (this.cookieService.get('ACTIVE_SESSION') === undefined);
-
     // if (this.authService.isAuthenticated()) { return true; }
-    if (cookie) { return true; }
-    // Une session esta active, on redirige vers le dashboard
+    if (!this.sessionService.isSessionActive()) {
+      return true;
+    }
+    // Une session est active, on redirige vers le dashboard
     this.router.navigate(['dashboard']);
     return false;
   }

@@ -1,5 +1,5 @@
 import {AfterViewInit, ChangeDetectorRef, Component, OnDestroy, OnInit} from "@angular/core";
-import {NavigationEnd, Router} from "@angular/router";
+import {Router} from "@angular/router";
 import {AuthService} from "../service/auth.service";
 import {Observable, Subscription} from "rxjs";
 import {Coach} from "../model/Coach";
@@ -9,13 +9,13 @@ import {ApiUser} from "../model/apiUser";
 import {Notif} from "../model/Notif";
 import {CoachCoacheeService} from "../service/coach_coachee.service";
 import {Response} from "@angular/http";
-import {CookieService} from "ngx-cookie";
 import {PromiseObservable} from "rxjs/observable/PromiseObservable";
 import {FirebaseService} from "../service/firebase.service";
 import {MeetingsService} from "../service/meetings.service";
 import {Meeting} from "../model/Meeting";
 import {Utils} from "../utils/Utils";
 import {BehaviorSubject} from "rxjs/BehaviorSubject";
+import {CookieService} from "ngx-cookie";
 
 
 declare var $: any;
@@ -48,7 +48,8 @@ export class HeaderComponent implements OnInit, AfterViewInit, OnDestroy {
 
   private showCookiesMessage = false;
 
-  constructor(private router: Router, private meetingService: MeetingsService, private authService: AuthService, private coachCoacheeService: CoachCoacheeService, private cd: ChangeDetectorRef, private cookieService: CookieService, private firebase: FirebaseService) {
+  constructor(private router: Router, private meetingService: MeetingsService, private authService: AuthService, private coachCoacheeService: CoachCoacheeService,
+              private cd: ChangeDetectorRef, private cookieService: CookieService, private firebase: FirebaseService) {
     this.user = new BehaviorSubject(null);
   }
 
@@ -131,10 +132,11 @@ export class HeaderComponent implements OnInit, AfterViewInit, OnDestroy {
       this.isAuthenticated = Observable.of(true);
       this.fetchNotificationsForUser(user);
 
-      if (this.cookieService.get('ACTIVE_SESSION') === undefined)
-        this.onLogout();
-      else
-        console.log('onUserObtained COOKIE', this.cookieService.get('ACTIVE_SESSION'));
+      // if (!this.sessionService.isSessionActive()) {
+      //   this.onLogout();
+      // else {
+      //   console.log('onUserObtained COOKIE', this.cookieService.get('ACTIVE_SESSION'));
+      // }
 
       if (this.isUserACoach())
         this.getAvailableMeetings();
@@ -336,7 +338,6 @@ export class HeaderComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
 
-
   /******* Admin page *****/
   navigateAdminHome() {
     console.log("navigateAdminHome");
@@ -373,7 +374,6 @@ export class HeaderComponent implements OnInit, AfterViewInit, OnDestroy {
     $('#cookie_headband').fadeOut();
     this.cookieService.put('ACCEPTS_COOKIES', 'true');
   }
-
 
 
   /*************************************
