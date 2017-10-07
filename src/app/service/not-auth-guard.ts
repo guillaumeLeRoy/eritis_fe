@@ -1,6 +1,6 @@
 import {Injectable} from "@angular/core";
 import {ActivatedRouteSnapshot, CanActivate, Router, RouterStateSnapshot} from "@angular/router";
-import {SessionService} from "./Session.service";
+import {SessionService} from "./session.service";
 
 @Injectable()
 export class NotAuthGuard implements CanActivate {
@@ -16,6 +16,7 @@ export class NotAuthGuard implements CanActivate {
   checkLogin(url: string): boolean {
     // if (this.authService.isAuthenticated()) { return true; }
     if (!this.sessionService.isSessionActive()) {
+
       return true;
     }
     // Une session est active, on redirige vers le dashboard

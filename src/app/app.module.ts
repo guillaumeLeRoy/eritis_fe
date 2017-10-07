@@ -5,7 +5,7 @@ import {HttpModule} from "@angular/http";
 
 import {AppComponent} from "./app.component";
 import {HeaderComponent} from "./header/header.component";
-import {SessionService} from "./service/Session.service";
+import {SessionService} from "./service/session.service";
 import {routing} from "./app.routing";
 import {SignupAdminComponent} from "./login/signup/signup-admin/signup-admin.component";
 import {SigninComponent} from "./login/signin/signin.component";

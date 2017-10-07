@@ -14,7 +14,7 @@ import {HR} from "../model/HR";
 import {PotentialCoachee} from "../model/PotentialCoachee";
 import {PotentialRh} from "../model/PotentialRh";
 import {EmptyObservable} from "rxjs/observable/EmptyObservable";
-import {SessionService} from "./Session.service";
+import {SessionService} from "./session.service";
 
 declare var Materialize: any;
 
@@ -107,6 +107,7 @@ export class AuthService {
     }.bind(this));
 
     console.log("ctr done");
+    console.log("ctr done");
 
     // let date = (new Date());
     // date.setHours(date.getHours() + 1);
@@ -176,11 +177,7 @@ export class AuthService {
   }
 
   getConnectedUser(): Coach | Coachee | HR {
-    if (this.sessionService.isSessionActive()) {
-      return this.ApiUser;
-    } else {
-      return null;
-    }
+    return this.ApiUser;
   }
 
   getConnectedUserObservable(): Observable<ApiUser> {

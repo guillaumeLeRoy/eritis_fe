@@ -132,12 +132,6 @@ export class HeaderComponent implements OnInit, AfterViewInit, OnDestroy {
       this.isAuthenticated = Observable.of(true);
       this.fetchNotificationsForUser(user);
 
-      // if (!this.sessionService.isSessionActive()) {
-      //   this.onLogout();
-      // else {
-      //   console.log('onUserObtained COOKIE', this.cookieService.get('ACTIVE_SESSION'));
-      // }
-
       if (this.isUserACoach())
         this.getAvailableMeetings();
 
