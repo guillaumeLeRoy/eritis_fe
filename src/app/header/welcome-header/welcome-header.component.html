@@ -1,0 +1,83 @@
+<header class="z-depth-2"
+        [ngsReveal]="{scale:1, origin: 'top', distance:'200px', duration: 500}">
+  <div class="navbar">
+    <nav>
+      <div class="navbar-color">
+        <div class="col s12">
+          <a (click)="goToHome()" class="brand-logo center hide-on-med-and-down"><img
+            src="assets/img/logo-eritis-new.png" alt="Eritis"></a>
+
+          <a (click)="goToHome()" class="brand-logo brand-logo-phone center hide-on-large-only"><img
+            src="assets/img/logo-eritis-new.png" alt="Eritis"></a>
+
+          <ul class="right hide-on-med-and-down">
+            <div>
+              <li [class.active]="router.url === '/admin/coachs-list'">
+                <a (click)="goToRegisterCoach()">Devenir coach Eritis</a></li>
+            </div>
+          </ul>
+        </div>
+      </div>
+    </nav>
+  </div>
+
+  <div class="welcome-header">
+    <div class="container">
+      <h1 class="header-title"
+          [ngsReveal]="{scale:0, duration: 500, delay: 500}">
+        Atteignez vos objectifs</h1>
+      <h3 class="header-subtitle ultra-light-grey-text"
+          [ngsReveal]="{distance: 0, scale: 1, opacity: 0, duration: 2000, delay: 1000}">
+        Séances de coaching individuel avec un coach certifié</h3>
+
+      <div class="row hide-on-small-and-down">
+        <div class="header-btn col-xs-12 col-sm-6">
+          <a pageScroll href="#coach_section" class="btn-basic btn-small right">En savoir plus</a>
+        </div>
+        <div class="header-btn col-xs-12 col-sm-6">
+          <button class="btn-basic btn-plain btn-connexion btn-small left" (click)="toggleLoginStatus()"><i class="material-icons">perm_identity</i>
+            Connexion
+          </button>
+        </div>
+      </div>
+
+      <div class="row hide-on-med-and-up">
+        <div class="header-btn col-xs-12 col-sm-6">
+          <a pageScroll href="#coach_section" class="btn-basic btn-small">En savoir plus</a>
+        </div>
+        <div class="header-btn col-xs-12 col-sm-6">
+          <button class="btn-basic btn-plain btn-connexion btn-small" (click)="toggleLoginStatus()"><i
+            class="material-icons">perm_identity</i>
+            Connexion
+          </button>
+        </div>
+      </div>
+
+      <div id="signin">
+        <er-signin></er-signin>
+        <br>
+        <a (click)="onForgotPasswordClicked()">Mot de passe oublié ?</a>
+      </div>
+
+      <a pageScroll href="#presentation" class="header-arrow-bottom"><i class="fa fa-angle-down"
+                                                                        aria-hidden="true"></i></a>
+    </div>
+  </div>
+</header>
+
+
+<!-- Modal Forgot password -->
+<div id="forgot_password_modal" class="modal">
+  <div class="action-modal-content">
+    <div class="action-modal-message">
+      <label>Veuillez saisir votre adresse email</label>
+      <input type="email" placeholder="Email" [(ngModel)]="forgotEmail">
+    </div>
+    <div class="action-modal-footer">
+      <button class="btn-basic btn-plain btn-small" (click)="cancelForgotPasswordModal()">Annuler</button>
+      <button class="btn-basic btn-blue btn-plain btn-small" (click)="validateForgotPasswordModal()"
+              [disabled]="!forgotEmail">Confirmer
+      </button>
+    </div>
+  </div>
+</div>

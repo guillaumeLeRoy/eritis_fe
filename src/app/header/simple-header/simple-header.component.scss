@@ -1,4 +1,4 @@
-@import "../../saas/variables";
+@import "../../../saas/variables";
 
 nav{
   background-color: transparent;
@@ -98,10 +98,10 @@ nav li a:focus {
   color: $main-dark-grey;
   max-width: 80%;
   z-index: 10000;
- }
+}
 
 .side-nav-header {
-  background-image: url("../../assets/img/eritis-mountain-bg-2.jpg");
+  background-image: url("../../../assets/img/eritis-mountain-bg-2.jpg");
   background-attachment: scroll;
   background-position: center;
   background-size: cover;
@@ -143,7 +143,7 @@ nav li a:focus {
 }
 
 header{
-  background-image: url("../../assets/img/eritis-mountain-bg-2.jpg");
+  background-image: url("../../../assets/img/eritis-mountain-bg-2.jpg");
   background-attachment: fixed;
   background-position: top;
   background-size: cover;

@@ -1,32 +1,31 @@
 import {AfterViewInit, ChangeDetectorRef, Component, OnDestroy, OnInit} from "@angular/core";
 import {Router} from "@angular/router";
-import {AuthService} from "../service/auth.service";
+import {AuthService} from "../../service/auth.service";
 import {Observable, Subscription} from "rxjs";
-import {Coach} from "../model/Coach";
-import {Coachee} from "../model/Coachee";
-import {HR} from "../model/HR";
-import {ApiUser} from "../model/apiUser";
-import {Notif} from "../model/Notif";
-import {CoachCoacheeService} from "../service/coach_coachee.service";
+import {Coach} from "../../model/Coach";
+import {Coachee} from "../../model/Coachee";
+import {HR} from "../../model/HR";
+import {ApiUser} from "../../model/ApiUser";
+import {Notif} from "../../model/Notif";
+import {CoachCoacheeService} from "../../service/coach_coachee.service";
 import {Response} from "@angular/http";
 import {PromiseObservable} from "rxjs/observable/PromiseObservable";
-import {FirebaseService} from "../service/firebase.service";
-import {MeetingsService} from "../service/meetings.service";
-import {Meeting} from "../model/Meeting";
-import {Utils} from "../utils/Utils";
+import {FirebaseService} from "../../service/firebase.service";
+import {MeetingsService} from "../../service/meetings.service";
+import {Meeting} from "../../model/Meeting";
+import {Utils} from "../../utils/Utils";
 import {BehaviorSubject} from "rxjs/BehaviorSubject";
 import {CookieService} from "ngx-cookie";
-
 
 declare var $: any;
 declare var Materialize: any;
 
 @Component({
-  selector: 'er-header',
-  templateUrl: 'header.component.html',
-  styleUrls: ['./header.component.scss']
+  selector: 'er-auth-header',
+  templateUrl: './auth-header.component.html',
+  styleUrls: ['./auth-header.component.scss']
 })
-export class HeaderComponent implements OnInit, AfterViewInit, OnDestroy {
+export class AuthHeaderComponent implements OnInit, AfterViewInit, OnDestroy {
   months = ['Janvier', 'Février', 'Mars', 'Avril', 'Mai', 'Juin', 'Juillet', 'Août', 'Septembre', 'Octobre', 'Novembre', 'Décembre'];
 
   private isAuthenticated: Observable<boolean>;
@@ -42,14 +41,11 @@ export class HeaderComponent implements OnInit, AfterViewInit, OnDestroy {
 
   private notifications: Observable<Notif[]>;
 
-  private forgotEmail?: string;
-
   private hasAvailableMeetings = false;
 
-  private showCookiesMessage = false;
 
   constructor(private router: Router, private meetingService: MeetingsService, private authService: AuthService, private coachCoacheeService: CoachCoacheeService,
-              private cd: ChangeDetectorRef, private cookieService: CookieService, private firebase: FirebaseService) {
+              private cd: ChangeDetectorRef, private cookieService: CookieService) {
     this.user = new BehaviorSubject(null);
   }
 
@@ -74,8 +70,6 @@ export class HeaderComponent implements OnInit, AfterViewInit, OnDestroy {
   ngAfterViewInit(): void {
     console.log('ngAfterViewInit');
     this.onRefreshRequested();
-    // Cookie Headband
-    this.showCookiesMessage = this.cookieService.get('ACCEPTS_COOKIES') === undefined;
   }
 
   ngOnDestroy(): void {
@@ -142,10 +136,6 @@ export class HeaderComponent implements OnInit, AfterViewInit, OnDestroy {
     }
   }
 
-  toggleLoginStatus() {
-    $('#signin').slideToggle('slow');
-  }
-
   onLogout() {
     console.log("login out")
     $('.button-collapse').sideNav('hide');
@@ -165,10 +155,6 @@ export class HeaderComponent implements OnInit, AfterViewInit, OnDestroy {
     else if (this.isAdmin()) {
       console.log('goToHomeAdmin');
       this.navigateAdminHome();
-    }
-    else {
-      console.log('goToWelcomePage');
-      this.goToWelcomePage();
     }
   }
 
@@ -239,11 +225,11 @@ export class HeaderComponent implements OnInit, AfterViewInit, OnDestroy {
     let admin = new RegExp('/admin');
     return admin.test(this.router.url);
   }
-
-  isHomePage(): boolean {
-    let home = new RegExp('/welcome');
-    return home.test(this.router.url);
-  }
+  //
+  // isHomePage(): boolean {
+  //   let home = new RegExp('/welcome');
+  //   return home.test(this.router.url);
+  // }
 
   isEditingProfile(): boolean {
     let profileCoach = new RegExp('/profile_coach');
@@ -252,20 +238,16 @@ export class HeaderComponent implements OnInit, AfterViewInit, OnDestroy {
     return profileCoach.test(this.router.url) || profileCoachee.test(this.router.url) || profileRh.test(this.router.url);
   }
 
-  isSigningUp(): boolean {
-    let signupCoach = new RegExp('/signup_coach');
-    let signupCoachee = new RegExp('/signup_coachee');
-    let signupRh = new RegExp('/signup_rh');
-    let registerCoach = new RegExp('/register_coach');
-    return signupCoach.test(this.router.url)
-      || signupCoachee.test(this.router.url)
-      || signupRh.test(this.router.url)
-      || registerCoach.test(this.router.url);
-  }
-
-  goToRegisterCoach() {
-    this.router.navigate(['register_coach/step1'])
-  }
+  // isSigningUp(): boolean {
+  //   let signupCoach = new RegExp('/signup_coach');
+  //   let signupCoachee = new RegExp('/signup_coachee');
+  //   let signupRh = new RegExp('/signup_rh');
+  //   let registerCoach = new RegExp('/register_coach');
+  //   return signupCoach.test(this.router.url)
+  //     || signupCoachee.test(this.router.url)
+  //     || signupRh.test(this.router.url)
+  //     || registerCoach.test(this.router.url);
+  // }
 
   canDisplayListOfCoach(): boolean {
     if (this.mUser == null)
@@ -362,75 +344,4 @@ export class HeaderComponent implements OnInit, AfterViewInit, OnDestroy {
     console.log("navigateToPossibleCoachsList")
     this.router.navigate(['admin/possible_coachs-list']);
   }
-
-
-  hideCookieHeadband() {
-    $('#cookie_headband').fadeOut();
-    this.cookieService.put('ACCEPTS_COOKIES', 'true');
-  }
-
-
-  /*************************************
-   ----------- Modal control for forgot password ------------
-   *************************************/
-
-  onForgotPasswordClicked() {
-    console.log('onForgotPasswordClicked');
-    this.startForgotPasswordFlow();
-  }
-
-  updateForgotPasswordModalVisibility(isVisible: boolean) {
-    if (isVisible) {
-      $('#forgot_password_modal').openModal();
-    } else {
-      $('#forgot_password_modal').closeModal();
-    }
-  }
-
-  startForgotPasswordFlow() {
-    console.log('startForgotPasswordFlow');
-    this.updateForgotPasswordModalVisibility(true);
-  }
-
-  cancelForgotPasswordModal() {
-    this.updateForgotPasswordModalVisibility(false);
-    this.forgotEmail = null;
-  }
-
-  validateForgotPasswordModal() {
-    console.log('validateForgotPasswordModal');
-
-    // make sure forgotEmail has a value
-    let firebaseObs = PromiseObservable.create(this.firebase.sendPasswordResetEmail(this.forgotEmail));
-
-    firebaseObs.subscribe(
-      () => {
-        console.log("sendPasswordResetEmail ");
-        Materialize.toast("Email envoyé", 3000, 'rounded');
-        this.cancelForgotPasswordModal();
-        this.cd.detectChanges();
-      },
-      error => {
-        /**
-         * {code: "auth/invalid-email", message: "The email address is badly formatted."}code: "auth/invalid-email"message: "The email address is badly formatted."__proto__: Error
-         *
-         * O {code: "auth/user-not-found", message: "There is no user record corresponding to this identifier. The user may have been deleted."}code: "auth/user-not-found"message: "There is no user record corresponding to this identifier. The user may have been deleted."__proto__: Error
-         */
-
-        console.log("sendPasswordResetEmail fail reason", error);
-
-        if (error != undefined) {
-          if (error.code == "auth/invalid-email") {
-            Materialize.toast("L'email n'est pas correctement formatté", 3000, 'rounded');
-            return
-          } else if (error.code == "auth/user-not-found") {
-            Materialize.toast("L'email ne correspond à aucun de nos utilisateurs", 3000, 'rounded');
-            return
-          }
-        }
-        Materialize.toast("Une erreur est survenue", 3000, 'rounded');
-      }
-    ).unsubscribe();
-  }
-
 }
