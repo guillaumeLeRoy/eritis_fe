@@ -1,8 +1,8 @@
 <div [ngsReveal]="{distance: '100px', origin: 'right', duration: 1000, delay: 200}">
 
   <h3 class="text-right" i18n>Bonjour {{ (user | async)?.first_name}},
-    vous avez <span class="blue-text">meetingsOpenedCount</span> {meetingsOpenedCount, plural, =0 {séance} =1
-    {séance} other {séances}} cette semaine
+    vous avez <span class="blue-text">{{meetingsOpenedCount}}</span> {meetingsOpenedCount, plural, =0 {séance} =1
+    {séance} other {séances}} à venir
   </h3>
 
   <p class="text-right">
