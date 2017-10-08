@@ -45,7 +45,7 @@ export class AuthHeaderComponent implements OnInit, AfterViewInit, OnDestroy {
 
 
   constructor(private router: Router, private meetingService: MeetingsService, private authService: AuthService, private coachCoacheeService: CoachCoacheeService,
-              private cd: ChangeDetectorRef, private cookieService: CookieService) {
+              private cd: ChangeDetectorRef) {
     this.user = new BehaviorSubject(null);
   }
 
