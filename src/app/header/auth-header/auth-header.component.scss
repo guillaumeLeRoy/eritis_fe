@@ -58,7 +58,7 @@ nav li a:focus {
   color: $main-electric-blue !important;
 }
 
-.side-nav li.active {
+.side-nav li {
   background-color: transparent !important;
 }
 
@@ -179,79 +179,9 @@ header.user-connected {
   width: 100px;
 }
 
-.welcome-header{
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  text-align: center;
-  color: $main-white-color;
-  background-color: $main-blue-filter;
-}
-
-.header-title{
-  font-size: 66px;
-  //font-size: 8vmin; /*Test taille adaptative relative à la taille minimale de l'écran*/
-  font-weight: 500;
-  letter-spacing: 1.1px;
-  margin: 0;
-}
-
-.header-subtitle{
-  font-size: 36px;
-  //font-size: 4vmin;
-  font-weight: 300;
-  letter-spacing: 2.3px;
-  margin: 64px 0;
-}
-
 @media only screen and (max-width: 992px) {
-  .header-title {
-    font-size: 40px;
-  }
-
-  .header-subtitle {
-    font-size: 20px;
-  }
-
   .welcome-header .container {
     padding: 32px 0;
-  }
-}
-
-.header-btn {
-  text-align: center;
-}
-
-.header-btn .btn-basic{
-  min-width: 170px;
-  margin: 8px 0;
-}
-
-.header-btn .btn-connexion {
-  color: $main-dark-grey !important;
-}
-
-.header-btn .btn-connexion:hover {
-  color: $main-electric-blue !important;
-}
-
-.header-arrow-bottom{
-  font-size: 66px;
-  color: $main-white-color !important;
-  opacity: 0.6;
-}
-
-.header-arrow-bottom:hover{
-  opacity: 1;
-}
-
-er-signin{
-  width: 30%;
-}
-
-@media(max-width: 960px){
-  er-signin{
-    width: 80%;
   }
 }
 
@@ -323,18 +253,4 @@ a.button-collapse {
 
 .side-nav-items li a {
   color: $main-dark-grey !important;
-}
-
-#signin {
-  display: none;
-}
-
-/* modal */
-.modal label,
-.modal input{
-  color: $main-dark-grey;
-}
-
-#forgot_password_modal {
-  height: 230px;
 }

@@ -54,15 +54,6 @@ export class AuthHeaderComponent implements OnInit, AfterViewInit, OnDestroy {
     this.getConnectedUser();
 
     this.router.events.subscribe((evt) => {
-      // if (!(evt instanceof NavigationEnd)) {
-      //   this.onRefreshRequested();
-      //   // console.log("headerNav USER", this.mUser);
-      //   // console.log("headerNav COOKIE", this.cookieService.get('ACTIVE_SESSION'));
-      //   if (this.mUser !== null && this.cookieService.get('ACTIVE_SESSION') === undefined) {
-      //     this.onLogout();
-      //     this.router.navigate(['/']);
-      //   }
-      // }
       window.scrollTo(0, 0)
     });
   }
@@ -225,11 +216,6 @@ export class AuthHeaderComponent implements OnInit, AfterViewInit, OnDestroy {
     let admin = new RegExp('/admin');
     return admin.test(this.router.url);
   }
-  //
-  // isHomePage(): boolean {
-  //   let home = new RegExp('/welcome');
-  //   return home.test(this.router.url);
-  // }
 
   isEditingProfile(): boolean {
     let profileCoach = new RegExp('/profile_coach');
@@ -237,17 +223,6 @@ export class AuthHeaderComponent implements OnInit, AfterViewInit, OnDestroy {
     let profileRh = new RegExp('/profile_rh');
     return profileCoach.test(this.router.url) || profileCoachee.test(this.router.url) || profileRh.test(this.router.url);
   }
-
-  // isSigningUp(): boolean {
-  //   let signupCoach = new RegExp('/signup_coach');
-  //   let signupCoachee = new RegExp('/signup_coachee');
-  //   let signupRh = new RegExp('/signup_rh');
-  //   let registerCoach = new RegExp('/register_coach');
-  //   return signupCoach.test(this.router.url)
-  //     || signupCoachee.test(this.router.url)
-  //     || signupRh.test(this.router.url)
-  //     || registerCoach.test(this.router.url);
-  // }
 
   canDisplayListOfCoach(): boolean {
     if (this.mUser == null)
