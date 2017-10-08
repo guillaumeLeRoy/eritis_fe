@@ -1,3 +1,3 @@
-<er-auth-header></er-auth-header>
+<er-auth-header *ngIf="user | async" [user]="user"></er-auth-header>
 
 <router-outlet></router-outlet>

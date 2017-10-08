@@ -36,10 +36,9 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   private getConnectedUser() {
-    console.log('onRefreshRequested');
-
     this.connectedUserSubscription = this.authService.getConnectedUserObservable()
       .subscribe((user?: Coach | Coachee | HR) => {
+          console.log('getCoonectedUser, user', user);
           this.onUserObtained(user);
           this.cd.detectChanges();
         }
@@ -47,10 +46,9 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   private onRefreshRequested() {
-    console.log('onRefreshRequested');
-
     this.connectedUserSubscription = this.authService.refreshConnectedUser()
       .subscribe((user?: Coach | Coachee | HR) => {
+          console.log('onRefreshRequested, user', user);
           this.onUserObtained(user);
           this.cd.detectChanges();
         }

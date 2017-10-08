@@ -19,21 +19,22 @@
           <ul class="right hide-on-med-and-down">
             <!--<li *ngIf="canDisplayListOfCoach()"><a (click)="goToCoachs()">Liste Des Coachs</a></li>-->
 
-            <div [hidden]="isAdmin()">
+            <div *ngIf="!isAdmin">
               <li [class.has-notif]="hasAvailableMeetings"
-                  [class.active]="router.url === '/dashboard/available_meetings'">
+                  [class.active]="router.url === '/dashboard/available_meetings'"
+                  *ngIf="isUserACoach()">
                 <a (click)="goToAvailableSessions()">
                 Demandes en attente</a>
               </li>
 
-              <li *ngIf="(isAuthenticated | async)" [class.active]="router.url === '/dashboard/meetings'">
+              <li [class.active]="router.url === '/dashboard/meetings'">
                 <a (click)="goToMeetings()">
                   Tableau de bord</a>
               </li>
 
-              <!--<li *ngIf="(isAuthenticated | async) && isUserACoach()"><a (click)="goToProfile()">Profil</a></li>-->
+              <!--<li *ngIf="user && isUserACoach()"><a (click)="goToProfile()">Profil</a></li>-->
 
-              <li [hidden]="!(isAuthenticated | async)">
+              <li>
                 <a class="dropdown-button-notifs" data-activates="notifs"><i
                   class="material-icons">notifications</i></a>
                 <div class="notif-count" *ngIf="(notifications | async) != null || (notifications | async)?.length > 0">
@@ -41,10 +42,9 @@
                 </div>
               </li>
 
-              <!--<li *ngIf="(isAuthenticated | async)"><a (click)="onLogout()">Déconnexion</a></li>-->
+              <!--<li *ngIf="user"><a (click)="onLogout()">Déconnexion</a></li>-->
 
-              <li [hidden]="!(isAuthenticated | async)"
-                  [class.active]="isEditingProfile()">
+              <li [class.active]="isEditingProfile()">
                 <a class="dropdown-button-profile" data-activates="profil">
                   <!--<img src="{{(user | async)?.avatar_url}}" alt="profile image"-->
                        <!--class="item-user-img circle responsive-img">-->
@@ -56,7 +56,7 @@
               </li>
             </div>
 
-            <div *ngIf="isAdmin()">
+            <div *ngIf="isAdmin">
               <li [class.active]="router.url === '/admin/coachs-list'">
                 <a (click)="navigateToCoachsList()">Nos Coachs</a></li>
               <li [class.active]="router.url === '/admin/coachees-list'">
@@ -93,7 +93,7 @@
 
   <div class="side-nav-header">
     <div>
-      <div class="side-nav-header-container z-depth-1" *ngIf="!isAdmin()">
+      <div class="side-nav-header-container z-depth-1" *ngIf="!isAdmin">
         <!--<img src="{{(user | async)?.avatar_url}}" alt="profile image"-->
         <!--class="side-nav-user-img circle responsive-img z-depth-2">-->
         <div class="text-center">
@@ -108,7 +108,7 @@
         </div>
       </div>
 
-      <div class="side-nav-header-container z-depth-1" *ngIf="isAdmin()">
+      <div class="side-nav-header-container z-depth-1" *ngIf="isAdmin">
         <h3>Admin</h3>
       </div>
     </div>
@@ -116,28 +116,27 @@
 
   <!--<li *ngIf="canDisplayListOfCoach()"><a (click)="goToCoachs()">Liste Des Coachs</a></li>-->
 
-  <!--<li *ngIf="(isAuthenticated | async)"><a (click)="goToMeetings()">Vos meetings</a></li>-->
-  <div class="side-nav-items" *ngIf="!isAdmin()">
-    <li *ngIf="isAuthenticated && isUserACoach()"
+  <!--<li *ngIf="user"><a (click)="goToMeetings()">Vos meetings</a></li>-->
+  <div class="side-nav-items" *ngIf="!isAdmin">
+    <li *ngIf="isUserACoach()"
         [class.active]="router.url === '/dashboard/available_meetings'"><a (click)="goToAvailableSessions()">Demandes
       en attente</a></li>
 
-    <li *ngIf="(isAuthenticated | async)" [class.active]="router.url === '/dashboard/meetings'"><a
+    <li [class.active]="router.url === '/dashboard/meetings'"><a
       (click)="goToMeetings()">Tableau de bord</a></li>
 
-    <!--<li [hidden]="!(isAuthenticated | async)">-->
+    <!--<li [hidden]="!user">-->
     <!--<a class="dropdown-button" data-activates="notifs"><i class="material-icons">notifications</i></a>-->
     <!--<div class="notif-count">0</div>-->
     <!--</li>-->
 
-    <li *ngIf="(isAuthenticated | async)"
-        [class.active]="isEditingProfile()">
+    <li [class.active]="isEditingProfile()">
       <a (click)="goToProfile()">Modifier mon profil</a></li>
 
-    <li *ngIf="(isAuthenticated | async)"><a (click)="onLogout()">Déconnexion</a></li>
+    <li><a (click)="onLogout()">Déconnexion</a></li>
   </div>
 
-  <div class="side-nav-items" *ngIf="isAdmin()">
+  <div class="side-nav-items" *ngIf="isAdmin">
     <li [class.active]="router.url === '/admin/coachs-list'">
       <a (click)="navigateToCoachsList()">Nos Coachs</a></li>
     <li [class.active]="router.url === '/admin/coachees-list'">

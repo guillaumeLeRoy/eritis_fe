@@ -1,4 +1,4 @@
-import {AfterViewInit, ChangeDetectorRef, Component, OnDestroy, OnInit} from "@angular/core";
+import {AfterViewInit, ChangeDetectorRef, Component, Input, OnDestroy, OnInit} from "@angular/core";
 import {Router} from "@angular/router";
 import {AuthService} from "../../service/auth.service";
 import {Observable, Subscription} from "rxjs";
@@ -26,12 +26,15 @@ declare var Materialize: any;
   styleUrls: ['./auth-header.component.scss']
 })
 export class AuthHeaderComponent implements OnInit, AfterViewInit, OnDestroy {
-  months = ['Janvier', 'Février', 'Mars', 'Avril', 'Mai', 'Juin', 'Juillet', 'Août', 'Septembre', 'Octobre', 'Novembre', 'Décembre'];
 
-  private isAuthenticated: Observable<boolean>;
+  @Input()
+  user: Observable<Coach>;
+
+  @Input()
+  isAdmin: boolean = false;
 
   private mUser: Coach | Coachee | HR
-  private user: BehaviorSubject<ApiUser>;
+  // private user: BehaviorSubject<ApiUser>;
 
   private connectedUserSubscription: Subscription;
   private routerEventSubscription: Subscription;
@@ -46,12 +49,13 @@ export class AuthHeaderComponent implements OnInit, AfterViewInit, OnDestroy {
 
   constructor(private router: Router, private meetingService: MeetingsService, private authService: AuthService, private coachCoacheeService: CoachCoacheeService,
               private cd: ChangeDetectorRef) {
-    this.user = new BehaviorSubject(null);
+    // this.user = new BehaviorSubject(null);
   }
 
   ngOnInit(): void {
     console.log('ngOnInit');
-    this.getConnectedUser();
+    // this.getConnectedUser();
+    this.onRefreshRequested();
 
     this.router.events.subscribe((evt) => {
       window.scrollTo(0, 0)
@@ -61,6 +65,7 @@ export class AuthHeaderComponent implements OnInit, AfterViewInit, OnDestroy {
   ngAfterViewInit(): void {
     console.log('ngAfterViewInit');
     this.onRefreshRequested();
+    this.initJS();
   }
 
   ngOnDestroy(): void {
@@ -82,24 +87,33 @@ export class AuthHeaderComponent implements OnInit, AfterViewInit, OnDestroy {
       this.readAllNotifSubscription.unsubscribe();
   }
 
-  getConnectedUser() {
-    this.connectedUserSubscription = this.authService.getConnectedUserObservable()
-      .subscribe((user?: Coach | Coachee | HR) => {
-          console.log("getConnectedUser : " + user);
-          this.onUserObtained(user);
-          this.cd.detectChanges();
-        }
-      );
-  }
+  // getConnectedUser() {
+  //   this.connectedUserSubscription = this.authService.getConnectedUserObservable()
+  //     .subscribe((user?: Coach | Coachee | HR) => {
+  //         console.log("getConnectedUser : " + user);
+  //         this.onUserObtained(user);
+  //         this.cd.detectChanges();
+  //       }
+  //     );
+  // }
 
   onRefreshRequested() {
-    this.connectedUserSubscription = this.authService.refreshConnectedUser()
-      .subscribe((user?: Coach | Coachee | HR) => {
-          console.log("onRefreshRequested : " + user);
+    // this.connectedUserSubscription = this.authService.refreshConnectedUser()
+    //   .subscribe((user?: Coach | Coachee | HR) => {
+    //       console.log("onRefreshRequested : " + user);
+    //       this.onUserObtained(user);
+    //       this.cd.detectChanges();
+    //     }
+    //   );
+
+    if (this.user) {
+      this.connectedUserSubscription = this.user.first().subscribe(
+        (user: Coach) => {
+          console.log("onRefreshRequested, user", user);
           this.onUserObtained(user);
           this.cd.detectChanges();
-        }
-      );
+        });
+    }
   }
 
   private onUserObtained(user: Coach | Coachee | HR) {
@@ -107,23 +121,12 @@ export class AuthHeaderComponent implements OnInit, AfterViewInit, OnDestroy {
 
     this.mUser = user;
 
-    // Un utilisateur non connecté est redirigé sur la page d'accueil
-    if (this.isAdmin()) {
-      this.mUser = null;
-      this.isAuthenticated = Observable.of(false);
-    }
 
     if (user) {
-      this.isAuthenticated = Observable.of(true);
       this.fetchNotificationsForUser(user);
 
       if (this.isUserACoach())
         this.getAvailableMeetings();
-
-      this.user.next(user);
-    }
-    else {
-      this.isAuthenticated = Observable.of(false);
     }
   }
 
@@ -139,11 +142,11 @@ export class AuthHeaderComponent implements OnInit, AfterViewInit, OnDestroy {
 
   goToHome() {
     console.log('goToHome');
-    if (this.isAuthenticated) {
+    if (!this.isAdmin) {
       console.log('goToHomeUser');
       this.goToMeetings();
     }
-    else if (this.isAdmin()) {
+    else {
       console.log('goToHomeAdmin');
       this.navigateAdminHome();
     }
@@ -155,52 +158,47 @@ export class AuthHeaderComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   goToMeetings() {
-    let user = this.authService.getConnectedUser();
-    if (user != null) {
-      this.router.navigate(['dashboard/meetings']);
-    }
+    this.router.navigate(['dashboard/meetings']);
   }
 
   goToAvailableSessions() {
-    let user = this.authService.getConnectedUser();
-    if (user != null) {
-      this.router.navigate(['dashboard/available_meetings']);
-    }
+    this.router.navigate(['dashboard/available_meetings']);
   }
 
   goToProfile() {
-    if (this.mUser instanceof Coach) {
+    if (this.isUserACoach()) {
       this.router.navigate(['dashboard/profile_coach', this.mUser.id]);
-    } else if (this.mUser instanceof Coachee) {
+    } else if (this.isUserACoachee()) {
       this.router.navigate(['dashboard/profile_coachee', this.mUser.id]);
-    } else if (this.mUser instanceof HR) {
+    } else if (this.isUserARh()) {
       this.router.navigate(['dashboard/profile_rh', this.mUser.id]);
     }
   }
 
   // call API to inform that notifications have been read
-  updateNotificationRead() {
-    let user = this.authService.getConnectedUser();
-    let obs: Observable<Response>;
-    if (user != null) {
-      if (user instanceof Coach) {
-        let params = [user.id];
-        obs = this.authService.put(AuthService.PUT_COACH_NOTIFICATIONS_READ, params, null);
-      } else if (user instanceof Coachee) {
-        let params = [user.id];
-        obs = this.authService.put(AuthService.PUT_COACHEE_NOTIFICATIONS_READ, params, null);
-      }
-
-      if (obs != null) {
-        obs.subscribe((response: Response) => {
-          console.log('updateNotificationRead response : ' + response);
-        }).unsubscribe();
-      }
-
-    }
-  }
+  // updateNotificationRead() {
+  //   let user = this.authService.getConnectedUser();
+  //   let obs: Observable<Response>;
+  //   if (user != null) {
+  //     if (user instanceof Coach) {
+  //       let params = [user.id];
+  //       obs = this.authService.put(AuthService.PUT_COACH_NOTIFICATIONS_READ, params, null);
+  //     } else if (user instanceof Coachee) {
+  //       let params = [user.id];
+  //       obs = this.authService.put(AuthService.PUT_COACHEE_NOTIFICATIONS_READ, params, null);
+  //     }
+  //
+  //     if (obs != null) {
+  //       obs.subscribe((response: Response) => {
+  //         console.log('updateNotificationRead response : ' + response);
+  //       }).unsubscribe();
+  //     }
+  //
+  //   }
+  // }
 
   isUserACoach(): boolean {
+    console.log("test", this.mUser);
     return this.mUser instanceof Coach
   }
 
@@ -212,11 +210,6 @@ export class AuthHeaderComponent implements OnInit, AfterViewInit, OnDestroy {
     return this.mUser instanceof HR
   }
 
-  isAdmin(): boolean {
-    let admin = new RegExp('/admin');
-    return admin.test(this.router.url);
-  }
-
   isEditingProfile(): boolean {
     let profileCoach = new RegExp('/profile_coach');
     let profileCoachee = new RegExp('/profile_coachee');
@@ -224,15 +217,15 @@ export class AuthHeaderComponent implements OnInit, AfterViewInit, OnDestroy {
     return profileCoach.test(this.router.url) || profileCoachee.test(this.router.url) || profileRh.test(this.router.url);
   }
 
-  canDisplayListOfCoach(): boolean {
-    if (this.mUser == null)
-      return false;
-
-    if (this.mUser instanceof Coach)
-      return false;
-    else
-      return true;
-  }
+  // canDisplayListOfCoach(): boolean {
+  //   if (this.mUser == null)
+  //     return false;
+  //
+  //   if (this.mUser instanceof Coach)
+  //     return false;
+  //   else
+  //     return true;
+  // }
 
 
   private getAvailableMeetings() {
@@ -318,5 +311,35 @@ export class AuthHeaderComponent implements OnInit, AfterViewInit, OnDestroy {
   navigateToPossibleCoachsList() {
     console.log("navigateToPossibleCoachsList")
     this.router.navigate(['admin/possible_coachs-list']);
+  }
+
+
+  initJS() {
+    $('.button-collapse').sideNav({
+      menuWidth: 400,
+      edge: 'left', // Choose the horizontal origin
+      closeOnClick: true,
+      draggable: true // Choose whether you can drag to open on touch screens
+    });
+
+    $('.dropdown-button-notifs').dropdown({
+      inDuration: 300,
+      outDuration: 125,
+      constrain_width: false, // Does not change width of dropdown to that of the activator
+      hover: false, // Activate on click
+      alignment: 'right', // Aligns dropdown to left or right edge (works with constrain_width)
+      gutter: 0, // Spacing from edge
+      belowOrigin: true // Displays dropdown below the button
+    });
+
+    $('.dropdown-button-profile').dropdown({
+      inDuration: 300,
+      outDuration: 125,
+      constrain_width: false, // Does not change width of dropdown to that of the activator
+      hover: false, // Activate on click
+      alignment: 'right', // Aligns dropdown to left or right edge (works with constrain_width)
+      gutter: 0, // Spacing from edge
+      belowOrigin: true // Displays dropdown below the button
+    });
   }
 }
