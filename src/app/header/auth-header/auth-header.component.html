@@ -22,9 +22,9 @@
             <div *ngIf="!isAdmin">
               <li [class.has-notif]="hasAvailableMeetings"
                   [class.active]="router.url === '/dashboard/available_meetings'"
-                  *ngIf="isUserACoach()">
+                  *ngIf="isUserACoach((user|async))">
                 <a (click)="goToAvailableSessions()">
-                Demandes en attente</a>
+                  Demandes en attente</a>
               </li>
 
               <li [class.active]="router.url === '/dashboard/meetings'">
@@ -47,7 +47,7 @@
               <li [class.active]="isEditingProfile()">
                 <a class="dropdown-button-profile" data-activates="profil">
                   <!--<img src="{{(user | async)?.avatar_url}}" alt="profile image"-->
-                       <!--class="item-user-img circle responsive-img">-->
+                  <!--class="item-user-img circle responsive-img">-->
                   <div class="item-user-img avatar"
                        *ngIf="(user | async)?.avatar_url && (user | async)?.avatar_url !== undefined"
                        [style.background-image]="'url(' + (user | async)?.avatar_url + ')'"></div>
@@ -71,8 +71,6 @@
           </ul>
 
 
-
-
         </div>
       </div>
     </nav>
@@ -80,12 +78,6 @@
   </div>
 
 </header>
-
-
-
-
-
-
 
 
 <!-- Side Nav -->
@@ -118,7 +110,7 @@
 
   <!--<li *ngIf="user"><a (click)="goToMeetings()">Vos meetings</a></li>-->
   <div class="side-nav-items" *ngIf="!isAdmin">
-    <li *ngIf="isUserACoach()"
+    <li *ngIf="isUserACoach((user | async))"
         [class.active]="router.url === '/dashboard/available_meetings'"><a (click)="goToAvailableSessions()">Demandes
       en attente</a></li>
 
@@ -150,11 +142,6 @@
   </div>
 
 </ul>
-
-
-
-
-
 
 
 <ul id="notifs" class="dropdown-content dropdown-notifs collection">

@@ -1,4 +1,4 @@
-import {AfterViewInit, ChangeDetectorRef, Component, Input, OnDestroy, OnInit} from "@angular/core";
+import {AfterViewInit, Component, Input, OnDestroy, OnInit} from "@angular/core";
 import {Router} from "@angular/router";
 import {Coachee} from "../../model/Coachee";
 import {ApiUser} from "../../model/ApiUser";
@@ -20,7 +20,7 @@ export class CoacheeDashboardComponent implements OnInit, AfterViewInit, OnDestr
 
   private connectedUserSubscription: Subscription;
 
-  constructor(private router: Router, private cd: ChangeDetectorRef) {
+  constructor(private router: Router) {
   }
 
   ngOnInit() {
@@ -29,7 +29,6 @@ export class CoacheeDashboardComponent implements OnInit, AfterViewInit, OnDestr
 
   ngAfterViewInit(): void {
     console.log('ngAfterViewInit');
-    // this.onRefreshRequested();
   }
 
   ngOnDestroy(): void {
@@ -37,27 +36,6 @@ export class CoacheeDashboardComponent implements OnInit, AfterViewInit, OnDestr
       this.connectedUserSubscription.unsubscribe();
     }
   }
-
-  onRefreshRequested() {
-    //todo call parent
-    this.connectedUserSubscription = this.user.first().subscribe(
-      (user: Coachee) => {
-        // this.onUserObtained(user);
-        this.cd.detectChanges();
-      });
-  }
-
-  // private onUserObtained(user?: ApiUser) {
-  //   console.log('onUserObtained, user : ', user);
-  //
-  //   if (user) {
-  //
-  //     if (user instanceof Coachee) {
-  //       // coachee
-  //       console.log('get a coachee');
-  //     }
-  //   }
-  // }
 
   navigateToCreateSession() {
     console.log('navigateToCreateSession');

@@ -13,7 +13,6 @@ import {LoginResponse} from "../model/LoginResponse";
 import {HR} from "../model/HR";
 import {PotentialCoachee} from "../model/PotentialCoachee";
 import {PotentialRh} from "../model/PotentialRh";
-import {EmptyObservable} from "rxjs/observable/EmptyObservable";
 import {SessionService} from "./session.service";
 
 declare var Materialize: any;
@@ -92,8 +91,8 @@ export class AuthService {
   private onAuthStateChangedCalled = false;
   // private user: User
   private isUserAuth = new BehaviorSubject<boolean>(false);//NOT auth by default
-  // private ApiUserSubject = new BehaviorSubject<ApiUser>(null);//NOT auth by default
-  private ApiUserSubject = new Subject<ApiUser>();//NOT auth by default
+  private ApiUserSubject = new BehaviorSubject<ApiUser>(null);//NOT auth by default
+  // private ApiUserSubject = new Subject<ApiUser>();//NOT auth by default
   /* flag to know if we are in the sign in or sign up process. Block updateAuthStatus(FBuser) is true */
   private isSignInOrUp = false;
 
@@ -120,21 +119,24 @@ export class AuthService {
   /*
    * Get connected user from backend
    */
-  refreshConnectedUser(): Observable<Coach | Coachee | HR | null> {
+  refreshConnectedUser() {
     console.log("refreshConnectedUser");
 
+    let obs: Observable<Coach | Coachee | HR>;
     if (this.ApiUser != null) {
       if (this.ApiUser instanceof Coach) {
-        return this.fetchCoach(this.ApiUser.id);
+        obs = this.fetchCoach(this.ApiUser.id);
       } else if (this.ApiUser instanceof Coachee) {
-        return this.fetchCoachee(this.ApiUser.id);
+        obs = this.fetchCoachee(this.ApiUser.id);
       } else if (this.ApiUser instanceof HR) {
-        return this.fetchRh(this.ApiUser.id);
+        obs = this.fetchRh(this.ApiUser.id);
       }
     } else {
       console.log("refreshConnectedUser, no connected user");
     }
-    return new EmptyObservable();
+    if (obs != null) {
+      obs.subscribe();
+    }
   }
 
   private fetchCoach(userId: string): Observable<Coach> {

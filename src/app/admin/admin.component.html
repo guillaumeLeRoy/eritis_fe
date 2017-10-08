@@ -1,4 +1,4 @@
-<er-auth-header [isAdmin]="true"></er-auth-header>
+<er-auth-header [user]="admin" [isAdmin]="true"></er-auth-header>
 
 <div [class.container]="!isOnProfile()">
   <div [hidden]="isOnProfile()" [ngsReveal]="{distance: '100px', origin: 'right', duration: 1000, delay: 200}">

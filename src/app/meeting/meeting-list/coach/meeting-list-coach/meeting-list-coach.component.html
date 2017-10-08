@@ -9,7 +9,7 @@
           <div class="collection-item" *ngFor="let meeting of meetingsOpened | async">
             <er-meeting-item-coach [meeting]="meeting"
                                    [isAdmin]="isAdmin"
-                                   (onValidateDateBtnClickEmitter)="onRefreshRequested($event)"
+                                   (onValidateDateBtnClickEmitter)="onRefreshListRequested($event)"
                                    (cancelMeetingBtnClickEmitter)="openCoachCancelMeetingModal($event)"
                                    (onCloseMeetingBtnClickEmitter)="starCloseSessionFlow($event)">
             </er-meeting-item-coach>
@@ -32,7 +32,7 @@
           <div class="collection-item" *ngFor="let meeting of meetingsClosed | async">
             <er-meeting-item-coach [meeting]="meeting"
                                    [isAdmin]="isAdmin"
-                                   (onValidateDateBtnClickEmitter)="onRefreshRequested($event)"
+                                   (onValidateDateBtnClickEmitter)="onRefreshListRequested($event)"
                                    (cancelMeetingBtnClickEmitter)="openCoachCancelMeetingModal($event)">
             </er-meeting-item-coach>
           </div>

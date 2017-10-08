@@ -37,6 +37,7 @@ export class MeetingListCoachComponent implements OnInit, AfterViewInit, OnDestr
 
   private userSubscription: Subscription;
   private getAllMeetingsForCoachIdSubscription: Subscription;
+  private refreshSubscription: Subscription;
 
   private meetingToCancel: Meeting;
 
@@ -71,13 +72,15 @@ export class MeetingListCoachComponent implements OnInit, AfterViewInit, OnDestr
 
   ngOnInit() {
     console.log('ngOnInit');
-    this.loading = true;
-    this.onRefreshRequested();
   }
 
   ngAfterViewInit(): void {
     console.log('ngAfterViewInit');
-    // this.onRefreshRequested();
+
+    this.loading = true;
+    this.userSubscription = this.user.subscribe((coach: Coach) => {
+      this.onUserObtained(coach);
+    });
   }
 
   ngOnDestroy(): void {
@@ -90,22 +93,25 @@ export class MeetingListCoachComponent implements OnInit, AfterViewInit, OnDestr
     if (this.userSubscription) {
       this.userSubscription.unsubscribe();
     }
+
+    if (this.refreshSubscription) {
+      this.refreshSubscription.unsubscribe();
+    }
   }
 
-  onRefreshRequested() {
+  onRefreshListRequested() {
     console.log('onRefreshRequested');
-    this.userSubscription = this.user.first().subscribe(
+    this.refreshSubscription = this.user.first().subscribe(
       (user: Coach) => {
         this.onUserObtained(user);
-        this.cd.detectChanges();
-    });
+      });
   }
 
   private onUserObtained(user: Coach) {
     console.log('onUserObtained, user : ', user);
-    if (user)
+    if (user) {
       this.getAllMeetingsForCoach(user.id);
-    // this.cd.detectChanges();
+    }
   }
 
   private getAllMeetingsForCoach(coachId: string) {
@@ -244,7 +250,7 @@ export class MeetingListCoachComponent implements OnInit, AfterViewInit, OnDestr
         this.updateCloseSessionModalVisibility(false);
 
         //refresh list of meetings
-        this.onRefreshRequested();
+        this.onRefreshListRequested();
         Materialize.toast('Le compte-rendu a été envoyé !', 3000, 'rounded');
       }, (error) => {
         console.log('closeMeeting error', error);

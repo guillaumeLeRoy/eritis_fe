@@ -21,8 +21,8 @@ export class CoachDashboardComponent implements OnInit, AfterViewInit, OnDestroy
 
   private meetingsOpenedCount = 0;
 
+  private userSubscription: Subscription;
   private getAllMeetingsForCoachIdSubscription: Subscription;
-  private connectedUserSubscription: Subscription;
 
   constructor(private meetingService: MeetingsService, private cd: ChangeDetectorRef) {
   }
@@ -33,24 +33,18 @@ export class CoachDashboardComponent implements OnInit, AfterViewInit, OnDestroy
 
   ngAfterViewInit(): void {
     console.log('ngAfterViewInit');
-    this.onRefreshRequested();
+    this.userSubscription = this.user.subscribe((coach: Coach) => {
+      this.onUserObtained(coach);
+    });
   }
 
   ngOnDestroy(): void {
-    if (this.connectedUserSubscription) {
-      this.connectedUserSubscription.unsubscribe();
+    if (this.userSubscription) {
+      this.userSubscription.unsubscribe();
     }
     if (this.getAllMeetingsForCoachIdSubscription) {
       this.getAllMeetingsForCoachIdSubscription.unsubscribe();
     }
-  }
-
-  onRefreshRequested() {
-    this.connectedUserSubscription = this.user.first().subscribe(
-      (user: Coach) => {
-        this.onUserObtained(user);
-        this.cd.detectChanges();
-      });
   }
 
   private onUserObtained(user: ApiUser) {

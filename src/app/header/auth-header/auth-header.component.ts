@@ -9,13 +9,10 @@ import {ApiUser} from "../../model/ApiUser";
 import {Notif} from "../../model/Notif";
 import {CoachCoacheeService} from "../../service/coach_coachee.service";
 import {Response} from "@angular/http";
-import {PromiseObservable} from "rxjs/observable/PromiseObservable";
-import {FirebaseService} from "../../service/firebase.service";
 import {MeetingsService} from "../../service/meetings.service";
 import {Meeting} from "../../model/Meeting";
 import {Utils} from "../../utils/Utils";
-import {BehaviorSubject} from "rxjs/BehaviorSubject";
-import {CookieService} from "ngx-cookie";
+import {Admin} from "../../model/Admin";
 
 declare var $: any;
 declare var Materialize: any;
@@ -28,15 +25,12 @@ declare var Materialize: any;
 export class AuthHeaderComponent implements OnInit, AfterViewInit, OnDestroy {
 
   @Input()
-  user: Observable<Coach>;
+  user: Observable<Coach | Coachee | HR | Admin>;
 
   @Input()
   isAdmin: boolean = false;
 
-  private mUser: Coach | Coachee | HR
-  // private user: BehaviorSubject<ApiUser>;
-
-  private connectedUserSubscription: Subscription;
+  private userSubscription: Subscription;
   private routerEventSubscription: Subscription;
   private readAllNotifSubscription: Subscription;
   private getAvailableMeetingsSubscription: Subscription;
@@ -49,33 +43,33 @@ export class AuthHeaderComponent implements OnInit, AfterViewInit, OnDestroy {
 
   constructor(private router: Router, private meetingService: MeetingsService, private authService: AuthService, private coachCoacheeService: CoachCoacheeService,
               private cd: ChangeDetectorRef) {
-    // this.user = new BehaviorSubject(null);
   }
 
   ngOnInit(): void {
     console.log('ngOnInit');
-    // this.getConnectedUser();
-    this.onRefreshRequested();
 
     this.router.events.subscribe((evt) => {
       window.scrollTo(0, 0)
     });
+
   }
 
   ngAfterViewInit(): void {
     console.log('ngAfterViewInit');
-    this.onRefreshRequested();
+    this.userSubscription = this.user.subscribe((user: Coach | Coachee | HR) => {
+      this.onUserObtained(user);
+    });
     this.initJS();
   }
 
   ngOnDestroy(): void {
     console.log('ngOnDestroy');
 
-    if (this.connectedUserSubscription)
-      this.connectedUserSubscription.unsubscribe();
-
     if (this.routerEventSubscription)
       this.routerEventSubscription.unsubscribe();
+
+    if (this.userSubscription)
+      this.userSubscription.unsubscribe();
 
     if (this.getAvailableMeetingsSubscription)
       this.getAvailableMeetingsSubscription.unsubscribe();
@@ -87,46 +81,15 @@ export class AuthHeaderComponent implements OnInit, AfterViewInit, OnDestroy {
       this.readAllNotifSubscription.unsubscribe();
   }
 
-  // getConnectedUser() {
-  //   this.connectedUserSubscription = this.authService.getConnectedUserObservable()
-  //     .subscribe((user?: Coach | Coachee | HR) => {
-  //         console.log("getConnectedUser : " + user);
-  //         this.onUserObtained(user);
-  //         this.cd.detectChanges();
-  //       }
-  //     );
-  // }
-
-  onRefreshRequested() {
-    // this.connectedUserSubscription = this.authService.refreshConnectedUser()
-    //   .subscribe((user?: Coach | Coachee | HR) => {
-    //       console.log("onRefreshRequested : " + user);
-    //       this.onUserObtained(user);
-    //       this.cd.detectChanges();
-    //     }
-    //   );
-
-    if (this.user) {
-      this.connectedUserSubscription = this.user.first().subscribe(
-        (user: Coach) => {
-          console.log("onRefreshRequested, user", user);
-          this.onUserObtained(user);
-          this.cd.detectChanges();
-        });
-    }
-  }
-
   private onUserObtained(user: Coach | Coachee | HR) {
     console.log('onUserObtained : ' + user);
-
-    this.mUser = user;
-
 
     if (user) {
       this.fetchNotificationsForUser(user);
 
-      if (this.isUserACoach())
+      if (this.isUserACoach(user)) {
         this.getAvailableMeetings();
+      }
     }
   }
 
@@ -157,7 +120,7 @@ export class AuthHeaderComponent implements OnInit, AfterViewInit, OnDestroy {
     this.router.navigate(['welcome']);
   }
 
-  goToMeetings() {
+  goToMeetings(): void {
     this.router.navigate(['dashboard/meetings']);
   }
 
@@ -166,13 +129,16 @@ export class AuthHeaderComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   goToProfile() {
-    if (this.isUserACoach()) {
-      this.router.navigate(['dashboard/profile_coach', this.mUser.id]);
-    } else if (this.isUserACoachee()) {
-      this.router.navigate(['dashboard/profile_coachee', this.mUser.id]);
-    } else if (this.isUserARh()) {
-      this.router.navigate(['dashboard/profile_rh', this.mUser.id]);
-    }
+    this.user.take(1).subscribe((user: Coach | Coachee | HR) => {
+      if (this.isUserACoach(user)) {
+        this.router.navigate(['dashboard/profile_coach', user.id]);
+      } else if (this.isUserACoachee(user)) {
+        this.router.navigate(['dashboard/profile_coachee', user.id]);
+      } else if (this.isUserARh(user)) {
+        this.router.navigate(['dashboard/profile_rh', user.id]);
+      }
+    });
+
   }
 
   // call API to inform that notifications have been read
@@ -197,17 +163,16 @@ export class AuthHeaderComponent implements OnInit, AfterViewInit, OnDestroy {
   //   }
   // }
 
-  isUserACoach(): boolean {
-    console.log("test", this.mUser);
-    return this.mUser instanceof Coach
+  isUserACoach(user: Coach | Coachee | HR): boolean {
+    return user instanceof Coach
   }
 
-  isUserACoachee(): boolean {
-    return this.mUser instanceof Coachee
+  isUserACoachee(user: Coach | Coachee | HR): boolean {
+    return user instanceof Coachee
   }
 
-  isUserARh(): boolean {
-    return this.mUser instanceof HR
+  isUserARh(user: Coach | Coachee | HR): boolean {
+    return user instanceof HR
   }
 
   isEditingProfile(): boolean {
@@ -271,14 +236,15 @@ export class AuthHeaderComponent implements OnInit, AfterViewInit, OnDestroy {
     return Utils.dateToString(date) + ' - ' + Utils.getHoursAndMinutesFromDate(date);
   }
 
-  readAllNotifications() {
-    this.readAllNotifSubscription = this.coachCoacheeService.readAllNotificationsForUser(this.mUser).subscribe(
-      (response: Response) => {
-        console.log("getAllNotifications OK", response);
-        this.fetchNotificationsForUser(this.mUser);
-        this.cd.detectChanges();
-      }
-    );
+  readAllNotifications(user: Coach | Coachee | HR) {
+    this.readAllNotifSubscription = this.coachCoacheeService.readAllNotificationsForUser(user)
+      .subscribe(
+        (response: Response) => {
+          console.log("getAllNotifications OK", response);
+          this.fetchNotificationsForUser(user);
+          this.cd.detectChanges();
+        }
+      );
   }
 
 
