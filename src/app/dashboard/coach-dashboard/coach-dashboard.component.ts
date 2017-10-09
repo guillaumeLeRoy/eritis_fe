@@ -1,10 +1,7 @@
 import {AfterViewInit, ChangeDetectorRef, Component, Input, OnDestroy, OnInit} from "@angular/core";
-import {ApiUser} from "../../model/ApiUser";
 import {Subscription} from "rxjs/Subscription";
 import {Coach} from "../../model/Coach";
 import {Observable} from "rxjs/Observable";
-import {Meeting} from "../../model/Meeting";
-import {MeetingsService} from "../../service/meetings.service";
 
 declare var $: any;
 declare var Materialize: any;
@@ -19,12 +16,9 @@ export class CoachDashboardComponent implements OnInit, AfterViewInit, OnDestroy
   @Input()
   user: Observable<Coach>;
 
-  private meetingsOpenedCount = 0;
-
   private userSubscription: Subscription;
-  private getAllMeetingsForCoachIdSubscription: Subscription;
 
-  constructor(private meetingService: MeetingsService, private cd: ChangeDetectorRef) {
+  constructor(private cd: ChangeDetectorRef) {
   }
 
   ngOnInit() {
@@ -34,48 +28,13 @@ export class CoachDashboardComponent implements OnInit, AfterViewInit, OnDestroy
   ngAfterViewInit(): void {
     console.log('ngAfterViewInit');
     this.userSubscription = this.user.subscribe((coach: Coach) => {
-      this.onUserObtained(coach);
+        // maybe do sth one day
     });
   }
 
   ngOnDestroy(): void {
     if (this.userSubscription) {
       this.userSubscription.unsubscribe();
-    }
-    if (this.getAllMeetingsForCoachIdSubscription) {
-      this.getAllMeetingsForCoachIdSubscription.unsubscribe();
-    }
-  }
-
-  private onUserObtained(user: ApiUser) {
-    console.log('onUserObtained, user : ', user);
-    if (user) {
-      this.getAllMeetingsForCoach(user.id);
-    }
-  }
-
-  private getAllMeetingsForCoach(coachId: string) {
-    this.getAllMeetingsForCoachIdSubscription = this.meetingService.getAllMeetingsForCoachId(coachId)
-      .subscribe(
-        (meetings: Meeting[]) => {
-          console.log('got meetings for coach', meetings);
-          this.onMeetingsObtained(meetings);
-          this.cd.detectChanges();
-        }, (error) => {
-          console.log('got meetings for coach ERROR', error);
-        }
-      );
-  }
-
-  private onMeetingsObtained(meetings: Array<Meeting>) {
-    console.log('got meetings for coach', meetings);
-    this.meetingsOpenedCount = 0;
-    if (meetings) {
-      for (let meeting of meetings) {
-        if (meeting != null && meeting.isOpen && meeting.agreed_date != undefined) {
-          this.meetingsOpenedCount++;
-        }
-      }
     }
   }
 

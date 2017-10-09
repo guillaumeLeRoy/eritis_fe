@@ -26,7 +26,10 @@ export class MeetingListCoachComponent implements OnInit, AfterViewInit, OnDestr
   user: Observable<Coach>;
 
   private meetings: Observable<Array<Meeting>>;
+
   private meetingsOpened: Observable<Meeting[]>;
+  private meetingsOpenedCount = 0;
+
   private meetingsClosed: Observable<Meeting[]>;
   private meetingsUnbooked: Observable<Meeting[]>;
   private meetingsArray: Array<Meeting>;
@@ -158,6 +161,7 @@ export class MeetingListCoachComponent implements OnInit, AfterViewInit, OnDestr
 
   private getBookedMeetings() {
     console.log('getBookedMeetings');
+    this.meetingsOpenedCount = 0;
     if (this.meetingsArray != null) {
       let opened: Meeting[] = [];
       for (let meeting of this.meetingsArray) {
@@ -167,6 +171,7 @@ export class MeetingListCoachComponent implements OnInit, AfterViewInit, OnDestr
           opened.push(meeting);
           this.hasOpenedMeeting = true;
           console.log('getBookedMeetings, add meeting');
+          this.meetingsOpenedCount++;
         }
       }
       this.meetingsOpened = Observable.of(opened);
