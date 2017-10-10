@@ -1,4 +1,4 @@
-import {AfterViewInit, Component, OnDestroy, OnInit} from "@angular/core";
+import {AfterViewInit, ChangeDetectorRef, Component, OnDestroy, OnInit} from "@angular/core";
 import {Subscription} from "rxjs";
 import {AuthService} from "../../service/auth.service";
 import {Coach} from "../../model/Coach";
@@ -20,7 +20,7 @@ export class MeetingListComponent implements OnInit, AfterViewInit, OnDestroy {
 
   private connectedUserSubscription: Subscription;
 
-  constructor(private authService: AuthService) {
+  constructor(private authService: AuthService, private cd: ChangeDetectorRef) {
     this.user = new BehaviorSubject(null);
   }
 
@@ -45,6 +45,7 @@ export class MeetingListComponent implements OnInit, AfterViewInit, OnDestroy {
     this.connectedUserSubscription = this.authService.getConnectedUserObservable()
       .subscribe((user?: Coach | Coachee | HR) => {
           this.onUserObtained(user);
+          this.cd.detectChanges();
         }
       );
   }
