@@ -8,7 +8,7 @@
         <er-admin-rh-item [rh]="rh"></er-admin-rh-item>
       </div>
 
-      <div class="text-center" [hidden]="(rhs | async).length > 0">
+      <div class="text-center" [hidden]="(rhs | async)?.length > 0">
         <p class="no-meeting">Les RH apparaîtront ici</p>
       </div>
     </div>

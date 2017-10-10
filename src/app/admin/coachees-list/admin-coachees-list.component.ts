@@ -22,7 +22,6 @@ export class AdminCoacheesListComponent implements OnInit, AfterViewInit, OnDest
 
   ngOnInit() {
     window.scrollTo(0, 0);
-    this.loading = true;
   }
 
   ngAfterViewInit(): void {
@@ -37,6 +36,7 @@ export class AdminCoacheesListComponent implements OnInit, AfterViewInit, OnDest
   }
 
   private fetchData() {
+    this.loading = true;
     this.getAllCoacheesSub = this.apiService.getCoachees(true).subscribe(
       (coachees: Array<Coachee>) => {
         console.log('getAllCoachees subscribe, coachees : ', coachees);

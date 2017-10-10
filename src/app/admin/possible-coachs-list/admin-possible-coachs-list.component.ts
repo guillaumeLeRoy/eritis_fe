@@ -25,7 +25,6 @@ export class AdminPossibleCoachsListComponent implements OnInit, AfterViewInit, 
 
   ngOnInit() {
     window.scrollTo(0, 0);
-    this.loading = true;
   }
 
   ngAfterViewInit(): void {
@@ -44,6 +43,7 @@ export class AdminPossibleCoachsListComponent implements OnInit, AfterViewInit, 
   }
 
   private fetchData() {
+    this.loading = true;
     this.getAllPossibleCoachsSub = this.apiService.getPossibleCoachs().subscribe(
       (coachs: Array<PossibleCoach>) => {
         console.log('getAllPossibleCoachsSub subscribe, coachs : ', coachs);

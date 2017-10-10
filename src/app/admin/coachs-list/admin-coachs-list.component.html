@@ -8,7 +8,7 @@
         <er-admin-coach-item [coach]="coach"></er-admin-coach-item>
       </div>
 
-      <div class="text-center" [hidden]="(coachs | async).length > 0">
+      <div class="text-center" [hidden]="(coachs | async)?.length > 0">
         <p class="no-meeting">Les coachs apparaîtront ici</p>
       </div>
     </div>

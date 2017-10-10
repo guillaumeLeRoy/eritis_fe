@@ -8,7 +8,7 @@
         <er-admin-possible-coach-item [coach]="coach" (coachAdded)="updateList()"></er-admin-possible-coach-item>
       </div>
 
-      <div class="text-center" [hidden]="(possibleCoachs | async).length > 0">
+      <div class="text-center" [hidden]="(possibleCoachs | async)?.length > 0">
         <p class="no-meeting">Les demandes apparaîtront ici</p>
       </div>
     </div>

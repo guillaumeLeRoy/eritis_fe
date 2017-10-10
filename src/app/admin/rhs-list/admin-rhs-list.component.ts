@@ -22,7 +22,6 @@ export class AdminRhsListComponent implements OnInit, AfterViewInit, OnDestroy {
 
   ngOnInit() {
     window.scrollTo(0, 0);
-    this.loading = true;
   }
 
   ngAfterViewInit(): void {
@@ -37,6 +36,7 @@ export class AdminRhsListComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   private fetchData() {
+    this.loading = true;
     this.getAllrhsSub = this.apiService.getRhs(true)
       .subscribe(
         (rhs: Array<HR>) => {

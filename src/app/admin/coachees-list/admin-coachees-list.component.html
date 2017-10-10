@@ -7,7 +7,7 @@
         <er-admin-coachee-item [coachee]="coachee"></er-admin-coachee-item>
       </div>
 
-      <div class="text-center" [hidden]="(coachees | async).length > 0">
+      <div class="text-center" [hidden]="(coachees | async)?.length > 0">
         <p class="no-meeting">Les coachees apparaîtront ici</p>
       </div>
     </div>
