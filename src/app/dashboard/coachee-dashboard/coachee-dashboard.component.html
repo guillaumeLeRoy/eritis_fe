@@ -11,7 +11,7 @@
   <h5 class="italic text-right" *ngIf="(user | async)?.last_objective == null">
     Vous n'avez pas encore d'objectif fixé avec votre RH</h5>
   <p class="text-right" *ngIf="(user | async)?.availableSessionsCount > 0">
-    <span class="blue-text">Cliquez</span> ici pour planifier une nouvelle séance
+    Cliquez ici pour planifier une nouvelle séance
     <a class="btn-floating btn-large waves-effect waves-light add-meeting-btn" (click)="navigateToCreateSession()">
       <i class="material-icons">add</i>
     </a>
