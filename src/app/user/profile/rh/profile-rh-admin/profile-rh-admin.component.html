@@ -1,8 +1,8 @@
 <er-profile-header [user]="rh" [isOwner]="true"></er-profile-header>
 
 <div class="container" *ifLoader="loading" [ngsReveal]="{scale:1, opacity:0, distance:0, duration: 1000}">
-  <h4 class="text-right italic">"{{ (rh | async)?.description }}"</h4>
-  <br>
+  <!--<h4 class="text-right italic">"{{ (rh | async)?.description }}"</h4>-->
+  <!--<br>-->
 
   <div>
     <er-meeting-list-rh [user]="rh" [isAdmin]="true"></er-meeting-list-rh>
