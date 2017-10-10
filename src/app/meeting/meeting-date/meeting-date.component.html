@@ -4,8 +4,8 @@
                   (meetingContext)="onContextValueUpdated($event)"></er-pre-meeting>
 
   <br><br>
-  <h4 class="header-date-picker black-text">Indiquez vos disponiblités grâce au calendrier ci-dessous.
-    <br>Cliquez sur terminer lorsque vous avez validé toutes vos plages disponibles.</h4>
+  <h4 class="header-date-picker black-text">Indiquez vos disponibilités grâce au calendrier ci-dessous.
+    <br>Cliquez sur valider lorsque vous avez rentré toutes vos plages disponibles.</h4>
 
   <!--<datepicker-fr></datepicker-fr>-->
 
@@ -100,9 +100,9 @@
   </div>
 
   <div class="row">
-    <div class="col-lg-12 text-center">
+    <div class="col-lg-12 text-center" *ngIf="!isEditingPotentialDate">
       <button class="btn-basic btn-blue btn-small" (click)="finish()" [disabled]="!canFinish()"
-              *ngIf="!isEditingPotentialDate">Terminer
+              *ifLoader="loading">Valider
       </button>
     </div>
   </div>

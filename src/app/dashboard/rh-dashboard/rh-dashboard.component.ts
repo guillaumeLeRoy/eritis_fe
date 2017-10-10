@@ -223,6 +223,11 @@ export class RhDashboardComponent implements OnInit, AfterViewInit, OnDestroy {
         this.coachCoacheeService.postPotentialCoachee(body).subscribe(
           (res: PotentialCoachee) => {
             console.log('postPotentialCoachee, res', res);
+            this.signInForm = this.formBuilder.group({
+              email: ['', [Validators.required, Validators.pattern(Utils.EMAIL_REGEX)]],
+              first_name: [''],
+              last_name: [''],
+            });
             Materialize.toast('Manager ajouté !', 3000, 'rounded');
             this.onRefreshAllRequested();
           }, (errorRes: Response) => {
