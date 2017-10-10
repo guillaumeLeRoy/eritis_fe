@@ -1,22 +1,20 @@
-<!--<rb-header></rb-header>-->
-
 <div class="container">
   <div class="row">
     <div class="col s12">
 
-      <!-- welcome message for coachee -->
+      <!-- Coachee dashboard -->
       <div *ngIf="isUserACoachee((user | async))">
-        <rb-meeting-list-coachee></rb-meeting-list-coachee>
+        <er-coachee-dashboard [user]="user"></er-coachee-dashboard>
       </div>
 
-      <!-- welcome message for coach -->
+      <!-- Coach dashboard -->
       <div *ngIf="isUserACoach((user | async))">
-        <rb-meeting-list-coach></rb-meeting-list-coach>
+        <er-coach-dashboard [user]="user"></er-coach-dashboard>
       </div>
 
-      <!-- welcome message for rh -->
+      <!-- RH dashboard -->
       <div *ngIf="isUserARh((user | async))">
-        <rb-meeting-list-rh></rb-meeting-list-rh>
+        <er-rh-dashboard [user]="user"></er-rh-dashboard>
       </div>
 
     </div><!--end row-->

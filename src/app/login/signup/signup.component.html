@@ -1,4 +1,4 @@
-<rb-header></rb-header>
+<er-header></er-header>
 
 <div class="container">
   <div class="section">
@@ -15,7 +15,7 @@
                   <small
                     *ngIf="!signUpForm.controls['email'].pristine &&!signUpForm.controls['email'].valid"
                     class="text-danger">
-                    Email is required and format should be <i>john@doe.com</i>.
+                    Votre email doit avoir le format suivant : <i>john@doe.com</i>.
                   </small>
                 </div>
               </div>
@@ -25,7 +25,7 @@
                   <label for="password">Password</label>
                   <small class="text-danger"
                          *ngIf="!signUpForm.controls['password'].pristine && !signUpForm.controls['password'].valid">
-                    Password must be at least 6 characters.
+                    Votre mot de passe doit contenir au moins 6 caractères.
                   </small>
                 </div>
               </div>
@@ -36,7 +36,7 @@
                   <label for="confirm_password">Confirm Password</label>
                   <small class="text-danger"
                          *ngIf="!signUpForm.controls['confirmPassword'].pristine && signUpForm.controls['confirmPassword'].errors && signUpForm.controls['confirmPassword'].errors['passwordNoMatch']">
-                    Confirm Password is incorrect
+                    Confirmation incorrecte.
                   </small>
                 </div>
               </div>

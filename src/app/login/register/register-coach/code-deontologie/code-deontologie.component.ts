@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import {Router} from "@angular/router";
 
 @Component({
-  selector: 'rb-code-deontologie',
+  selector: 'er-code-deontologie',
   templateUrl: './code-deontologie.component.html',
   styleUrls: ['./code-deontologie.component.scss']
 })

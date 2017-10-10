@@ -1,30 +1,26 @@
-import {AfterViewInit, ChangeDetectorRef, Component, OnDestroy, OnInit} from '@angular/core';
-import {Observable} from "rxjs/Observable";
-import {Coach} from "../../../../model/Coach";
-import {Coachee} from "../../../../model/coachee";
+import {Component, OnDestroy, OnInit} from "@angular/core";
 import {HR} from "../../../../model/HR";
 import {Subscription} from "rxjs/Subscription";
-import {AuthService} from "../../../../service/auth.service";
-import {ActivatedRoute, Router} from "@angular/router";
+import {ActivatedRoute} from "@angular/router";
 import {CoachCoacheeService} from "../../../../service/coach_coachee.service";
-import {AdminAPIService} from "../../../../service/adminAPI.service";
+import {BehaviorSubject} from "rxjs/BehaviorSubject";
 
 @Component({
-  selector: 'rb-profile-rh-admin',
+  selector: 'er-profile-rh-admin',
   templateUrl: './profile-rh-admin.component.html',
   styleUrls: ['./profile-rh-admin.component.scss']
 })
 
-export class ProfileRhAdminComponent implements OnInit, AfterViewInit, OnDestroy {
+export class ProfileRhAdminComponent implements OnInit, OnDestroy {
 
-  private user: Observable<Coach | Coachee | HR>;
-  private rh: Observable<HR>;
-  private mrh: HR;
+  private rh: BehaviorSubject<HR>;
   private subscriptionGetRh: Subscription;
+  private subscriptionGetRoute: Subscription;
 
   loading: boolean = true;
 
-  constructor(private cd: ChangeDetectorRef, private route: ActivatedRoute, private apiService: AdminAPIService, private router: Router) {
+  constructor(private route: ActivatedRoute, private apiService: CoachCoacheeService) {
+    this.rh = new BehaviorSubject(null);
   }
 
   ngOnInit() {
@@ -33,25 +29,31 @@ export class ProfileRhAdminComponent implements OnInit, AfterViewInit, OnDestroy
     this.getRh();
   }
 
-  ngAfterViewInit(): void {
-    console.log("afterViewInit");
-    // this.isOwner = (user instanceof Coach) && (coach.email === user.email);
+
+  ngOnDestroy(): void {
+    if (this.subscriptionGetRh) {
+      console.log("Unsubscribe rh");
+      this.subscriptionGetRh.unsubscribe();
+    }
+
+    if (this.subscriptionGetRoute) {
+      console.log("Unsubscribe route");
+      this.subscriptionGetRoute.unsubscribe();
+    }
   }
 
   private getRh() {
     console.log("getRh");
 
-    this.subscriptionGetRh = this.route.params.subscribe(
+    this.subscriptionGetRoute = this.route.params.subscribe(
       (params: any) => {
         let rhId = params['id'];
 
-        this.apiService.getRh(rhId).subscribe(
+        this.subscriptionGetRh = this.apiService.getRhForId(rhId, true).subscribe(
           (rh: HR) => {
             console.log("gotRh", rh);
-
-            this.mrh = rh;
-            this.rh = Observable.of(rh);
-            this.cd.detectChanges();
+            this.rh.next(rh);
+            // this.cd.detectChanges();
             this.loading = false;
           }, (error) => {
             console.log('getRh, error', error);
@@ -62,15 +64,5 @@ export class ProfileRhAdminComponent implements OnInit, AfterViewInit, OnDestroy
     )
   }
 
-  goToRhsAdmin() {
-    this.router.navigate(['admin/rhs-list']);
-  }
-
-  ngOnDestroy(): void {
-    if (this.subscriptionGetRh) {
-      console.log("Unsubscribe rh");
-      this.subscriptionGetRh.unsubscribe();
-    }
-  }
 
 }

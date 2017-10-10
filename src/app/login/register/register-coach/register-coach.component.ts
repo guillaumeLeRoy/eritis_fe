@@ -3,7 +3,7 @@ import {Router} from "@angular/router";
 import {CookieService} from "ngx-cookie";
 
 @Component({
-  selector: 'rb-register-coach',
+  selector: 'er-register-coach',
   templateUrl: './register-coach.component.html',
   styleUrls: ['./register-coach.component.scss']
 })

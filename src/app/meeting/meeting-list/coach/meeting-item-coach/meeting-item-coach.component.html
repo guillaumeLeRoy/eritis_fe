@@ -22,14 +22,14 @@
 
         <!-- DATE -->
         <div class="meeting-item-date" *ngIf="meeting.agreed_date">
-          <span class="meeting-item-date-date">{{ dateToString(meeting.agreed_date.start_date) }}</span><br>
-          <span class="meeting-item-date-hour blue-text">{{ timeToString(meeting.agreed_date.start_date) }}</span>
+          <span class="meeting-item-date-date">{{ timestampToString(meeting.agreed_date.start_date) }}</span><br>
+          <span class="meeting-item-date-hour blue-text">{{ hoursAndMinutesFromTimestamp(meeting.agreed_date.start_date) }}</span>
         </div>
 
         <!-- Demande disponible -->
         <div class="meeting-item-date" *ngIf="!meeting.agreed_date">
-          <span class="meeting-item-date-date">{{ dateToString(meeting.created_date) }}</span><br>
-          <span class="meeting-item-date-hour blue-text">{{ timeToString(meeting.created_date) }}</span>
+          <span class="meeting-item-date-date">{{ timestampToString(meeting.created_date) }}</span><br>
+          <span class="meeting-item-date-hour blue-text">{{ hoursAndMinutesFromTimestamp(meeting.created_date) }}</span>
         </div>
       </div>
     </div>
@@ -48,7 +48,7 @@
         <p>
           <span class="black-text bold">Objectif donné par le RH</span><br>
           <span *ngIf="meeting.coachee.last_objective != null">{{ meeting.coachee.last_objective.objective }}</span>
-          <span *ngIf="meeting.coachee.last_objective == null">n/a</span>
+          <span *ngIf="meeting.coachee.last_objective == null">A définir</span>
         </p>
 
 
@@ -56,7 +56,7 @@
         <div *ngIf="!meeting.isOpen" class="meeting-review">
           <div *ngIf="hasValue && hasNextStep">
             <br>
-            <p><span class="black-text bold">Avec quoi êtes vous reparti ? </span><br>{{ reviewNextStep }}</p>
+            <p><span class="black-text bold">Avec quoi êtes-vous repartis ? </span><br>{{ reviewNextStep }}</p>
             <br>
             <p><span class="black-text bold">En quoi la séance a-t-elle été utile ? </span><br>{{ reviewValue }}</p>
           </div>
@@ -92,8 +92,8 @@
             <br>
             <p><span class="black-text bold">Disponibilités :</span></p>
             <div class="meeting-potential" *ngFor="let potential of potentialDates | async">
-              <span class="meeting-potential-date">{{ dateToString(potential.start_date) }}</span>
-              <span class="meeting-potential-hours bold">{{ timeToString(potential.start_date) }} - {{ timeToString(potential.end_date) }}</span>
+              <span class="meeting-potential-date">{{ timestampToString(potential.start_date) }}</span>
+              <span class="meeting-potential-hours bold">{{ hoursAndMinutesFromTimestamp(potential.start_date) }} - {{ hoursAndMinutesFromTimestamp(potential.end_date) }}</span>
             </div>
             <br>
             <form class="confirm-meeting-form">
@@ -103,7 +103,7 @@
                         (change)="loadPotentialHours(selectedDate)">
                   <option value="0" disabled selected>Date</option>
                   <option *ngFor="let d of potentialDays | async" [ngValue]=" d ">
-                    {{ dateToString(d) }}
+                    {{ timestampToString(d) }}
                   </option>
                 </select>
               </div>
@@ -121,7 +121,7 @@
         </div><!--end meeting-review-->
       </div>
 
-      <div class="meeting-item-body-buttons" *ngIf="meeting.isOpen">
+      <div class="meeting-item-body-buttons" *ngIf="meeting.isOpen && !isAdmin">
         <button type="submit" class="btn-basic btn-blue btn-plain btn-small"
                 *ngIf="!meeting.agreed_date"
                 [disabled]="!selectedDate || !selectedHour"

@@ -1,21 +1,24 @@
-import {AfterViewInit, ChangeDetectorRef, Component, OnDestroy, OnInit} from "@angular/core";
+import {
+  AfterViewInit,
+  ChangeDetectorRef,
+  Component,
+  EventEmitter,
+  Input,
+  OnDestroy,
+  OnInit,
+  Output
+} from "@angular/core";
 import {MeetingsService} from "../../../../service/meetings.service";
-import {CoachCoacheeService} from "../../../../service/coach_coachee.service";
-import {AuthService} from "../../../../service/auth.service";
-import {Router} from "@angular/router";
 import {Observable} from "rxjs/Observable";
 import {Meeting} from "../../../../model/Meeting";
 import {Subscription} from "rxjs/Subscription";
 import {Coachee} from "../../../../model/Coachee";
-import {Coach} from "../../../../model/Coach";
-import {HRUsageRate} from "../../../../model/HRUsageRate";
-import {ApiUser} from "../../../../model/ApiUser";
 
 declare var $: any;
 declare var Materialize: any;
 
 @Component({
-  selector: 'rb-meeting-list-coachee',
+  selector: 'er-meeting-list-coachee',
   templateUrl: './meeting-list-coachee.component.html',
   styleUrls: ['./meeting-list-coachee.component.scss']
 })
@@ -23,129 +26,100 @@ export class MeetingListCoacheeComponent implements OnInit, AfterViewInit, OnDes
 
   loading = true;
 
-  private user: Observable<ApiUser>;
+  @Input()
+  user: Observable<Coachee>;
 
-  private meetings: Observable<Meeting[]>;
-  private meetingsOpened: Observable<Meeting[]>;
-  private meetingsClosed: Observable<Meeting[]>;
-  private meetingsArray: Meeting[];
+  @Input()
+  isAdmin: boolean = false;
+
+  @Output()
+  requestRefreshEventEmitter: EventEmitter<any> = new EventEmitter();
+
+  private meetings: Observable<Array<Meeting>>;
+  private meetingsOpened: Observable<Array<Meeting>>;
+  private meetingsClosed: Observable<Array<Meeting>>;
+  private meetingsArray: Array<Meeting>;
 
   private hasOpenedMeeting = false;
   private hasClosedMeeting = false;
 
-  private subscription: Subscription;
-  private connectedUserSubscription: Subscription;
+  private userSubscription: Subscription;
+  private getAllMeetingsForCoacheeIdSubscription?: Subscription;
 
   private meetingToCancel: Meeting;
-
-  private rhUsageRate: Observable<HRUsageRate>;
 
   private rateSessionMeetingId: string
   private sessionRate = '0';
   private sessionPreRate = '0';
 
-  constructor(private router: Router, private meetingsService: MeetingsService, private coachCoacheeService: CoachCoacheeService, private authService: AuthService, private cd: ChangeDetectorRef) {
+  constructor(private meetingsService: MeetingsService, private cd: ChangeDetectorRef) {
   }
 
   ngOnInit() {
     console.log('ngOnInit');
     this.loading = true;
+
+    this.user.subscribe((user: Coachee) => {
+      this.onUserObtained(user);
+    });
   }
 
   ngAfterViewInit(): void {
     console.log('ngAfterViewInit');
-
-    this.onRefreshRequested();
+    // this.onUserObtained(this.mUser);
   }
 
-  onRefreshRequested() {
-    let user = this.authService.getConnectedUser();
-    console.log('onRefreshRequested, user : ', user);
-    if (user == null) {
-      this.connectedUserSubscription = this.authService.getConnectedUserObservable().subscribe(
-        (user: Coachee) => {
-          console.log('onRefreshRequested, getConnectedUser');
-          this.onUserObtained(user);
-        }
-      );
-    } else {
+  private onRefreshRequested() {
+    this.userSubscription = this.user.first().subscribe((user: Coachee) => {
       this.onUserObtained(user);
-    }
+      this.requestRefreshEventEmitter.emit(null);
+    });
+
   }
 
-  private onUserObtained(user: ApiUser) {
+  private onUserObtained(user: Coachee) {
     console.log('onUserObtained, user : ', user);
-    if (user) {
-
-      if (user instanceof Coachee) {
-        // coachee
-        console.log('get a coachee');
-        this.getAllMeetingsForCoachee(user.id);
-      }
-
-      this.user = Observable.of(user);
-      this.cd.detectChanges();
-    }
+    if (user)
+      this.getAllMeetingsForCoachee(user.id);
+    // this.user = Observable.of(user);
+    // this.cd.detectChanges();
   }
 
   private getAllMeetingsForCoachee(coacheeId: string) {
-    this.subscription = this.meetingsService.getAllMeetingsForCoacheeId(coacheeId).subscribe(
-      (meetings: Meeting[]) => {
-        console.log('got meetings for coachee', meetings);
-
-        this.meetingsArray = meetings;
-        this.meetings = Observable.of(meetings);
-        this.getOpenedMeetings();
-        this.getClosedMeetings();
-        this.cd.detectChanges();
-        this.loading = false;
-      }
-    );
+    this.getAllMeetingsForCoacheeIdSubscription = this.meetingsService.getAllMeetingsForCoacheeId(coacheeId, this.isAdmin)
+      .subscribe(
+        (meetings: Meeting[]) => {
+          console.log('got meetings for coachee', meetings);
+          this.onMeetingsObtained(meetings);
+        }, (error) => {
+          console.log('got meetings for coachee ERROR', error);
+          this.loading = false;
+        }
+      );
   }
 
-  goToDate() {
-    console.log('goToDate');
+  private onMeetingsObtained(meetings: Array<Meeting>) {
+    console.log('got meetings for coachee', meetings);
 
-    this.user.take(1).subscribe(
-      (user: ApiUser) => {
+    this.meetingsArray = meetings;
+    this.meetings = Observable.of(meetings);
+    this.getOpenedMeetings();
+    this.getClosedMeetings();
+    this.loading = false;
 
-        if (user == null) {
-          console.log('no connected user')
-          return;
-        }
+    console.log('got meetings, loading', this.loading);
 
-        // 1) create a new meeting
-        // 2) refresh our user to have a correct number of available sessions
-        // 3) redirect to our MeetingDateComponent
-        this.meetingsService.createMeeting(user.id).flatMap(
-          (meeting: Meeting) => {
-            console.log('goToDate, meeting created');
-
-            //meeting created, now fetch user
-            return this.authService.refreshConnectedUser().flatMap(
-              (user: Coach | Coachee) => {
-                console.log('goToDate, user refreshed');
-                return Observable.of(meeting);
-              }
-            );
-          }
-        ).subscribe(
-          (meeting: Meeting) => {
-            // TODO display a loader
-            console.log('goToDate, go to setup dates');
-            window.scrollTo(0, 0);
-            this.router.navigate(['/date', meeting.id]);
-          }
-        );
-      });
+    this.cd.detectChanges();
   }
 
   private getOpenedMeetings() {
     console.log('getOpenedMeetings');
     if (this.meetingsArray != null) {
-      let opened: Meeting[] = [];
+      let opened: Array<Meeting> = new Array<Meeting>();
       for (let meeting of this.meetingsArray) {
         if (meeting.isOpen) {
+          console.log('getOpenedMeetings, add open meeting');
+
           opened.push(meeting);
           this.hasOpenedMeeting = true;
         }
@@ -160,6 +134,8 @@ export class MeetingListCoacheeComponent implements OnInit, AfterViewInit, OnDes
       let closed: Meeting[] = [];
       for (let meeting of this.meetingsArray) {
         if (!meeting.isOpen) {
+          console.log('getClosedMeetings, add close meeting');
+
           closed.push(meeting);
           this.hasClosedMeeting = true;
         }
@@ -168,25 +144,15 @@ export class MeetingListCoacheeComponent implements OnInit, AfterViewInit, OnDes
     }
   }
 
-  private getUsageRate(rhId: string) {
-    this.coachCoacheeService.getUsageRate(rhId).subscribe(
-      (rate: HRUsageRate) => {
-        console.log("getUsageRate, rate : ", rate);
-        this.rhUsageRate = Observable.of(rate);
-      }
-    );
-  }
-
   ngOnDestroy(): void {
-    if (this.subscription) {
-      this.subscription.unsubscribe();
+    if (this.getAllMeetingsForCoacheeIdSubscription) {
+      this.getAllMeetingsForCoacheeIdSubscription.unsubscribe();
     }
 
-    if (this.connectedUserSubscription) {
-      this.connectedUserSubscription.unsubscribe();
+    if (this.userSubscription) {
+      this.userSubscription.unsubscribe();
     }
   }
-
 
   /*************************************
    ----------- Modal control ------------
@@ -221,7 +187,6 @@ export class MeetingListCoacheeComponent implements OnInit, AfterViewInit, OnDes
     this.meetingsService.deleteMeeting(meetingId).subscribe(
       (response) => {
         console.log('confirmCancelMeeting, res', response);
-        // this.onMeetingCancelled.emit();
         this.onRefreshRequested();
         Materialize.toast('Meeting supprimé !', 3000, 'rounded');
       }, (error) => {

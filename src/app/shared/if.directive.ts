@@ -13,6 +13,8 @@ export class IfDirective {
   }
 
   @Input() set ifLoader(loading: boolean) {
+    console.log('ifLoader, loading : ', loading);
+
     if (loading) {
       // create and attach a loader to our viewContainer
       const factory = this.cfResolver.resolveComponentFactory(LoaderSpinnerComponent);

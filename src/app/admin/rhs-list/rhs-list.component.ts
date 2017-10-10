@@ -2,7 +2,7 @@ import {AfterViewInit, ChangeDetectorRef, Component, OnDestroy, OnInit} from "@a
 import {Observable} from "rxjs/Observable";
 import {HR} from "../../model/HR";
 import {Subscription} from "rxjs/Subscription";
-import {AdminAPIService} from "../../service/adminAPI.service";
+import {CoachCoacheeService} from "../../service/coach_coachee.service";
 
 @Component({
   selector: 'er-rhs-list',
@@ -16,7 +16,7 @@ export class RhsListComponent implements OnInit, AfterViewInit, OnDestroy {
 
   loading = true;
 
-  constructor(private apiService: AdminAPIService, private cd: ChangeDetectorRef) {
+  constructor(private apiService: CoachCoacheeService, private cd: ChangeDetectorRef) {
   }
 
   ngOnInit() {
@@ -36,7 +36,7 @@ export class RhsListComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   private fetchData() {
-    this.getAllrhsSub = this.apiService.getRhs().subscribe(
+    this.getAllrhsSub = this.apiService.getRhs(true).subscribe(
       (rhs: Array<HR>) => {
         console.log('getAllrhsSub subscribe, rhs : ', rhs);
 

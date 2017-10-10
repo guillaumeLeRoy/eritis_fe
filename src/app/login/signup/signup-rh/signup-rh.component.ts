@@ -80,7 +80,7 @@ export class SignupRhComponent implements OnInit {
         console.log("onSignUp, data obtained", data)
         this.sendLoading = false;
         /*L'utilisateur est TOUJOURS redirigé vers ses meetings*/
-        this.router.navigate(['/meetings']);
+        this.router.navigate(['/dashboard']);
         Materialize.toast('Inscription terminée !', 3000, 'rounded');
       },
       error => {

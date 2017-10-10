@@ -14,15 +14,17 @@
 
             <div>
               <p class="meeting-item-coach-name black-text bold">{{ coachee.first_name}} {{ coachee.last_name}}</p>
+              <span>{{ coachee.email }}</span><br>
               <span class="italic">Inscrit le {{ dateToStringShort(coachee.start_date) }}</span>
             </div>
           </div>
 
           <!--USAGE-->
           <div class="meeting-item-date">
-            <div class="meeting-item-date-date">
+            <div class="meeting-item-date-date" i18n>
               <!--<span class="usage-title">Utilisation</span><br>-->
-              <span class="blue-text">{{ coachee.sessionsDoneMonthCount }}</span> sessions ce mois-ci
+              <span class="blue-text">{{ coachee.sessionsDoneMonthCount }}</span> { coachee.sessionsDoneMonthCount,
+              plural, =0 {séance} =1 {séance} other {séances}} ce mois-ci
             </div>
           </div>
         </div>
@@ -38,7 +40,7 @@
           </p>
         </div>
 
-        <div class="meeting-item-body-buttons">
+        <div class="meeting-item-body-buttons" *ngIf="!isAdmin">
           <button class="btn-basic btn-blue btn-plain btn-small" (click)="onClickAddObjectiveBtn()"
                   *ngIf="!coachee.last_objective">
             Ajouter un objectif
@@ -52,42 +54,46 @@
 
       <div *ngIf="showDetails" class="meeting-review">
         <div>
-          <h5><span class="blue-text">{{ coachee.plan.sessions_count }}</span> séances/mois</h5>
+          <h5 i18n><span class="blue-text">{{ coachee.plan.sessions_count }}</span> { coachee.plan.sessions_count,
+            plural, =0 {séance/mois} =1 {séance/mois} other {séances/mois}} </h5>
           <br>
           <div *ngIf="!hasBookedMeeting"><p>Pas encore de séance réalisée</p><br></div>
           <div *ngIf="hasBookedMeeting">
             <div *ngFor="let meeting of (meetings | async)">
               <div class="row">
                 <div class=" col-md-3">
-                  <span class="meeting-list-date">Pour le {{ printDateString(meeting.agreed_date.start_date) }}</span>
+                  <span
+                    class="meeting-list-date">Le {{ dayAndMonthFromTimestamp(meeting.agreed_date.start_date) }}</span>
                 </div>
                 <div class="col-md-9">
-                  <span class="black-text bold">Objectif de la séance: </span>
-                  <span>{{ goals[meeting.id] }}</span>
-                </div>
-              </div>
-              <div class="row">
-                <div class=" col-md-12">
-                  <span class="black-text bold">Note donnée : </span>
+                  <div class="row">
+                    <div class="col-md-12">
+                      <span class="black-text bold">Objectif de la séance : </span>
+                      <span>{{ goals[meeting.id] }}</span>
+                    </div>
 
-                  <div class="ratebar ratebar-mini">
-                    <div class="rate-star" [class.selected]="sessionRates[meeting.id] > 0">
-                      <i class="material-icons star">star</i>
-                    </div>
-                    <div class="rate-star" [class.selected]="sessionRates[meeting.id] > 1">
-                      <i class="material-icons star">star</i>
-                    </div>
-                    <div class="rate-star" [class.selected]="sessionRates[meeting.id] > 2">
-                      <i class="material-icons star">star</i>
-                    </div>
-                    <div class="rate-star" [class.selected]="sessionRates[meeting.id] > 3">
-                      <i class="material-icons star">star</i>
-                    </div>
-                    <div class="rate-star" [class.selected]="sessionRates[meeting.id] > 4">
-                      <i class="material-icons star">star</i>
+                    <div class="col-md-12">
+                      <span class="black-text bold">Note donnée :</span>
+
+                      <div class="ratebar ratebar-mini">
+                        <div class="rate-star" [class.selected]="sessionRates[meeting.id] > 0">
+                          <i class="material-icons star">star</i>
+                        </div>
+                        <div class="rate-star" [class.selected]="sessionRates[meeting.id] > 1">
+                          <i class="material-icons star">star</i>
+                        </div>
+                        <div class="rate-star" [class.selected]="sessionRates[meeting.id] > 2">
+                          <i class="material-icons star">star</i>
+                        </div>
+                        <div class="rate-star" [class.selected]="sessionRates[meeting.id] > 3">
+                          <i class="material-icons star">star</i>
+                        </div>
+                        <div class="rate-star" [class.selected]="sessionRates[meeting.id] > 4">
+                          <i class="material-icons star">star</i>
+                        </div>
+                      </div>
                     </div>
                   </div>
-
                 </div>
               </div>
 
@@ -112,14 +118,16 @@
             </div>
 
             <div>
-              <p class="meeting-item-coach">{{ potentialCoachee.email }}</p>
+              <p class="meeting-item-coach-name black-text bold">{{ potentialCoachee.first_name}} {{
+                potentialCoachee.last_name}}</p>
+              <span>{{ potentialCoachee.email }}</span>
             </div>
           </div>
 
           <!-- PLAN -->
-          <div class="meeting-item-date">
+          <div class="meeting-item-date" i18n>
             <span class="meeting-item-date-date"><span
-              class="blue-text">{{ potentialCoachee.plan.sessions_count }}</span> séances</span>
+              class="blue-text">{{ potentialCoachee.plan.sessions_count }}</span> { potentialCoachee.plan.sessions_count, plural, =0 {séance} =1 {séance} other {séances}}</span>
           </div>
         </div>
       </div>

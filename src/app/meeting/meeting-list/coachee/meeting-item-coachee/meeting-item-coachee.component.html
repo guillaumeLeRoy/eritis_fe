@@ -38,8 +38,8 @@
         <!-- DATE -->
         <div class="meeting-item-date">
           <div *ngIf="meeting.agreed_date">
-            <span class="meeting-item-date-date">{{ dateToString(meeting.agreed_date.start_date) }}</span><br>
-            <span class="meeting-item-date-hour blue-text">{{ printTimeString(meeting.agreed_date.start_date) }}</span>
+            <span class="meeting-item-date-date">{{ timestampToString(meeting.agreed_date.start_date) }}</span><br>
+            <span class="meeting-item-date-hour blue-text">{{ hoursAndMinutesFromTimestamp(meeting.agreed_date.start_date) }}</span>
           </div>
 
           <div *ngIf="!meeting.agreed_date">
@@ -69,8 +69,8 @@
 
         <p *ngIf="!meeting.coach"><span class="black-text bold"><br>Disponibilités</span><br>
           <span *ngFor="let date of (potentialDates | async)">
-            {{ dateToString(date.start_date)}}
-            <span class="bold">{{ printTimeString(date.start_date) }} - {{ printTimeString(date.end_date) }}</span><br>
+            {{ timestampToString(date.start_date)}}
+            <span class="bold">{{ hoursAndMinutesFromTimestamp(date.start_date) }} - {{ hoursAndMinutesFromTimestamp(date.end_date) }}</span><br>
           </span>
         </p>
 
@@ -78,7 +78,7 @@
         <div *ngIf="!meeting.isOpen" class="meeting-review">
           <div *ngIf="hasSessionResult && hasSessionUtility">
             <br>
-            <p><span class="black-text bold">Avec quoi êtes vous reparti ? </span><br>{{ sessionResult }}</p>
+            <p><span class="black-text bold">Avec quoi êtes-vous repartis ? </span><br>{{ sessionResult }}</p>
             <br>
             <p><span class="black-text bold">En quoi la séance a-t-elle été utile ? </span><br>{{ sessionUtility }}</p>
           </div>
@@ -110,7 +110,7 @@
 
       </div>
 
-      <div class="meeting-item-body-buttons" *ngIf="meeting.isOpen">
+      <div class="meeting-item-body-buttons" *ngIf="meeting.isOpen && !isAdmin">
         <button class="btn-basic btn-plain btn-blue btn-small" *ngIf="!meeting.agreed_date"
                 (click)="goToModifyDate(meeting.id)">
           MODIFIER
@@ -121,8 +121,11 @@
         </button>
         <button class="btn-basic btn-cancel" (click)="openModal()"><i class="material-icons">clear</i></button>
       </div>
-      <div class="meeting-item-body-buttons" *ngIf="!meeting.isOpen && !hasRate">
-        <button class="btn-basic btn-plain btn-blue btn-small" (click)="rateSession()">NOTER</button>
+
+      <div class="meeting-item-body-buttons" *ngIf="!meeting.isOpen && !hasRate && !isAdmin">
+        <div class="meeting-item-body-buttons">
+          <button class="btn-basic btn-plain btn-blue btn-small" (click)="rateSession()">NOTER</button>
+        </div>
       </div>
 
 

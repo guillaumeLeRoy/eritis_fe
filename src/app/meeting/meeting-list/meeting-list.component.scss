@@ -92,16 +92,21 @@ p {
   color: $main-electric-blue !important;
 }
 
-.meeting-item-date{
+.meeting-item-date {
   font-size: 18px;
-  margin-left: 32px;
+  margin-left: 16px;
   margin-top: 18px;
-  text-align: center;
+  text-align: right;
+
+  .meeting-item-date-hour {
+    font-size: 20px;
+    font-weight: 500;
+  }
 }
 
 .meeting-item-body{
   justify-content: space-between;
-  padding-left: 64px;
+  padding-left: 32px;
 }
 
 .meeting-item.closed .meeting-item-header,
@@ -171,11 +176,17 @@ p {
 
   .meeting-item-date {
     margin-left: 0;
+    text-align: center;
   }
 
-  .meeting-item-body-buttons,
   .meeting-item-body-content {
-    text-align: center;
     width: 100%;
+    text-align: left;
   }
+
+  .meeting-item-body-buttons {
+    width: 100%;
+    text-align: center;
+  }
+
 }

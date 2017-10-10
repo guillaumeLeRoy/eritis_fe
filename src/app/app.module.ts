@@ -5,13 +5,11 @@ import {HttpModule} from "@angular/http";
 
 import {AppComponent} from "./app.component";
 import {HeaderComponent} from "./header/header.component";
-import {DataService} from "./service/data.service";
-import {LogService} from "./service/log.service";
+import {SessionService} from "./service/session.service";
 import {routing} from "./app.routing";
 import {SignupAdminComponent} from "./login/signup/signup-admin/signup-admin.component";
 import {SigninComponent} from "./login/signin/signin.component";
 import {AuthService} from "./service/auth.service";
-import {AuthGuard} from "./login/auth.guard";
 import {WelcomeComponent} from "./welcome/welcome.component";
 import {ChatComponent} from "./chat/chat.component";
 import {ChatItemComponent} from "./chat/chat-item.component";
@@ -61,12 +59,18 @@ import {CookieModule} from "ngx-cookie";
 import {NgsRevealModule} from "ng-scrollreveal";
 import {LoaderSpinnerComponent} from "./loader/loader-spinner/loader-spinner.component";
 import {SharedModule} from "./shared/shared.module";
-import { FooterComponent } from './footer/footer.component';
-import { LegalNoticeComponent } from './legals/legal-notice/legal-notice.component';
-import { TermsOfUseComponent } from './legals/terms-of-use/terms-of-use.component';
-import { CookiePolicyComponent } from './legals/cookie-policy/cookie-policy.component';
-import { ProfileHeaderComponent } from './user/profile/profile-header/profile-header.component';
-import { HomeAdminComponent } from './admin/home-admin/home-admin.component';
+import {FooterComponent} from "./footer/footer.component";
+import {LegalNoticeComponent} from "./legals/legal-notice/legal-notice.component";
+import {TermsOfUseComponent} from "./legals/terms-of-use/terms-of-use.component";
+import {CookiePolicyComponent} from "./legals/cookie-policy/cookie-policy.component";
+import {ProfileHeaderComponent} from "./user/profile/profile-header/profile-header.component";
+import {HomeAdminComponent} from "./admin/home-admin/home-admin.component";
+import {CoacheeDashboardComponent} from "./dashboard/coachee-dashboard/coachee-dashboard.component";
+import {CoachDashboardComponent} from "./dashboard/coach-dashboard/coach-dashboard.component";
+import {RhDashboardComponent} from "./dashboard/rh-dashboard/rh-dashboard.component";
+import {DashboardComponent} from "./dashboard/dashboard.component";
+import {AuthGuard} from "./service/auth-guard.service";
+import {NotAuthGuard} from "./service/not-auth-guard";
 
 @NgModule({
   declarations: [
@@ -116,7 +120,11 @@ import { HomeAdminComponent } from './admin/home-admin/home-admin.component';
     TermsOfUseComponent,
     CookiePolicyComponent,
     ProfileHeaderComponent,
-    HomeAdminComponent
+    HomeAdminComponent,
+    CoacheeDashboardComponent,
+    CoachDashboardComponent,
+    RhDashboardComponent,
+    DashboardComponent
   ],
   imports: [
     BrowserAnimationsModule,
@@ -133,7 +141,7 @@ import { HomeAdminComponent } from './admin/home-admin/home-admin.component';
     NgsRevealModule.forRoot(),
     SharedModule
   ],
-  providers: [DataService, LogService, AuthService, AuthGuard, CoachCoacheeService, MeetingsService, FirebaseService, AdminAPIService],
+  providers: [AuthService, AuthGuard, NotAuthGuard, CoachCoacheeService, MeetingsService, FirebaseService, AdminAPIService, SessionService],
   bootstrap: [AppComponent]
 })
 export class AppModule {

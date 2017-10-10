@@ -11,7 +11,7 @@ declare var $: any;
 declare var Materialize: any;
 
 @Component({
-  selector: 'rb-register-coach-form',
+  selector: 'er-register-coach-form',
   templateUrl: './register-coach-form.component.html',
   styleUrls: ['./register-coach-form.component.scss']
 })

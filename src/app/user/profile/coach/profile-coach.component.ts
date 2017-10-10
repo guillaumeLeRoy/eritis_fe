@@ -1,32 +1,29 @@
-import {AfterViewInit, ChangeDetectorRef, Component, Input, OnDestroy, OnInit, Output, EventEmitter} from "@angular/core";
+import {ChangeDetectorRef, Component, OnDestroy, OnInit} from "@angular/core";
 import {Observable} from "rxjs";
-import {ActivatedRoute, Router} from "@angular/router";
+import {ActivatedRoute} from "@angular/router";
 import {Coach} from "../../../model/Coach";
 import {AuthService} from "../../../service/auth.service";
-import {ApiUser} from "../../../model/ApiUser";
 import {CoachCoacheeService} from "../../../service/coach_coachee.service";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
-import {Coachee} from "../../../model/Coachee";
-import {HR} from "app/model/HR";
-import {Headers} from "@angular/http"
+import {Headers} from "@angular/http";
 import {Subscription} from "rxjs/Subscription";
 
 declare var $: any;
 declare var Materialize: any;
 
 @Component({
-  selector: 'rb-profile-coach',
+  selector: 'er-profile-coach',
   templateUrl: './profile-coach.component.html',
   styleUrls: ['./profile-coach.component.scss']
 })
 
-export class ProfileCoachComponent implements OnInit, AfterViewInit, OnDestroy {
+export class ProfileCoachComponent implements OnInit, OnDestroy {
 
-  private user: Observable<Coach | Coachee | HR>;
   private coach: Observable<Coach>;
   private mcoach: Coach;
+
   private subscriptionGetCoach: Subscription;
-  private subscriptionGetUser: Subscription;
+  private subscriptionGetRoute: Subscription;
 
   private isOwner = false;
 
@@ -38,7 +35,7 @@ export class ProfileCoachComponent implements OnInit, AfterViewInit, OnDestroy {
 
   loading: boolean = true;
 
-  constructor(private authService: AuthService, private router: Router, private cd: ChangeDetectorRef, private formBuilder: FormBuilder, private coachService: CoachCoacheeService, private route: ActivatedRoute) {
+  constructor(private authService: AuthService, private cd: ChangeDetectorRef, private formBuilder: FormBuilder, private coachService: CoachCoacheeService, private route: ActivatedRoute) {
   }
 
   ngOnInit() {
@@ -52,23 +49,29 @@ export class ProfileCoachComponent implements OnInit, AfterViewInit, OnDestroy {
       description: ['', Validators.required],
     });
 
-    // this.getUser();
     this.getCoachAndUser();
   }
 
-  ngAfterViewInit(): void {
-    console.log("afterViewInit");
-    // this.isOwner = (user instanceof Coach) && (coach.email === user.email);
+  ngOnDestroy(): void {
+    if (this.subscriptionGetCoach) {
+      console.log("Unsubscribe coach");
+      this.subscriptionGetCoach.unsubscribe();
+    }
+
+    if (this.subscriptionGetRoute) {
+      console.log("Unsubscribe route");
+      this.subscriptionGetRoute.unsubscribe();
+    }
   }
 
   private getCoachAndUser() {
     console.log("getCoach");
 
-    this.subscriptionGetCoach = this.route.params.subscribe(
+    this.subscriptionGetRoute = this.route.params.subscribe(
       (params: any) => {
         let coachId = params['id'];
 
-        this.coachService.getCoachForId(coachId).subscribe(
+        this.subscriptionGetCoach = this.coachService.getCoachForId(coachId).subscribe(
           (coach: Coach) => {
             console.log("gotCoach", coach);
 
@@ -77,10 +80,9 @@ export class ProfileCoachComponent implements OnInit, AfterViewInit, OnDestroy {
             this.coach = Observable.of(coach);
             console.log("getUser");
             let user = this.authService.getConnectedUser();
-            this.user = Observable.of(user);
             this.isOwner = (user instanceof Coach) && (coach.email === user.email);
             this.cd.detectChanges();
-            this.loading  = false;
+            this.loading = false;
 
           }, (error) => {
             console.log('getCoach, error', error);
@@ -89,23 +91,6 @@ export class ProfileCoachComponent implements OnInit, AfterViewInit, OnDestroy {
       }
     )
   }
-
-  // private getUser() {
-  //   console.log("getUser");
-  //
-  //   // this.subscriptionGetUser = this.authService.getConnectedUserObservable().subscribe(
-  //   //   (user: Coach | Coachee | HR) => {
-  //   //     console.log('gotUser : ' + user);
-  //   //
-  //   //     this.user = Observable.of(user);
-  //   //     this.cd.detectChanges()
-  //   //   }, (error) => {
-  //   //     console.log('getUser, error', error);
-  //   //   }
-  //   // );
-  //
-  //   this.user = Observable.of(this.authService.getConnectedUser());
-  // }
 
   setFormValues(coach: Coach) {
     this.formCoach.setValue({
@@ -143,6 +128,7 @@ export class ProfileCoachComponent implements OnInit, AfterViewInit, OnDestroy {
           let headers = new Headers();
           headers.append('Accept', 'application/json');
 
+          //todo call coachCoacheeAPIservice
           return this.authService.put(AuthService.PUT_COACH_PROFILE_PICT, params, formData, {headers: headers})
             .map(res => res.json())
             .catch(error => Observable.throw(error))
@@ -157,7 +143,7 @@ export class ProfileCoachComponent implements OnInit, AfterViewInit, OnDestroy {
         Materialize.toast('Votre profil a été modifié !', 3000, 'rounded');
         //refresh page
         setTimeout('', 1000);
-        window.location.reload();
+        // window.location.reload();
       }, error => {
         console.log('Upload avatar error', error);
         this.updateUserLoading = false;
@@ -179,22 +165,6 @@ export class ProfileCoachComponent implements OnInit, AfterViewInit, OnDestroy {
       }
 
       reader.readAsDataURL(event.target.files[0]);
-    }
-  }
-
-  goToMeetings() {
-    this.router.navigate(['/meetings']);
-  }
-
-  ngOnDestroy(): void {
-    if (this.subscriptionGetCoach) {
-      console.log("Unsubscribe coach");
-      this.subscriptionGetCoach.unsubscribe();
-    }
-
-    if (this.subscriptionGetUser) {
-      console.log("Unsubscribe user");
-      this.subscriptionGetUser.unsubscribe();
     }
   }
 

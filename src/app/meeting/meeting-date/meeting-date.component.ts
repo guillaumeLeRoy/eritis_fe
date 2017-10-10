@@ -5,9 +5,9 @@ import {AuthService} from "../../service/auth.service";
 import {Observable, Subscription} from "rxjs";
 import {MeetingDate} from "../../model/MeetingDate";
 import {ActivatedRoute, Router} from "@angular/router";
-import {MeetingReview} from "../../model/MeetingReview";
 import {MeetingsService} from "../../service/meetings.service";
 import {Utils} from "../../utils/Utils";
+import {Meeting} from "../../model/Meeting";
 
 declare var Materialize: any;
 
@@ -37,16 +37,18 @@ export class CustomDatepickerI18n extends NgbDatepickerI18n {
   getWeekdayShortName(weekday: number): string {
     return I18N_VALUES[this._i18n.language].weekdays[weekday - 1];
   }
+
   getMonthShortName(month: number): string {
     return I18N_VALUES[this._i18n.language].months[month - 1];
   }
+
   getMonthFullName(month: number): string {
     return this.getMonthShortName(month);
   }
 }
 
 @Component({
-  selector: 'rb-meeting-date',
+  selector: 'er-meeting-date',
   templateUrl: './meeting-date.component.html',
   styleUrls: ['./meeting-date.component.scss'],
   providers: [I18n, {provide: NgbDatepickerI18n, useClass: CustomDatepickerI18n}] // define custom NgbDatepickerI18n provider
@@ -56,20 +58,18 @@ export class MeetingDateComponent implements OnInit, OnDestroy {
   /**
    * Meeting Id for which we want to setup potential dates
    */
-  private meetingId: string;
+  private meetingId?: string;
 
   months = ['Janvier', 'Février', 'Mars', 'Avril', 'Mai', 'Juin', 'Juillet', 'Août', 'Septembre', 'Octobre', 'Novembre', 'Décembre'];
   days = ['Dimanche', 'Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi'];
 
   now = new Date();
-  dateModel: NgbDateStruct = {year: this.now.getFullYear(), month: this.now.getMonth() + 1, day: this.now.getDate()};
+  dateModel: NgbDateStruct = null;
   timeRange: number[] = [10, 18];
 
   /* Meeting potential dates */
   private potentialDatesArray: Array<MeetingDate>;
   private potentialDates: Observable<MeetingDate[]>;
-
-  private hasPotentialDates = false;
 
   private displayErrorBookingDate = false;
   private connectedUser: Observable<ApiUser>;
@@ -81,7 +81,7 @@ export class MeetingDateComponent implements OnInit, OnDestroy {
   private meetingContext: string;
 
   isEditingPotentialDate = false;
-  private mEditingPotentialTimeId: string;
+  private mEditingPotentialTime: MeetingDate;
 
   constructor(private router: Router, private route: ActivatedRoute, private meetingService: MeetingsService, private authService: AuthService, private cd: ChangeDetectorRef) {
     this.potentialDatesArray = new Array<MeetingDate>();
@@ -95,7 +95,11 @@ export class MeetingDateComponent implements OnInit, OnDestroy {
     this.route.params.subscribe(
       (params: any) => {
         this.meetingId = params['meetingId'];
-        this.loadMeetingPotentialTimes(this.meetingId);
+        console.log("route param, meetingId : " + this.meetingId);
+
+        if (this.meetingId != undefined) {
+          this.loadMeetingPotentialTimes(this.meetingId);
+        }
       }
     );
 
@@ -119,123 +123,80 @@ export class MeetingDateComponent implements OnInit, OnDestroy {
 
   bookOrUpdateADate() {
     console.log('bookADate, dateModel : ', this.dateModel);
-    // console.log('bookADate, timeModel : ', this.timeModel);
 
-    this.connectedUser.take(1).subscribe(
-      (user: ApiUser) => {
+    let minDate: Date = new Date(this.dateModel.year, this.dateModel.month - 1, this.dateModel.day, this.timeRange[0], 0);
+    let maxDate = new Date(this.dateModel.year, this.dateModel.month - 1, this.dateModel.day, this.timeRange[1], 0);
 
-        if (user == null) {
-          console.log('no connected user');
-          return;
-        }
+    if (this.isEditingPotentialDate) {
 
-        let minDate = new Date(this.dateModel.year, this.dateModel.month - 1, this.dateModel.day, this.timeRange[0], 0);
-        let maxDate = new Date(this.dateModel.year, this.dateModel.month - 1, this.dateModel.day, this.timeRange[1], 0);
-        let timestampMin: number = +minDate.getTime().toFixed(0) / 1000;
-        let timestampMax: number = +maxDate.getTime().toFixed(0) / 1000;
+      this.mEditingPotentialTime.start_date = minDate.valueOf();
+      this.mEditingPotentialTime.end_date = maxDate.valueOf();
 
-        if (this.isEditingPotentialDate) {
+      this.potentialDates = Observable.of(this.potentialDatesArray);
+      this.cd.detectChanges();
 
-          // just update potential date
-          this.meetingService.updatePotentialTime(this.mEditingPotentialTimeId, timestampMin, timestampMax).subscribe(
-            (meetingDate: MeetingDate) => {
-              console.log('updatePotentialTime, meetingDate : ', meetingDate);
-              // Reload potential times
-              this.loadMeetingPotentialTimes(this.meetingId);
-              //reset progress bar values
-              this.resetValues();
-              Materialize.toast('Plage modifiée !', 3000, 'rounded')
-            },
-            (error) => {
-              console.log('updatePotentialTime error', error);
-              this.displayErrorBookingDate = true;
-              Materialize.toast('Erreur lors de la modification', 3000, 'rounded')
-            }
-          );
+      //reset progress bar values
+      this.resetValues();
+      Materialize.toast('Plage modifiée !', 3000, 'rounded')
+    } else {
+      let dateToSave = new MeetingDate();
 
-        } else {
-          // create new date
-          this.meetingService.addPotentialDateToMeeting(this.meetingId, timestampMin, timestampMax).subscribe(
-            (meetingDate: MeetingDate) => {
-              console.log('addPotentialDateToMeeting, meetingDate : ', meetingDate);
-              this.potentialDatesArray.push(meetingDate);
-              // Reload potential times
-              console.log('reload potential times');
-              // Reload potential times
-              this.loadMeetingPotentialTimes(this.meetingId);
-              //reset progress bar values
-              this.resetValues();
-              Materialize.toast('Plage ajoutée !', 3000, 'rounded')
-            },
-            (error) => {
-              console.log('addPotentialDateToMeeting error', error);
-              this.displayErrorBookingDate = true;
-              Materialize.toast("Erreur lors de l'ajout", 3000, 'rounded')
-            }
-          );
-        }
-      }
-    );
-  }
+      dateToSave.start_date = minDate.valueOf();
+      dateToSave.end_date = maxDate.valueOf();
 
-  unbookAdate(potentialDateId: string) {
-    console.log('unbookAdate');
-    this.meetingService.removePotentialTime(potentialDateId).subscribe(
-      (response) => {
-        console.log('unbookAdate, response', response);
-        //reset progress bar values
-        this.resetValues();
-        // Reload potential times
-        this.loadMeetingPotentialTimes(this.meetingId);
-        this.loadMeetingPotentialTimes(this.meetingId);
-      }, (error) => {
-        console.log('unbookAdate, error', error);
-      }
-    );
-  }
-
-  modifyPotentialDate(potentialDateId: string) {
-    console.log('modifyPotentialDate, potentialDateId', potentialDateId);
-
-    //find the potentialDate we want to modify
-    for (let potential of this.potentialDatesArray) {
-      if (potential.id === potentialDateId) {
-        let startTime = Utils.getHours(potential.start_date);
-        let endTime = Utils.getHours(potential.end_date);
-        //switch to edit mode
-        this.isEditingPotentialDate = true;
-        this.mEditingPotentialTimeId = potentialDateId;
-        this.timeRange = [startTime, endTime];
-        break;
-      }
+      this.addPotentialDate(dateToSave);
     }
   }
 
-  resetValues() {
-    this.mEditingPotentialTimeId = null;
-    this.isEditingPotentialDate = false;
-    this.timeRange = [10, 18];
+  unbookAdate(meetingDate: MeetingDate) {
+    this.potentialDatesArray.splice(this.potentialDatesArray.indexOf(meetingDate), 1)
+    this.potentialDates = Observable.of(this.potentialDatesArray);
+    this.cd.detectChanges();
+
   }
 
-  timeToString(date: string): string {
-    return Utils.timeToString(date);
+  modifyPotentialDate(meetingDate: MeetingDate) {
+    console.log('modifyPotentialDate, meetingDate', meetingDate);
+    //switch to edit mode
+    this.isEditingPotentialDate = true;
+    this.mEditingPotentialTime = meetingDate;
+    // position time selector
+    let startTime = Utils.getHoursFromTimestamp(meetingDate.start_date);
+    let endTime = Utils.getHoursFromTimestamp(meetingDate.end_date);
+    this.updateTimeSelector(startTime, endTime);
+    // correctly position the date on the calendar
+    this.dateModel = Utils.timestampToNgbDate(meetingDate.start_date);
+  }
+
+  private updateTimeSelector(minHour: number, maxHour: number) {
+    this.timeRange = [minHour, maxHour];
+  }
+
+  resetValues() {
+    this.mEditingPotentialTime = null;
+    this.isEditingPotentialDate = false;
+    this.updateTimeSelector(10, 18);
+  }
+
+  getHoursAndMinutesFromTimestamp(timestamp: number): string {
+    return Utils.getHoursAndMinutesFromTimestamp(timestamp);
   }
 
   timeIntToString(hour: number) {
     return Utils.timeIntToString(hour);
   }
 
-  dateToString(date: string): string {
-    return Utils.dateToString(date);
+  timestampToString(timestamp: number): string {
+    return Utils.timestampToString(timestamp);
   }
 
   ngbDateToString(date: NgbDateStruct): string {
     return Utils.ngbDateToString(date);
   }
-  stringToDate(date: string): NgbDateStruct {
-    return Utils.stringToNgbDate(date);
-  }
 
+  timestampToNgbDateStruct(timestamp: number): NgbDateStruct {
+    return Utils.timestampToNgbDate(timestamp);
+  }
 
   compareDates(date1: NgbDateStruct, date2: NgbDateStruct) {
     return (date1.year === date2.year) && (date1.month === date2.month) && (date1.day === date2.day);
@@ -243,7 +204,7 @@ export class MeetingDateComponent implements OnInit, OnDestroy {
 
   hasPotentialDate(date: NgbDateStruct) {
     for (let i in this.potentialDatesArray) {
-      if (this.compareDates(this.stringToDate(this.potentialDatesArray[i].start_date), date)) {
+      if (this.compareDates(this.timestampToNgbDateStruct(this.potentialDatesArray[i].start_date), date)) {
         return true;
       }
     }
@@ -255,7 +216,12 @@ export class MeetingDateComponent implements OnInit, OnDestroy {
     let newDate = new Date(date.year, date.month - 1, date.day);
     // TODO add this to block next month days
     // TODO date.month !== current.month ||
-    return (newDate.getDay() === 6 || newDate.getDay() === 0 || date.year < now.getFullYear() || (date.month < now.getMonth() + 1 && date.year <= now.getFullYear()) || (date.year <= now.getFullYear() && date.month == now.getMonth() + 1 && date.day < now.getDate()));
+    return (newDate.getDay() === 6
+    || newDate.getDay() === 0
+    || date.year < now.getFullYear()
+    || (date.month < now.getMonth() + 1 && date.year <= now.getFullYear())
+    || (date.year <= now.getFullYear() && date.month === now.getMonth() + 1 && date.day < now.getDate())
+    || (date.year === now.getFullYear() && date.month === now.getMonth() + 1 && date.day < now.getDate() + 3));
   }
 
   /**
@@ -268,7 +234,6 @@ export class MeetingDateComponent implements OnInit, OnDestroy {
         console.log('loadMeetingPotentialTimes : ', dates);
         if (dates != null) {
           //clear array
-          if (dates.length > 0) this.hasPotentialDates = true;
           this.potentialDatesArray = new Array<MeetingDate>();
           //add received dates
           this.potentialDatesArray.push(...dates);
@@ -281,10 +246,20 @@ export class MeetingDateComponent implements OnInit, OnDestroy {
     );
   }
 
+  private addPotentialDate(date: MeetingDate) {
+    //add received dates
+    this.potentialDatesArray.push(date);
+    this.potentialDates = Observable.of(this.potentialDatesArray);
+    this.cd.detectChanges();
+    Materialize.toast('Plage ajoutée !', 3000, 'rounded');
+  }
+
   /* Call this method to check if all required params are correctly set. */
   canFinish(): boolean {
-    let canFinish = this.meetingGoal != null && this.meetingContext != null && this.dateModel != null && this.hasPotentialDates;
-    // console.log('canFinish : ', canFinish);
+    let canFinish =
+      this.meetingGoal != null
+      && this.meetingContext != null
+      && this.potentialDatesArray.length > 2;
     return canFinish;
   }
 
@@ -294,23 +269,30 @@ export class MeetingDateComponent implements OnInit, OnDestroy {
     console.log('finish, meetingGoal : ', this.meetingGoal);
     console.log('finish, meetingContext : ', this.meetingContext);
 
-    //save GOAL and CONTEXT
-    this.meetingService.addAContextForMeeting(this.meetingId, this.meetingContext).flatMap(
-      (meetingReview: MeetingReview) => {
-        return this.meetingService.addAGoalToMeeting(this.meetingId, this.meetingGoal);
-      }
-    ).subscribe(
-      (meetingReview: MeetingReview) => {
-        let user = this.authService.getConnectedUser();
-        if (user != null) {
-          window.scrollTo(0, 0)
+    // create or update meeting
+    // save GOAL and CONTEXT
+    // save meeting dates
+    this.connectedUser
+      .take(1)
+      .flatMap(
+        (user: ApiUser) => {
+          if (this.meetingId != null) {
+            return this.meetingService
+              .updateMeeting(user.id, this.meetingId, this.meetingContext, this.meetingGoal, this.potentialDatesArray);
+          } else {
+            return this.meetingService
+              .createMeeting(user.id, this.meetingContext, this.meetingGoal, this.potentialDatesArray);
+          }
+        })
+      .subscribe(
+        (meeting: Meeting) => {
           this.router.navigate(['/meetings']);
-          Materialize.toast('Vos disponibilités on été enregitrées !', 3000, 'rounded')
+          Materialize.toast('Vos disponibilités on été enregitrées !', 3000, 'rounded');
+        }, (error) => {
+          console.log('getOrCreateMeeting error', error);
+          Materialize.toast("Impossible d'enregistrer vos disponibilités", 3000, 'rounded')
         }
-      }, (error) => {
-        Materialize.toast("Impossible d'enregistrer vos disponibilités", 3000, 'rounded')
-      }
-    );
+      );
   }
 
   ngOnDestroy(): void {

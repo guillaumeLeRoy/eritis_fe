@@ -1,30 +1,28 @@
-import {AfterViewInit, ChangeDetectorRef, Component, OnDestroy, OnInit} from "@angular/core";
+import {Component, OnDestroy, OnInit} from "@angular/core";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {Observable} from "rxjs/Observable";
 import {Subscription} from "rxjs/Subscription";
 import {HR} from "../../../model/HR";
 import {AuthService} from "../../../service/auth.service";
-import {Coach} from "app/model/Coach";
-import {Coachee} from "app/model/Coachee";
-import {ActivatedRoute, Router} from "@angular/router";
+import {ActivatedRoute} from "@angular/router";
 import {CoachCoacheeService} from "../../../service/coach_coachee.service";
 import {Headers} from "@angular/http";
+import {BehaviorSubject} from "rxjs/BehaviorSubject";
 
 declare var Materialize: any;
 declare var $: any;
 
 @Component({
-  selector: 'rb-profile-rh',
+  selector: 'er-profile-rh',
   templateUrl: './profile-rh.component.html',
   styleUrls: ['./profile-rh.component.scss']
 })
-export class ProfileRhComponent implements OnInit, AfterViewInit, OnDestroy {
+export class ProfileRhComponent implements OnInit, OnDestroy {
 
-  private user: Observable<Coach | Coachee | HR>;
-  private rh: Observable<HR>;
-  private mrh: HR;
+  private rhObs: BehaviorSubject<HR>;
+
   private subscriptionGetRh: Subscription;
-  private subscriptionGetUser: Subscription;
+  private subscriptionGetRoute: Subscription;
 
   private isOwner = false;
 
@@ -36,7 +34,8 @@ export class ProfileRhComponent implements OnInit, AfterViewInit, OnDestroy {
 
   loading: boolean = true;
 
-  constructor(private authService: AuthService, private formBuilder: FormBuilder, private cd: ChangeDetectorRef, private route: ActivatedRoute, private coachService: CoachCoacheeService, private router: Router) {
+  constructor(private authService: AuthService, private formBuilder: FormBuilder, private route: ActivatedRoute, private coachService: CoachCoacheeService) {
+    this.rhObs = new BehaviorSubject(null);
   }
 
   ngOnInit() {
@@ -53,31 +52,36 @@ export class ProfileRhComponent implements OnInit, AfterViewInit, OnDestroy {
     this.getRhAndUser();
   }
 
-  ngAfterViewInit(): void {
-    console.log("afterViewInit");
-    // this.isOwner = (user instanceof Coach) && (coach.email === user.email);
+  ngOnDestroy(): void {
+    if (this.subscriptionGetRh) {
+      console.log("Unsubscribe rh");
+      this.subscriptionGetRh.unsubscribe();
+    }
+
+    if (this.subscriptionGetRoute) {
+      console.log("Unsubscribe user");
+      this.subscriptionGetRoute.unsubscribe();
+    }
   }
 
   private getRhAndUser() {
     console.log("getRh");
 
-    this.subscriptionGetRh = this.route.params.subscribe(
+    this.subscriptionGetRoute = this.route.params.subscribe(
       (params: any) => {
         let rhId = params['id'];
 
-        this.coachService.getRhForId(rhId).subscribe(
+        this.subscriptionGetRh = this.coachService.getRhForId(rhId).subscribe(
           (rh: HR) => {
             console.log("gotRh", rh);
 
             this.setFormValues(rh);
-            this.mrh = rh;
-            this.rh = Observable.of(rh);
             console.log("getUser");
             let user = this.authService.getConnectedUser();
-            this.user = Observable.of(user);
             this.isOwner = (user instanceof HR) && (rh.email === user.email);
-            this.cd.detectChanges();
+            // this.cd.detectChanges();
             this.loading = false;
+            this.rhObs.next(rh);
           }, (error) => {
             console.log('getRh, error', error);
             this.loading = false;
@@ -100,20 +104,20 @@ export class ProfileRhComponent implements OnInit, AfterViewInit, OnDestroy {
 
     this.updateUserLoading = true;
 
-    this.rh.last().flatMap(
+    this.rhObs.asObservable().take(1).flatMap(
       (rh: HR) => {
         console.log("submitRhProfilUpdate, rh obtained");
         return this.authService.updateRhForId(rh.id,
           this.formRh.value.firstName,
           this.formRh.value.lastName,
           this.formRh.value.description,
-          this.mrh.avatar_url);
+          rh.avatar_url);
       }
     ).flatMap(
       (rh: HR) => {
         if (this.avatarUrl != null && this.avatarUrl !== undefined) {
           console.log("Upload avatar");
-          let params = [this.mrh.id];
+          let params = [rh.id];
 
           let formData: FormData = new FormData();
           formData.append('uploadFile', this.avatarUrl, this.avatarUrl.name);
@@ -136,7 +140,7 @@ export class ProfileRhComponent implements OnInit, AfterViewInit, OnDestroy {
         Materialize.toast('Votre profil a été modifié !', 3000, 'rounded');
         //refresh page
         setTimeout('', 1000);
-        window.location.reload();
+        // window.location.reload();
       },
       (error) => {
         console.log('rh update, error', error);
@@ -161,20 +165,5 @@ export class ProfileRhComponent implements OnInit, AfterViewInit, OnDestroy {
     }
   }
 
-  goToMeetings() {
-    this.router.navigate(['/meetings']);
-  }
-
-  ngOnDestroy(): void {
-    if (this.subscriptionGetRh) {
-      console.log("Unsubscribe rh");
-      this.subscriptionGetRh.unsubscribe();
-    }
-
-    if (this.subscriptionGetUser) {
-      console.log("Unsubscribe user");
-      this.subscriptionGetUser.unsubscribe();
-    }
-  }
 
 }

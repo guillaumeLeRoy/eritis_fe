@@ -13,7 +13,10 @@ import {LoginResponse} from "../model/LoginResponse";
 import {HR} from "../model/HR";
 import {PotentialCoachee} from "../model/PotentialCoachee";
 import {PotentialRh} from "../model/PotentialRh";
-import {CookieService} from "ngx-cookie";
+import {EmptyObservable} from "rxjs/observable/EmptyObservable";
+import {SessionService} from "./session.service";
+
+declare var Materialize: any;
 
 @Injectable()
 export class AuthService {
@@ -21,11 +24,10 @@ export class AuthService {
   /* contract plan*/
   public static GET_CONTRACT_PLANS = "/v1/plans/";
 
+  public static LOGIN = "/v1/login/:firebaseId";
   public static POST_POTENTIAL_COACHEE = "/v1/potentials/coachees";
   public static POST_POTENTIAL_COACH = "/v1/potentials/coachs";
   public static POST_POTENTIAL_RH = "/v1/potentials/rhs";
-
-  public static LOGIN = "/login/:firebaseId";
   public static GET_POTENTIAL_COACHEE_FOR_TOKEN = "/v1/potentials/coachees/:token";
   public static GET_POTENTIAL_COACH_FOR_TOKEN = "/v1/potentials/coachs/:token";
   public static GET_POTENTIAL_RH_FOR_TOKEN = "/v1/potentials/rhs/:token";
@@ -54,6 +56,7 @@ export class AuthService {
   public static PUT_COACH_PROFILE_PICT = "/v1/coachs/:id/profile_picture";
 
   /* HR */
+  public static GET_RHS = "/v1/rhs";
   public static UPDATE_RH = "/v1/rhs/:id";
   public static POST_SIGN_UP_RH = "/v1/rhs";
   public static GET_COACHEES_FOR_RH = "/v1/rhs/:uid/coachees";
@@ -67,30 +70,21 @@ export class AuthService {
 
 
   /* admin */
-  public static GET_ADMIN = "/v1/admins/user";
-  public static ADMIN_GET_COACHS = "/v1/admins/coachs";
-  public static ADMIN_GET_COACH = "/v1/admins/coachs/:id";
-  public static ADMIN_GET_COACHEES = "/v1/admins/coachees";
-  public static ADMIN_GET_COACHEE = "/v1/admins/coachees/:id";
-  public static ADMIN_GET_RHS = "/v1/admins/rhs";
-  public static ADMIN_GET_RH = "/v1/admins/rhs/:id";
-  public static ADMIN_GET_POSSIBLE_COACHS = "/v1/admins/possible_coachs";
-  public static ADMIN_GET_POSSIBLE_COACH = "/v1/admins/possible_coachs/:id";
-  public static ADMIN_PUT_COACH_PROFILE_PICT = "/v1/admins/coachs/:id/profile_picture";
+  public static GET_ADMIN = "/v1/user";
+  public static ADMIN_GET_POSSIBLE_COACHS = "/v1/possible_coachs";
+  public static ADMIN_GET_POSSIBLE_COACH = "/v1/possible_coachs/:id";
 
   /* Meeting */
   public static POST_MEETING = "/v1/meetings";
+  public static PUT_MEETING = "/v1/meetings/:meetingId";
   public static DELETE_MEETING = "/v1/meetings/:meetingId";
   public static GET_MEETING_REVIEWS = "/v1/meetings/:meetingId/reviews";
   public static PUT_MEETING_REVIEW = "/v1/meetings/:meetingId/reviews";//add or replace meeting review
-  public static DELETE_MEETING_REVIEW = "/v1/meetings/reviews/:reviewId";//delete review
   public static CLOSE_MEETING = "/v1/meetings/:meetingId/close";// close meeting
   public static GET_MEETINGS_FOR_COACHEE_ID = "/v1/meetings/coachees/:coacheeId";
   public static GET_MEETINGS_FOR_COACH_ID = "/v1/meetings/coachs/:coachId";
   public static POST_MEETING_POTENTIAL_DATE = "/v1/meetings/:meetingId/potentials";
   public static GET_MEETING_POTENTIAL_DATES = "/v1/meetings/:meetingId/potentials";
-  public static PUT_POTENTIAL_DATE_TO_MEETING = "/v1/meetings/potentials/:potentialId";//update potential date
-  public static DELETE_POTENTIAL_DATE = "/v1/meetings/potentials/:potentialId";//delete potential date
   public static PUT_FINAL_DATE_TO_MEETING = "/v1/meetings/:meetingId/dates/:potentialId";//set the potential date as the meeting selected date
   public static GET_AVAILABLE_MEETINGS = "/v1/meetings";//get available meetings ( meetings with NO coach associated )
   public static PUT_COACH_TO_MEETING = "/v1/meetings/:meetingId/coachs/:coachId";//associate coach with meeting
@@ -105,7 +99,7 @@ export class AuthService {
 
   private ApiUser?: Coach | Coachee | HR = null;
 
-  constructor(private firebase: FirebaseService, private router: Router, private httpService: Http, private cookieService: CookieService) {
+  constructor(private firebase: FirebaseService, private router: Router, private httpService: Http, private sessionService: SessionService) {
     firebase.auth().onAuthStateChanged(function (user) {
       console.log("onAuthStateChanged, user : " + user);
       this.onAuthStateChangedCalled = true;
@@ -113,19 +107,20 @@ export class AuthService {
     }.bind(this));
 
     console.log("ctr done");
+    console.log("ctr done");
 
-    let date = (new Date());
-    date.setHours(date.getHours() + 1);
-    console.log('COOKIE', date);
-    if (this.cookieService.get('ACTIVE_SESSION') === undefined)
-      if (this.cookieService.get('ACCEPTS_COOKIES') !== undefined)
-        this.cookieService.put('ACTIVE_SESSION', 'true', {expires: date.toDateString()});
+    // let date = (new Date());
+    // date.setHours(date.getHours() + 1);
+    // console.log('COOKIE', date);
+    // if (this.cookieService.get('ACTIVE_SESSION') === undefined)
+    //   if (this.cookieService.get('ACCEPTS_COOKIES') !== undefined)
+    //     this.cookieService.put('ACTIVE_SESSION', 'true', {expires: date.toDateString()});
   }
 
   /*
    * Get connected user from backend
    */
-  refreshConnectedUser(): Observable<Coach | Coachee | HR> {
+  refreshConnectedUser(): Observable<Coach | Coachee | HR | null> {
     console.log("refreshConnectedUser");
 
     if (this.ApiUser != null) {
@@ -139,7 +134,7 @@ export class AuthService {
     } else {
       console.log("refreshConnectedUser, no connected user");
     }
-    return Observable.from(null);
+    return new EmptyObservable();
   }
 
   private fetchCoach(userId: string): Observable<Coach> {
@@ -148,7 +143,7 @@ export class AuthService {
     return obs.map(
       (res: Response) => {
         console.log("fetchCoach, obtained from API : ", res);
-        let coach = AuthService.parseCoach(res.json());
+        let coach = Coach.parseCoach(res.json());
         this.onAPIuserObtained(coach, this.ApiUser.firebaseToken);
         return coach;
       }
@@ -161,7 +156,7 @@ export class AuthService {
     return obs.map(
       (res: Response) => {
         console.log("fetchCoachee, obtained from API : ", res);
-        let coachee = AuthService.parseCoachee(res.json());
+        let coachee = Coachee.parseCoachee(res.json());
         this.onAPIuserObtained(coachee, this.ApiUser.firebaseToken);
         return coachee;
       }
@@ -174,7 +169,7 @@ export class AuthService {
     return obs.map(
       (res: Response) => {
         console.log("fetchRh, obtained from API : ", res);
-        let rh = AuthService.parseRh(res.json());
+        let rh = HR.parseRh(res.json());
         this.onAPIuserObtained(rh, this.ApiUser.firebaseToken);
         return rh;
       }
@@ -182,12 +177,7 @@ export class AuthService {
   }
 
   getConnectedUser(): Coach | Coachee | HR {
-    // if (this.ApiUser !== null)
-    if (this.cookieService.get('ACTIVE_SESSION') === 'true')
-      // this.loginOut();
-      return this.ApiUser;
-    else
-      return null;
+    return this.ApiUser;
   }
 
   getConnectedUserObservable(): Observable<ApiUser> {
@@ -198,106 +188,121 @@ export class AuthService {
     return this.isUserAuth.asObservable();
   }
 
-  post(path: string, params: string[], body: any, options?: RequestOptionsArgs): Observable<Response> {
-    let method = this.getConnectedApiUser().flatMap(
-      (firebaseUser: ApiUser) => {
-        return this.getHeader(firebaseUser).flatMap(
-          (headers: Headers) => {
+  /*
+   *
+   * define POST methods
+   * */
 
-            if (options != undefined) {
-              for (let headerKey of options.headers.keys()) {
-                console.log('post, options headerKey : ', headerKey);
-                console.log('post, options value : ', options.headers.get(headerKey));
-                headers.append(headerKey, options.headers.get(headerKey));
+  post(path: string, params: string[], body: any, options?: RequestOptionsArgs, isAdmin?: boolean): Observable<Response> {
+    if (isAdmin) {
+      return this.internal_post(path, params, body, options, true);
+    } else {
+      return this.getConnectedApiUser().flatMap(
+        (firebaseUser: ApiUser) => {
+          return this.getHeader(firebaseUser).flatMap(
+            (headers: Headers) => {
+              //todo to change
+              if (options != undefined) {
+                for (let headerKey of options.headers.keys()) {
+                  headers.append(headerKey, options.headers.get(headerKey));
+                }
               }
+              return this.internal_post(path, params, body, {headers: headers});
             }
-
-            return this.httpService.post(this.generatePath(path, params), body, {headers: headers})
-          }
-        );
-      }
-    );
-    return method;
+          );
+        }
+      );
+    }
   }
 
   postNotAuth(path: string, params: string[], body: any): Observable<Response> {
-    return this.httpService.post(this.generatePath(path, params), body)
+    return this.internal_post(path, params, body)
   }
 
-  put(path: string, params: string[], body: any, options?: RequestOptionsArgs): Observable<Response> {
-    let method = this.getConnectedApiUser().flatMap(
-      (firebaseUser: ApiUser) => {
-        return this.getHeader(firebaseUser).flatMap(
-          (headers: Headers) => {
+  private internal_post(path: string, params: string[], body: any, options?: RequestOptionsArgs, isAdmin?: boolean): Observable<Response> {
+    return this.httpService.post(this.generatePath(path, params, isAdmin), body, options)
+  }
 
-            if (options != null)
-              for (let headerKey of options.headers.keys()) {
-                console.log('put, options headerKey : ', headerKey);
-                console.log('put, options value : ', options.headers.get(headerKey));
+  /*
+   *
+   * define PUT
+   * */
 
-                headers.append(headerKey, options.headers.get(headerKey));
+  put(path: string, params: string[], body: any, options?: RequestOptionsArgs, isAdmin?: boolean): Observable<Response> {
+    if (isAdmin) {
+      return this.internal_put(path, params, body, options, true);
+    } else {
+      return this.getConnectedApiUser().flatMap(
+        (firebaseUser: ApiUser) => {
+          return this.getHeader(firebaseUser).flatMap(
+            (headers: Headers) => {
+              // add params headers to received ones
+              if (options != null) {
+                for (let headerKey of headers.keys()) {
+                  options.headers.append(headerKey, headers.get(headerKey));
+                }
+              } else {
+                options = {headers: headers};
               }
-
-            return this.httpService.put(this.generatePath(path, params), body, {headers: headers})
-          }
-        );
-      }
-    );
-    return method;
+              // for (let headerKey of options.headers.keys()) {
+              //   headers.append(headerKey, options.headers.get(headerKey));
+              // }
+              // return this.httpService.put(this.generatePath(path, params), body, {headers: headers})
+              return this.internal_put(path, params, body, options);
+            }
+          );
+        }
+      );
+    }
   }
 
   putNotAuth(path: string, params: string[], body: any, options?: RequestOptionsArgs): Observable<Response> {
-    let headers = new Headers();
-    if (options != null)
-      for (let headerKey of options.headers.keys()) {
-        console.log('put, options headerKey : ', headerKey);
-        console.log('put, options value : ', options.headers.get(headerKey));
-
-        headers.append(headerKey, options.headers.get(headerKey));
-      }
-
-    return this.httpService.put(this.generatePath(path, params), body, {headers: headers})
+    // let headers = new Headers();
+    // if (options != null)
+    //   for (let headerKey of options.headers.keys()) {
+    //     headers.append(headerKey, options.headers.get(headerKey));
+    //   }
+    // return this.httpService.put(this.generatePath(path, params), body, {headers: headers})
+    return this.internal_put(path, params, body, options);
   }
 
-  get(path: string, params: string[]): Observable<Response> {
-    return this.getWithSearchParams(path, params, null);
+  private internal_put(path: string, params: string[], body: any, options?: RequestOptionsArgs, isAdmin?: boolean): Observable<Response> {
+    // let headers = new Headers();
+    // if (options != null)
+    //   for (let headerKey of options.headers.keys()) {
+    //     headers.append(headerKey, options.headers.get(headerKey));
+    //   }
+    return this.httpService.put(this.generatePath(path, params, isAdmin), body, options);
   }
 
-  getWithSearchParams(path: string, params: string[], searchParams: URLSearchParams): Observable<Response> {
-    console.log("1. get");
+  /*
+   *
+   * define GET
+   * */
 
-    let method = this.getConnectedApiUser().flatMap(
-      (firebaseUser: ApiUser) => {
-        return this.getHeader(firebaseUser).flatMap(
-          (headers: Headers) => {
-            console.log("4. start request");
-            return this.httpService.get(this.generatePath(path, params), {headers: headers, search: searchParams})
-          }
-        );
-      }
-    );
-    return method;
+  get(path: string, params: string[], isAdmin?: boolean): Observable<Response> {
+    return this.getWithSearchParams(path, params, null, isAdmin);
   }
 
-  delete(path: string, params: string[]): Observable<Response> {
-    let method = this.getConnectedApiUser().flatMap(
-      (firebaseUser: ApiUser) => {
-        return this.getHeader(firebaseUser).flatMap(
-          (headers: Headers) => {
-            console.log("4. start request");
-            return this.httpService.delete(this.generatePath(path, params), {headers: headers})
-          }
-        );
-      }
-    );
-    return method;
+  getWithSearchParams(path: string, params: string[], searchParams: URLSearchParams, isAdmin?: boolean): Observable<Response> {
+    if (isAdmin) {
+      return this.internal_get(path, params, {search: searchParams}, true);
+    } else {
+      return this.getConnectedApiUser().flatMap(
+        (firebaseUser: ApiUser) => {
+          return this.getHeader(firebaseUser).flatMap(
+            (headers: Headers) => {
+              return this.internal_get(path, params, {headers: headers, search: searchParams});
+            }
+          );
+        }
+      );
+    }
   }
 
   getNotAuth(path: string, params: string[]): Observable<Response> {
-    console.log("getNotAuth, start request");
-    return this.httpService.get(this.generatePath(path, params)).map(
+    return this.internal_get(path, params).map(
       (res: Response) => {
-        console.log("getNotAuth, got user", res);
         return res;
       }, (error) => {
         console.log("getNotAuth, error", error);
@@ -305,10 +310,38 @@ export class AuthService {
     );
   }
 
+  private internal_get(path: string, params: string[], options?: RequestOptionsArgs, isAdmin?: boolean): Observable<Response> {
+    return this.httpService.get(this.generatePath(path, params, isAdmin), options)
+  }
+
+  /*
+   *
+   * define DELETE
+   * */
+
+  delete(path: string, params: string[], isAdmin?: boolean): Observable<Response> {
+    let method = this.getConnectedApiUser().flatMap(
+      (firebaseUser: ApiUser) => {
+        return this.getHeader(firebaseUser).flatMap(
+          (headers: Headers) => {
+            console.log("4. start request");
+            return this.httpService.delete(this.generatePath(path, params, isAdmin), {headers: headers})
+          }
+        );
+      }
+    );
+    return method;
+  }
+
+  /*
+   *
+   * OPEN api
+   * */
+
   getPotentialCoachee(path: string, params: string[]): Observable<PotentialCoachee> {
     return this.httpService.get(this.generatePath(path, params)).map(
       (res: Response) => {
-        return this.parsePotentialCoachee(res.json());
+        return PotentialCoachee.parsePotentialCoachee(res.json());
       }
     );
   }
@@ -316,7 +349,7 @@ export class AuthService {
   getPotentialRh(path: string, params: string[]): Observable<PotentialRh> {
     return this.httpService.get(this.generatePath(path, params)).map(
       (res: Response) => {
-        return this.parsePotentialRh(res.json());
+        return PotentialRh.parsePotentialRh(res.json());
       }
     );
   }
@@ -374,11 +407,17 @@ export class AuthService {
     }
   }
 
-  private generatePath(path: string, params: string[]): string {
+  private generatePath(path: string, params: string[], isAdmin ?: boolean): string {
     // console.log("generatePath, path : ", path);
     // console.log("generatePath, params : ", params);
 
     let completedPath = "";
+
+    //add a "admin" if necessary
+    if (isAdmin) {
+      completedPath += "/admins";
+    }
+
     let segs = path.split("/");
     let paramIndex = 0;
     for (let seg of segs) {
@@ -522,17 +561,13 @@ export class AuthService {
         headers.append('Authorization', 'Bearer ' + token);
 
         // start sign up request
-        return this.httpService.post(this.generatePath(path, params), body, {headers: headers})
+        return this.internal_post(path, params, body, {headers: headers})
           .map(
             (response) => {
               let loginResponse: LoginResponse = response.json();
               console.log("signUp, loginResponse : ", loginResponse);
 
-              let date = (new Date());
-              date.setHours(date.getHours() + 1);
-              console.log('COOKIE', date);
-              if (this.cookieService.get('ACCEPTS_COOKIES') !== undefined)
-                this.cookieService.put('ACTIVE_SESSION', 'true', {'expires': date});
+              this.sessionService.saveSessionTTL();
 
               // return json;
               this.isSignInOrUp = false;
@@ -549,101 +584,16 @@ export class AuthService {
     if (response.coach) {
       let coach = response.coach;
       //coach
-      return AuthService.parseCoach(coach);
+      return Coach.parseCoach(coach);
     } else if (response.coachee) {
       let coachee = response.coachee;
       //coachee
-      return AuthService.parseCoachee(coachee);
+      return Coachee.parseCoachee(coachee);
     } else if (response.rh) {
       let rh = response.rh;
-      return AuthService.parseRh(rh);
+      return HR.parseRh(rh);
     }
     return null;
-  }
-
-  static parseCoach(json: any): Coach {
-    let coach: Coach = new Coach(json.id);
-    coach.email = json.email;
-    coach.first_name = json.first_name;
-    coach.last_name = json.last_name;
-    coach.avatar_url = json.avatar_url;
-    coach.start_date = json.start_date;
-    coach.score = json.score;
-    coach.sessionsCount = json.sessions_count;
-    coach.description = json.description;
-    coach.chat_room_url = json.chat_room_url;
-    coach.linkedin_url = json.linkedin_url;
-    coach.training = json.training;
-    coach.degree = json.degree;
-    coach.extraActivities = json.extraActivities;
-    coach.coachForYears = json.coachForYears;
-    coach.coachingExperience = json.coachingExperience;
-    coach.coachingHours = json.coachingHours;
-    coach.supervisor = json.supervisor;
-    coach.favoriteCoachingSituation = json.favoriteCoachingSituation;
-    coach.status = json.status;
-    coach.revenues = json.revenue;
-    coach.insurance_url = json.insurance_url;
-    coach.invoice_address = json.invoice_address;
-    coach.invoice_city = json.invoice_city;
-    coach.invoice_entity = json.invoice_entity;
-    coach.invoice_postcode = json.invoice_postcode;
-    coach.languages = json.languages;
-    coach.experienceShortSession = json.experienceShortSession;
-    coach.coachingSpecifics = json.coachingSpecifics;
-    coach.therapyElements = json.therapyElements;
-    return coach;
-  }
-
-  static parseCoachee(json: any): Coachee {
-    // TODO : don't really need to manually parse the received Json
-    let coachee: Coachee = new Coachee(json.id);
-    coachee.id = json.id;
-    coachee.email = json.email;
-    coachee.first_name = json.first_name;
-    coachee.last_name = json.last_name;
-    coachee.avatar_url = json.avatar_url;
-    coachee.start_date = json.start_date;
-    coachee.selectedCoach = json.selectedCoach;
-    coachee.contractPlan = json.plan;
-    coachee.availableSessionsCount = json.available_sessions_count;
-    coachee.updateAvailableSessionCountDate = json.update_sessions_count_date;
-    coachee.sessionsDoneMonthCount = json.sessions_done_month_count;
-    coachee.sessionsDoneTotalCount = json.sessions_done_total_count;
-    coachee.associatedRh = json.associatedRh;
-    coachee.last_objective = json.last_objective;
-    coachee.plan = json.plan;
-    return coachee;
-  }
-
-  static parseRh(json: any): HR {
-    console.log(json);
-    let rh: HR = new HR(json.id);
-    rh.email = json.email;
-    rh.description = json.description;
-    rh.first_name = json.first_name;
-    rh.last_name = json.last_name;
-    rh.start_date = json.start_date;
-    rh.avatar_url = json.avatar_url;
-    rh.company_name = json.company_name;
-    return rh;
-  }
-
-  parsePotentialRh(json: any): PotentialRh {
-    let potentialRh: PotentialRh = new PotentialRh(json.id);
-    potentialRh.email = json.email;
-    potentialRh.firstName = json.first_name;
-    potentialRh.lastName = json.last_name;
-    potentialRh.start_date = json.create_date;
-    return potentialRh;
-  }
-
-  parsePotentialCoachee(json: any): PotentialCoachee {
-    let potentialCoachee: PotentialCoachee = new PotentialCoachee(json.id);
-    potentialCoachee.email = json.email;
-    potentialCoachee.start_date = json.create_date;
-    potentialCoachee.plan = json.plan;
-    return potentialCoachee;
   }
 
   signIn(user: User): Observable<Coach | Coachee | HR> {
@@ -663,11 +613,7 @@ export class AuthService {
       (token: string) => {
         //user should be ok just after a sign up
         let fbUser = this.firebase.auth().currentUser;
-        let date = (new Date());
-        date.setHours(date.getHours() + 1);
-        console.log('COOKIE', date);
-        if (this.cookieService.get('ACCEPTS_COOKIES') !== undefined)
-          this.cookieService.put('ACTIVE_SESSION', 'true', {'expires': date});
+        this.sessionService.saveSessionTTL();
         //now sign up in AppEngine
         this.isSignInOrUp = false;
         return this.getUserForFirebaseId(fbUser.uid, token);
@@ -679,12 +625,13 @@ export class AuthService {
     console.log("user loginOut");
     this.firebase.auth().signOut();
     this.updateAuthStatus(null);
-    this.cookieService.remove('ACTIVE_SESSION');
-    this.router.navigate(['/welcome']);
+    this.sessionService.clearSession();
+    this.router.navigate(['/']);
+    Materialize.toast('Vous avez été déconnecté', 3000, 'rounded');
   }
 
 
-  updateCoacheeForId(id: string, first_name: string, last_name: string, avatarUrl: string): Observable<ApiUser> {
+  updateCoacheeForId(id: string, first_name: string, last_name: string, avatarUrl: string): Observable<Coachee> {
     console.log("updateCoacheeForId, id", id);
 
     let body = {
@@ -696,12 +643,11 @@ export class AuthService {
     let params = [id];
     return this.put(AuthService.UPDATE_COACHEE, params, body).map(
       (response: Response) => {
-        //return this.onUserResponse(response);
-        return null;
+        return Coachee.parseCoachee(response.json());
       });
   }
 
-  updateCoachForId(id: string, firstName: string, lastName: string, description: string, avatarUrl: string): Observable<ApiUser> {
+  updateCoachForId(id: string, firstName: string, lastName: string, description: string, avatarUrl: string): Observable<Coach> {
     console.log("updateCoachForId, id", id);
 
     let body = {
@@ -715,12 +661,11 @@ export class AuthService {
     return this.put(AuthService.UPDATE_COACH, params, body).map(
       (response: Response) => {
         //convert to coach
-        // return this.onUserResponse(response);
-        return null;
+        return Coach.parseCoach(response.json());
       });
   }
 
-  updateRhForId(id: string, firstName: string, lastName: string, description: string, avatarUrl: string): Observable<ApiUser> {
+  updateRhForId(id: string, firstName: string, lastName: string, description: string, avatarUrl: string): Observable<HR> {
     console.log("updateRhForId, id", id);
 
     let body = {
@@ -733,9 +678,9 @@ export class AuthService {
     let params = [id];
     return this.put(AuthService.UPDATE_RH, params, body).map(
       (response: Response) => {
-        //convert to coach
-        // return this.onUserResponse(response);
-        return null;
+        //convert to HR
+        return HR.parseRh(response.json());
+
       });
   }
 
@@ -757,19 +702,19 @@ export class AuthService {
   //     });
   // }
 
-  /**
-   *
-   * @param response
-   * @returns {Coach|Coachee}
-   */
-  private onUserResponse(response: Response): Coach | Coachee | HR {
-    let json: LoginResponse = response.json();
-    console.log("onUserResponse, response json : ", json);
-    let res = this.parseAPIuser(json);
-    console.log("onUserResponse, parsed user : ", res);
-    //dispatch
-    return this.onAPIuserObtained(res, this.ApiUser.firebaseToken);
-  }
+  // /**
+  //  *
+  //  * @param response
+  //  * @returns {Coach|Coachee}
+  //  */
+  // private onUserResponse(response: Response): Coach | Coachee | HR {
+  //   let json: LoginResponse = response.json();
+  //   console.log("onUserResponse, response json : ", json);
+  //   let res = this.parseAPIuser(json);
+  //   console.log("onUserResponse, parsed user : ", res);
+  //   //dispatch
+  //   return this.onAPIuserObtained(res, this.ApiUser.firebaseToken);
+  // }
 
 }
 

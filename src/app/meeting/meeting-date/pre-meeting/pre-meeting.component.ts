@@ -12,7 +12,7 @@ import {MeetingsService} from "../../../service/meetings.service";
 export class PreMeetingComponent implements OnInit {
 
   @Input()
-  meetingId: string
+  meetingId?: string
 
   @Output()
   meetingGoal = new EventEmitter<string>();
@@ -27,9 +27,10 @@ export class PreMeetingComponent implements OnInit {
 
   ngOnInit() {
     console.log("PreMeetingComponent onInit");
-    //this.getAllMeetingReviews();
-    this.getMeetingGoal();
-    this.getMeetingContext();
+    if( this.meetingId != undefined){
+      this.getMeetingGoal();
+      this.getMeetingContext();
+    }
   }
 
   /* Get from API review goal for the given meeting */

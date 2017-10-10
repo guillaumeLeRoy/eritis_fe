@@ -6,7 +6,7 @@ import {FirebaseService} from "../service/firebase.service";
 
 
 @Component({
-  selector: 'rb-chat',
+  selector: 'er-chat',
   templateUrl: './chat.component.html',
   styleUrls: ['./chat.component.scss']
 })

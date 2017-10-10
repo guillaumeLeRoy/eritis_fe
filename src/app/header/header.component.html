@@ -55,7 +55,7 @@
       </div>
 
       <div id="signin">
-        <rb-signin></rb-signin>
+        <er-signin></er-signin>
         <br>
         <a (click)="onForgotPasswordClicked()">Mot de passe oublié ?</a>
       </div>
@@ -70,7 +70,7 @@
 <div id="forgot_password_modal" class="modal">
   <div class="action-modal-content">
     <div class="action-modal-message">
-      <label>Veuillez saisir votre adresse mail</label>
+      <label>Veuillez saisir votre adresse email</label>
       <input type="email" placeholder="Email" [(ngModel)]="forgotEmail">
     </div>
     <div class="action-modal-footer">
@@ -112,8 +112,7 @@
 
 <header id="header" class="page-topbar"
         [class.user-connected]="(isAuthenticated | async) || isAdmin()"
-        [hidden]="isSigningUp() || isHomePage()"
-        [ngsReveal]="{scale:1, origin: 'top', distance:'200px', duration: 500, delay: 200, reset: true}">
+        [hidden]="!(isAuthenticated | async) && !isAdmin()">
   <div class="navbar" [class.navbar-fixed]="(isAuthenticated | async) || isAdmin()"
        [class.z-depth-2]="!(isAuthenticated | async) && !isAdmin()">
     <nav>
@@ -136,15 +135,15 @@
           <ul class="right hide-on-med-and-down">
             <!--<li *ngIf="canDisplayListOfCoach()"><a (click)="goToCoachs()">Liste Des Coachs</a></li>-->
 
-            <div [hidden]="isAdmin() || isHomePage()">
-              <li *ngIf="(isAuthenticated | async) && isUserACoach()"
+            <div [hidden]="isAdmin()">
+              <li *ngIf="(isAuthenticated | async)  && isUserACoach()"
                   [class.has-notif]="hasAvailableMeetings"
-                  [class.active]="router.url === '/available_meetings'">
+                  [class.active]="router.url === '/dashboard/available_meetings'">
                 <a (click)="goToAvailableSessions()">
                 Demandes en attente</a>
               </li>
 
-              <li *ngIf="(isAuthenticated | async)" [class.active]="router.url === '/meetings'">
+              <li *ngIf="(isAuthenticated | async)" [class.active]="router.url === '/dashboard/meetings'">
                 <a (click)="goToMeetings()">
                   Tableau de bord</a>
               </li>
@@ -167,7 +166,7 @@
                   <!--<img src="{{(user | async)?.avatar_url}}" alt="profile image"-->
                        <!--class="item-user-img circle responsive-img">-->
                   <div class="item-user-img avatar"
-                       *ngIf="(user | async)?.avatar_url !== null && (user | async)?.avatar_url !== undefined"
+                       *ngIf="(user | async)?.avatar_url && (user | async)?.avatar_url !== undefined"
                        [style.background-image]="'url(' + (user | async)?.avatar_url + ')'"></div>
                   {{ (user | async)?.first_name}} {{ (user | async)?.last_name}}
                 </a>
@@ -186,12 +185,6 @@
               <li>
                 <a (click)="goToWelcomePage()" class="btn-basic btn-small btn-red btn-plain">Quitter</a></li>
             </div>
-
-            <div *ngIf="isHomePage()">
-              <li [class.active]="router.url === '/admin/coachs-list'">
-                <a (click)="goToRegisterCoach()">Devenir coach Eritis</a></li>
-            </div>
-
           </ul>
 
 
@@ -252,11 +245,11 @@
 
   <!--<li *ngIf="(isAuthenticated | async)"><a (click)="goToMeetings()">Vos meetings</a></li>-->
   <div class="side-nav-items" *ngIf="!isAdmin()">
-    <li *ngIf="(isAuthenticated | async) && isUserACoach()"
-        [class.active]="router.url === '/available_meetings'"><a (click)="goToAvailableSessions()">Séances
-      disponibles</a></li>
+    <li *ngIf="isAuthenticated && isUserACoach()"
+        [class.active]="router.url === '/dashboard/available_meetings'"><a (click)="goToAvailableSessions()">Demandes
+      en attente</a></li>
 
-    <li *ngIf="(isAuthenticated | async)" [class.active]="router.url === '/meetings'"><a
+    <li *ngIf="(isAuthenticated | async)" [class.active]="router.url === '/dashboard/meetings'"><a
       (click)="goToMeetings()">Tableau de bord</a></li>
 
     <!--<li [hidden]="!(isAuthenticated | async)">-->
