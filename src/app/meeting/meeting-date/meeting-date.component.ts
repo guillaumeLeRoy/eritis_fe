@@ -287,8 +287,12 @@ export class MeetingDateComponent implements OnInit, OnDestroy {
               .createMeeting(user.id, this.meetingContext, this.meetingGoal, this.potentialDatesArray);
           }
         })
-      .subscribe(
+      .flatMap(
         (meeting: Meeting) => {
+          return this.authService.refreshConnectedUserAsObservable();
+        })
+      .subscribe(
+        (user: ApiUser) => {
           this.router.navigate(['/meetings']);
           this.loading = false;
           Materialize.toast('Vos disponibilités on été enregitrées !', 3000, 'rounded');

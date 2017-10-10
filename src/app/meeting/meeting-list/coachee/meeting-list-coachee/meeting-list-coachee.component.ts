@@ -4,6 +4,7 @@ import {Observable} from "rxjs/Observable";
 import {Meeting} from "../../../../model/Meeting";
 import {Subscription} from "rxjs/Subscription";
 import {Coachee} from "../../../../model/Coachee";
+import {AuthService} from "../../../../service/auth.service";
 
 declare var $: any;
 declare var Materialize: any;
@@ -41,7 +42,7 @@ export class MeetingListCoacheeComponent implements OnInit, AfterViewInit, OnDes
   private sessionRate = '0';
   private sessionPreRate = '0';
 
-  constructor(private meetingsService: MeetingsService, private cd: ChangeDetectorRef) {
+  constructor(private meetingsService: MeetingsService, private authService: AuthService, private cd: ChangeDetectorRef) {
   }
 
   ngOnInit() {
@@ -70,21 +71,21 @@ export class MeetingListCoacheeComponent implements OnInit, AfterViewInit, OnDes
     }
   }
 
-  private onRefreshRequested() {
-    this.refreshSubscription = this.user.first().subscribe(
-      (user: Coachee) => {
-        this.onUserObtained(user);
-      });
+  private onRefreshAllRequested() {
+    console.log('onRefreshAllRequested');
+    // call API GET user
+    this.authService.refreshConnectedUser();
   }
 
   private onUserObtained(user: Coachee) {
     console.log('onUserObtained, user : ', user);
-    if (user) {
+    if (user) {//todo can be null ? so loading always true ??
       this.getAllMeetingsForCoachee(user.id);
     }
   }
 
   private getAllMeetingsForCoachee(coacheeId: string) {
+    this.loading = true;
     this.getAllMeetingsForCoacheeIdSubscription = this.meetingsService.getAllMeetingsForCoacheeId(coacheeId, this.isAdmin)
       .subscribe(
         (meetings: Meeting[]) => {
@@ -176,7 +177,7 @@ export class MeetingListCoacheeComponent implements OnInit, AfterViewInit, OnDes
     this.meetingsService.deleteMeeting(meetingId).subscribe(
       (response) => {
         console.log('confirmCancelMeeting, res', response);
-        this.onRefreshRequested();
+        this.onRefreshAllRequested();
         Materialize.toast('Meeting supprimé !', 3000, 'rounded');
       }, (error) => {
         console.log('confirmCancelMeeting, error', error);
@@ -222,7 +223,7 @@ export class MeetingListCoacheeComponent implements OnInit, AfterViewInit, OnDes
     this.meetingsService.addSessionRateToMeeting(this.rateSessionMeetingId, this.sessionRate).subscribe(
       (response) => {
         console.log('validateRateSessionModal, res', response);
-        this.onRefreshRequested();
+        this.onRefreshAllRequested();
         this.updateRateSessionModalVisibility(false);
         Materialize.toast('Votre coach vient d\'être noté !', 3000, 'rounded');
       }, (error) => {
