@@ -279,7 +279,6 @@ export class AuthHeaderComponent implements OnInit, AfterViewInit, OnDestroy {
     this.router.navigate(['admin/possible_coachs-list']);
   }
 
-
   initJS() {
     $('.button-collapse').sideNav({
       menuWidth: 400,

@@ -3,13 +3,11 @@
 
   <div class="col-lg-12 card collection">
     <div *ifLoader="loading">
-      <div *ngIf="(coachees | async) != null && (coachees | async).length > 0">
-        <div class="collection-item" *ngFor="let coachee of coachees | async">
-          <er-coachee-item [coachee]="coachee"></er-coachee-item>
-        </div>
+      <div class="collection-item" *ngFor="let coachee of coachees | async">
+        <er-coachee-item [coachee]="coachee"></er-coachee-item>
       </div>
 
-      <div class="text-center" *ngIf="(coachees | async) == null || (coachees | async).length < 1">
+      <div class="text-center" [hidden]="(coachees | async).length > 0">
         <p class="no-meeting">Les coachees apparaîtront ici</p>
       </div>
     </div>
@@ -18,11 +16,11 @@
 
 
   <!--<div class="col-lg-12" *ngFor="let coachee of coachees| async">-->
-    <!--<div class="row coach_card">-->
-      <!--<div class="col s12" style="padding: 16px">-->
-        <!--<span>{{ coachee.first_name}} {{ coachee.last_name}}</span>-->
-        <!--<img style="width: 30px;height: 30px" src="{{coachee.avatar_url}}" alt="">-->
-      <!--</div>-->
-    <!--</div>-->
+  <!--<div class="row coach_card">-->
+  <!--<div class="col s12" style="padding: 16px">-->
+  <!--<span>{{ coachee.first_name}} {{ coachee.last_name}}</span>-->
+  <!--<img style="width: 30px;height: 30px" src="{{coachee.avatar_url}}" alt="">-->
+  <!--</div>-->
+  <!--</div>-->
   <!--</div>-->
 </div> <!--end row-->

@@ -1,4 +1,4 @@
-import {AfterViewInit, Component, OnDestroy, OnInit} from "@angular/core";
+import {AfterViewInit, ChangeDetectorRef, Component, OnDestroy, OnInit} from "@angular/core";
 import {Coach} from "../model/Coach";
 import {Coachee} from "../model/Coachee";
 import {HR} from "../model/HR";
@@ -17,7 +17,7 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy {
 
   private connectedUserSubscription: Subscription;
 
-  constructor(private authService: AuthService) {
+  constructor(private authService: AuthService, private cd: ChangeDetectorRef) {
     this.user = new BehaviorSubject(null);
   }
 
@@ -41,6 +41,7 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy {
       .subscribe((user?: Coach | Coachee | HR) => {
           console.log('getConnectedUser, user', user);
           this.onUserObtained(user);
+          this.cd.detectChanges();
         }
       );
   }

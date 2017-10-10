@@ -3,7 +3,7 @@
 <div class="container" *ifLoader="loading" [ngsReveal]="{scale:1, opacity:0, distance:0, duration: 1000}">
   <h4 class="text-right"><span class="blue-text">{{(coachee | async)?.plan.sessions_count}}</span> séances / mois</h4>
   <h5 class="text-right italic" *ngIf="(coachee | async)?.last_objective == null">Aucun objectif personnel défini</h5>
-  <h5 class="text-right italic" *ngIf="(coachee | async)?.last_objective != null">
+  <h5 class="text-right italic" *ngIf="(coachee | async)?.last_objective != null">Objectif fixé avec votre RH:
     "{{ (coachee | async)?.last_objective.objective }}"
   </h5>
   <br>
