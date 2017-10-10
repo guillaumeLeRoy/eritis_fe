@@ -1,8 +1,8 @@
-import {AfterViewInit, ChangeDetectorRef, Component, OnDestroy, OnInit} from "@angular/core";
-import {Observable} from "rxjs/Observable";
+import {AfterViewInit, Component, OnDestroy, OnInit} from "@angular/core";
 import {Coachee} from "../../model/Coachee";
 import {Subscription} from "rxjs/Subscription";
 import {CoachCoacheeService} from "../../service/coach_coachee.service";
+import {BehaviorSubject} from "rxjs/BehaviorSubject";
 
 @Component({
   selector: 'er-coachees-list',
@@ -11,12 +11,13 @@ import {CoachCoacheeService} from "../../service/coach_coachee.service";
 })
 export class CoacheesListComponent implements OnInit, AfterViewInit, OnDestroy {
 
-  private coachees: Observable<Array<Coachee>>;
+  private coachees: BehaviorSubject<Array<Coachee>>;
   private getAllCoacheesSub: Subscription;
 
   loading = true;
 
-  constructor(private apiService: CoachCoacheeService, private cd: ChangeDetectorRef) {
+  constructor(private apiService: CoachCoacheeService) {
+    this.coachees = new BehaviorSubject(null);
   }
 
   ngOnInit() {
@@ -40,15 +41,14 @@ export class CoacheesListComponent implements OnInit, AfterViewInit, OnDestroy {
       (coachees: Array<Coachee>) => {
         console.log('getAllCoachees subscribe, coachees : ', coachees);
         //filter coachee with NO selected coachs
-        let notAssociatedCoachees: Coachee[] = new Array<Coachee>();
+        let notAssociatedCoachees = new Array<Coachee>();
         for (let coachee of coachees) {
           if (coachee.selectedCoach == null) {
             notAssociatedCoachees.push(coachee);
           }
         }
-        this.coachees = Observable.of(notAssociatedCoachees);
-        this.cd.detectChanges();
         this.loading = false;
+        this.coachees.next(notAssociatedCoachees);
       }
     );
   }
