@@ -100,9 +100,9 @@
   </div>
 
   <div class="row">
-    <div class="col-lg-12 text-center">
+    <div class="col-lg-12 text-center" *ngIf="!isEditingPotentialDate">
       <button class="btn-basic btn-blue btn-small" (click)="finish()" [disabled]="!canFinish()"
-              *ngIf="!isEditingPotentialDate">Valider
+              *ifLoader="loading">Valider
       </button>
     </div>
   </div>

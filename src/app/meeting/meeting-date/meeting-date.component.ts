@@ -292,6 +292,7 @@ export class MeetingDateComponent implements OnInit, OnDestroy {
           this.router.navigate(['/meetings']);
           this.loading = false;
           Materialize.toast('Vos disponibilités on été enregitrées !', 3000, 'rounded');
+          this.router.navigate(['dashboard/meetings']);
         }, (error) => {
           console.log('getOrCreateMeeting error', error);
           this.loading = false;
