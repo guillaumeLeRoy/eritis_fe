@@ -30,6 +30,8 @@ export class AuthHeaderComponent implements OnInit, AfterViewInit, OnDestroy {
   @Input()
   isAdmin: boolean = false;
 
+  private mUser: ApiUser;
+
   private userSubscription: Subscription;
   private routerEventSubscription: Subscription;
   private readAllNotifSubscription: Subscription;
@@ -85,6 +87,7 @@ export class AuthHeaderComponent implements OnInit, AfterViewInit, OnDestroy {
     console.log('onUserObtained : ' + user);
 
     if (user) {
+      this.mUser = user;
       this.fetchNotificationsForUser(user);
 
       if (this.isUserACoach(user)) {
@@ -236,12 +239,12 @@ export class AuthHeaderComponent implements OnInit, AfterViewInit, OnDestroy {
     return Utils.dateToString(date) + ' - ' + Utils.getHoursAndMinutesFromDate(date);
   }
 
-  readAllNotifications(user: Coach | Coachee | HR) {
-    this.readAllNotifSubscription = this.coachCoacheeService.readAllNotificationsForUser(user)
+  readAllNotifications() {
+    this.readAllNotifSubscription = this.coachCoacheeService.readAllNotificationsForUser(this.mUser)
       .subscribe(
         (response: Response) => {
           console.log("getAllNotifications OK", response);
-          this.fetchNotificationsForUser(user);
+          this.fetchNotificationsForUser(this.mUser);
           this.cd.detectChanges();
         }
       );
