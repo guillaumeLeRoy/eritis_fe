@@ -484,3 +484,25 @@ loader-spinner {
   color: $main-electric-blue;
   opacity: 1;
 }
+
+
+
+#cookie_headband {
+  padding: 16px 0;
+  background-color: white;
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  z-index: 1000;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  div {
+    margin: 0 16px;
+  }
+
+  p {
+    margin: 0;
+  }
+}

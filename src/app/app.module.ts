@@ -4,7 +4,7 @@ import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {HttpModule} from "@angular/http";
 
 import {AppComponent} from "./app.component";
-import {HeaderComponent} from "./header/header.component";
+import {AuthHeaderComponent} from "./header/auth-header/auth-header.component";
 import {SessionService} from "./service/session.service";
 import {routing} from "./app.routing";
 import {SignupAdminComponent} from "./login/signup/signup-admin/signup-admin.component";
@@ -71,11 +71,12 @@ import {RhDashboardComponent} from "./dashboard/rh-dashboard/rh-dashboard.compon
 import {DashboardComponent} from "./dashboard/dashboard.component";
 import {AuthGuard} from "./service/auth-guard.service";
 import {NotAuthGuard} from "./service/not-auth-guard";
+import {WelcomeHeaderComponent} from './header/welcome-header/welcome-header.component';
+import { SimpleHeaderComponent } from './header/simple-header/simple-header.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    HeaderComponent,
     SignupAdminComponent,
     SigninComponent,
     ProfileCoachComponent,
@@ -124,7 +125,10 @@ import {NotAuthGuard} from "./service/not-auth-guard";
     CoacheeDashboardComponent,
     CoachDashboardComponent,
     RhDashboardComponent,
-    DashboardComponent
+    DashboardComponent,
+    WelcomeHeaderComponent,
+    AuthHeaderComponent,
+    SimpleHeaderComponent
   ],
   imports: [
     BrowserAnimationsModule,

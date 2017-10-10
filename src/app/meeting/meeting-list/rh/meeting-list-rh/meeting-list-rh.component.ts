@@ -52,7 +52,6 @@ export class MeetingListRhComponent implements OnInit, OnDestroy {
     });
   }
 
-
   ngOnDestroy(): void {
     if (this.getAllCoacheesForRhSubscription)
       this.getAllCoacheesForRhSubscription.unsubscribe();
@@ -60,12 +59,20 @@ export class MeetingListRhComponent implements OnInit, OnDestroy {
     if (this.getAllPotentialCoacheesForRhSubscription)
       this.getAllPotentialCoacheesForRhSubscription.unsubscribe();
 
-    if(this.userSubscription)
+    if (this.userSubscription)
       this.userSubscription.unsubscribe();
   }
 
   startAddNewObjectiveFlow(coacheeId: string) {
     this.onStartAddNewObjectiveFlow.emit(coacheeId);
+  }
+
+  // call from parent
+  public onNewObjectifAdded() {
+    console.log('onNewObjectifAdded');
+    this.user.first().subscribe((user: HR) => {
+      this.onUserObtained(user);
+    });
   }
 
   private onUserObtained(user: HR) {
@@ -76,7 +83,6 @@ export class MeetingListRhComponent implements OnInit, OnDestroy {
       this.getAllCoacheesForRh(user.id);
       this.getAllPotentialCoacheesForRh(user.id);
       //this.getAllContractPlans();
-      // this.cd.detectChanges();
     }
   }
 

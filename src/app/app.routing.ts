@@ -31,6 +31,7 @@ import {CookiePolicyComponent} from "./legals/cookie-policy/cookie-policy.compon
 import {HomeAdminComponent} from "./admin/home-admin/home-admin.component";
 import {AuthGuard} from "./service/auth-guard.service";
 import {NotAuthGuard} from "./service/not-auth-guard";
+import {DashboardComponent} from "./dashboard/dashboard.component";
 
 const APP_ROUTES: Routes = [
   {path: '', redirectTo: '/welcome', pathMatch: 'full'},
@@ -40,7 +41,7 @@ const APP_ROUTES: Routes = [
 
   {path: 'signin', component: SigninComponent},
 
-  {path: 'dashboard', canActivate: [AuthGuard], canActivateChild: [AuthGuard],
+  {path: 'dashboard', component: DashboardComponent, canActivate: [AuthGuard], canActivateChild: [AuthGuard],
     children: [
       {path: '', redirectTo: 'meetings', pathMatch: 'full'},
       {path: 'profile_rh/:id', component: ProfileRhComponent},

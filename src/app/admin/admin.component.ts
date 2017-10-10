@@ -1,9 +1,9 @@
-import {ChangeDetectorRef, Component, OnInit} from "@angular/core";
+import {Component, OnInit} from "@angular/core";
 import {Router} from "@angular/router";
 import {Admin} from "../model/Admin";
 import {AdminAPIService} from "../service/adminAPI.service";
-import {Observable} from "rxjs/Observable";
 import {environment} from "../../environments/environment";
+import {BehaviorSubject} from "rxjs/BehaviorSubject";
 
 @Component({
   selector: 'er-admin',
@@ -12,9 +12,10 @@ import {environment} from "../../environments/environment";
 })
 export class AdminComponent implements OnInit {
 
-  private admin: Observable<Admin>;
+  private admin: BehaviorSubject<Admin>;
 
-  constructor(private router: Router, private adminHttpService: AdminAPIService, private cd: ChangeDetectorRef) {
+  constructor(private router: Router, private adminHttpService: AdminAPIService) {
+    this.admin = new BehaviorSubject(null);
   }
 
   ngOnInit() {
@@ -27,8 +28,7 @@ export class AdminComponent implements OnInit {
       this.adminHttpService.getAdmin().subscribe(
         (admin: Admin) => {
           console.log('getAdmin, obtained', admin);
-          this.admin = Observable.of(admin);
-          this.cd.detectChanges();
+          this.admin.next(admin);
         },
         error => {
           console.log('getAdmin, error obtained', error);

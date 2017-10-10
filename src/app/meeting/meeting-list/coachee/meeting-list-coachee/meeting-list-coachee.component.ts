@@ -1,13 +1,4 @@
-import {
-  AfterViewInit,
-  ChangeDetectorRef,
-  Component,
-  EventEmitter,
-  Input,
-  OnDestroy,
-  OnInit,
-  Output
-} from "@angular/core";
+import {AfterViewInit, ChangeDetectorRef, Component, Input, OnDestroy, OnInit} from "@angular/core";
 import {MeetingsService} from "../../../../service/meetings.service";
 import {Observable} from "rxjs/Observable";
 import {Meeting} from "../../../../model/Meeting";
@@ -32,9 +23,6 @@ export class MeetingListCoacheeComponent implements OnInit, AfterViewInit, OnDes
   @Input()
   isAdmin: boolean = false;
 
-  @Output()
-  requestRefreshEventEmitter: EventEmitter<any> = new EventEmitter();
-
   private meetings: Observable<Array<Meeting>>;
   private meetingsOpened: Observable<Array<Meeting>>;
   private meetingsClosed: Observable<Array<Meeting>>;
@@ -43,8 +31,9 @@ export class MeetingListCoacheeComponent implements OnInit, AfterViewInit, OnDes
   private hasOpenedMeeting = false;
   private hasClosedMeeting = false;
 
-  private userSubscription: Subscription;
+  private userSubscription?: Subscription;
   private getAllMeetingsForCoacheeIdSubscription?: Subscription;
+  private refreshSubscription?: Subscription;
 
   private meetingToCancel: Meeting;
 
@@ -58,31 +47,41 @@ export class MeetingListCoacheeComponent implements OnInit, AfterViewInit, OnDes
   ngOnInit() {
     console.log('ngOnInit');
     this.loading = true;
-
-    this.user.subscribe((user: Coachee) => {
-      this.onUserObtained(user);
-    });
   }
 
   ngAfterViewInit(): void {
     console.log('ngAfterViewInit');
-    // this.onUserObtained(this.mUser);
+    this.userSubscription = this.user.subscribe((user: Coachee) => {
+      this.onUserObtained(user);
+    });
+  }
+
+  ngOnDestroy(): void {
+    if (this.getAllMeetingsForCoacheeIdSubscription) {
+      this.getAllMeetingsForCoacheeIdSubscription.unsubscribe();
+    }
+
+    if (this.userSubscription) {
+      this.userSubscription.unsubscribe();
+    }
+
+    if (this.refreshSubscription) {
+      this.refreshSubscription.unsubscribe();
+    }
   }
 
   private onRefreshRequested() {
-    this.userSubscription = this.user.first().subscribe((user: Coachee) => {
-      this.onUserObtained(user);
-      this.requestRefreshEventEmitter.emit(null);
-    });
-
+    this.refreshSubscription = this.user.first().subscribe(
+      (user: Coachee) => {
+        this.onUserObtained(user);
+      });
   }
 
   private onUserObtained(user: Coachee) {
     console.log('onUserObtained, user : ', user);
-    if (user)
+    if (user) {
       this.getAllMeetingsForCoachee(user.id);
-    // this.user = Observable.of(user);
-    // this.cd.detectChanges();
+    }
   }
 
   private getAllMeetingsForCoachee(coacheeId: string) {
@@ -141,16 +140,6 @@ export class MeetingListCoacheeComponent implements OnInit, AfterViewInit, OnDes
         }
       }
       this.meetingsClosed = Observable.of(closed);
-    }
-  }
-
-  ngOnDestroy(): void {
-    if (this.getAllMeetingsForCoacheeIdSubscription) {
-      this.getAllMeetingsForCoacheeIdSubscription.unsubscribe();
-    }
-
-    if (this.userSubscription) {
-      this.userSubscription.unsubscribe();
     }
   }
 

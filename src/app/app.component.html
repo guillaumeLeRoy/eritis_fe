@@ -1,2 +1,10 @@
-<er-header></er-header>
 <router-outlet></router-outlet>
+
+<div id="cookie_headband" class="z-depth-2" *ngIf="showCookiesMessage">
+  <div>
+    <p>Ce site utilise des cookies <a [routerLink]="'cookie-policy'">En savoir plus</a></p>
+  </div>
+  <div>
+    <button class="btn-basic btn-small btn-plain btn-blue" (click)="hideCookieHeadband()">OK</button>
+  </div>
+</div>
