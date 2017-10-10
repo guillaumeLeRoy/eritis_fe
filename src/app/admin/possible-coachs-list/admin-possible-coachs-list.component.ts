@@ -1,25 +1,26 @@
-import {AfterViewInit, ChangeDetectorRef, Component, OnDestroy, OnInit} from "@angular/core";
-import {Observable} from "rxjs/Observable";
+import {AfterViewInit, Component, OnDestroy, OnInit} from "@angular/core";
 import {Subscription} from "rxjs/Subscription";
 import {AdminAPIService} from "../../service/adminAPI.service";
 import {PossibleCoach} from "../../model/PossibleCoach";
+import {BehaviorSubject} from "rxjs/BehaviorSubject";
 
 declare var $: any;
 declare var Materialize: any;
 
 @Component({
-  selector: 'er-possible-coachs-list',
-  templateUrl: './possible-coachs-list.component.html',
-  styleUrls: ['./possible-coachs-list.component.scss']
+  selector: 'er-admin-possible-coachs-list',
+  templateUrl: './admin-possible-coachs-list.component.html',
+  styleUrls: ['./admin-possible-coachs-list.component.scss']
 })
-export class PossibleCoachsListComponent implements OnInit, AfterViewInit, OnDestroy {
+export class AdminPossibleCoachsListComponent implements OnInit, AfterViewInit, OnDestroy {
 
-  private possibleCoachs: Observable<Array<PossibleCoach>>;
+  private possibleCoachs: BehaviorSubject<Array<PossibleCoach>>;
   private getAllPossibleCoachsSub: Subscription;
 
   loading = true;
 
-  constructor(private apiService: AdminAPIService, private cd: ChangeDetectorRef) {
+  constructor(private apiService: AdminAPIService) {
+    this.possibleCoachs = new BehaviorSubject(null);
   }
 
   ngOnInit() {
@@ -47,9 +48,8 @@ export class PossibleCoachsListComponent implements OnInit, AfterViewInit, OnDes
       (coachs: Array<PossibleCoach>) => {
         console.log('getAllPossibleCoachsSub subscribe, coachs : ', coachs);
 
-        this.possibleCoachs = Observable.of(coachs);
-        this.cd.detectChanges();
         this.loading = false;
+        this.possibleCoachs.next(coachs);
       }
     );
   }

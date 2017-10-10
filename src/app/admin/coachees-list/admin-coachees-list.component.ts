@@ -5,11 +5,11 @@ import {CoachCoacheeService} from "../../service/coach_coachee.service";
 import {BehaviorSubject} from "rxjs/BehaviorSubject";
 
 @Component({
-  selector: 'er-coachees-list',
-  templateUrl: './coachees-list.component.html',
-  styleUrls: ['./coachees-list.component.scss']
+  selector: 'er-admin-coachees-list',
+  templateUrl: './admin-coachees-list.component.html',
+  styleUrls: ['./admin-coachees-list.component.scss']
 })
-export class CoacheesListComponent implements OnInit, AfterViewInit, OnDestroy {
+export class AdminCoacheesListComponent implements OnInit, AfterViewInit, OnDestroy {
 
   private coachees: BehaviorSubject<Array<Coachee>>;
   private getAllCoacheesSub: Subscription;

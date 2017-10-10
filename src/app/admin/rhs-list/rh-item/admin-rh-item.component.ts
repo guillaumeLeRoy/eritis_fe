@@ -1,28 +1,22 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {Coachee} from "../../../model/Coachee";
 import {Router} from "@angular/router";
+import {HR} from "../../../model/HR";
 
 @Component({
-  selector: 'er-coachee-item',
-  templateUrl: './coachee-item.component.html',
-  styleUrls: ['./coachee-item.component.scss']
+  selector: 'er-admin-rh-item',
+  templateUrl: './admin-rh-item.component.html',
+  styleUrls: ['./admin-rh-item.component.scss']
 })
-export class CoacheeItemComponent implements OnInit {
+export class AdminRhItemComponent implements OnInit {
 
   @Input()
-  coachee: Coachee;
+  rh: HR;
 
   months = ['Janvier', 'Février', 'Mars', 'Avril', 'Mai', 'Juin', 'Juillet', 'Août', 'Septembre', 'Octobre', 'Novembre', 'Décembre'];
 
   constructor(private router: Router) { }
 
   ngOnInit() {
-  }
-
-  goToCoacheeProfile(coacheeId: String) {
-    window.scrollTo(0, 0);
-    console.log("goToCoacheeProfileAdmin, %s", coacheeId);
-    this.router.navigate(['admin/profile/coachee', coacheeId]);
   }
 
   printDateString(date: string) {
@@ -44,4 +38,7 @@ export class CoacheeItemComponent implements OnInit {
     return (new Date(date)).getDate() + ' ' + this.months[(new Date(date)).getMonth()] + ' ' + (new Date(date)).getFullYear();
   }
 
+  goToRhProfile() {
+    this.router.navigate(['admin/profile/rh', this.rh.id])
+  }
 }

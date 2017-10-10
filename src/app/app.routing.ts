@@ -14,13 +14,13 @@ import {SignupCoacheeComponent} from "./login/signup/signup-coachee/signup-coach
 import {SignupCoachComponent} from "./login/signup/signup-coach/signup-coach.component";
 import {SignupRhComponent} from "./login/signup/signup-rh/signup-rh.component";
 import {AvailableMeetingsComponent} from "./meeting/meeting-list/coach/available-meetings/available-meetings.component";
-import {CoacheesListComponent} from "./admin/coachees-list/coachees-list.component";
-import {RhsListComponent} from "./admin/rhs-list/rhs-list.component";
+import {AdminCoacheesListComponent} from "./admin/coachees-list/admin-coachees-list.component";
+import {AdminRhsListComponent} from "./admin/rhs-list/admin-rhs-list.component";
 import {RegisterCoachComponent} from "./login/register/register-coach/register-coach.component";
 import {RegisterCoachFormComponent} from "./login/register/register-coach/register-coach-form/register-coach-form.component";
 import {RegisterCoachMessageComponent} from "./login/register/register-coach/register-coach-message/register-coach-message.component";
 import {CodeDeontologieComponent} from "./login/register/register-coach/code-deontologie/code-deontologie.component";
-import {PossibleCoachsListComponent} from "./admin/possible-coachs-list/possible-coachs-list.component";
+import {AdminPossibleCoachsListComponent} from "./admin/possible-coachs-list/admin-possible-coachs-list.component";
 import {ProfileCoachAdminComponent} from "./user/profile/coach/profile-coach-admin/profile-coach-admin.component";
 import {ProfilePossibleCoachComponent} from "./user/profile/possible-coach/profile-possible-coach.component";
 import {ProfileCoacheeAdminComponent} from "app/user/profile/coachee/profile-coachee-admin/profile-coachee-admin.component";
@@ -73,9 +73,9 @@ const APP_ROUTES: Routes = [
       {path: 'home', component: HomeAdminComponent},
       {path: 'signup', component: SignupAdminComponent},
       {path: 'coachs-list', component: AdminCoachsListComponent},
-      {path: 'coachees-list', component: CoacheesListComponent},
-      {path: 'rhs-list', component: RhsListComponent},
-      {path: 'possible_coachs-list', component: PossibleCoachsListComponent},
+      {path: 'coachees-list', component: AdminCoacheesListComponent},
+      {path: 'rhs-list', component: AdminRhsListComponent},
+      {path: 'possible_coachs-list', component: AdminPossibleCoachsListComponent},
       {path: 'profile/coach/:id', component: ProfileCoachAdminComponent},
       {path: 'profile/coachee/:id', component: ProfileCoacheeAdminComponent},
       {path: 'profile/possible-coach/:id', component: ProfilePossibleCoachComponent},

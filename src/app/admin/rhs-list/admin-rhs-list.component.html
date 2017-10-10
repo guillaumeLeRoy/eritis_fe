@@ -4,13 +4,11 @@
   <div class="col-lg-12 card collection">
 
     <div *ifLoader="loading">
-      <div *ngIf="(rhs | async) != null && (rhs | async).length > 0">
-        <div class="collection-item" *ngFor="let rh of rhs | async">
-          <er-rh-item [rh]="rh"></er-rh-item>
-        </div>
+      <div class="collection-item" *ngFor="let rh of rhs | async">
+        <er-admin-rh-item [rh]="rh"></er-admin-rh-item>
       </div>
 
-      <div class="text-center" *ngIf="(rhs | async) == null  || (rhs | async).length < 1">
+      <div class="text-center" [hidden]="(rhs | async).length > 0">
         <p class="no-meeting">Les RH apparaîtront ici</p>
       </div>
     </div>

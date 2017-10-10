@@ -1,0 +1,43 @@
+<div class="meeting-item col-lg-12">
+
+  <!-- Coach -->
+  <div class="row">
+    <div class="meeting-item-header col-md-12 col-lg-4">
+      <div>
+        <div class="meeting-item-coach has-coach" (click)="goToCoachProfile(coach.id)">
+          <div>
+            <!-- image coach -->
+            <div class="meeting-item-coach-avatar avatar"
+                 [style.background-image]="'url(' + coach.avatar_url + ')'"></div>
+          </div>
+
+          <div>
+            <p class="meeting-item-coach-name black-text bold">{{ coach.first_name}} {{ coach.last_name}}</p>
+            <span class="italic">{{ coach.email }}</span>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- GOAL -->
+    <div class="meeting-item-body col-md-12 col-lg-8">
+      <div class="meeting-item-body-content">
+        <span>Inscrit le {{ printDateString(coach.inscription_date) }}</span>
+      </div>
+
+      <div class="meeting-item-body-buttons">
+        <button class="btn-basic btn-blue btn-plain btn-small"
+                *ngIf="!coach.invite_sent"
+                (click)="sendInvite(coach.email)">Envoyer une invitation
+        </button>
+        <button class="btn-basic btn-small"
+                *ngIf="coach.invite_sent"
+                disabled>En attente...
+        </button>
+      </div>
+    </div><!--end meeting-item-body-->
+
+  </div><!--end coach-->
+
+</div><!--end meeting-item-->

@@ -1,0 +1,32 @@
+<div class="meeting-item col-lg-12">
+
+  <!-- RH -->
+  <div class="row">
+    <div class="meeting-item-header col-md-12 col-lg-4">
+      <div>
+        <div class="meeting-item-coach has-coach" (click)="goToRhProfile()">
+          <div>
+            <!-- image rh -->
+            <div class="meeting-item-coach-avatar avatar"
+                 [style.background-image]="'url(' + rh.avatar_url + ')'"></div>
+          </div>
+
+          <div>
+            <p class="meeting-item-coach-name black-text bold">{{ rh.first_name}} {{ rh.last_name}}</p>
+            <span class="italic">{{ rh.email }}</span>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- GOAL -->
+    <div class="meeting-item-body col-md-12 col-lg-8">
+      <div class="meeting-item-body-content">
+        <span>Inscrit le {{ printDateString(rh.start_date) }}</span>
+      </div>
+    </div><!--end meeting-item-body-->
+
+  </div><!--end coach-->
+
+</div><!--end meeting-item-->

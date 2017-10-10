@@ -6,11 +6,11 @@ import {PossibleCoach} from "../../../model/PossibleCoach";
 declare var Materialize: any;
 
 @Component({
-  selector: 'er-possible-coach-item',
-  templateUrl: './possible-coach-item.component.html',
-  styleUrls: ['./possible-coach-item.component.scss']
+  selector: 'er-admin-possible-coach-item',
+  templateUrl: './admin-possible-coach-item.component.html',
+  styleUrls: ['./admin-possible-coach-item.component.scss']
 })
-export class PossibleCoachItemComponent implements OnInit {
+export class AdminPossibleCoachItemComponent implements OnInit {
 
   @Output()
   coachAdded = new EventEmitter();
@@ -24,8 +24,7 @@ export class PossibleCoachItemComponent implements OnInit {
   }
 
   ngOnInit() {
-    console.log("PossibleCoachItemComponent, ngOnInit : ", this.coach);
-
+    console.log("AdminPossibleCoachItemComponent, ngOnInit : ", this.coach);
   }
 
   goToCoachProfile(coachId: string) {
