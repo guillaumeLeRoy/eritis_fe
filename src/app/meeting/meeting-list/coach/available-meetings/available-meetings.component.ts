@@ -1,4 +1,4 @@
-import {AfterViewInit, ChangeDetectorRef, Component, OnDestroy, OnInit, ViewChild} from "@angular/core";
+import {AfterViewInit, ChangeDetectorRef, Component, OnDestroy, OnInit} from "@angular/core";
 import {Observable} from "rxjs/Observable";
 import {Meeting} from "../../../../model/Meeting";
 import {MeetingsService} from "../../../../service/meetings.service";
@@ -8,7 +8,6 @@ import {Coach} from "../../../../model/Coach";
 import {ApiUser} from "../../../../model/ApiUser";
 import {Router} from "@angular/router";
 import {MeetingDate} from "../../../../model/MeetingDate";
-import {MeetingItemCoachComponent} from "../meeting-item-coach/meeting-item-coach.component";
 declare var $: any;
 declare var Materialize: any;
 
@@ -37,39 +36,31 @@ export class AvailableMeetingsComponent implements OnInit, AfterViewInit, OnDest
   }
 
   ngOnInit() {
+  }
+
+  ngAfterViewInit() {
+    console.log('ngAfterViewInit');
+
     this.loading = true;
     this.getConnectedUser();
   }
 
-  ngAfterViewInit() {
-    this.onRefreshRequested();
-  }
-
   ngOnDestroy() {
     console.log('ngOnDestroy');
-    if (this.connectedUserSubscription)
+    if (this.connectedUserSubscription) {
       this.connectedUserSubscription.unsubscribe();
+    }
 
-    if (this.getAllMeetingsSubscription)
+    if (this.getAllMeetingsSubscription) {
       this.getAllMeetingsSubscription.unsubscribe();
+    }
   }
 
   getConnectedUser() {
     this.connectedUserSubscription = this.authService.getConnectedUserObservable().subscribe(
       (user: Coach) => {
-        console.log('onRefreshRequested, getConnectedUser');
+        console.log('getConnectedUser');
         this.onUserObtained(user);
-        this.cd.detectChanges();
-      }
-    );
-  }
-
-  onRefreshRequested() {
-    this.connectedUserSubscription = this.authService.refreshConnectedUser().subscribe(
-      (user: Coach) => {
-        console.log('onRefreshRequested, getConnectedUser');
-        this.onUserObtained(user);
-        this.cd.detectChanges();
       }
     );
   }
@@ -78,13 +69,14 @@ export class AvailableMeetingsComponent implements OnInit, AfterViewInit, OnDest
     console.log('onUserObtained, user : ', user);
     if (user) {
 
+      this.user = Observable.of(user);
+
       if (user instanceof Coach) {
         // coach
         console.log('get a coach');
         this.getAllMeetings();
       }
 
-      this.user = Observable.of(user);
     }
   }
 
@@ -99,7 +91,6 @@ export class AvailableMeetingsComponent implements OnInit, AfterViewInit, OnDest
       }
     );
   }
-
 
   confirmPotentialDate(meetingId: string): Observable<Meeting> {
     console.log('confirmPotentialDate : ', meetingId);
@@ -126,17 +117,6 @@ export class AvailableMeetingsComponent implements OnInit, AfterViewInit, OnDest
           return this.meetingService.setFinalDateToMeeting(meetingId, meetingDate.id);
         }
       )
-      // .map(
-      //   (meeting: Meeting) => {
-      //     console.log("setFinalDateToMeeting, response", meeting);
-      //     console.log('test, onSubmitValidateMeeting 4');
-      //
-      //     // this.onRefreshRequested();
-      //     // Materialize.toast('Meeting validé !', 3000, 'rounded')
-      //     // window.location.reload();
-      //     return meeting;
-      //   }
-      // );
   }
 
   onSubmitValidateMeeting() {

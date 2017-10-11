@@ -1,12 +1,12 @@
 <div [ngsReveal]="{distance: '100px', origin: 'right', duration: 1000, delay: 200}">
 
   <h3 class="text-right" i18n>Bonjour {{ (user | async)?.first_name}},
-    vous avez <span class="blue-text">{{meetingsOpenedCount}}</span> {meetingsOpenedCount, plural, =0 {séance} =1
+    vous avez <span class="blue-text">{{meeting_list.meetingsOpenedCount}}</span> {meeting_list.meetingsOpenedCount, plural, =0 {séance} =1
     {séance} other {séances}} à venir
   </h3>
 
   <p class="text-right">
-    <span class="blue-text">Cliquez</span> ici pour votre salon
+    Cliquez ici pour votre salon
     <a class="btn-floating btn-large waves-effect waves-light add-meeting-btn"
        [href]="(user | async)?.chat_room_url" target="_blank">
       <i class="material-icons">videocam</i>
@@ -14,4 +14,4 @@
   </p>
 </div>
 
-<er-meeting-list-coach [user]="user"></er-meeting-list-coach>
+<er-meeting-list-coach #meeting_list [user]="user"></er-meeting-list-coach>

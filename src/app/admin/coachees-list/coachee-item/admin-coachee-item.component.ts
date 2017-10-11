@@ -1,31 +1,28 @@
-import {Component, Input, OnInit} from "@angular/core";
+import {Component, Input, OnInit} from '@angular/core';
+import {Coachee} from "../../../model/Coachee";
 import {Router} from "@angular/router";
-import {Coach} from "../../../model/Coach";
 
 @Component({
-  selector: 'er-coach-item',
-  templateUrl: './coach-item.component.html',
-  styleUrls: ['./coach-item.component.scss']
+  selector: 'er-admin-coachee-item',
+  templateUrl: './admin-coachee-item.component.html',
+  styleUrls: ['./admin-coachee-item.component.scss']
 })
-export class CoachItemComponent implements OnInit {
+export class AdminCoacheeItemComponent implements OnInit {
 
   @Input()
-  coach: Coach;
+  coachee: Coachee;
 
   months = ['Janvier', 'Février', 'Mars', 'Avril', 'Mai', 'Juin', 'Juillet', 'Août', 'Septembre', 'Octobre', 'Novembre', 'Décembre'];
 
-  constructor(private router: Router) {
-  }
+  constructor(private router: Router) { }
 
   ngOnInit() {
-    console.log("CoachItemComponent, ngOnInit : ", this.coach);
-
   }
 
-  goToCoachProfile(coachId: string) {
-    console.log("goToCoachProfile, %s : ", coachId);
+  goToCoacheeProfile(coacheeId: String) {
     window.scrollTo(0, 0);
-    this.router.navigate(['admin/profile/coach', coachId]);
+    console.log("goToCoacheeProfileAdmin, %s", coacheeId);
+    this.router.navigate(['admin/profile/coachee', coacheeId]);
   }
 
   printDateString(date: string) {
@@ -46,4 +43,5 @@ export class CoachItemComponent implements OnInit {
   getDate(date: string): string {
     return (new Date(date)).getDate() + ' ' + this.months[(new Date(date)).getMonth()] + ' ' + (new Date(date)).getFullYear();
   }
+
 }

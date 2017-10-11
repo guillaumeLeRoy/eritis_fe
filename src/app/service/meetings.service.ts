@@ -20,6 +20,8 @@ export class MeetingsService {
   }
 
   getAllMeetingsForCoacheeId(coacheeId: string, isAdmin?: boolean): Observable<Array<Meeting>> {
+    console.log("getAllMeetingsForCoacheeId, coacheeId : ", coacheeId);
+
     let param = [coacheeId];
 
     return this.apiService.get(AuthService.GET_MEETINGS_FOR_COACHEE_ID, param, isAdmin).map(response => {
@@ -35,6 +37,8 @@ export class MeetingsService {
   }
 
   getAllMeetingsForCoachId(coachId: string, isAdmin?: boolean): Observable<Array<Meeting>> {
+    console.log("getAllMeetingsForCoachId, coachId : ", coachId);
+
     let param = [coachId];
 
     return this.apiService.get(AuthService.GET_MEETINGS_FOR_COACH_ID, param, isAdmin)

@@ -1,18 +1,10 @@
-import {
-  AfterViewInit,
-  ChangeDetectorRef,
-  Component,
-  EventEmitter,
-  Input,
-  OnDestroy,
-  OnInit,
-  Output
-} from "@angular/core";
+import {AfterViewInit, ChangeDetectorRef, Component, Input, OnDestroy, OnInit} from "@angular/core";
 import {MeetingsService} from "../../../../service/meetings.service";
 import {Observable} from "rxjs/Observable";
 import {Meeting} from "../../../../model/Meeting";
 import {Subscription} from "rxjs/Subscription";
 import {Coachee} from "../../../../model/Coachee";
+import {AuthService} from "../../../../service/auth.service";
 
 declare var $: any;
 declare var Materialize: any;
@@ -32,9 +24,6 @@ export class MeetingListCoacheeComponent implements OnInit, AfterViewInit, OnDes
   @Input()
   isAdmin: boolean = false;
 
-  @Output()
-  requestRefreshEventEmitter: EventEmitter<any> = new EventEmitter();
-
   private meetings: Observable<Array<Meeting>>;
   private meetingsOpened: Observable<Array<Meeting>>;
   private meetingsClosed: Observable<Array<Meeting>>;
@@ -43,8 +32,9 @@ export class MeetingListCoacheeComponent implements OnInit, AfterViewInit, OnDes
   private hasOpenedMeeting = false;
   private hasClosedMeeting = false;
 
-  private userSubscription: Subscription;
+  private userSubscription?: Subscription;
   private getAllMeetingsForCoacheeIdSubscription?: Subscription;
+  private refreshSubscription?: Subscription;
 
   private meetingToCancel: Meeting;
 
@@ -52,40 +42,50 @@ export class MeetingListCoacheeComponent implements OnInit, AfterViewInit, OnDes
   private sessionRate = '0';
   private sessionPreRate = '0';
 
-  constructor(private meetingsService: MeetingsService, private cd: ChangeDetectorRef) {
+  constructor(private meetingsService: MeetingsService, private authService: AuthService, private cd: ChangeDetectorRef) {
   }
 
   ngOnInit() {
     console.log('ngOnInit');
     this.loading = true;
-
-    this.user.subscribe((user: Coachee) => {
-      this.onUserObtained(user);
-    });
   }
 
   ngAfterViewInit(): void {
     console.log('ngAfterViewInit');
-    // this.onUserObtained(this.mUser);
+    this.userSubscription = this.user.subscribe((user: Coachee) => {
+      this.onUserObtained(user);
+    });
   }
 
-  private onRefreshRequested() {
-    this.userSubscription = this.user.first().subscribe((user: Coachee) => {
-      this.onUserObtained(user);
-      this.requestRefreshEventEmitter.emit(null);
-    });
+  ngOnDestroy(): void {
+    if (this.getAllMeetingsForCoacheeIdSubscription) {
+      this.getAllMeetingsForCoacheeIdSubscription.unsubscribe();
+    }
 
+    if (this.userSubscription) {
+      this.userSubscription.unsubscribe();
+    }
+
+    if (this.refreshSubscription) {
+      this.refreshSubscription.unsubscribe();
+    }
+  }
+
+  private onRefreshAllRequested() {
+    console.log('onRefreshAllRequested');
+    // call API GET user
+    this.authService.refreshConnectedUser();
   }
 
   private onUserObtained(user: Coachee) {
     console.log('onUserObtained, user : ', user);
-    if (user)
+    if (user) {//todo can be null ? so loading always true ??
       this.getAllMeetingsForCoachee(user.id);
-    // this.user = Observable.of(user);
-    // this.cd.detectChanges();
+    }
   }
 
   private getAllMeetingsForCoachee(coacheeId: string) {
+    this.loading = true;
     this.getAllMeetingsForCoacheeIdSubscription = this.meetingsService.getAllMeetingsForCoacheeId(coacheeId, this.isAdmin)
       .subscribe(
         (meetings: Meeting[]) => {
@@ -144,16 +144,6 @@ export class MeetingListCoacheeComponent implements OnInit, AfterViewInit, OnDes
     }
   }
 
-  ngOnDestroy(): void {
-    if (this.getAllMeetingsForCoacheeIdSubscription) {
-      this.getAllMeetingsForCoacheeIdSubscription.unsubscribe();
-    }
-
-    if (this.userSubscription) {
-      this.userSubscription.unsubscribe();
-    }
-  }
-
   /*************************************
    ----------- Modal control ------------
    *************************************/
@@ -187,7 +177,7 @@ export class MeetingListCoacheeComponent implements OnInit, AfterViewInit, OnDes
     this.meetingsService.deleteMeeting(meetingId).subscribe(
       (response) => {
         console.log('confirmCancelMeeting, res', response);
-        this.onRefreshRequested();
+        this.onRefreshAllRequested();
         Materialize.toast('Meeting supprimé !', 3000, 'rounded');
       }, (error) => {
         console.log('confirmCancelMeeting, error', error);
@@ -233,7 +223,7 @@ export class MeetingListCoacheeComponent implements OnInit, AfterViewInit, OnDes
     this.meetingsService.addSessionRateToMeeting(this.rateSessionMeetingId, this.sessionRate).subscribe(
       (response) => {
         console.log('validateRateSessionModal, res', response);
-        this.onRefreshRequested();
+        this.onRefreshAllRequested();
         this.updateRateSessionModalVisibility(false);
         Materialize.toast('Votre coach vient d\'être noté !', 3000, 'rounded');
       }, (error) => {

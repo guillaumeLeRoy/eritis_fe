@@ -1,0 +1,47 @@
+@import "../../../saas/variables";
+
+nav{
+  background-color: transparent;
+  background-attachment: scroll;
+  background-position: top;
+  background-size: cover;
+  min-height: 60px;
+  box-shadow: none;
+}
+
+.navbar-fixed,
+.navbar{
+  min-height: 60px;
+  padding: 0;
+}
+
+.navbar-color {
+  background-color: $main-blue-filter;
+  /*background-color: var(--main-dark-blue);*/
+  height: 100%;
+  padding: 0 16px;
+}
+
+.brand-logo {
+  padding: 0;
+
+  img {
+    width: 130px  ;
+    vertical-align: text-bottom;
+  }
+}
+
+.brand-logo-phone img {
+  width: 100px;
+}
+
+.logo-text img{
+  height: 50px;
+}
+
+header{
+  background-image: url("../../../assets/img/eritis-mountain-bg-2.jpg");
+  background-attachment: fixed;
+  background-position: top;
+  background-size: cover;
+}

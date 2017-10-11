@@ -1,4 +1,4 @@
-import {AfterViewInit, ChangeDetectorRef, Component, Input, OnDestroy, OnInit} from "@angular/core";
+import {AfterViewInit, ChangeDetectorRef, Component, Input, OnDestroy, OnInit, ViewChild} from "@angular/core";
 import {Observable} from "rxjs/Observable";
 import {ApiUser} from "../../model/ApiUser";
 import {Subscription} from "rxjs/Subscription";
@@ -10,6 +10,8 @@ import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {Utils} from "../../utils/Utils";
 import {CoacheeObjective} from "../../model/CoacheeObjective";
 import {PotentialCoachee} from "../../model/PotentialCoachee";
+import {AuthService} from "../../service/auth.service";
+import {MeetingListRhComponent} from "../../meeting/meeting-list/rh/meeting-list-rh/meeting-list-rh.component";
 
 declare var $: any;
 declare var Materialize: any;
@@ -21,10 +23,13 @@ declare var Materialize: any;
 })
 export class RhDashboardComponent implements OnInit, AfterViewInit, OnDestroy {
 
+  @ViewChild(MeetingListRhComponent)
+  private meetingListComponent: MeetingListRhComponent;
+
   @Input()
   user: Observable<HR>;
 
-  private subscription: Subscription;
+  private userSubscription: Subscription;
   private connectedUserSubscription: Subscription;
   private GetUsageRateSubscription: Subscription;
   private updateCoacheeObjectiveSubscription: Subscription;
@@ -47,7 +52,7 @@ export class RhDashboardComponent implements OnInit, AfterViewInit, OnDestroy {
 
   private signInForm: FormGroup;
 
-  constructor(private coachCoacheeService: CoachCoacheeService, private cd: ChangeDetectorRef, private formBuilder: FormBuilder) {
+  constructor(private coachCoacheeService: CoachCoacheeService, private cd: ChangeDetectorRef, private formBuilder: FormBuilder, private authService: AuthService) {
     this.signInForm = this.formBuilder.group({
       email: ['', [Validators.required, Validators.pattern(Utils.EMAIL_REGEX)]],
       first_name: [''],
@@ -61,13 +66,14 @@ export class RhDashboardComponent implements OnInit, AfterViewInit, OnDestroy {
 
   ngAfterViewInit(): void {
     console.log('ngAfterViewInit');
-    // force to GET connected user from the API so the count of available sessions is always correct
-    this.onRefreshRequested();
+    this.userSubscription = this.user.subscribe((hr: HR) => {
+      this.onUserObtained(hr);
+    });
   }
 
   ngOnDestroy(): void {
-    if (this.subscription) {
-      this.subscription.unsubscribe();
+    if (this.userSubscription) {
+      this.userSubscription.unsubscribe();
     }
 
     if (this.connectedUserSubscription) {
@@ -83,18 +89,18 @@ export class RhDashboardComponent implements OnInit, AfterViewInit, OnDestroy {
     }
   }
 
-  onRefreshRequested() {
-    this.connectedUserSubscription = this.user.first().subscribe(
-      (user: HR) => {
-        this.onUserObtained(user);
-        this.cd.detectChanges();
-      });
+  private onRefreshAllRequested() {
+    console.log('onRefreshAllRequested');
+    // call API GET user
+    this.authService.refreshConnectedUser();
+
   }
 
   private onUserObtained(user: ApiUser) {
     console.log('onUserObtained, user : ', user);
-    if (user)
+    if (user) {
       this.getUsageRate(user.id);
+    }
   }
 
   private getUsageRate(rhId: string) {
@@ -130,7 +136,7 @@ export class RhDashboardComponent implements OnInit, AfterViewInit, OnDestroy {
           console.log('addObjectiveToCoachee, SUCCESS', obj);
           // close modal
           this.updateCoacheeObjectivePanelVisibility(false);
-          this.onRefreshRequested();
+          this.meetingListComponent.onNewObjectifAdded();
           Materialize.toast("L'objectif a été modifié !", 3000, 'rounded')
           this.coacheeNewObjective = null;
           this.cd.detectChanges();
@@ -217,8 +223,13 @@ export class RhDashboardComponent implements OnInit, AfterViewInit, OnDestroy {
         this.coachCoacheeService.postPotentialCoachee(body).subscribe(
           (res: PotentialCoachee) => {
             console.log('postPotentialCoachee, res', res);
+            this.signInForm = this.formBuilder.group({
+              email: ['', [Validators.required, Validators.pattern(Utils.EMAIL_REGEX)]],
+              first_name: [''],
+              last_name: [''],
+            });
             Materialize.toast('Manager ajouté !', 3000, 'rounded');
-            this.onRefreshRequested();
+            this.onRefreshAllRequested();
           }, (errorRes: Response) => {
             let json: any = errorRes.json();
             console.log('postPotentialCoachee, error', json);

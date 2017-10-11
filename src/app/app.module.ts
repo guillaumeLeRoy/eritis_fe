@@ -4,7 +4,7 @@ import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {HttpModule} from "@angular/http";
 
 import {AppComponent} from "./app.component";
-import {HeaderComponent} from "./header/header.component";
+import {AuthHeaderComponent} from "./header/auth-header/auth-header.component";
 import {SessionService} from "./service/session.service";
 import {routing} from "./app.routing";
 import {SignupAdminComponent} from "./login/signup/signup-admin/signup-admin.component";
@@ -13,7 +13,7 @@ import {AuthService} from "./service/auth.service";
 import {WelcomeComponent} from "./welcome/welcome.component";
 import {ChatComponent} from "./chat/chat.component";
 import {ChatItemComponent} from "./chat/chat-item.component";
-import {CoachItemComponent} from "./admin/coachs-list/coach-item/coach-item.component";
+import {AdminCoachItemComponent} from "./admin/coachs-list/coach-item/admin-coach-item.component";
 import {CoachCoacheeService} from "./service/coach_coachee.service";
 import {CalendarModule} from "angular-calendar"; // lib
 import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
@@ -38,19 +38,19 @@ import {SignupCoachComponent} from "./login/signup/signup-coach/signup-coach.com
 import {SignupRhComponent} from "./login/signup/signup-rh/signup-rh.component";
 import {AvailableMeetingsComponent} from "./meeting/meeting-list/coach/available-meetings/available-meetings.component";
 import {AdminCoachsListComponent} from "./admin/coachs-list/admin-coachs-list.component";
-import {CoacheesListComponent} from "./admin/coachees-list/coachees-list.component";
-import {RhsListComponent} from "./admin/rhs-list/rhs-list.component";
+import {AdminCoacheesListComponent} from "./admin/coachees-list/admin-coachees-list.component";
+import {AdminRhsListComponent} from "./admin/rhs-list/admin-rhs-list.component";
 import {MeetingListCoachComponent} from "./meeting/meeting-list/coach/meeting-list-coach/meeting-list-coach.component";
 import {MeetingListCoacheeComponent} from "./meeting/meeting-list/coachee/meeting-list-coachee/meeting-list-coachee.component";
 import {MeetingListRhComponent} from "./meeting/meeting-list/rh/meeting-list-rh/meeting-list-rh.component";
-import {CoacheeItemComponent} from "./admin/coachees-list/coachee-item/coachee-item.component";
-import {RhItemComponent} from "./admin/rhs-list/rh-item/rh-item.component";
+import {AdminCoacheeItemComponent} from "./admin/coachees-list/coachee-item/admin-coachee-item.component";
+import {AdminRhItemComponent} from "./admin/rhs-list/rh-item/admin-rh-item.component";
 import {RegisterCoachComponent} from "./login/register/register-coach/register-coach.component";
 import {CodeDeontologieComponent} from "./login/register/register-coach/code-deontologie/code-deontologie.component";
 import {RegisterCoachFormComponent} from "./login/register/register-coach/register-coach-form/register-coach-form.component";
 import {RegisterCoachMessageComponent} from "./login/register/register-coach/register-coach-message/register-coach-message.component";
-import {PossibleCoachsListComponent} from "./admin/possible-coachs-list/possible-coachs-list.component";
-import {PossibleCoachItemComponent} from "./admin/possible-coachs-list/possible-coach-item/possible-coach-item.component";
+import {AdminPossibleCoachsListComponent} from "./admin/possible-coachs-list/admin-possible-coachs-list.component";
+import {AdminPossibleCoachItemComponent} from "./admin/possible-coachs-list/possible-coach-item/admin-possible-coach-item.component";
 import {ProfileCoachAdminComponent} from "./user/profile/coach/profile-coach-admin/profile-coach-admin.component";
 import {ProfilePossibleCoachComponent} from "./user/profile/possible-coach/profile-possible-coach.component";
 import {ProfileCoacheeAdminComponent} from "./user/profile/coachee/profile-coachee-admin/profile-coachee-admin.component";
@@ -71,11 +71,12 @@ import {RhDashboardComponent} from "./dashboard/rh-dashboard/rh-dashboard.compon
 import {DashboardComponent} from "./dashboard/dashboard.component";
 import {AuthGuard} from "./service/auth-guard.service";
 import {NotAuthGuard} from "./service/not-auth-guard";
+import {WelcomeHeaderComponent} from './header/welcome-header/welcome-header.component';
+import { SimpleHeaderComponent } from './header/simple-header/simple-header.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    HeaderComponent,
     SignupAdminComponent,
     SigninComponent,
     ProfileCoachComponent,
@@ -84,7 +85,7 @@ import {NotAuthGuard} from "./service/not-auth-guard";
     WelcomeComponent,
     ChatComponent,
     ChatItemComponent,
-    CoachItemComponent,
+    AdminCoachItemComponent,
     MeetingListComponent,
     MeetingItemCoacheeComponent,
     MeetingItemCoachComponent,
@@ -97,19 +98,19 @@ import {NotAuthGuard} from "./service/not-auth-guard";
     SignupCoachComponent,
     SignupRhComponent,
     AvailableMeetingsComponent,
-    CoacheesListComponent,
-    RhsListComponent,
+    AdminCoacheesListComponent,
+    AdminRhsListComponent,
     MeetingListCoachComponent,
     MeetingListCoacheeComponent,
     MeetingListRhComponent,
-    CoacheeItemComponent,
-    RhItemComponent,
+    AdminCoacheeItemComponent,
+    AdminRhItemComponent,
     RegisterCoachComponent,
     CodeDeontologieComponent,
     RegisterCoachFormComponent,
     RegisterCoachMessageComponent,
-    PossibleCoachsListComponent,
-    PossibleCoachItemComponent,
+    AdminPossibleCoachsListComponent,
+    AdminPossibleCoachItemComponent,
     ProfileCoachAdminComponent,
     ProfilePossibleCoachComponent,
     ProfileCoacheeAdminComponent,
@@ -124,7 +125,10 @@ import {NotAuthGuard} from "./service/not-auth-guard";
     CoacheeDashboardComponent,
     CoachDashboardComponent,
     RhDashboardComponent,
-    DashboardComponent
+    DashboardComponent,
+    WelcomeHeaderComponent,
+    AuthHeaderComponent,
+    SimpleHeaderComponent
   ],
   imports: [
     BrowserAnimationsModule,

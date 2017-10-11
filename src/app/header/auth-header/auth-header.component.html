@@ -1,0 +1,163 @@
+<header id="header" class="page-topbar user-connected"
+        [ngsReveal]="{scale:1, origin: 'top', distance:'200px', duration: 500}">
+  <div class="navbar navbar-fixed z-depth-2">
+    <nav>
+      <div class="navbar-color">
+        <div class="col s12">
+
+          <a (click)="goToHome()" class="brand-logo left hide-on-med-and-down">
+            <img src="assets/img/logo-eritis-new.png" alt="Eritis">
+          </a>
+          <a (click)="goToHome()" class="brand-logo brand-logo-phone center hide-on-large-only">
+            <img src="assets/img/logo-eritis-new.png" alt="Eritis">
+          </a>
+
+          <a data-activates="side-nav" class="button-collapse left">
+            <i class="mdi-navigation-menu"></i>
+          </a>
+
+          <ul class="right hide-on-med-and-down">
+            <!--<li *ngIf="canDisplayListOfCoach()"><a (click)="goToCoachs()">Liste Des Coachs</a></li>-->
+
+            <div *ngIf="!isAdmin">
+              <li [class.has-notif]="hasAvailableMeetings"
+                  [class.active]="router.url === '/dashboard/available_meetings'"
+                  *ngIf="isUserACoach((user|async))">
+                <a (click)="goToAvailableSessions()">
+                  Demandes en attente</a>
+              </li>
+
+              <li [class.active]="router.url === '/dashboard/meetings'">
+                <a (click)="goToMeetings()">
+                  Tableau de bord</a>
+              </li>
+
+              <!--<li *ngIf="user && isUserACoach()"><a (click)="goToProfile()">Profil</a></li>-->
+
+              <li>
+                <a class="dropdown-button-notifs" data-activates="notifs"><i
+                  class="material-icons">notifications</i></a>
+                <div class="notif-count" *ngIf="(notifications | async) != null || (notifications | async)?.length > 0">
+                  {{(notifications | async).length}}
+                </div>
+              </li>
+
+              <!--<li *ngIf="user"><a (click)="onLogout()">Déconnexion</a></li>-->
+
+              <li [class.active]="isEditingProfile()">
+                <a class="dropdown-button-profile" data-activates="profil">
+                  <!--<img src="{{(user | async)?.avatar_url}}" alt="profile image"-->
+                  <!--class="item-user-img circle responsive-img">-->
+                  <div class="item-user-img avatar"
+                       *ngIf="(user | async)?.avatar_url && (user | async)?.avatar_url !== undefined"
+                       [style.background-image]="'url(' + (user | async)?.avatar_url + ')'"></div>
+                  {{ (user | async)?.first_name}} {{ (user | async)?.last_name}}
+                </a>
+              </li>
+            </div>
+
+            <div *ngIf="isAdmin">
+              <li [class.active]="router.url === '/admin/coachs-list'">
+                <a (click)="navigateToCoachsList()">Nos Coachs</a></li>
+              <li [class.active]="router.url === '/admin/coachees-list'">
+                <a (click)="navigateToCoacheesList()">Nos Coachees</a></li>
+              <li [class.active]="router.url === '/admin/rhs-list'">
+                <a (click)="navigateToRhsList()">Nos Rhs</a></li>
+              <li [class.active]="router.url === '/admin/possible_coachs-list'">
+                <a (click)="navigateToPossibleCoachsList()">Demandes d'inscription</a></li>
+              <li>
+                <a (click)="goToWelcomePage()" class="btn-basic btn-small btn-red btn-plain">Quitter</a></li>
+            </div>
+          </ul>
+
+
+        </div>
+      </div>
+    </nav>
+
+  </div>
+
+</header>
+
+
+<!-- Side Nav -->
+<ul class="side-nav" id="side-nav">
+
+  <div class="side-nav-header">
+    <div>
+      <div class="side-nav-header-container z-depth-1" *ngIf="!isAdmin">
+        <!--<img src="{{(user | async)?.avatar_url}}" alt="profile image"-->
+        <!--class="side-nav-user-img circle responsive-img z-depth-2">-->
+        <div class="text-center">
+          <div class="side-nav-user-img avatar z-depth-2"
+               *ngIf="(user | async)?.avatar_url !== null && (user | async)?.avatar_url !== undefined"
+               [style.background-image]="'url(' + (user | async)?.avatar_url + ')'"></div>
+        </div>
+
+        <div class="side-nav-user-info text-center">
+          <h6>{{ (user | async)?.first_name}} {{ (user | async)?.last_name}}</h6>
+          <span>{{(user | async)?.email}}</span>
+        </div>
+      </div>
+
+      <div class="side-nav-header-container z-depth-1" *ngIf="isAdmin">
+        <h3>Admin</h3>
+      </div>
+    </div>
+  </div>
+
+  <!--<li *ngIf="canDisplayListOfCoach()"><a (click)="goToCoachs()">Liste Des Coachs</a></li>-->
+
+  <!--<li *ngIf="user"><a (click)="goToMeetings()">Vos meetings</a></li>-->
+  <div class="side-nav-items" *ngIf="!isAdmin">
+    <li *ngIf="isUserACoach((user | async))"
+        [class.active]="router.url === '/dashboard/available_meetings'"><a (click)="goToAvailableSessions()">Demandes
+      en attente</a></li>
+
+    <li [class.active]="router.url === '/dashboard/meetings'"><a
+      (click)="goToMeetings()">Tableau de bord</a></li>
+
+    <!--<li [hidden]="!user">-->
+    <!--<a class="dropdown-button" data-activates="notifs"><i class="material-icons">notifications</i></a>-->
+    <!--<div class="notif-count">0</div>-->
+    <!--</li>-->
+
+    <li [class.active]="isEditingProfile()">
+      <a (click)="goToProfile()">Modifier mon profil</a></li>
+
+    <li><a (click)="onLogout()">Déconnexion</a></li>
+  </div>
+
+  <div class="side-nav-items" *ngIf="isAdmin">
+    <li [class.active]="router.url === '/admin/coachs-list'">
+      <a (click)="navigateToCoachsList()">Nos Coachs</a></li>
+    <li [class.active]="router.url === '/admin/coachees-list'">
+      <a (click)="navigateToCoacheesList()">Nos Coachees</a></li>
+    <li [class.active]="router.url === '/admin/rhs-list'">
+      <a (click)="navigateToRhsList()">Nos Rhs</a></li>
+    <li [class.active]="router.url === '/admin/possible_coachs-list'">
+      <a (click)="navigateToPossibleCoachsList()">Demandes d'inscription</a></li>
+    <li>
+      <a (click)="goToWelcomePage()">Quitter</a></li>
+  </div>
+
+</ul>
+
+
+<ul id="notifs" class="dropdown-content dropdown-notifs collection">
+  <li class="notif-item collection-item" *ngIf="(notifications | async) == null">Vous n'avez pas de notification</li>
+  <div *ngIf="(notifications | async) != null">
+    <li class="notif-item collection-item notif-delete"><a (click)="readAllNotifications()">Marquer comme lues</a></li>
+    <li class="notif-item collection-item" *ngFor="let notif of (notifications | async)">
+      <p class="notif-date">{{printDateString(notif.date)}}</p>
+      <p class="notif-messsage">{{notif.message}}</p>
+    </li>
+  </div>
+</ul>
+
+<ul id="profil" class="dropdown-content dropdown-profil collection">
+  <li class="profil-item collection-item text-right" (click)="goToProfile()">
+    Modifier mon profil
+  </li>
+  <li class="profil-item collection-item text-right" (click)="onLogout()">Déconnexion</li>
+</ul>

@@ -9,7 +9,7 @@
           <div class="collection-item" *ngFor="let meeting of meetingsOpened | async">
             <er-meeting-item-coachee [meeting]="meeting"
                                      (cancelMeetingTimeEvent)="openCoacheeDeleteMeetingModal($event)"
-                                      [isAdmin]="isAdmin">
+                                     [isAdmin]="isAdmin">
             </er-meeting-item-coachee>
           </div>
         </div>
@@ -69,19 +69,29 @@
 
     <div class="action-modal-message">
       <div class="ratebar center">
-        <div class="rate-star" [class.selected]="sessionRate > 0" [class.pre-selected]="sessionPreRate > 0" (click)="setSessionRate(1)" (mouseenter)="setSessionPreRate(1)" (mouseleave)="setSessionPreRate(sessionRate)">
+        <div class="rate-star" [class.selected]="sessionRate > 0" [class.pre-selected]="sessionPreRate > 0"
+             (click)="setSessionRate(1)" (mouseenter)="setSessionPreRate(1)"
+             (mouseleave)="setSessionPreRate(sessionRate)">
           <i class="material-icons star">star</i>
         </div>
-        <div class="rate-star" [class.selected]="sessionRate > 1" [class.pre-selected]="sessionPreRate > 1" (click)="setSessionRate(2)" (mouseenter)="setSessionPreRate(2)" (mouseleave)="setSessionPreRate(sessionRate)">
+        <div class="rate-star" [class.selected]="sessionRate > 1" [class.pre-selected]="sessionPreRate > 1"
+             (click)="setSessionRate(2)" (mouseenter)="setSessionPreRate(2)"
+             (mouseleave)="setSessionPreRate(sessionRate)">
           <i class="material-icons star">star</i>
         </div>
-        <div class="rate-star" [class.selected]="sessionRate > 2" [class.pre-selected]="sessionPreRate > 2" (click)="setSessionRate(3)" (mouseenter)="setSessionPreRate(3)" (mouseleave)="setSessionPreRate(sessionRate)">
+        <div class="rate-star" [class.selected]="sessionRate > 2" [class.pre-selected]="sessionPreRate > 2"
+             (click)="setSessionRate(3)" (mouseenter)="setSessionPreRate(3)"
+             (mouseleave)="setSessionPreRate(sessionRate)">
           <i class="material-icons star">star</i>
         </div>
-        <div class="rate-star" [class.selected]="sessionRate > 3" [class.pre-selected]="sessionPreRate > 3" (click)="setSessionRate(4)" (mouseenter)="setSessionPreRate(4)" (mouseleave)="setSessionPreRate(sessionRate)">
+        <div class="rate-star" [class.selected]="sessionRate > 3" [class.pre-selected]="sessionPreRate > 3"
+             (click)="setSessionRate(4)" (mouseenter)="setSessionPreRate(4)"
+             (mouseleave)="setSessionPreRate(sessionRate)">
           <i class="material-icons star">star</i>
         </div>
-        <div class="rate-star" [class.selected]="sessionRate > 4" [class.pre-selected]="sessionPreRate > 4" (click)="setSessionRate(5)" (mouseenter)="setSessionPreRate(5)" (mouseleave)="setSessionPreRate(sessionRate)">
+        <div class="rate-star" [class.selected]="sessionRate > 4" [class.pre-selected]="sessionPreRate > 4"
+             (click)="setSessionRate(5)" (mouseenter)="setSessionPreRate(5)"
+             (mouseleave)="setSessionPreRate(sessionRate)">
           <i class="material-icons star">star</i>
         </div>
       </div>

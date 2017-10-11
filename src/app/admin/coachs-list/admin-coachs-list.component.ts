@@ -1,8 +1,9 @@
-import {AfterViewInit, ChangeDetectorRef, Component, OnDestroy, OnInit} from "@angular/core";
+import {AfterViewInit, Component, OnDestroy, OnInit} from "@angular/core";
 import {Observable} from "rxjs/Observable";
 import {Coach} from "../../model/Coach";
 import {Subscription} from "rxjs/Subscription";
 import {CoachCoacheeService} from "../../service/coach_coachee.service";
+import {BehaviorSubject} from "rxjs/BehaviorSubject";
 
 declare var Materialize: any;
 
@@ -13,17 +14,17 @@ declare var Materialize: any;
 })
 export class AdminCoachsListComponent implements OnInit, AfterViewInit, OnDestroy {
 
-  private coachs: Observable<Array<Coach>>;
+  private coachs: BehaviorSubject<Array<Coach>>;
   private getAllCoachsSub: Subscription;
 
   loading = true;
 
-  constructor(private apiService: CoachCoacheeService, private cd: ChangeDetectorRef) {
+  constructor(private apiService: CoachCoacheeService) {
+    this.coachs = new BehaviorSubject(null);
   }
 
   ngOnInit() {
     window.scrollTo(0, 0);
-    this.loading = true;
   }
 
   ngAfterViewInit(): void {
@@ -38,13 +39,13 @@ export class AdminCoachsListComponent implements OnInit, AfterViewInit, OnDestro
   }
 
   private fetchData() {
+    this.loading = true;
     this.getAllCoachsSub = this.apiService.getAllCoachs(true).subscribe(
       (coachs: Array<Coach>) => {
         console.log('getAllCoachs subscribe, coachs : ', coachs);
 
-        this.coachs = Observable.of(coachs);
-        this.cd.detectChanges();
         this.loading = false;
+        this.coachs.next(coachs);
       }
     );
   }

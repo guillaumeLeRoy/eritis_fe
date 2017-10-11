@@ -60,6 +60,8 @@ export class MeetingDateComponent implements OnInit, OnDestroy {
    */
   private meetingId?: string;
 
+  private loading = false;
+
   months = ['Janvier', 'Février', 'Mars', 'Avril', 'Mai', 'Juin', 'Juillet', 'Août', 'Septembre', 'Octobre', 'Novembre', 'Décembre'];
   days = ['Dimanche', 'Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi'];
 
@@ -71,7 +73,6 @@ export class MeetingDateComponent implements OnInit, OnDestroy {
   private potentialDatesArray: Array<MeetingDate>;
   private potentialDates: Observable<MeetingDate[]>;
 
-  private displayErrorBookingDate = false;
   private connectedUser: Observable<ApiUser>;
   private subscriptionConnectUser: Subscription;
 
@@ -269,6 +270,8 @@ export class MeetingDateComponent implements OnInit, OnDestroy {
     console.log('finish, meetingGoal : ', this.meetingGoal);
     console.log('finish, meetingContext : ', this.meetingContext);
 
+    this.loading = true;
+
     // create or update meeting
     // save GOAL and CONTEXT
     // save meeting dates
@@ -284,12 +287,19 @@ export class MeetingDateComponent implements OnInit, OnDestroy {
               .createMeeting(user.id, this.meetingContext, this.meetingGoal, this.potentialDatesArray);
           }
         })
-      .subscribe(
+      .flatMap(
         (meeting: Meeting) => {
+          return this.authService.refreshConnectedUserAsObservable();
+        })
+      .subscribe(
+        (user: ApiUser) => {
           this.router.navigate(['/meetings']);
+          this.loading = false;
           Materialize.toast('Vos disponibilités on été enregitrées !', 3000, 'rounded');
+          this.router.navigate(['dashboard/meetings']);
         }, (error) => {
           console.log('getOrCreateMeeting error', error);
+          this.loading = false;
           Materialize.toast("Impossible d'enregistrer vos disponibilités", 3000, 'rounded')
         }
       );

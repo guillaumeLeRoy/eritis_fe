@@ -1,7 +1,7 @@
 import {User} from "../user/user";
 import {Router} from "@angular/router";
 import {Injectable} from "@angular/core";
-import {BehaviorSubject, Observable, Subject} from "rxjs";
+import {BehaviorSubject, Observable} from "rxjs";
 import {PromiseObservable} from "rxjs/observable/PromiseObservable";
 import {Headers, Http, RequestOptionsArgs, Response, URLSearchParams} from "@angular/http";
 import {ApiUser} from "../model/ApiUser";
@@ -13,7 +13,6 @@ import {LoginResponse} from "../model/LoginResponse";
 import {HR} from "../model/HR";
 import {PotentialCoachee} from "../model/PotentialCoachee";
 import {PotentialRh} from "../model/PotentialRh";
-import {EmptyObservable} from "rxjs/observable/EmptyObservable";
 import {SessionService} from "./session.service";
 
 declare var Materialize: any;
@@ -92,8 +91,8 @@ export class AuthService {
   private onAuthStateChangedCalled = false;
   // private user: User
   private isUserAuth = new BehaviorSubject<boolean>(false);//NOT auth by default
-  // private ApiUserSubject = new BehaviorSubject<ApiUser>(null);//NOT auth by default
-  private ApiUserSubject = new Subject<ApiUser>();//NOT auth by default
+  private ApiUserSubject = new BehaviorSubject<ApiUser>(null);//NOT auth by default
+  // private ApiUserSubject = new Subject<ApiUser>();//NOT auth by default
   /* flag to know if we are in the sign in or sign up process. Block updateAuthStatus(FBuser) is true */
   private isSignInOrUp = false;
 
@@ -120,7 +119,19 @@ export class AuthService {
   /*
    * Get connected user from backend
    */
-  refreshConnectedUser(): Observable<Coach | Coachee | HR | null> {
+  refreshConnectedUser() {
+    console.log("refreshConnectedUser");
+
+    let obs: Observable<Coach | Coachee | HR> = this.refreshConnectedUserAsObservable();
+    if (obs != null) {
+      obs.subscribe();
+    }
+  }
+
+  /*
+   * Get connected user from backend
+   */
+  refreshConnectedUserAsObservable(): Observable<Coach | Coachee | HR> | null {
     console.log("refreshConnectedUser");
 
     if (this.ApiUser != null) {
@@ -134,7 +145,7 @@ export class AuthService {
     } else {
       console.log("refreshConnectedUser, no connected user");
     }
-    return new EmptyObservable();
+    return null;
   }
 
   private fetchCoach(userId: string): Observable<Coach> {

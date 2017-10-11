@@ -1,0 +1,18 @@
+<div class="row" [ngsReveal]="{origin: 'left', distance: '100px', scale: 1, delay: 200, duration: 1000}">
+  <h3 class="col-lg-12 black-text">Demandes d'inscription</h3>
+
+  <div class="col-lg-12 card collection">
+
+    <div *ifLoader="loading">
+      <div class="collection-item" *ngFor="let coach of possibleCoachs | async">
+        <er-admin-possible-coach-item [coach]="coach" (coachAdded)="updateList()"></er-admin-possible-coach-item>
+      </div>
+
+      <div class="text-center" [hidden]="(possibleCoachs | async)?.length > 0">
+        <p class="no-meeting">Les demandes apparaîtront ici</p>
+      </div>
+    </div>
+
+  </div>
+</div> <!--end row-->
+

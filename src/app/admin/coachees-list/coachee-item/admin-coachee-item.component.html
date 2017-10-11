@@ -1,0 +1,40 @@
+<div class="meeting-item col-lg-12">
+
+  <!-- COACHEE -->
+  <div class="row">
+    <div class="meeting-item-header col-md-12 col-lg-6">
+      <div>
+        <div class="meeting-item-coach has-coach" (click)="goToCoacheeProfile(coachee.id)">
+          <div>
+            <div class="meeting-item-coach-avatar avatar"
+                 [style.background-image]="'url(' + coachee.avatar_url + ')'"></div>
+          </div>
+
+          <div>
+            <p class="meeting-item-coach-name black-text bold">{{ coachee.first_name}} {{ coachee.last_name}}</p>
+            <span class="italic">{{ coachee.email }}</span>
+          </div>
+        </div>
+
+        <!-- PLAN -->
+        <div class="meeting-item-date">
+          <span class="meeting-item-date-date" i18n><span class="blue-text">{{ coachee.plan.sessions_count }}</span> { coachee.plan.sessions_count,
+          plural, =0 {séance} =1 {séance} other {séances}}</span>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- GOAL -->
+    <div class="meeting-item-body col-md-12 col-lg-6">
+      <div class="meeting-item-body-content">
+        <span>Inscrit le {{ printDateString(coachee.start_date) }}</span>
+      </div>
+
+    </div><!--end meeting-item-body-->
+
+
+  </div><!--end coachee-->
+
+
+</div><!--end meeting-item-->
