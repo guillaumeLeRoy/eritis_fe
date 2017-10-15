@@ -125,7 +125,7 @@ export class ProfileRhComponent implements OnInit, OnDestroy {
           let headers = new Headers();
           headers.append('Accept', 'application/json');
 
-          return this.authService.put(AuthService.PUT_RH_PROFILE_PICT, params, formData, {headers: headers})
+          return this.authService.put(AuthService.PUT_HR_PROFILE_PICT, params, formData, {headers: headers})
             .map(res => res.json())
             .catch(error => Observable.throw(error))
         }
