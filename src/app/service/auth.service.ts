@@ -44,6 +44,7 @@ export class AuthService {
   public static GET_COACHEE_NOTIFICATIONS = "/v1/coachees/:id/notifications";
   public static PUT_COACHEE_NOTIFICATIONS_READ = "/v1/coachees/:id/notifications/read";
   public static PUT_COACHEE_PROFILE_PICT = "/v1/coachees/:id/profile_picture";
+  public static PUT_COACHEE_TIMEZONE = "/v1/coachees/:id/timezone";
 
   /* coach */
   public static UPDATE_COACH = "/v1/coachs/:id";
@@ -53,19 +54,21 @@ export class AuthService {
   public static GET_COACH_NOTIFICATIONS = "/v1/coachs/:id/notifications";
   public static PUT_COACH_NOTIFICATIONS_READ = "/v1/coachs/:id/notifications/read";
   public static PUT_COACH_PROFILE_PICT = "/v1/coachs/:id/profile_picture";
+  public static PUT_COACH_TIMEZONE = "/v1/coachs/:id/timezone";
 
   /* HR */
-  public static GET_RHS = "/v1/rhs";
-  public static UPDATE_RH = "/v1/rhs/:id";
-  public static POST_SIGN_UP_RH = "/v1/rhs";
-  public static GET_COACHEES_FOR_RH = "/v1/rhs/:uid/coachees";
-  public static GET_POTENTIAL_COACHEES_FOR_RH = "/v1/rhs/:uid/potentials";
-  public static GET_RH_FOR_ID = "/v1/rhs/:id";
-  public static GET_USAGE_RATE_FOR_RH = "/v1/rhs/:id/usage";
-  public static GET_RH_NOTIFICATIONS = "/v1/rhs/:id/notifications";
-  public static PUT_RH_NOTIFICATIONS_READ = "/v1/rhs/:id/notifications/read";
+  public static GET_HRS = "/v1/rhs";
+  public static UPDATE_HR = "/v1/rhs/:id";
+  public static POST_SIGN_UP_HR = "/v1/rhs";
+  public static GET_COACHEES_FOR_HR = "/v1/rhs/:uid/coachees";
+  public static GET_POTENTIAL_COACHEES_FOR_HR = "/v1/rhs/:uid/potentials";
+  public static GET_HR_FOR_ID = "/v1/rhs/:id";
+  public static GET_USAGE_RATE_FOR_HR = "/v1/rhs/:id/usage";
+  public static GET_HR_NOTIFICATIONS = "/v1/rhs/:id/notifications";
+  public static PUT_HR_NOTIFICATIONS_READ = "/v1/rhs/:id/notifications/read";
   public static POST_COACHEE_OBJECTIVE = "/v1/rhs/:uidRH/coachees/:uidCoachee/objective";//create new objective for this coachee
-  public static PUT_RH_PROFILE_PICT = "/v1/rhs/:id/profile_picture";
+  public static PUT_HR_PROFILE_PICT = "/v1/rhs/:id/profile_picture";
+  public static PUT_HR_TIMEZONE = "/v1/rhs/:id/timezone";
 
 
   /* admin */
@@ -176,7 +179,7 @@ export class AuthService {
 
   private fetchRh(userId: string): Observable<HR> {
     let param = [userId];
-    let obs = this.get(AuthService.GET_RH_FOR_ID, param);
+    let obs = this.get(AuthService.GET_HR_FOR_ID, param);
     return obs.map(
       (res: Response) => {
         console.log("fetchRh, obtained from API : ", res);
@@ -538,7 +541,7 @@ export class AuthService {
   }
 
   signUpRh(user: User): Observable<ApiUser> {
-    return this.signup(user, AuthService.POST_SIGN_UP_RH);
+    return this.signup(user, AuthService.POST_SIGN_UP_HR);
   }
 
 
@@ -620,16 +623,42 @@ export class AuthService {
         return fbUser.getToken();
       });
     let firebaseObs = PromiseObservable.create(firebasePromise);
-    return firebaseObs.flatMap(
-      (token: string) => {
-        //user should be ok just after a sign up
-        let fbUser = this.firebase.auth().currentUser;
-        this.sessionService.saveSessionTTL();
-        //now sign up in AppEngine
-        this.isSignInOrUp = false;
-        return this.getUserForFirebaseId(fbUser.uid, token);
-      }
-    );
+    return firebaseObs
+      .flatMap(
+        (token: string) => {
+          //user should be ok just after a sign up
+          let fbUser = this.firebase.auth().currentUser;
+          this.sessionService.saveSessionTTL();
+          //now sign up in AppEngine
+          this.isSignInOrUp = false;
+          return this.getUserForFirebaseId(fbUser.uid, token);
+        }
+      )
+      .flatMap(
+        (user: Coach | Coachee | HR) => {
+          return this.updateUserTimeZone(user);
+        }
+      );
+  }
+
+  updateUserTimeZone(user: Coach | Coachee | HR): Observable<Coach | Coachee | HR> {
+    let body = {
+      "time_zone_offset": new Date().getTimezoneOffset().toString()
+    };
+    let params = [user.id];
+    let path;
+    if (user instanceof Coach) {
+      path = AuthService.PUT_COACH_TIMEZONE;
+    } else if (user instanceof Coachee) {
+      path = AuthService.PUT_COACHEE_TIMEZONE;
+    } else if (user instanceof HR) {
+      path = AuthService.PUT_HR_TIMEZONE;
+    }
+    return this.put(path, params, body).map(
+      (response: Response) => {
+        // return Coach.parseCoach(response.json());
+        return user;
+      });
   }
 
   loginOut() {
@@ -687,7 +716,7 @@ export class AuthService {
     };
 
     let params = [id];
-    return this.put(AuthService.UPDATE_RH, params, body).map(
+    return this.put(AuthService.UPDATE_HR, params, body).map(
       (response: Response) => {
         //convert to HR
         return HR.parseRh(response.json());
