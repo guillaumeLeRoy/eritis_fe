@@ -1,13 +1,13 @@
-import {ChangeDetectorRef, Component, Injectable, OnDestroy, OnInit} from "@angular/core";
-import {NgbDatepickerI18n, NgbDateStruct} from "@ng-bootstrap/ng-bootstrap";
-import {ApiUser} from "../../model/ApiUser";
-import {AuthService} from "../../service/auth.service";
-import {Observable, Subscription} from "rxjs";
-import {MeetingDate} from "../../model/MeetingDate";
-import {ActivatedRoute, Router} from "@angular/router";
-import {MeetingsService} from "../../service/meetings.service";
-import {Utils} from "../../utils/Utils";
-import {Meeting} from "../../model/Meeting";
+import {ChangeDetectorRef, Component, Injectable, OnDestroy, OnInit} from '@angular/core';
+import {NgbDatepickerI18n, NgbDateStruct} from '@ng-bootstrap/ng-bootstrap';
+import {ApiUser} from '../../model/ApiUser';
+import {AuthService} from '../../service/auth.service';
+import {Observable, Subscription} from 'rxjs';
+import {MeetingDate} from '../../model/MeetingDate';
+import {ActivatedRoute, Router} from '@angular/router';
+import {MeetingsService} from '../../service/meetings.service';
+import {Utils} from '../../utils/Utils';
+import {Meeting} from '../../model/Meeting';
 
 declare var Materialize: any;
 
@@ -62,9 +62,6 @@ export class MeetingDateComponent implements OnInit, OnDestroy {
 
   private loading = false;
 
-  months = ['Janvier', 'Février', 'Mars', 'Avril', 'Mai', 'Juin', 'Juillet', 'Août', 'Septembre', 'Octobre', 'Novembre', 'Décembre'];
-  days = ['Dimanche', 'Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi'];
-
   now = new Date();
   dateModel: NgbDateStruct = null;
   timeRange: number[] = [10, 18];
@@ -90,15 +87,15 @@ export class MeetingDateComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     window.scrollTo(0, 0);
-    console.log("MeetingDateComponent onInit");
+    console.log('MeetingDateComponent onInit');
 
     // meetingId should be in the router
     this.route.params.subscribe(
       (params: any) => {
         this.meetingId = params['meetingId'];
-        console.log("route param, meetingId : " + this.meetingId);
+        console.log('route param, meetingId : ' + this.meetingId);
 
-        if (this.meetingId != undefined) {
+        if (this.meetingId !== undefined) {
           this.loadMeetingPotentialTimes(this.meetingId);
         }
       }
@@ -114,6 +111,12 @@ export class MeetingDateComponent implements OnInit, OnDestroy {
           this.onConnectedUserReceived(user);
         }
       );
+    }
+  }
+
+  ngOnDestroy(): void {
+    if (this.subscriptionConnectUser) {
+      this.subscriptionConnectUser.unsubscribe();
     }
   }
 
@@ -136,7 +139,7 @@ export class MeetingDateComponent implements OnInit, OnDestroy {
       this.potentialDates = Observable.of(this.potentialDatesArray);
       this.cd.detectChanges();
 
-      //reset progress bar values
+      // reset progress bar values
       this.resetValues();
       Materialize.toast('Plage modifiée !', 3000, 'rounded')
     } else {
@@ -158,7 +161,7 @@ export class MeetingDateComponent implements OnInit, OnDestroy {
 
   modifyPotentialDate(meetingDate: MeetingDate) {
     console.log('modifyPotentialDate, meetingDate', meetingDate);
-    //switch to edit mode
+    // switch to edit mode
     this.isEditingPotentialDate = true;
     this.mEditingPotentialTime = meetingDate;
     // position time selector
@@ -234,9 +237,9 @@ export class MeetingDateComponent implements OnInit, OnDestroy {
       (dates: MeetingDate[]) => {
         console.log('loadMeetingPotentialTimes : ', dates);
         if (dates != null) {
-          //clear array
+          // clear array
           this.potentialDatesArray = new Array<MeetingDate>();
-          //add received dates
+          // add received dates
           this.potentialDatesArray.push(...dates);
         }
         this.potentialDates = Observable.of(dates);
@@ -248,11 +251,13 @@ export class MeetingDateComponent implements OnInit, OnDestroy {
   }
 
   private addPotentialDate(date: MeetingDate) {
-    //add received dates
-    this.potentialDatesArray.push(date);
-    this.potentialDates = Observable.of(this.potentialDatesArray);
-    this.cd.detectChanges();
-    Materialize.toast('Plage ajoutée !', 3000, 'rounded');
+    // add received dates if no interference
+    if (this.isPotentialDateOk(date)) {
+      this.potentialDatesArray.push(date);
+      this.potentialDates = Observable.of(this.potentialDatesArray);
+      this.cd.detectChanges();
+      Materialize.toast('Plage ajoutée !', 3000, 'rounded');
+    }
   }
 
   /* Call this method to check if all required params are correctly set. */
@@ -300,26 +305,35 @@ export class MeetingDateComponent implements OnInit, OnDestroy {
         }, (error) => {
           console.log('getOrCreateMeeting error', error);
           this.loading = false;
-          Materialize.toast("Impossible d'enregistrer vos disponibilités", 3000, 'rounded')
+          Materialize.toast('Impossible d\'enregistrer vos disponibilités', 3000, 'rounded')
         }
       );
   }
 
-  ngOnDestroy(): void {
-    if (this.subscriptionConnectUser) {
-      this.subscriptionConnectUser.unsubscribe();
-    }
-  }
-
-  //callback when "goal" for this meeting has changed
+  // callback when "goal" for this meeting has changed
   onGoalValueUpdated(goal: string) {
     console.log('onGoalUpdated goal', goal);
     this.meetingGoal = goal;
   }
 
-  //callback when "context" for this meeting has changed
+  // callback when "context" for this meeting has changed
   onContextValueUpdated(context: string) {
     console.log('onContextValueUpdated context', context);
     this.meetingContext = context;
+  }
+
+  // check if no other potential date interferes
+  isPotentialDateOk(meeting: MeetingDate): boolean {
+    let start = meeting.start_date;
+    let end = meeting.end_date;
+
+    for (let potential of this.potentialDatesArray) {
+      if ( (start >= potential.start_date && start < potential.end_date) || ((end > potential.start_date && end <= potential.end_date)) ) {
+        Materialize.toast('Cette plage horaire interfère avec une autre', 3000, 'rounded');
+        return false;
+      }
+    }
+
+    return true;
   }
 }
