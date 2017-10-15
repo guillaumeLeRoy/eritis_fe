@@ -70,8 +70,11 @@ export class MeetingDateComponent implements OnInit, OnDestroy {
   private potentialDatesArray: Array<MeetingDate>;
   private potentialDates: Observable<MeetingDate[]>;
 
+  private meetingsAgreed: Array<Meeting>;
+
   private connectedUser: Observable<ApiUser>;
   private subscriptionConnectUser: Subscription;
+  private getAllMeetingsForCoacheeIdSubscription?: Subscription;
 
   /* MANDATORY */
   private meetingGoal: string;
@@ -81,11 +84,15 @@ export class MeetingDateComponent implements OnInit, OnDestroy {
   isEditingPotentialDate = false;
   private mEditingPotentialTime: MeetingDate;
 
+  private loadingMeetings = false;
+
   constructor(private router: Router, private route: ActivatedRoute, private meetingService: MeetingsService, private authService: AuthService, private cd: ChangeDetectorRef) {
     this.potentialDatesArray = new Array<MeetingDate>();
   }
 
   ngOnInit() {
+    console.log("ngOnInit");
+    this.loadingMeetings = true;
     window.scrollTo(0, 0);
     console.log('MeetingDateComponent onInit');
 
@@ -118,11 +125,53 @@ export class MeetingDateComponent implements OnInit, OnDestroy {
     if (this.subscriptionConnectUser) {
       this.subscriptionConnectUser.unsubscribe();
     }
+
+    if (this.getAllMeetingsForCoacheeIdSubscription) {
+      this.getAllMeetingsForCoacheeIdSubscription.unsubscribe();
+    }
   }
 
   private onConnectedUserReceived(user: ApiUser) {
     this.connectedUser = Observable.of(user);
+    if (user)
+      this.getAllMeetingsForCoachee(user.id);
     this.cd.detectChanges();
+  }
+
+  private getAllMeetingsForCoachee(coacheeId: string) {
+    this.loadingMeetings = true;
+    this.getAllMeetingsForCoacheeIdSubscription = this.meetingService.getAllMeetingsForCoacheeId(coacheeId)
+      .subscribe(
+        (meetings: Meeting[]) => {
+          console.log('got meetings for coachee', meetings);
+          this.onMeetingsObtained(meetings);
+        }, (error) => {
+          console.log('got meetings for coachee ERROR', error);
+          this.loadingMeetings = false;
+        }
+      );
+  }
+
+  private onMeetingsObtained(meetings: Array<Meeting>) {
+    console.log('got meetings for coachee', meetings);
+
+    this.getAgreedMeetings(meetings);
+    this.loadingMeetings = false;
+    this.cd.detectChanges();
+  }
+
+  private getAgreedMeetings(meetings: Array<Meeting>) {
+    console.log('getAgreedMeetings');
+
+    if (meetings) {
+      this.meetingsAgreed = new Array<Meeting>();
+      for (let meeting of meetings) {
+        if (meeting.isOpen && meeting.coach) {
+          console.log('getAgreedMeetings, add open meeting', meeting);
+          this.meetingsAgreed.push(meeting);
+        }
+      }
+    }
   }
 
   bookOrUpdateADate() {
@@ -326,6 +375,15 @@ export class MeetingDateComponent implements OnInit, OnDestroy {
   isPotentialDateOk(meeting: MeetingDate): boolean {
     let start = meeting.start_date;
     let end = meeting.end_date;
+
+    if (this.meetingsAgreed) {
+      for (let agreed of this.meetingsAgreed) {
+        if ( Utils.sameDay(agreed.agreed_date, meeting) ) {
+          Materialize.toast('Vous avez déjà un meeting prévu ce jour là', 3000, 'rounded');
+          return false;
+        }
+      }
+    }
 
     for (let potential of this.potentialDatesArray) {
       if ( (start >= potential.start_date && start < potential.end_date) || ((end > potential.start_date && end <= potential.end_date)) ) {
