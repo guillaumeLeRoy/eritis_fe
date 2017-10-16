@@ -344,7 +344,7 @@ export class MeetingItemCoachComponent implements OnInit, AfterViewInit, OnDestr
       // TODO could be improved
       if (Utils.getDayAndMonthFromTimestamp(date.start_date) === Utils.getDate(selected)) {
         for (let _h = Utils.getHoursFromTimestamp(date.start_date); _h < Utils.getHoursFromTimestamp(date.end_date); _h++) {
-          if (this.isTimeslotFree(_h))
+          if (this.isTimeslotFree(new Date(date.start_date), _h))
             hours.push(_h);
         }
       }
@@ -390,10 +390,10 @@ export class MeetingItemCoachComponent implements OnInit, AfterViewInit, OnDestr
   }
 
   // Return false if coach has already an agreed meeting for this timeslot
-  isTimeslotFree(h: number): boolean {
+  isTimeslotFree(date: Date, h: number): boolean {
     if (this.bookedMeetings) {
       for (let meeting of this.bookedMeetings) {
-        if (Utils.sameHour(new Date(meeting.agreed_date.start_date), h))
+        if (Utils.sameDay(date, new Date(meeting.agreed_date.start_date)) && Utils.sameHour(new Date(meeting.agreed_date.start_date), h))
           return false;
       }
     }
