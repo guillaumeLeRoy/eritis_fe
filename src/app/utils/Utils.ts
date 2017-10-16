@@ -51,7 +51,7 @@ export class Utils {
 
   /* Return true if two dates are the same day  */
   static sameDay(date1: Date, date2: Date) {
-    return (date1.getDay() === date2.getDay());
+    return (date1.getDate() === date2.getDate());
   }
 
   /* Return true if date hour value is h  */
@@ -125,4 +125,9 @@ export class Utils {
       return '0' + m;
     return m.toString();
   }
+
+  static datesEqual(date1: NgbDateStruct, date2: NgbDateStruct) {
+    return (date1.year === date2.year) && (date1.month === date2.month) && (date1.day === date2.day);
+  }
+
 }
