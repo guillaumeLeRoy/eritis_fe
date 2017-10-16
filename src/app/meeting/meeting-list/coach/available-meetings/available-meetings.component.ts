@@ -1,13 +1,13 @@
-import {AfterViewInit, ChangeDetectorRef, Component, OnDestroy, OnInit} from "@angular/core";
-import {Observable} from "rxjs/Observable";
-import {Meeting} from "../../../../model/Meeting";
-import {MeetingsService} from "../../../../service/meetings.service";
-import {AuthService} from "../../../../service/auth.service";
-import {Subscription} from "rxjs/Subscription";
-import {Coach} from "../../../../model/Coach";
-import {ApiUser} from "../../../../model/ApiUser";
-import {Router} from "@angular/router";
-import {MeetingDate} from "../../../../model/MeetingDate";
+import {AfterViewInit, ChangeDetectorRef, Component, OnDestroy, OnInit} from '@angular/core';
+import {Observable} from 'rxjs/Observable';
+import {Meeting} from '../../../../model/Meeting';
+import {MeetingsService} from '../../../../service/meetings.service';
+import {AuthService} from '../../../../service/auth.service';
+import {Subscription} from 'rxjs/Subscription';
+import {Coach} from '../../../../model/Coach';
+import {ApiUser} from '../../../../model/ApiUser';
+import {Router} from '@angular/router';
+import {MeetingDate} from '../../../../model/MeetingDate';
 declare var $: any;
 declare var Materialize: any;
 
@@ -19,11 +19,13 @@ declare var Materialize: any;
 export class AvailableMeetingsComponent implements OnInit, AfterViewInit, OnDestroy {
 
   private availableMeetings: Observable<Meeting[]>;
+  private bookedMeetings: Meeting[];
 
   private hasAvailableMeetings = false;
 
   private connectedUserSubscription: Subscription;
   private getAllMeetingsSubscription: Subscription;
+  private getBookedMeetingsSubscription: Subscription;
   private user: Observable<ApiUser>;
 
   private selectedDate: string;
@@ -54,6 +56,10 @@ export class AvailableMeetingsComponent implements OnInit, AfterViewInit, OnDest
     if (this.getAllMeetingsSubscription) {
       this.getAllMeetingsSubscription.unsubscribe();
     }
+
+    if (this.getBookedMeetingsSubscription) {
+      this.getBookedMeetingsSubscription.unsubscribe();
+    }
   }
 
   getConnectedUser() {
@@ -74,13 +80,14 @@ export class AvailableMeetingsComponent implements OnInit, AfterViewInit, OnDest
       if (user instanceof Coach) {
         // coach
         console.log('get a coach');
-        this.getAllMeetings();
+        this.getAvailableMeetings();
+        this.getBookedMeetings(user.id);
       }
 
     }
   }
 
-  private getAllMeetings() {
+  private getAvailableMeetings() {
     this.getAllMeetingsSubscription = this.meetingService.getAvailableMeetings().subscribe(
       (meetings: Meeting[]) => {
         console.log('got getAllMeetings', meetings);
@@ -90,6 +97,42 @@ export class AvailableMeetingsComponent implements OnInit, AfterViewInit, OnDest
         this.cd.detectChanges();
       }
     );
+  }
+
+  private getBookedMeetings(coachId: string) {
+    this.loading = true;
+    this.getBookedMeetingsSubscription = this.meetingService.getAllMeetingsForCoachId(coachId)
+      .subscribe(
+        (meetings: Meeting[]) => {
+          console.log('got meetings for coachee', meetings);
+          this.onMeetingsObtained(meetings);
+        }, (error) => {
+          console.log('got meetings for coachee ERROR', error);
+          this.loading = false;
+        }
+      );
+  }
+
+  private onMeetingsObtained(meetings: Array<Meeting>) {
+    console.log('got meetings for coachee', meetings);
+
+    this.getAgreedMeetings(meetings);
+    this.loading = false;
+    this.cd.detectChanges();
+  }
+
+  private getAgreedMeetings(meetings: Array<Meeting>) {
+    console.log('getAgreedMeetings');
+
+    if (meetings) {
+      this.bookedMeetings = new Array<Meeting>();
+      for (let meeting of meetings) {
+        if (meeting.isOpen && meeting.coach) {
+          console.log('getAgreedMeetings, add open meeting', meeting);
+          this.bookedMeetings.push(meeting);
+        }
+      }
+    }
   }
 
   confirmPotentialDate(meetingId: string): Observable<Meeting> {
@@ -142,7 +185,7 @@ export class AvailableMeetingsComponent implements OnInit, AfterViewInit, OnDest
         console.log('test, onSubmitValidateMeeting 4');
 
         this.coachValidateModalVisibility(false);
-        //navigate to dashboard
+        // navigate to dashboard
         this.router.navigate(['dashboard/meetings']);
         this.cd.detectChanges();
       }, (error) => {

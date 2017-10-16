@@ -50,10 +50,14 @@ export class Utils {
   }
 
   /* Return true if two dates are the same day  */
-  static sameDay(date1: MeetingDate, date2: MeetingDate) {
-    let d1 = new Date(date1.start_date);
-    let d2 = new Date(date2.start_date);
-    return (d1.getDay() === d2.getDay());
+  static sameDay(date1: Date, date2: Date) {
+    return (date1.getDay() === date2.getDay());
+  }
+
+  /* Return true if date hour value is h  */
+  static sameHour(date: Date, h: number) {
+    console.log("sameHour " + h, date.getHours());
+    return (date.getHours() === h);
   }
 
   /* Return a NgbDateStruct from a string date */

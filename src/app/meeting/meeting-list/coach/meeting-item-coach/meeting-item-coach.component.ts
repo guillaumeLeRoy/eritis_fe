@@ -7,19 +7,19 @@ import {
   OnDestroy,
   OnInit,
   Output
-} from "@angular/core";
-import {Meeting} from "../../../../model/Meeting";
-import {Observable} from "rxjs";
-import {MeetingReview} from "../../../../model/MeetingReview";
-import {Coachee} from "../../../../model/Coachee";
-import {MeetingDate} from "../../../../model/MeetingDate";
-import {MeetingsService} from "../../../../service/meetings.service";
-import {Coach} from "../../../../model/Coach";
-import {AuthService} from "../../../../service/auth.service";
-import {ApiUser} from "../../../../model/ApiUser";
-import {Subscription} from "rxjs/Subscription";
-import {Router} from "@angular/router";
-import {Utils} from "../../../../utils/Utils";
+} from '@angular/core';
+import {Meeting} from '../../../../model/Meeting';
+import {Observable} from 'rxjs';
+import {MeetingReview} from '../../../../model/MeetingReview';
+import {Coachee} from '../../../../model/Coachee';
+import {MeetingDate} from '../../../../model/MeetingDate';
+import {MeetingsService} from '../../../../service/meetings.service';
+import {Coach} from '../../../../model/Coach';
+import {AuthService} from '../../../../service/auth.service';
+import {ApiUser} from '../../../../model/ApiUser';
+import {Subscription} from 'rxjs/Subscription';
+import {Router} from '@angular/router';
+import {Utils} from '../../../../utils/Utils';
 
 declare var $: any;
 declare var Materialize: any;
@@ -35,7 +35,10 @@ export class MeetingItemCoachComponent implements OnInit, AfterViewInit, OnDestr
   meeting: Meeting;
 
   @Input()
-  isAdmin: boolean = false;
+  bookedMeetings: Meeting[];
+
+  @Input()
+  isAdmin = false;
 
   @Output()
   onValidateDateBtnClickEmitter = new EventEmitter();
@@ -92,7 +95,7 @@ export class MeetingItemCoachComponent implements OnInit, AfterViewInit, OnDestr
   }
 
   ngOnInit() {
-    console.log("ngOnInit");
+    console.log('ngOnInit');
 
     this.onRefreshRequested();
 
@@ -102,7 +105,7 @@ export class MeetingItemCoachComponent implements OnInit, AfterViewInit, OnDestr
   }
 
   ngAfterViewInit(): void {
-    console.log("ngAfterViewInit");
+    console.log('ngAfterViewInit');
     this.getGoal();
     this.getContext();
     this.getReviewValue();
@@ -114,7 +117,7 @@ export class MeetingItemCoachComponent implements OnInit, AfterViewInit, OnDestr
   }
 
   ngOnDestroy(): void {
-    console.log("ngOnDestroy");
+    console.log('ngOnDestroy');
 
     if (this.mSessionReviewSubscription != null) {
       this.mSessionReviewSubscription.unsubscribe();
@@ -173,7 +176,7 @@ export class MeetingItemCoachComponent implements OnInit, AfterViewInit, OnDestr
     this.mSessionPotentialTimesSubscription = this.meetingService.getMeetingPotentialTimes(this.meeting.id, this.isAdmin)
       .subscribe(
         (dates: MeetingDate[]) => {
-          console.log("potential dates obtained, ", dates);
+          console.log('potential dates obtained, ', dates);
 
           if (dates != null) {
             dates.sort(function (a, b) {
@@ -209,7 +212,7 @@ export class MeetingItemCoachComponent implements OnInit, AfterViewInit, OnDestr
 
     this.mSessionGoalSubscription = this.meetingService.getMeetingGoal(this.meeting.id, this.isAdmin).subscribe(
       (reviews: MeetingReview[]) => {
-        console.log("getMeetingGoal, got goal : ", reviews);
+        console.log('getMeetingGoal, got goal : ', reviews);
         if (reviews != null)
           this.goal = Observable.of(reviews[0].value);
         else
@@ -221,7 +224,7 @@ export class MeetingItemCoachComponent implements OnInit, AfterViewInit, OnDestr
       },
       (error) => {
         console.log('getMeetingGoal error', error);
-        //this.displayErrorPostingReview = true;
+        // this.displayErrorPostingReview = true;
       });
   }
 
@@ -230,7 +233,7 @@ export class MeetingItemCoachComponent implements OnInit, AfterViewInit, OnDestr
 
     this.mSessionContextSubscription = this.meetingService.getMeetingContext(this.meeting.id, this.isAdmin).subscribe(
       (reviews: MeetingReview[]) => {
-        console.log("getMeetingContext, got context : ", reviews);
+        console.log('getMeetingContext, got context : ', reviews);
         if (reviews != null)
           this.context = Observable.of(reviews[0].value);
         else
@@ -241,7 +244,7 @@ export class MeetingItemCoachComponent implements OnInit, AfterViewInit, OnDestr
       },
       (error) => {
         console.log('getMeetingContext error', error);
-        //this.displayErrorPostingReview = true;
+        // this.displayErrorPostingReview = true;
       });
   }
 
@@ -251,7 +254,7 @@ export class MeetingItemCoachComponent implements OnInit, AfterViewInit, OnDestr
     this.mSessionReviewSubscription = this.meetingService.getSessionReviewUtility(this.meeting.id, this.isAdmin)
       .subscribe(
         (reviews: MeetingReview[]) => {
-          console.log("getMeetingValue, got goal : ", reviews);
+          console.log('getMeetingValue, got goal : ', reviews);
           if (reviews != null)
             this.reviewValue = reviews[0].value;
           else
@@ -273,7 +276,7 @@ export class MeetingItemCoachComponent implements OnInit, AfterViewInit, OnDestr
     this.mSessionReviewResultSubscription = this.meetingService.getSessionReviewResult(this.meeting.id, this.isAdmin)
       .subscribe(
         (reviews: MeetingReview[]) => {
-          console.log("getMeetingNextStep, : ", reviews);
+          console.log('getMeetingNextStep, : ', reviews);
           if (reviews != null)
             this.reviewNextStep = reviews[0].value;
           else
@@ -296,7 +299,7 @@ export class MeetingItemCoachComponent implements OnInit, AfterViewInit, OnDestr
     this.mSessionReviewRateSubscription = this.meetingService.getSessionReviewRate(this.meeting.id, this.isAdmin)
       .subscribe(
         (reviews: MeetingReview[]) => {
-          console.log("getSessionReviewTypeRate, got rate : ", reviews);
+          console.log('getSessionReviewTypeRate, got rate : ', reviews);
           if (reviews != null)
             this.sessionRate = reviews[0].value;
           else
@@ -308,12 +311,12 @@ export class MeetingItemCoachComponent implements OnInit, AfterViewInit, OnDestr
         },
         (error) => {
           console.log('getSessionReviewTypeRate error', error);
-          //this.displayErrorPostingReview = true;
+          // this.displayErrorPostingReview = true;
         });
   }
 
   private loadPotentialDays() {
-    console.log("loadPotentialDays");
+    console.log('loadPotentialDays');
     let days = new Array<string>();
 
     if (this.potentialDatesArray != null) {
@@ -323,32 +326,33 @@ export class MeetingItemCoachComponent implements OnInit, AfterViewInit, OnDestr
         d.setHours(0);
         d.setMinutes(0);
         // avoid duplicates
-        if (days.indexOf(d.toString()) < 0)
+        if (days.indexOf(d.toString()) < 0 && this.isDateFuture(d))
           days.push(d.toString());
       }
     }
 
     this.potentialDays = Observable.of(days);
     this.cd.detectChanges();
-    console.log("potentialDays", days);
+    console.log('potentialDays', days);
   }
 
   loadPotentialHours(selected) {
-    console.log("loadPotentialHours", selected);
+    console.log('loadPotentialHours', selected);
     let hours = [];
 
     for (let date of this.potentialDatesArray) {
       // TODO could be improved
       if (Utils.getDayAndMonthFromTimestamp(date.start_date) === Utils.getDate(selected)) {
-        for (let _i = Utils.getHoursFromTimestamp(date.start_date); _i < Utils.getHoursFromTimestamp(date.end_date); _i++) {
-          hours.push(_i);
+        for (let _h = Utils.getHoursFromTimestamp(date.start_date); _h < Utils.getHoursFromTimestamp(date.end_date); _h++) {
+          if (this.isTimeslotFree(_h))
+            hours.push(_h);
         }
       }
     }
 
     this.potentialHours = Observable.of(hours);
     this.cd.detectChanges();
-    console.log("potentialHours", hours);
+    console.log('potentialHours', hours);
   }
 
   timestampToString(timestamp: number): string {
@@ -376,5 +380,23 @@ export class MeetingItemCoachComponent implements OnInit, AfterViewInit, OnDestr
       selectedHour: this.selectedHour,
       meeting: this.meeting
     });
+  }
+
+  // Return true if the date is not past yet
+  isDateFuture(date: Date): boolean {
+    let now = new Date();
+
+    return date > now;
+  }
+
+  // Return false if coach has already an agreed meeting for this timeslot
+  isTimeslotFree(h: number): boolean {
+    if (this.bookedMeetings) {
+      for (let meeting of this.bookedMeetings) {
+        if (Utils.sameHour(new Date(meeting.agreed_date.start_date), h))
+          return false;
+      }
+    }
+    return true;
   }
 }

@@ -378,7 +378,7 @@ export class MeetingDateComponent implements OnInit, OnDestroy {
 
     if (this.meetingsAgreed) {
       for (let agreed of this.meetingsAgreed) {
-        if ( Utils.sameDay(agreed.agreed_date, meeting) ) {
+        if ( Utils.sameDay(new Date(agreed.agreed_date.start_date), new Date(meeting.start_date)) ) {
           Materialize.toast('Vous avez déjà un meeting prévu ce jour là', 3000, 'rounded');
           return false;
         }
