@@ -293,4 +293,14 @@ export class MeetingItemCoacheeComponent implements OnInit, OnDestroy {
     this.onRateSessionBtnClickedEmitter.emit(this.meeting.id);
   }
 
+  // Return true if the session starts in less than 10 minutes
+  canLaunch() {
+    if (this.meeting) {
+      let limitTime = new Date(this.meeting.agreed_date.start_date);
+      limitTime.setHours(limitTime.getHours() - 1);
+      limitTime.setMinutes(50);
+      return (new Date()) >= limitTime;
+    }
+  }
+
 }
