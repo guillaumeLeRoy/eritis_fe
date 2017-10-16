@@ -405,5 +405,7 @@ export class MeetingItemCoachComponent implements OnInit, AfterViewInit, OnDestr
     if (this.meeting) {
       return (new Date()) > (new Date(this.meeting.agreed_date.start_date));
     }
+
+    return false;
   }
 }

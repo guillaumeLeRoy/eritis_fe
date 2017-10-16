@@ -301,6 +301,8 @@ export class MeetingItemCoacheeComponent implements OnInit, OnDestroy {
       limitTime.setMinutes(50);
       return (new Date()) >= limitTime;
     }
+
+    return false;
   }
 
 }
