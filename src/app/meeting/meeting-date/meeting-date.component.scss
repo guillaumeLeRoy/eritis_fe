@@ -47,7 +47,13 @@
 
 .has-meeting{
   color: $main-red-color !important;
-  font-weight: 600;
+  opacity: .5;
+  pointer-events: none;
+  cursor: default;
+}
+
+.has-meeting.bg-primary {
+  background: none !important;
 }
 
 .plage-horaire{

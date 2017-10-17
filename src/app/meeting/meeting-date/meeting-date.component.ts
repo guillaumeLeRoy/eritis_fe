@@ -13,7 +13,7 @@ declare var Materialize: any;
 
 const I18N_VALUES = {
   'fr': {
-    weekdays: ['Lu', 'Ma', 'Me', 'Je', 'Ve', 'Sa', 'Di'],
+    weekdays: ['Lun', 'Mar', 'Mer', 'Jeu', 'Ven', 'Sam', 'Dim'],
     months: Utils.months
   }
   // other languages you would support
@@ -47,6 +47,8 @@ export class CustomDatepickerI18n extends NgbDatepickerI18n {
   }
 }
 
+
+
 @Component({
   selector: 'er-meeting-date',
   templateUrl: './meeting-date.component.html',
@@ -62,7 +64,7 @@ export class MeetingDateComponent implements OnInit, AfterViewInit, OnDestroy {
 
   private loading = false;
 
-  now = new Date();
+  now = Utils.timestampToNgbDate((new Date()).valueOf() );
   dateModel: NgbDateStruct = null;
   timeRange: number[] = [10, 18];
 
@@ -92,7 +94,7 @@ export class MeetingDateComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   ngOnInit() {
-    console.log("ngOnInit");
+    console.log("ngOnInit", this.now);
     this.loadingMeetings = true;
   }
 
@@ -102,10 +104,6 @@ export class MeetingDateComponent implements OnInit, AfterViewInit, OnDestroy {
       (params: any) => {
         this.meetingId = params['meetingId'];
         console.log('route param, meetingId : ' + this.meetingId);
-
-        if (this.meetingId !== undefined) {
-          this.loadMeetingPotentialTimes(this.meetingId);
-        }
       }
     );
 
@@ -134,8 +132,12 @@ export class MeetingDateComponent implements OnInit, AfterViewInit, OnDestroy {
 
   private onConnectedUserReceived(user: ApiUser) {
     this.connectedUser = Observable.of(user);
-    if (user)
+    if (user) {
       this.getAllMeetingsForCoachee(user.id);
+
+      if (this.meetingId)
+        this.loadMeetingPotentialTimes(this.meetingId);
+    }
     this.cd.detectChanges();
   }
 
@@ -146,7 +148,7 @@ export class MeetingDateComponent implements OnInit, AfterViewInit, OnDestroy {
   private loadMeetingPotentialTimes(meetingId: string) {
     this.meetingService.getMeetingPotentialTimes(meetingId).subscribe(
       (dates: MeetingDate[]) => {
-        console.log('loadMeetingPotentialTimes : ', dates);
+        console.log('loadMeetingPotentialTimes success', dates);
         if (dates != null) {
           // clear array
           this.potentialDatesArray = new Array<MeetingDate>();
@@ -156,7 +158,7 @@ export class MeetingDateComponent implements OnInit, AfterViewInit, OnDestroy {
         this.potentialDates = Observable.of(dates);
         this.cd.detectChanges();
       }, (error) => {
-        console.log('get potentials dates error', error);
+        console.log('loadMotentialTimes error', error);
       }
     );
   }
@@ -276,13 +278,9 @@ export class MeetingDateComponent implements OnInit, AfterViewInit, OnDestroy {
     return Utils.ngbDateToString(date);
   }
 
-  timestampToNgbDateStruct(timestamp: number): NgbDateStruct {
-    return Utils.timestampToNgbDate(timestamp);
-  }
-
   hasPotentialDate(date: NgbDateStruct) {
     for (let potential of this.potentialDatesArray) {
-      if (Utils.datesEqual(this.timestampToNgbDateStruct(potential.start_date), date)) {
+      if (Utils.datesEqual(Utils.timestampToNgbDate(potential.start_date), date)) {
         return true;
       }
     }
@@ -290,21 +288,26 @@ export class MeetingDateComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   hasMeeting(date: NgbDateStruct) {
-    for (let meeting of this.bookedMeetings) {
-      if (Utils.datesEqual(this.timestampToNgbDateStruct(meeting.agreed_date.start_date), date)) {
-        return true;
+    if (this.bookedMeetings) {
+      for (let meeting of this.bookedMeetings) {
+        if (Utils.datesEqual(Utils.timestampToNgbDate(meeting.agreed_date.start_date), date)) {
+          return true;
+        }
       }
     }
+
     return false;
   }
 
-  isDisabled(date: NgbDateStruct, current: { month: number }) {
+  isDisabled(date: NgbDateStruct, current: { year: number, month: number }) {
     let now = new Date();
     let newDate = new Date(date.year, date.month - 1, date.day);
     // TODO add this to block next month days
     // TODO date.month !== current.month ||
-    return (newDate.getDay() === 6
-    || newDate.getDay() === 0
+
+    return (
+       newDate.getDay() === 6 // Samedi
+    || newDate.getDay() === 0 // Dimanche
     || date.year < now.getFullYear()
     || (date.month < now.getMonth() + 1 && date.year <= now.getFullYear())
     || (date.year <= now.getFullYear() && date.month === now.getMonth() + 1 && date.day < now.getDate())
@@ -391,7 +394,7 @@ export class MeetingDateComponent implements OnInit, AfterViewInit, OnDestroy {
       }
     }*/
 
-    if (this.hasMeeting(this.timestampToNgbDateStruct(meeting.start_date))) {
+    if (this.hasMeeting(Utils.timestampToNgbDate(meeting.start_date))) {
       Materialize.toast('Vous avez déjà un meeting prévu ce jour là', 3000, 'rounded');
       return false;
     }

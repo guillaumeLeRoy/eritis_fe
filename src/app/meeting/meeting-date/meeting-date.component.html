@@ -20,7 +20,7 @@
             <ngb-datepicker #dp [(ngModel)]="dateModel"
                             (navigate)="date = $event.next"
                             navigation="arrows"
-                            minDate="{{ dateModel }}"
+                            [minDate]="now"
                             langugae="fr"
                             [dayTemplate]="customDay"
                             [markDisabled]="isDisabled"
