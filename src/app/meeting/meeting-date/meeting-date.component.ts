@@ -220,7 +220,7 @@ export class MeetingDateComponent implements OnInit, AfterViewInit, OnDestroy {
       }
 
     } else {
-      let dateToSave = new MeetingDate(minDate.valueOf(), maxDate.valueOf())
+      let dateToSave = new MeetingDate(minDate.valueOf(), maxDate.valueOf());
 
       // add received dates if no interference
       if (this.isPotentialDateOk(dateToSave))
