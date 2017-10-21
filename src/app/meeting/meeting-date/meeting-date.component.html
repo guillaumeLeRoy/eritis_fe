@@ -45,18 +45,21 @@
         <div class="col-sm-12 col-lg-7">
           <div>
             <h5 *ngIf="dateModel">{{ ngbDateToString(dateModel) }}</h5>
-            <h2 class="plage-horaire">{{ timeIntToString(timeRange[0]) }} - {{ timeIntToString(timeRange[1]) }}</h2>
+            <h5 *ngIf="!dateModel"><i>Sélectionnez un jour</i></h5>
           </div>
+
+          <h2 class="plage-horaire" [class.disabled]="!dateModel">{{ timeIntToString(timeRange[0]) }} - {{ timeIntToString(timeRange[1]) }}</h2>
 
           <p-slider [(ngModel)]="timeRange" [style]="{'width':'200px'}" [range]="true" [min]="8" [max]="20" [disabled]="!dateModel"></p-slider>
 
-          <p>Faites glisser pour sélectionner votre plage disponible, puis validez</p>
+          <p *ngIf="dateModel">Faites glisser pour sélectionner votre plage disponible, puis validez<br></p>
 
           <div class="row">
             <div class="col-lg-12">
               <button class="btn-basic btn-plain btn-blue btn-small"
                       (click)="bookOrUpdateADate()"
                       [disabled]="dateModel==null"
+                      [disabled]="!dateModel"
                       *ngIf="!isEditingPotentialDate">Ajouter
               </button>
               <button class="btn-basic btn-plain btn-blue btn-small"
@@ -73,6 +76,7 @@
               </button>
             </div>
           </div>
+
         </div>
       </div><!--end row-->
     </div><!--end input-datepicker-->
