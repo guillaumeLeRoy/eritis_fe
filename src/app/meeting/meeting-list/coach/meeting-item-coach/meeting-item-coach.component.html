@@ -130,6 +130,7 @@
 
         <button type="submit" class="btn-basic btn-blue btn-plain btn-small"
                 *ngIf="meeting.agreed_date"
+                [disabled]="!isStarted()"
                 (click)="onCloseMeetingBtnClick()">Clore
         </button>
       </div>

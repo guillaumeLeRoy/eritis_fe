@@ -11,6 +11,7 @@
             <div *ngIf="hasAvailableMeetings">
               <div class="collection-item" *ngFor="let meeting of availableMeetings | async">
                 <er-meeting-item-coach [meeting]="meeting"
+                                       [bookedMeetings]="bookedMeetings"
                                        (onValidateDateBtnClickEmitter)="openCoachValidateMeetingModal($event)">
                 </er-meeting-item-coach>
               </div>

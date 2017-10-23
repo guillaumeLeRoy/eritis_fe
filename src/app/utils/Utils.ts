@@ -1,4 +1,5 @@
 import {NgbDateStruct} from "@ng-bootstrap/ng-bootstrap";
+import {MeetingDate} from "../model/MeetingDate";
 /**
  * Created by guillaume on 02/09/2017.
  */
@@ -46,6 +47,17 @@ export class Utils {
 
   static printDateShort(date: Date): string {
     return date.getDate() + ' ' + this.months[date.getMonth()];
+  }
+
+  /* Return true if two dates are the same day  */
+  static sameDay(date1: Date, date2: Date) {
+    return (date1.getDate() === date2.getDate());
+  }
+
+  /* Return true if date hour value is h  */
+  static sameHour(date: Date, h: number) {
+    console.log("sameHour " + h, date.getHours());
+    return (date.getHours() === h);
   }
 
   /* Return a NgbDateStruct from a string date */
@@ -113,4 +125,9 @@ export class Utils {
       return '0' + m;
     return m.toString();
   }
+
+  static datesEqual(date1: NgbDateStruct, date2: NgbDateStruct) {
+    return (date1.year === date2.year) && (date1.month === date2.month) && (date1.day === date2.day);
+  }
+
 }

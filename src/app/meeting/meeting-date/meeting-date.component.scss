@@ -45,6 +45,17 @@
   font-weight: 600;
 }
 
+.has-meeting{
+  color: $main-red-color !important;
+  opacity: .5;
+  pointer-events: none;
+  cursor: default;
+}
+
+.has-meeting.bg-primary {
+  background: none !important;
+}
+
 .plage-horaire{
   font-weight: 800;
 }
@@ -100,6 +111,10 @@
 .delete-timeslot:hover{
   color: $main-electric-blue !important;
   cursor: pointer;
+}
+
+.disabled {
+  opacity: .4;
 }
 
 @media(max-width: 1180px) {

@@ -8,7 +8,9 @@ export class MeetingDate {
   start_date: number;
   end_date: number;
 
-  constructor() {
+  constructor(start?: number, end?: number) {
+    this.start_date = start;
+    this.end_date = end;
   }
 
   static parseFromBE(json: any): MeetingDate {

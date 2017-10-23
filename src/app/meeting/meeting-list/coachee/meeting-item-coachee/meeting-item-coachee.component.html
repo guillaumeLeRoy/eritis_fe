@@ -115,7 +115,8 @@
                 (click)="goToModifyDate(meeting.id)">
           MODIFIER
         </button>
-        <button class="btn-basic btn-plain btn-blue btn-small" *ngIf="hasGoal && meeting.agreed_date"
+        <button class="btn-basic btn-plain btn-blue btn-small" *ngIf="meeting.agreed_date"
+                [disabled]="!canLaunch()"
                 (click)="goToChatRoom()">
           LANCER
         </button>
