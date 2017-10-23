@@ -311,6 +311,7 @@ p-slider .ui-slider-horizontal .ui-slider-handle{
   top: -7px !important;
   background: $main-electric-blue !important;
   border-radius: 100%;
+  transition: .3s;
 }
 
 p-slider .ui-slider-handle:hover{

@@ -113,6 +113,10 @@
   cursor: pointer;
 }
 
+.disabled {
+  opacity: .4;
+}
+
 @media(max-width: 1180px) {
   #datepicker-container{
     -webkit-transform: scale(.7);
