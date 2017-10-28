@@ -1,0 +1,17 @@
+.loader-wraper {
+  width: 100%;
+  position: fixed;
+  top: 50%;
+  margin-top: -3px;
+}
+
+.progress {
+  background-color: #C7C7C7;
+  width: 50%;
+  height: 6px;
+  margin: auto;
+}
+
+.progress .indeterminate {
+  background-color: #46b0ff;
+}

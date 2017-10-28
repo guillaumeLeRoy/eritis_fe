@@ -433,13 +433,13 @@ loader-spinner {
 }
 
 .progress {
-  background-color: $main-light-grey;
+  background-color: $main-light-grey !important;
   width: 50%;
   height: 6px;
   margin: auto;
 
   .indeterminate {
-    background-color: $main-electric-blue;
+    background-color: $main-electric-blue !important;
   }
 }
 
