@@ -282,6 +282,11 @@ export class AuthHeaderComponent implements OnInit, AfterViewInit, OnDestroy {
     this.router.navigate(['admin/possible_coachs-list']);
   }
 
+  navigateToAvailableMeetings() {
+    console.log("navigateToAvailableMeetings")
+    this.router.navigate(['admin/available-meetings-list']);
+  }
+
   initJS() {
     $('.button-collapse').sideNav({
       menuWidth: 400,

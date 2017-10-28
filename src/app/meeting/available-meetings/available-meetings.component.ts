@@ -1,13 +1,13 @@
-import {AfterViewInit, ChangeDetectorRef, Component, OnDestroy, OnInit} from '@angular/core';
+import {AfterViewInit, ChangeDetectorRef, Component, Input, OnDestroy, OnInit} from '@angular/core';
 import {Observable} from 'rxjs/Observable';
-import {Meeting} from '../../../../model/Meeting';
-import {MeetingsService} from '../../../../service/meetings.service';
-import {AuthService} from '../../../../service/auth.service';
+import {Meeting} from '../../model/Meeting';
+import {MeetingsService} from '../../service/meetings.service';
+import {AuthService} from '../../service/auth.service';
 import {Subscription} from 'rxjs/Subscription';
-import {Coach} from '../../../../model/Coach';
-import {ApiUser} from '../../../../model/ApiUser';
+import {Coach} from '../../model/Coach';
+import {ApiUser} from '../../model/ApiUser';
 import {Router} from '@angular/router';
-import {MeetingDate} from '../../../../model/MeetingDate';
+import {MeetingDate} from '../../model/MeetingDate';
 declare var $: any;
 declare var Materialize: any;
 
@@ -18,6 +18,12 @@ declare var Materialize: any;
 })
 export class AvailableMeetingsComponent implements OnInit, AfterViewInit, OnDestroy {
 
+  @Input()
+  isAdmin = false;
+
+  @Input()
+  user: Observable<Coach>;
+
   private availableMeetings: Observable<Meeting[]>;
   private bookedMeetings: Meeting[];
 
@@ -26,7 +32,7 @@ export class AvailableMeetingsComponent implements OnInit, AfterViewInit, OnDest
   private connectedUserSubscription: Subscription;
   private getAllMeetingsSubscription: Subscription;
   private getBookedMeetingsSubscription: Subscription;
-  private user: Observable<ApiUser>;
+  private userSubscription: Subscription;
 
   private selectedDate: string;
   private selectedHour: number;
@@ -34,7 +40,7 @@ export class AvailableMeetingsComponent implements OnInit, AfterViewInit, OnDest
 
   loading = true;
 
-  constructor(private authService: AuthService, private meetingService: MeetingsService, private cd: ChangeDetectorRef, private router: Router) {
+  constructor(private meetingService: MeetingsService, private cd: ChangeDetectorRef, private router: Router) {
   }
 
   ngOnInit() {
@@ -44,7 +50,12 @@ export class AvailableMeetingsComponent implements OnInit, AfterViewInit, OnDest
     console.log('ngAfterViewInit');
 
     this.loading = true;
-    this.getConnectedUser();
+
+    this.getAvailableMeetings();
+
+    if (this.user) {
+      this.onUserObtained(this.user);
+    }
   }
 
   ngOnDestroy() {
@@ -60,35 +71,24 @@ export class AvailableMeetingsComponent implements OnInit, AfterViewInit, OnDest
     if (this.getBookedMeetingsSubscription) {
       this.getBookedMeetingsSubscription.unsubscribe();
     }
-  }
 
-  getConnectedUser() {
-    this.connectedUserSubscription = this.authService.getConnectedUserObservable().subscribe(
-      (user: Coach) => {
-        console.log('getConnectedUser');
-        this.onUserObtained(user);
-      }
-    );
-  }
-
-  private onUserObtained(user: ApiUser) {
-    console.log('onUserObtained, user : ', user);
-    if (user) {
-
-      this.user = Observable.of(user);
-
-      if (user instanceof Coach) {
-        // coach
-        console.log('get a coach');
-        this.getAvailableMeetings();
-        this.getBookedMeetings(user.id);
-      }
-
+    if (this.userSubscription) {
+      this.userSubscription.unsubscribe();
     }
   }
 
+  private onUserObtained(user: Observable<Coach>) {
+    this.userSubscription = this.user.subscribe((coach: Coach) => {
+      if (coach) {
+        console.log('onUserObtained, user : ', coach);
+        console.log('get a coach');
+        this.getBookedMeetings(coach.id);
+      }
+    });
+  }
+
   private getAvailableMeetings() {
-    this.getAllMeetingsSubscription = this.meetingService.getAvailableMeetings().subscribe(
+    this.getAllMeetingsSubscription = this.meetingService.getAvailableMeetings(this.isAdmin).subscribe(
       (meetings: Meeting[]) => {
         console.log('got getAllMeetings', meetings);
         this.availableMeetings = Observable.of(meetings);

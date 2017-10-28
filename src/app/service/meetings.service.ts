@@ -274,9 +274,9 @@ export class MeetingsService {
    * Fetch all meetings where no coach is associated
    * @returns {Observable<R>}
    */
-  getAvailableMeetings(): Observable<Array<Meeting>> {
+  getAvailableMeetings(isAdmin?: boolean): Observable<Array<Meeting>> {
     console.log("getAvailableMeetings");
-    return this.apiService.get(AuthService.GET_AVAILABLE_MEETINGS, null).map((response: Response) => {
+    return this.apiService.get(AuthService.GET_AVAILABLE_MEETINGS, null, isAdmin).map((response: Response) => {
       let res: Array<any> = response.json();
       let meetings = new Array<Meeting>();
       for (var meeting of res) {

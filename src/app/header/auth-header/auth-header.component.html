@@ -64,7 +64,10 @@
               <li [class.active]="router.url === '/admin/rhs-list'">
                 <a (click)="navigateToRhsList()">Nos Rhs</a></li>
               <li [class.active]="router.url === '/admin/possible_coachs-list'">
-                <a (click)="navigateToPossibleCoachsList()">Demandes d'inscription</a></li>
+                <a (click)="navigateToPossibleCoachsList()">Nouveaux coachs</a></li>
+              <li>
+              <li [class.active]="router.url === '/admin/available-meetings-list'">
+                <a (click)="navigateToAvailableMeetings()">Demandes de meeting</a></li>
               <li>
                 <a (click)="goToWelcomePage()" class="btn-basic btn-small btn-red btn-plain">Quitter</a></li>
             </div>
@@ -136,7 +139,10 @@
     <li [class.active]="router.url === '/admin/rhs-list'">
       <a (click)="navigateToRhsList()">Nos Rhs</a></li>
     <li [class.active]="router.url === '/admin/possible_coachs-list'">
-      <a (click)="navigateToPossibleCoachsList()">Demandes d'inscription</a></li>
+      <a (click)="navigateToPossibleCoachsList()">Nouveaux coachs</a></li>
+    <li>
+    <li [class.active]="router.url === '/admin/available-meetings-list'">
+      <a (click)="navigateToAvailableMeetings()">Demandes de meeting</a></li>
     <li>
       <a (click)="goToWelcomePage()">Quitter</a></li>
   </div>

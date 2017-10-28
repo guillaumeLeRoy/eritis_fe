@@ -1,43 +1,45 @@
-import {RouterModule, Routes} from "@angular/router";
-import {SigninComponent} from "./login/signin/signin.component";
-import {SignupAdminComponent} from "./login/signup/signup-admin/signup-admin.component";
-import {WelcomeComponent} from "./welcome/welcome.component";
-import {ChatComponent} from "./chat/chat.component";
-import {MeetingListComponent} from "./meeting/meeting-list/meeting-list.component";
-import {ProfileCoachComponent} from "./user/profile/coach/profile-coach.component";
-import {ProfileCoacheeComponent} from "./user/profile/coachee/profile-coachee.component";
-import {MeetingDateComponent} from "./meeting/meeting-date/meeting-date.component";
-import {AdminCoachsListComponent} from "./admin/coachs-list/admin-coachs-list.component";
-import {AdminComponent} from "./admin/admin.component";
-import {ProfileRhComponent} from "./user/profile/rh/profile-rh.component";
-import {SignupCoacheeComponent} from "./login/signup/signup-coachee/signup-coachee.component";
-import {SignupCoachComponent} from "./login/signup/signup-coach/signup-coach.component";
-import {SignupRhComponent} from "./login/signup/signup-rh/signup-rh.component";
-import {AvailableMeetingsComponent} from "./meeting/meeting-list/coach/available-meetings/available-meetings.component";
-import {AdminCoacheesListComponent} from "./admin/coachees-list/admin-coachees-list.component";
-import {AdminRhsListComponent} from "./admin/rhs-list/admin-rhs-list.component";
-import {RegisterCoachComponent} from "./login/register/register-coach/register-coach.component";
-import {RegisterCoachFormComponent} from "./login/register/register-coach/register-coach-form/register-coach-form.component";
-import {RegisterCoachMessageComponent} from "./login/register/register-coach/register-coach-message/register-coach-message.component";
-import {CodeDeontologieComponent} from "./login/register/register-coach/code-deontologie/code-deontologie.component";
-import {AdminPossibleCoachsListComponent} from "./admin/possible-coachs-list/admin-possible-coachs-list.component";
-import {ProfileCoachAdminComponent} from "./user/profile/coach/profile-coach-admin/profile-coach-admin.component";
-import {ProfilePossibleCoachComponent} from "./user/profile/possible-coach/profile-possible-coach.component";
-import {ProfileCoacheeAdminComponent} from "app/user/profile/coachee/profile-coachee-admin/profile-coachee-admin.component";
-import {ProfileRhAdminComponent} from "./user/profile/rh/profile-rh-admin/profile-rh-admin.component";
-import {LegalNoticeComponent} from "./legals/legal-notice/legal-notice.component";
-import {TermsOfUseComponent} from "./legals/terms-of-use/terms-of-use.component";
-import {CookiePolicyComponent} from "./legals/cookie-policy/cookie-policy.component";
-import {HomeAdminComponent} from "./admin/home-admin/home-admin.component";
-import {AuthGuard} from "./service/auth-guard.service";
-import {NotAuthGuard} from "./service/not-auth-guard";
-import {DashboardComponent} from "./dashboard/dashboard.component";
+import {RouterModule, Routes} from '@angular/router';
+import {SigninComponent} from './login/signin/signin.component';
+import {SignupAdminComponent} from './login/signup/signup-admin/signup-admin.component';
+import {WelcomeComponent} from './welcome/welcome.component';
+import {ChatComponent} from './chat/chat.component';
+import {MeetingListComponent} from './meeting/meeting-list/meeting-list.component';
+import {ProfileCoachComponent} from './user/profile/coach/profile-coach.component';
+import {ProfileCoacheeComponent} from './user/profile/coachee/profile-coachee.component';
+import {MeetingDateComponent} from './meeting/meeting-date/meeting-date.component';
+import {AdminCoachsListComponent} from './admin/coachs-list/admin-coachs-list.component';
+import {AdminComponent} from './admin/admin.component';
+import {ProfileRhComponent} from './user/profile/rh/profile-rh.component';
+import {SignupCoacheeComponent} from './login/signup/signup-coachee/signup-coachee.component';
+import {SignupCoachComponent} from './login/signup/signup-coach/signup-coach.component';
+import {SignupRhComponent} from './login/signup/signup-rh/signup-rh.component';
+import {AvailableMeetingsComponent} from './meeting/available-meetings/available-meetings.component';
+import {AdminCoacheesListComponent} from './admin/coachees-list/admin-coachees-list.component';
+import {AdminRhsListComponent} from './admin/rhs-list/admin-rhs-list.component';
+import {RegisterCoachComponent} from './login/register/register-coach/register-coach.component';
+import {RegisterCoachFormComponent} from './login/register/register-coach/register-coach-form/register-coach-form.component';
+import {RegisterCoachMessageComponent} from './login/register/register-coach/register-coach-message/register-coach-message.component';
+import {CodeDeontologieComponent} from './login/register/register-coach/code-deontologie/code-deontologie.component';
+import {AdminPossibleCoachsListComponent} from './admin/possible-coachs-list/admin-possible-coachs-list.component';
+import {ProfileCoachAdminComponent} from './user/profile/coach/profile-coach-admin/profile-coach-admin.component';
+import {ProfilePossibleCoachComponent} from './user/profile/possible-coach/profile-possible-coach.component';
+import {ProfileCoacheeAdminComponent} from 'app/user/profile/coachee/profile-coachee-admin/profile-coachee-admin.component';
+import {ProfileRhAdminComponent} from './user/profile/rh/profile-rh-admin/profile-rh-admin.component';
+import {LegalNoticeComponent} from './legals/legal-notice/legal-notice.component';
+import {TermsOfUseComponent} from './legals/terms-of-use/terms-of-use.component';
+import {CookiePolicyComponent} from './legals/cookie-policy/cookie-policy.component';
+import {HomeAdminComponent} from './admin/home-admin/home-admin.component';
+import {AuthGuard} from './service/auth-guard.service';
+import {NotAuthGuard} from './service/not-auth-guard';
+import {DashboardComponent} from './dashboard/dashboard.component';
+import {AdminAvailableMeetingsListComponent} from './admin/admin-available-meetings-list/admin-available-meetings-list.component';
+import {AvailableMeetingsListComponent} from './meeting/meeting-list/coach/available-meetings-list/available-meetings-list.component';
 
 const APP_ROUTES: Routes = [
   {path: '', redirectTo: '/welcome', pathMatch: 'full'},
   {path: 'welcome', component: WelcomeComponent, canActivate: [NotAuthGuard]},
 
-  //{path: 'chat', component: ChatComponent},
+  // {path: 'chat', component: ChatComponent},
 
   {path: 'signin', component: SigninComponent},
 
@@ -50,7 +52,7 @@ const APP_ROUTES: Routes = [
       {path: 'meetings', component: MeetingListComponent},
       {path: 'date/:meetingId', component: MeetingDateComponent},
       {path: 'date', component: MeetingDateComponent},
-      {path: 'available_meetings', component: AvailableMeetingsComponent}
+      {path: 'available_meetings', component: AvailableMeetingsListComponent}
     ]
   },
 
@@ -75,6 +77,7 @@ const APP_ROUTES: Routes = [
       {path: 'coachs-list', component: AdminCoachsListComponent},
       {path: 'coachees-list', component: AdminCoacheesListComponent},
       {path: 'rhs-list', component: AdminRhsListComponent},
+      {path: 'available-meetings-list', component: AdminAvailableMeetingsListComponent},
       {path: 'possible_coachs-list', component: AdminPossibleCoachsListComponent},
       {path: 'profile/coach/:id', component: ProfileCoachAdminComponent},
       {path: 'profile/coachee/:id', component: ProfileCoacheeAdminComponent},

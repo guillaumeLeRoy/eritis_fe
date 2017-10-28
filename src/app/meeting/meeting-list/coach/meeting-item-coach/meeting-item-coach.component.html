@@ -95,9 +95,9 @@
               <span class="meeting-potential-date">{{ timestampToString(potential.start_date) }}</span>
               <span class="meeting-potential-hours bold">{{ hoursAndMinutesFromTimestamp(potential.start_date) }} - {{ hoursAndMinutesFromTimestamp(potential.end_date) }}</span>
             </div>
-            <br>
-            <form class="confirm-meeting-form">
+            <form class="confirm-meeting-form" *ngIf="!isAdmin">
               <!--<span class="black-text bold">Réponse :</span>-->
+              <br>
               <div class="input-field">
                 <select [(ngModel)]="selectedDate" name="meeting-date" class="browser-default"
                         (change)="loadPotentialHours(selectedDate)">
@@ -123,7 +123,7 @@
 
       <div class="meeting-item-body-buttons" *ngIf="meeting.isOpen && !isAdmin">
         <button type="submit" class="btn-basic btn-blue btn-plain btn-small"
-                *ngIf="!meeting.agreed_date"
+                *ngIf="!meeting.agreed_date && !isAdmin"
                 [disabled]="!selectedDate || !selectedHour"
                 (click)="onValidateDateClick()">Coacher
         </button>

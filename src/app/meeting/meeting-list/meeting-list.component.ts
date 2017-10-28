@@ -52,9 +52,7 @@ export class MeetingListComponent implements OnInit, AfterViewInit, OnDestroy {
 
   private onUserObtained(user: Coach | Coachee | HR) {
     console.log('toto, onUserObtained, user : ', user);
-    // if (user) {
-      this.user.next(user);
-    // }
+    this.user.next(user);
   }
 
   isUserACoach(user: Coach | Coachee | HR) {
